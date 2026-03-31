@@ -687,9 +687,11 @@ function defaultStorymapAdminCanvasState() {
 
 function loadStorymapCanvasState() {
   try {
-    const key = MODE === "admin" ? STORYMAP_CANVAS_ADMIN_KEY : STORYMAP_CANVAS_PUBLIC_KEY;
-    const fallback = MODE === "admin" ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
-    const raw = localStorage.getItem(key);
+    const isAdminCanvas = MODE === "admin";
+    const fallback = isAdminCanvas ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
+    const raw = isAdminCanvas
+      ? localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY)
+      : localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY) || localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY);
     if (!raw) return fallback;
     const parsed = JSON.parse(raw);
     if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return fallback;
@@ -701,8 +703,14 @@ function loadStorymapCanvasState() {
 
 function saveStorymapCanvasState(payload) {
   try {
-    const key = MODE === "admin" ? STORYMAP_CANVAS_ADMIN_KEY : STORYMAP_CANVAS_PUBLIC_KEY;
-    localStorage.setItem(key, JSON.stringify(payload));
+    const serialized = JSON.stringify(payload);
+    if (MODE === "admin") {
+      // Admin edits are the source of truth and should be visible on public storymap.
+      localStorage.setItem(STORYMAP_CANVAS_ADMIN_KEY, serialized);
+      localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
+      return;
+    }
+    localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
   } catch {
     // ignore
   }
@@ -717,13 +725,22 @@ function initCustomStorymapCanvas() {
   if (!viewport || !world || !nodesLayer || !edgesSvg) return false;
 
   const isAdmin = MODE === "admin";
+  if (isAdmin) {
+    viewport.style.minHeight = "70vh";
+    viewport.style.height = "70vh";
+    world.style.minHeight = "100%";
+    if (panel) panel.style.minHeight = "70vh";
+    const canvasPanel = document.getElementById("storymapCanvasPanel");
+    if (canvasPanel) canvasPanel.style.minHeight = "70vh";
+  }
   let canvas = loadStorymapCanvasState();
   let selectedId = null;
   let view = { scale: 1, panX: 0, panY: 0 };
   let panDraft = null;
   let nodeDragDraft = null;
 
-  const contentInput = document.getElementById("smNodeContent");
+  const labelInput = document.getElementById("smNodeLabel");
+  const textInput = document.getElementById("smNodeText");
   const imageFileInput = document.getElementById("smNodeImageFile");
   const colorSelect = document.getElementById("smNodeColor");
   const saveBtn = document.getElementById("smSaveNode");
@@ -736,6 +753,9 @@ function initCustomStorymapCanvas() {
   const infoTitle = document.getElementById("smInfoTitle");
   const infoBody = document.getElementById("smInfoBody");
   const infoCloseBtn = document.getElementById("smInfoClose");
+  const getNodeLabel = (node) => String(node?.label || node?.content || "").trim();
+  const getNodeText = (node) => String(node?.text || "").trim();
+  const getNodeImageSrc = (node) => String(node?.imageSrc || node?.content || "").trim();
 
   const updateWorldTransform = () => {
     world.style.transform = `translate(${view.panX}px, ${view.panY}px) scale(${view.scale})`;
@@ -750,6 +770,26 @@ function initCustomStorymapCanvas() {
   };
 
   const getNodeByIdLocal = (id) => canvas.nodes.find((n) => n.id === id) || null;
+  const fitViewToNodes = () => {
+    if (!canvas.nodes.length) return;
+    const rect = viewport.getBoundingClientRect();
+    const width = Math.max(1, rect.width);
+    const height = Math.max(1, rect.height);
+    const xs = canvas.nodes.map((n) => Number(n.x) || 0);
+    const ys = canvas.nodes.map((n) => Number(n.y) || 0);
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+    const graphWidth = Math.max(120, maxX - minX + 140);
+    const graphHeight = Math.max(120, maxY - minY + 140);
+    const fittedScale = Math.min(1.4, Math.max(0.6, Math.min(width / graphWidth, height / graphHeight)));
+    const graphCenterX = (minX + maxX) / 2;
+    const graphCenterY = (minY + maxY) / 2;
+    view.scale = fittedScale;
+    view.panX = width / 2 - graphCenterX * fittedScale;
+    view.panY = height / 2 - graphCenterY * fittedScale;
+  };
 
   const syncPanel = () => {
     const node = selectedId ? getNodeByIdLocal(selectedId) : null;
@@ -757,8 +797,8 @@ function initCustomStorymapCanvas() {
       if (!node) {
         infoPanel.setAttribute("aria-hidden", "true");
       } else {
-        if (infoTitle) infoTitle.textContent = node.content || node.id;
-        const bodyText = node.type === "image" ? "Image node" : `${node.type === "tag" ? "Tag" : "Text"} node`;
+        if (infoTitle) infoTitle.textContent = getNodeLabel(node) || node.id;
+        const bodyText = getNodeText(node) || (node.type === "image" ? "Image node" : `${node.type === "tag" ? "Tag" : "Text"} node`);
         if (infoBody) infoBody.textContent = bodyText;
         infoPanel.setAttribute("aria-hidden", "false");
       }
@@ -771,7 +811,8 @@ function initCustomStorymapCanvas() {
     }
     panel.classList.add("storymapAdminPanel--open");
     panel.setAttribute("aria-hidden", "false");
-    if (contentInput) contentInput.value = node.content || "";
+    if (labelInput) labelInput.value = getNodeLabel(node);
+    if (textInput) textInput.value = getNodeText(node);
     if (colorSelect) colorSelect.value = node.color || "green";
     if (imageFileInput) imageFileInput.value = "";
   };
@@ -809,14 +850,14 @@ function initCustomStorymapCanvas() {
 
     if (node.type === "image") {
       const img = document.createElement("img");
-      img.src = node.content || storymapPlaceholderSvg();
+      img.src = getNodeImageSrc(node) || storymapPlaceholderSvg();
       img.alt = "Story node image";
       img.addEventListener("error", () => {
         img.src = storymapPlaceholderSvg();
       });
       div.appendChild(img);
     } else {
-      div.textContent = node.content || "";
+      div.textContent = getNodeLabel(node);
     }
     return div;
   };
@@ -928,7 +969,11 @@ function initCustomStorymapCanvas() {
     if (!isAdmin || !selectedId) return;
     const node = getNodeByIdLocal(selectedId);
     if (!node) return;
-    if (contentInput) node.content = contentInput.value.trim();
+    const nextLabel = labelInput ? labelInput.value.trim() : getNodeLabel(node);
+    const nextText = textInput ? textInput.value.trim() : getNodeText(node);
+    node.label = nextLabel;
+    node.text = nextText;
+    if (node.type !== "image") node.content = nextLabel;
     if (colorSelect) node.color = colorSelect.value;
     saveStorymapCanvasState(canvas);
     renderCanvas();
@@ -943,7 +988,7 @@ function initCustomStorymapCanvas() {
       const node = getNodeByIdLocal(selectedId);
       if (!node) return;
       node.type = "image";
-      node.content = String(reader.result || "");
+      node.imageSrc = String(reader.result || "");
       saveStorymapCanvasState(canvas);
       renderCanvas();
       syncPanel();
@@ -957,11 +1002,14 @@ function initCustomStorymapCanvas() {
     if (!parent) return;
     const label = prompt("New node label:");
     if (!label || !label.trim()) return;
+    const cleanLabel = label.trim();
     const id = `n_${uuid().slice(0, 8)}`;
     canvas.nodes.push({
       id,
       type: "text",
-      content: label.trim(),
+      label: cleanLabel,
+      text: "",
+      content: cleanLabel,
       color: "green",
       x: parent.x + 130,
       y: parent.y + 80,
@@ -975,7 +1023,10 @@ function initCustomStorymapCanvas() {
 
   on(linkExistingBtn, "click", () => {
     if (!isAdmin || !selectedId) return;
-    const options = canvas.nodes.filter((n) => n.id !== selectedId).map((n) => `${n.id}: ${n.content}`).join("\n");
+    const options = canvas.nodes
+      .filter((n) => n.id !== selectedId)
+      .map((n) => `${n.id}: ${getNodeLabel(n) || n.id}`)
+      .join("\n");
     const id = prompt(`Target node id:\n${options}`);
     if (!id) return;
     const target = getNodeByIdLocal(id.trim());
@@ -1006,6 +1057,7 @@ function initCustomStorymapCanvas() {
     renderCanvas();
   });
 
+  fitViewToNodes();
   updateWorldTransform();
   renderCanvas();
   syncPanel();
