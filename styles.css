@@ -1019,10 +1019,64 @@ textarea {
 .historyPage {
   max-width: 900px;
   margin: 30px auto;
-  padding: 20px 14px;
+  padding: 24px 16px 120px;
 }
 
 .historyPage h1 {
-  margin: 0 0 10px;
+  margin: 0 0 16px;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  line-height: 1.12;
+}
+
+.historyBody {
+  margin: 0;
+  border: 1px solid rgba(39, 84, 174, 0.14);
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  line-height: 1.9;
+  font-size: 1.05rem;
+  color: #1f2937;
+  white-space: pre-wrap;
+}
+
+.historyMedia {
+  margin-top: 20px;
+}
+
+.historyMedia h2 {
+  margin: 0 0 8px;
+}
+
+.historyMediaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.historyMediaCard {
+  margin: 0;
+  border-radius: 12px;
+  border: 1px dashed rgba(39, 84, 174, 0.3);
+  background: #ffffff;
+  padding: 10px;
+}
+
+.historyMediaCard figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.historyMediaCard__placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 150px;
+  border-radius: 8px;
+  background: #f8fbff;
+  color: #64748b;
+  font-weight: 600;
 }
 

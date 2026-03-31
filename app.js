@@ -24,7 +24,7 @@ const DEFAULT_CONTENT = {
     "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",
   section3:
     "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
-  historyTitle: "Feminism in Egypt and Beyond",
+  historyTitle: "Feminism in Egypt and Beyond.",
   historyBody:
     "[EXAMPLE TEXT] The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
 };
@@ -600,7 +600,12 @@ function loadContentConfig() {
     const raw = localStorage.getItem(CONTENT_STORAGE_KEY);
     if (!raw) return { ...DEFAULT_CONTENT };
     const parsed = JSON.parse(raw);
-    return { ...DEFAULT_CONTENT, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+    const merged = { ...DEFAULT_CONTENT, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+    // Migrate older single-word title to the current heading.
+    if (String(merged.historyTitle || "").trim() === "History") {
+      merged.historyTitle = DEFAULT_CONTENT.historyTitle;
+    }
+    return merged;
   } catch {
     return { ...DEFAULT_CONTENT };
   }
