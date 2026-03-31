@@ -1402,6 +1402,32 @@ function coerceStringOrEmpty(value) {
   return value == null ? "" : String(value);
 }
 
+function unwrapGraphElement(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  if (raw.data && typeof raw.data === "object") return raw.data;
+  return raw;
+}
+
+function normalizeNodeType(rawNode) {
+  const t = String(rawNode?.type ?? rawNode?.nodeType ?? "").toLowerCase();
+  if (t === "person" || t === "event") return t;
+  const hasEventHints =
+    rawNode?.date != null || rawNode?.title != null || rawNode?.eventTitle != null || rawNode?.event != null;
+  return hasEventHints ? "event" : "person";
+}
+
+function normalizeNodeLabel(rawNode, type) {
+  if (rawNode?.label != null) return coerceStringOrEmpty(rawNode.label);
+  if (type === "person") {
+    if (rawNode?.name != null) return coerceStringOrEmpty(rawNode.name);
+    if (rawNode?.personName != null) return coerceStringOrEmpty(rawNode.personName);
+  } else {
+    if (rawNode?.title != null) return coerceStringOrEmpty(rawNode.title);
+    if (rawNode?.eventTitle != null) return coerceStringOrEmpty(rawNode.eventTitle);
+  }
+  return "";
+}
+
 function normalizeGraph(maybeGraph) {
   const graph = maybeGraph && typeof maybeGraph === "object" ? maybeGraph : null;
   const nodes = Array.isArray(graph?.nodes) ? graph.nodes : [];
@@ -1409,15 +1435,22 @@ function normalizeGraph(maybeGraph) {
 
   // Keep only supported node types and required shape.
   const cleanedNodes = [];
-  nodes.forEach((n) => {
+  nodes.forEach((rawNode, index) => {
+    const n = unwrapGraphElement(rawNode);
     if (!n) return;
-    if ((n.type !== "person" && n.type !== "event") || typeof n.id !== "string") return;
+    const id =
+      n.id != null && String(n.id).trim()
+        ? String(n.id)
+        : typeof crypto?.randomUUID === "function"
+          ? `n_${crypto.randomUUID()}`
+          : `n_${index}_${Date.now()}`;
+    const type = normalizeNodeType(n);
     cleanedNodes.push({
-      id: String(n.id),
-      type: n.type,
-      label: coerceStringOrEmpty(n.label),
-      description: n.type === "person" ? coerceStringOrEmpty(n.description) : "",
-      date: n.type === "event" ? coerceStringOrEmpty(n.date) : "",
+      id,
+      type,
+      label: normalizeNodeLabel(n, type),
+      description: type === "person" ? coerceStringOrEmpty(n.description) : "",
+      date: type === "event" ? coerceStringOrEmpty(n.date) : "",
       notes: coerceStringOrEmpty(n.notes),
       photo: coerceStringOrEmpty(n.photo),
       storyOrder: coerceStoryOrder(n.storyOrder),
@@ -1444,19 +1477,32 @@ function normalizeGraph(maybeGraph) {
 
   // Only keep edges that connect existing person <-> event nodes.
   const cleanedEdges = edges
-    .filter((e) => e && typeof e.id === "string" && nodeIds.has(e.source) && nodeIds.has(e.target))
+    .map((rawEdge, index) => {
+      const edge = unwrapGraphElement(rawEdge);
+      if (!edge) return null;
+      const source = edge.source == null ? "" : String(edge.source);
+      const target = edge.target == null ? "" : String(edge.target);
+      const id =
+        edge.id != null && String(edge.id).trim()
+          ? String(edge.id)
+          : typeof crypto?.randomUUID === "function"
+            ? `r_${crypto.randomUUID()}`
+            : `r_${index}_${Date.now()}`;
+      return {
+        id,
+        source,
+        target,
+        role: String(edge.role ?? edge.label ?? ""),
+      };
+    })
+    .filter((e) => e && nodeIds.has(e.source) && nodeIds.has(e.target))
     .filter((e) => {
       const s = cleanedNodes.find((n) => n.id === e.source);
       const t = cleanedNodes.find((n) => n.id === e.target);
       if (!s || !t) return false;
       return s.type === "person" && t.type === "event";
     })
-    .map((e) => ({
-      id: String(e.id),
-      source: String(e.source),
-      target: String(e.target),
-      role: String(e.role ?? ""),
-    }));
+    .map((e) => ({ id: e.id, source: e.source, target: e.target, role: e.role }));
 
   return { nodes: cleanedNodes, edges: cleanedEdges };
 }
