@@ -200,6 +200,29 @@
     </main>
 
     <button id="btnLogoutAdmin" class="loginBtn loginBtn--logout" type="button">Logout Admin</button>
+    <div class="stickyFooterLinks">
+      <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer">Georgetown SFS</a>
+      <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer">Women and Memory Forum</a>
+      <a href="mailto:tbh36@georgetown.edu">tbh36@georgetown.edu</a>
+      <button id="btnLogin" class="footerLoginBtn" type="button">login</button>
+    </div>
+
+    <div id="loginModal" class="loginModal" aria-hidden="true">
+      <div class="loginModal__backdrop"></div>
+      <div class="loginModal__panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <h2 id="loginTitle" class="loginModal__title">Admin Login</h2>
+        <p class="muted small">Enter password to unlock admin mode.</p>
+        <div class="field">
+          <label for="adminPassword">Password</label>
+          <input id="adminPassword" type="password" autocomplete="current-password" />
+        </div>
+        <p id="loginError" class="loginModal__error" aria-live="polite"></p>
+        <div class="actions actions--row">
+          <button id="btnCancelLogin" class="btn btn--secondary" type="button">Cancel</button>
+          <button id="btnSubmitLogin" class="btn" type="button">Unlock</button>
+        </div>
+      </div>
+    </div>
 
     <script src="./vendor/cytoscape.min.js"></script>
     <script src="./app.js"></script>
