@@ -730,6 +730,8 @@ function loadStorymapCanvasState() {
   try {
     const isAdminCanvas = MODE === "admin";
     const fallback = isAdminCanvas ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
+    // Option 1: viewer always reads published code snapshot for cross-device consistency.
+    if (!isAdminCanvas) return normalizeStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS, fallback);
     const raw = isAdminCanvas
       ? localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY)
       : localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
