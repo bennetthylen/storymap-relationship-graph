@@ -50,20 +50,22 @@ body {
   align-items: center;
 }
 
-.siteNav__langLabel {
-  font-size: 0.72rem;
-  text-transform: lowercase;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-}
-
 .siteNav__langSelect {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 6px 8px;
-  background: #fff;
+  border: 1px solid rgba(39, 84, 174, 0.25);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.95);
   color: var(--text);
   font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.siteNav__langSelect:hover,
+.siteNav__langSelect:focus {
+  border-color: rgba(39, 84, 174, 0.55);
+  box-shadow: 0 0 0 3px rgba(39, 84, 174, 0.08);
+  outline: none;
 }
 
 .siteNav__tab {
@@ -77,6 +79,14 @@ body {
   font-size: 0.8rem;
   position: relative;
   transition: color 220ms ease, transform 220ms ease;
+}
+
+.siteNav__tab--label {
+  transform: none !important;
+  color: var(--text) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  padding-right: 0;
 }
 
 .siteNav__tab::after {
@@ -887,9 +897,9 @@ textarea {
   background: #ffffff;
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: center;
-  gap: 14px;
-  padding: 8px 10px;
+  justify-content: flex-start;
+  gap: 26px;
+  padding: 10px 18px;
 }
 
 .stickyFooterLinks a {
@@ -907,6 +917,7 @@ textarea {
   text-transform: lowercase;
   cursor: pointer;
   padding: 0 2px;
+  margin-left: auto;
 }
 
 .historyPage {

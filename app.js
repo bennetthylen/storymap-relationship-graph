@@ -14,7 +14,7 @@ const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
   heroSubtitle:
-    "A digital collaboration between Georgetown University's School of Foreign Service and the Women and Memory Forum.",
+    "A digital collaboration between Georgetown University's School of Foreign Service and The Women and Memory Forum.",
   heroCta: "Experience \"Doing Well, Don't Worry\"",
   section1: "Women are always on the move.",
   section2:
@@ -414,7 +414,7 @@ TRANSLATIONS.it = {
   appTitle: "Archivio Relazionale della Storymap",
   exhibitionTitle: "Doing Well, Don’t Worry: Un archivio femminista relazionale",
   exhibitionSubtitle:
-    "Women and Memory Forum ripensa l'archivio di Wedad Mitri come pratica di mentorship, solidarieta e apprendimento collettivo.",
+    "The Women and Memory Forum ripensa l'archivio di Wedad Mitri come pratica di mentorship, solidarieta e apprendimento collettivo.",
   citationsTitle: "Riferimenti in stile Chicago",
   pedagogyTooltip:
     "Pedagogia del sentire: apprendimento femminista attraverso memoria, affetto e azione relazionale.",
@@ -430,7 +430,7 @@ Object.values(TRANSLATIONS).forEach((bundle) => {
   if (!bundle.exhibitionTitle) bundle.exhibitionTitle = "Doing Well, Don’t Worry: A Relational Feminist Archive";
   if (!bundle.exhibitionSubtitle)
     bundle.exhibitionSubtitle =
-      "Women and Memory Forum reframes Wedad Mitri's archive as mentorship, solidarity, and collective political learning.";
+      "The Women and Memory Forum reframes Wedad Mitri's archive as mentorship, solidarity, and collective political learning.";
   if (!bundle.citationsTitle) bundle.citationsTitle = "Chicago-Style References";
   if (!bundle.pedagogyTooltip)
     bundle.pedagogyTooltip =
@@ -458,13 +458,13 @@ Object.assign(TRANSLATIONS.ar, {
 Object.assign(TRANSLATIONS.es, {
   exhibitionTitle: "Doing Well, Don’t Worry: Archivo feminista relacional",
   exhibitionSubtitle:
-    "Women and Memory Forum replantea el archivo de Wedad Mitri como mentoría, solidaridad y aprendizaje político colectivo.",
+    "The Women and Memory Forum replantea el archivo de Wedad Mitri como mentoría, solidaridad y aprendizaje político colectivo.",
   citationsTitle: "Referencias estilo Chicago",
 });
 Object.assign(TRANSLATIONS.de, {
   exhibitionTitle: "Doing Well, Don’t Worry: Relationales feministisches Archiv",
   exhibitionSubtitle:
-    "Das Women and Memory Forum rahmt Wedad Mitris Archiv als Mentoring, Solidarität und kollektives politisches Lernen neu.",
+    "The Women and Memory Forum rahmt Wedad Mitris Archiv als Mentoring, Solidarität und kollektives politisches Lernen neu.",
   citationsTitle: "Literatur im Chicago-Stil",
 });
 

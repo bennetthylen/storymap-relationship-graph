@@ -1,6 +1,6 @@
 # WMF Digital Exhibition Storymap
 
-This is a static, browser-only digital exhibition platform for Women and Memory Forum's "Doing Well, Don't Worry" project.
+This is a static, browser-only digital exhibition platform for The Women and Memory Forum's "Doing Well, Don't Worry" project.
 
 ## What you can do
 

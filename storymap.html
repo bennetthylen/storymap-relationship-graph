@@ -16,7 +16,7 @@
     <nav class="siteNav" aria-label="Primary navigation">
       <a href="#top" class="siteNav__brand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
-        <a href="./storymap.html" class="siteNav__tab">Storymap</a>
+        <a href="./storymap.html" class="siteNav__tab siteNav__tab--active">Storymap</a>
         <a href="./history.html" class="siteNav__tab">History</a>
         <label class="siteNav__tab siteNav__tab--label" for="langSelect">Language</label>
         <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
@@ -32,32 +32,27 @@
       <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
     </noscript>
 
-    <section class="hero" id="home">
-      <div class="hero__bg" aria-hidden="true"></div>
-      <h1 id="heroTitle" data-content-key="heroTitle" class="hero__title">Doing Well, Don't Worry</h1>
-      <p id="heroSubtitle" data-content-key="heroSubtitle">
-        A digital collaboration between Georgetown University's School of Foreign Service and The Women and Memory Forum.
-      </p>
-      <a class="heroCta" href="./storymap.html" data-content-key="heroCta">Experience "Doing Well, Don't Worry"</a>
-    </section>
+    <main id="viewerRoot" class="viewer" data-section="storymap">
+      <aside id="viewerSidebar" class="viewerSidebar" aria-hidden="true">
+        <button id="btnCloseSidebar" class="viewerSidebar__close" type="button" aria-label="Close sidebar">X</button>
+        <div class="viewerSidebar__content">
+          <img id="sidebarThumb" class="viewerSidebar__thumb" alt="" />
+          <h3 id="sidebarTitle" class="viewerSidebar__title"></h3>
+          <p id="sidebarMeta" class="muted small"></p>
+          <p id="sidebarDescription" class="viewerSidebar__desc"></p>
+        </div>
+      </aside>
 
-    <section class="scrollSection reveal">
-      <p data-content-key="section1">
-        Women are always on the move.
-      </p>
-    </section>
-
-    <section class="scrollSection reveal">
-      <p data-content-key="section2">
-        Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.
-      </p>
-    </section>
-
-    <section class="scrollSection reveal">
-      <p data-content-key="section3">
-        This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.
-      </p>
-    </section>
+      <section class="mapArea">
+        <div class="mapControls" aria-label="Zoom controls">
+          <button id="btnZoomIn" class="mapControls__btn" type="button" aria-label="Zoom in">+</button>
+          <button id="btnZoomOut" class="mapControls__btn" type="button" aria-label="Zoom out">-</button>
+        </div>
+        <div id="cy" class="cy cy--viewer" aria-label="Storymap">
+          <div class="cyFallback">Loading map...</div>
+        </div>
+      </section>
+    </main>
 
     <div class="stickyFooterLinks">
       <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer">Georgetown SFS</a>
@@ -65,6 +60,34 @@
       <a href="mailto:tbh36@georgetown.edu">contact us</a>
       <button id="btnLogin" class="footerLoginBtn" type="button">login</button>
     </div>
+
+    <div id="nodeModal" class="modal" aria-hidden="true">
+      <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="nodeModalTitle">
+        <div class="modal__header">
+          <div class="modal__titleWrap">
+            <h2 id="nodeModalTitle" class="modal__title">Node</h2>
+            <p id="nodeModalMeta" class="modal__meta muted small"></p>
+          </div>
+          <button id="btnCloseNodeModal" class="btn btn--secondary modal__close" type="button" aria-label="Close details">X</button>
+        </div>
+        <div class="modal__body">
+          <p id="nodeModalDescription" class="modal__desc"></p>
+          <img id="nodeModalImage" class="modal__img" alt="" />
+        </div>
+        <div class="modal__footer">
+          <button id="btnPrevNode" class="btn btn--secondary" type="button">Prev</button>
+          <button id="btnNextNode" class="btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <section id="citationOverlay" class="citationOverlay">
+      <h3 data-i18n="citationsTitle">Chicago-Style References</h3>
+      <div id="citationList" class="citationList"></div>
+      <p class="muted small" data-i18n="pedagogyTooltip">
+        Pedagogy of feeling: feminist learning through shared affect, memory, and relational action.
+      </p>
+    </section>
 
     <div id="loginModal" class="loginModal" aria-hidden="true">
       <div class="loginModal__backdrop"></div>
@@ -87,4 +110,3 @@
     <script src="./app.js"></script>
   </body>
 </html>
-
