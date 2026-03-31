@@ -26,7 +26,7 @@ const DEFAULT_CONTENT = {
     "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
   historyTitle: "History",
   historyBody:
-    "The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
+    "[EXAMPLE TEXT] The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
 };
 
 function buildPageUrl(pageName) {
@@ -522,23 +522,11 @@ function applyTranslations() {
 
 const el = {
   btnReset: document.getElementById("btnReset"),
-  btnAddPerson: document.getElementById("btnAddPerson"),
-  btnAddEvent: document.getElementById("btnAddEvent"),
-  btnLink: document.getElementById("btnLink"),
   btnReLayout: document.getElementById("btnReLayout"),
   btnDeleteSelected: document.getElementById("btnDeleteSelected"),
   btnExportJson: document.getElementById("btnExportJson"),
   btnImportJson: document.getElementById("btnImportJson"),
   btnMakeShareLink: document.getElementById("btnMakeShareLink"),
-
-  personName: document.getElementById("personName"),
-  personDesc: document.getElementById("personDesc"),
-  eventTitle: document.getElementById("eventTitle"),
-  eventDate: document.getElementById("eventDate"),
-
-  personSelectFrom: document.getElementById("personSelectFrom"),
-  eventSelectTo: document.getElementById("eventSelectTo"),
-  edgeRole: document.getElementById("edgeRole"),
 
   layoutSelect: document.getElementById("layoutSelect"),
   cy: document.getElementById("cy"),
@@ -685,6 +673,46 @@ function defaultStorymapAdminCanvasState() {
   };
 }
 
+function normalizeStorymapCanvasNode(node, index) {
+  const fallbackId = `n_${index + 1}`;
+  const typeRaw = String(node?.type || "text").toLowerCase();
+  const type = typeRaw === "image" || typeRaw === "tag" ? typeRaw : "text";
+  const label = String(node?.label || node?.title || node?.name || (type === "image" ? "" : node?.content || "") || "").trim();
+  const text = String(node?.text || node?.notes || node?.description || "").trim();
+  const imageSrc = String(node?.imageSrc || "").trim();
+  const contentRaw = String(node?.content || "").trim();
+  const content = type === "image" ? contentRaw : label;
+  const color = String(node?.color || "green").trim() || "green";
+  return {
+    id: String(node?.id || fallbackId),
+    type,
+    label,
+    text,
+    imageSrc,
+    content,
+    color,
+    x: Number.isFinite(Number(node?.x)) ? Number(node.x) : 120 + index * 32,
+    y: Number.isFinite(Number(node?.y)) ? Number(node.y) : 120 + index * 24,
+    legacyType: String(node?.legacyType || node?.type || ""),
+  };
+}
+
+function normalizeStorymapCanvasState(payload, fallbackState) {
+  const source = payload && typeof payload === "object" ? payload : fallbackState;
+  const nodesInput = Array.isArray(source?.nodes) ? source.nodes : fallbackState.nodes;
+  const edgesInput = Array.isArray(source?.edges) ? source.edges : fallbackState.edges;
+  const nodes = nodesInput.map((node, index) => normalizeStorymapCanvasNode(node, index));
+  const nodeIds = new Set(nodes.map((n) => n.id));
+  const edges = edgesInput
+    .map((edge) => ({
+      source: String(edge?.source || "").trim(),
+      target: String(edge?.target || "").trim(),
+      label: String(edge?.label || edge?.role || "").trim(),
+    }))
+    .filter((edge) => edge.source && edge.target && nodeIds.has(edge.source) && nodeIds.has(edge.target));
+  return { nodes, edges };
+}
+
 function loadStorymapCanvasState() {
   try {
     const isAdminCanvas = MODE === "admin";
@@ -694,10 +722,11 @@ function loadStorymapCanvasState() {
       : localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
     if (!raw) return fallback;
     const parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return fallback;
-    return parsed;
+    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return normalizeStorymapCanvasState(fallback, fallback);
+    return normalizeStorymapCanvasState(parsed, fallback);
   } catch {
-    return MODE === "admin" ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
+    const fallback = MODE === "admin" ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
+    return normalizeStorymapCanvasState(fallback, fallback);
   }
 }
 
@@ -741,7 +770,13 @@ function initCustomStorymapCanvas() {
 
   const labelInput = document.getElementById("smNodeLabel");
   const textInput = document.getElementById("smNodeText");
+  const createTypeInput = document.getElementById("smCreateType");
+  const createLabelInput = document.getElementById("smCreateLabel");
+  const createTextInput = document.getElementById("smCreateText");
+  const createColorInput = document.getElementById("smCreateColor");
+  const createNodeBtn = document.getElementById("smCreateNodeBtn");
   const imageFileInput = document.getElementById("smNodeImageFile");
+  const linkTargetSelect = document.getElementById("smLinkTarget");
   const colorSelect = document.getElementById("smNodeColor");
   const saveBtn = document.getElementById("smSaveNode");
   const addChildBtn = document.getElementById("smAddChildNode");
@@ -818,6 +853,13 @@ function initCustomStorymapCanvas() {
     panel.setAttribute("aria-hidden", "false");
     if (labelInput) labelInput.value = getNodeLabel(node);
     if (textInput) textInput.value = getNodeText(node);
+    if (linkTargetSelect) {
+      const options = canvas.nodes
+        .filter((n) => n.id !== node.id)
+        .map((n) => `<option value="${escapeHtml(n.id)}">${escapeHtml(getNodeLabel(n) || n.id)}</option>`)
+        .join("");
+      linkTargetSelect.innerHTML = options;
+    }
     if (colorSelect) colorSelect.value = node.color || "green";
     if (imageFileInput) imageFileInput.value = "";
   };
@@ -977,6 +1019,17 @@ function initCustomStorymapCanvas() {
     renderCanvas();
   });
 
+  on(el.btnReset, "click", () => {
+    if (!isAdmin) return;
+    canvas = normalizeStorymapCanvasState(defaultStorymapAdminCanvasState(), defaultStorymapAdminCanvasState());
+    selectedId = null;
+    fitViewToNodes();
+    updateWorldTransform();
+    saveStorymapCanvasState(canvas);
+    renderCanvas();
+    syncPanel();
+  });
+
   on(saveBtn, "click", () => {
     if (!isAdmin || !selectedId) return;
     const node = getNodeByIdLocal(selectedId);
@@ -989,6 +1042,39 @@ function initCustomStorymapCanvas() {
     if (colorSelect) node.color = colorSelect.value;
     saveStorymapCanvasState(canvas);
     renderCanvas();
+  });
+
+  on(createNodeBtn, "click", () => {
+    if (!isAdmin) return;
+    const type = String(createTypeInput?.value || "text");
+    const label = String(createLabelInput?.value || "").trim();
+    if (!label) {
+      alert("Node label is required.");
+      return;
+    }
+    const text = String(createTextInput?.value || "").trim();
+    const color = String(createColorInput?.value || "green");
+    const id = `n_${uuid().slice(0, 8)}`;
+    const anchor = selectedId ? getNodeByIdLocal(selectedId) : null;
+    const nextNode = {
+      id,
+      type: type === "image" || type === "tag" ? type : "text",
+      label,
+      text,
+      imageSrc: "",
+      content: type === "image" ? "" : label,
+      color,
+      x: anchor ? anchor.x + 120 : 120 + canvas.nodes.length * 22,
+      y: anchor ? anchor.y + 72 : 110 + canvas.nodes.length * 22,
+      legacyType: "",
+    };
+    canvas.nodes.push(nextNode);
+    selectedId = id;
+    saveStorymapCanvasState(canvas);
+    renderCanvas();
+    syncPanel();
+    if (createLabelInput) createLabelInput.value = "";
+    if (createTextInput) createTextInput.value = "";
   });
 
   on(imageFileInput, "change", (evt) => {
@@ -1035,17 +1121,13 @@ function initCustomStorymapCanvas() {
 
   on(linkExistingBtn, "click", () => {
     if (!isAdmin || !selectedId) return;
-    const options = canvas.nodes
-      .filter((n) => n.id !== selectedId)
-      .map((n) => `${n.id}: ${getNodeLabel(n) || n.id}`)
-      .join("\n");
-    const id = prompt(`Target node id:\n${options}`);
-    if (!id) return;
-    const target = getNodeByIdLocal(id.trim());
+    const pickedId = String(linkTargetSelect?.value || "").trim();
+    const target = getNodeByIdLocal(pickedId);
     if (!target) return;
+    if (target.id === selectedId) return;
     const exists = canvas.edges.some((e) => e.source === selectedId && e.target === target.id);
     if (!exists) {
-      canvas.edges.push({ source: selectedId, target: target.id });
+      canvas.edges.push({ source: selectedId, target: target.id, label: "" });
       saveStorymapCanvasState(canvas);
       renderCanvas();
     }
@@ -1971,43 +2053,8 @@ function renderGraph() {
   }
 }
 
-function updateSelectOptions() {
-  if (!el.personSelectFrom || !el.eventSelectTo) return;
-  const personNodes = state.nodes.filter((n) => n.type === "person");
-  const eventNodes = state.nodes.filter((n) => n.type === "event");
-
-  const prevPerson = el.personSelectFrom.value;
-  const prevEvent = el.eventSelectTo.value;
-
-  el.personSelectFrom.innerHTML = "";
-  personNodes.forEach((n) => {
-    const opt = document.createElement("option");
-    opt.value = n.id;
-    opt.textContent = n.label || n.id;
-    el.personSelectFrom.appendChild(opt);
-  });
-
-  el.eventSelectTo.innerHTML = "";
-  eventNodes.forEach((n) => {
-    const opt = document.createElement("option");
-    opt.value = n.id;
-    opt.textContent = n.label || n.id;
-    el.eventSelectTo.appendChild(opt);
-  });
-
-  // Restore previous selections if still present.
-  if (personNodes.some((n) => n.id === prevPerson)) el.personSelectFrom.value = prevPerson;
-  if (eventNodes.some((n) => n.id === prevEvent)) el.eventSelectTo.value = prevEvent;
-}
-
 function refreshAllUI() {
   if (MODE === "admin") {
-    updateSelectOptions();
-
-    // Disable link button if no valid selection.
-    const canLink = state.nodes.some((n) => n.type === "person") && state.nodes.some((n) => n.type === "event");
-    if (el.btnLink) el.btnLink.disabled = !canLink;
-
     // Disable delete if nothing selected.
     if (el.btnDeleteSelected) el.btnDeleteSelected.disabled = !selected;
     renderSelectedPanel();
@@ -2230,71 +2277,10 @@ applyTranslations();
 
 // Wire up UI events.
 on(el.btnReset, "click", () => {
+  if (MODE === "admin" && document.getElementById("storymapViewport")) return;
   setGraphAndRerender(sampleGraph(), { shouldSave: true, preserveSelection: false });
   if (el.shareLink) el.shareLink.value = "";
   if (el.shareWarning) el.shareWarning.textContent = "";
-});
-
-on(el.btnAddPerson, "click", () => {
-  const name = el.personName.value.trim();
-  const description = el.personDesc.value.trim();
-  if (!name) {
-    alert("Person name is required.");
-    return;
-  }
-
-  const next = {
-    nodes: [...state.nodes, makePersonNode({ name, description })],
-    edges: state.edges,
-  };
-
-  setGraphAndRerender(next, { shouldSave: true });
-  el.personName.value = "";
-  el.personDesc.value = "";
-});
-
-on(el.btnAddEvent, "click", () => {
-  const title = el.eventTitle.value.trim();
-  const date = el.eventDate.value.trim();
-  if (!title) {
-    alert("Event title is required.");
-    return;
-  }
-
-  const next = {
-    nodes: [...state.nodes, makeEventNode({ title, date })],
-    edges: state.edges,
-  };
-
-  setGraphAndRerender(next, { shouldSave: true });
-  el.eventTitle.value = "";
-  el.eventDate.value = "";
-});
-
-on(el.btnLink, "click", () => {
-  const personId = el.personSelectFrom.value;
-  const eventId = el.eventSelectTo.value;
-  const role = el.edgeRole.value.trim();
-
-  if (!personId || !eventId) {
-    alert("Select both a person and an event.");
-    return;
-  }
-
-  const person = getNodeById(state, personId);
-  const event = getNodeById(state, eventId);
-  if (!person || person.type !== "person" || !event || event.type !== "event") {
-    alert("Invalid selection. Relationships must connect a person to an event.");
-    return;
-  }
-
-  const next = {
-    nodes: state.nodes,
-    edges: [...state.edges, makeEdge({ sourcePersonId: personId, targetEventId: eventId, role })],
-  };
-
-  setGraphAndRerender(next, { shouldSave: true });
-  el.edgeRole.value = "";
 });
 
 on(el.btnReLayout, "click", () => {

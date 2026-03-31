@@ -42,29 +42,34 @@
     <main class="layout layout--admin">
       <aside class="panel panel--left">
         <section class="card">
-          <h2 data-i18n="addPersonTitle">Add Person</h2>
+          <h2>Create Node</h2>
           <div class="field">
-            <label for="personName" data-i18n="personNameLabel">Name</label>
-            <input id="personName" type="text" data-i18n-placeholder="personNamePlaceholder" placeholder="e.g., Ada Lovelace" />
+            <label for="smCreateType">Node type</label>
+            <select id="smCreateType">
+              <option value="text">Text</option>
+              <option value="image">Image</option>
+              <option value="tag">Tag</option>
+            </select>
           </div>
           <div class="field">
-            <label for="personDesc" data-i18n="personDescLabel">Description (optional)</label>
-            <input id="personDesc" type="text" data-i18n-placeholder="personDescPlaceholder" placeholder="Short context" />
-          </div>
-          <button id="btnAddPerson" class="btn" type="button" data-i18n="addPersonButton">Add Person</button>
-        </section>
-
-        <section class="card">
-          <h2 data-i18n="addEventTitle">Add Event</h2>
-          <div class="field">
-            <label for="eventTitle" data-i18n="eventTitleLabel">Title</label>
-            <input id="eventTitle" type="text" data-i18n-placeholder="eventTitlePlaceholder" placeholder="e.g., Summer Workshop" />
+            <label for="smCreateLabel">Label</label>
+            <input id="smCreateLabel" type="text" placeholder="Node label" />
           </div>
           <div class="field">
-            <label for="eventDate" data-i18n="eventDateLabel">Date (optional)</label>
-            <input id="eventDate" type="text" data-i18n-placeholder="eventDatePlaceholder" placeholder="e.g., 2020-08-14 or 'Spring 1936'" />
+            <label for="smCreateText">Text</label>
+            <textarea id="smCreateText" rows="3" placeholder="Text shown when this node is clicked"></textarea>
           </div>
-          <button id="btnAddEvent" class="btn" type="button" data-i18n="addEventButton">Add Event</button>
+          <div class="field">
+            <label for="smCreateColor">Color</label>
+            <select id="smCreateColor">
+              <option value="green">Green</option>
+              <option value="teal">Teal</option>
+              <option value="blue">Blue</option>
+              <option value="white">White</option>
+              <option value="orange">Orange</option>
+            </select>
+          </div>
+          <button id="smCreateNodeBtn" class="btn" type="button">Create Node</button>
         </section>
 
         <section class="card">
@@ -79,26 +84,8 @@
         </section>
 
         <section class="card">
-          <h2 data-i18n="createRelationshipTitle">Create Relationship</h2>
-          <div class="field">
-            <label for="personSelectFrom" data-i18n="personSelectLabel">Person</label>
-            <select id="personSelectFrom"></select>
-          </div>
-          <div class="field">
-            <label for="eventSelectTo" data-i18n="eventSelectLabel">Event</label>
-            <select id="eventSelectTo"></select>
-          </div>
-          <div class="field">
-            <label for="edgeRole" data-i18n="edgeRoleLabel">Role / Label (optional)</label>
-            <input id="edgeRole" type="text" data-i18n-placeholder="edgeRolePlaceholder" placeholder="e.g., attended, worked on, mentioned in" />
-          </div>
-          <button id="btnLink" class="btn" type="button" data-i18n="linkButton">Link Person → Event</button>
-
-          <hr class="divider" />
-
-          <p class="muted small">
-            <span data-i18n="tipText">Tip: click nodes/edges in the graph to view details and delete.</span>
-          </p>
+          <h2>Creator Tips</h2>
+          <p class="muted small">Click a node on the canvas to edit it, link it to other nodes, or delete it.</p>
         </section>
       </aside>
 
@@ -162,6 +149,10 @@
             <div class="actions actions--row">
               <button id="smSaveNode" class="btn" type="button">Save</button>
               <button id="smAddChildNode" class="btn btn--secondary" type="button">Add Child</button>
+            </div>
+            <div class="field">
+              <label for="smLinkTarget">Link target</label>
+              <select id="smLinkTarget"></select>
             </div>
             <div class="actions actions--row">
               <button id="smLinkExisting" class="btn btn--secondary" type="button">Link Existing</button>
