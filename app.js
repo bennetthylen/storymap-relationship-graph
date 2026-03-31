@@ -968,9 +968,14 @@ function saveStorymapCanvasState(payload) {
 
 function publishStorymapCanvasState(payload) {
   const normalized = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
-  const serialized = JSON.stringify(normalized);
-  localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
-  localStorage.setItem(STORYMAP_CANVAS_RELEASE_KEY, PUBLISHED_STORYMAP_RELEASE);
+  try {
+    const serialized = JSON.stringify(normalized);
+    localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
+    localStorage.setItem(STORYMAP_CANVAS_RELEASE_KEY, PUBLISHED_STORYMAP_RELEASE);
+  } catch (err) {
+    // Quota errors should not block repo-backed publish.
+    console.warn("Could not cache published canvas locally:", err);
+  }
   return normalized;
 }
 
@@ -1558,7 +1563,6 @@ function initCustomStorymapCanvas() {
       .then((remoteCanvas) => {
         canvas = remoteCanvas;
         selectedId = null;
-        saveStorymapCanvasState(canvas);
         renderCanvas();
         syncPanel();
       })
