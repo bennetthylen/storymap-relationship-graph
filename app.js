@@ -7,9 +7,11 @@ const SUPPORTED_LANGS = ["en"];
 
 const BODY_MODE = document.body?.dataset?.mode;
 const MODE = BODY_MODE === "admin" || BODY_MODE === "history" ? BODY_MODE : "viewer";
+const IS_STORYMAP_PAGE = /(^|\/)storymap\.html$/i.test(window.location.pathname || "");
 const ADMIN_UNLOCK_KEY = "storymapAdminUnlockedV1";
 const ADMIN_PASSWORD = "beebo";
 const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
+const STORYMAP_CANVAS_KEY = "storymapCanvasV1";
 
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
@@ -632,6 +634,314 @@ function applyContentConfigToPage() {
     if (typeof value !== "string") return;
     node.textContent = value;
   });
+}
+
+function storymapPlaceholderSvg() {
+  return "data:image/svg+xml;utf8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+      <rect width="100%" height="100%" fill="#fde68a"/>
+      <circle cx="90" cy="120" r="34" fill="#f59e0b"/>
+      <circle cx="158" cy="118" r="32" fill="#fbbf24"/>
+      <text x="128" y="214" text-anchor="middle" font-family="Inter,Arial" font-size="18" fill="#1f2937">image</text>
+    </svg>`
+  );
+}
+
+function defaultStorymapCanvasState() {
+  return {
+    nodes: [
+      { id: "1", type: "text", content: "Demonstration & Lecture", color: "green", x: 100, y: 70 },
+      { id: "2", type: "text", content: "Analytical Engine Workshop", color: "green", x: 70, y: 330 },
+      { id: "3", type: "image", content: "/people-lantern.jpg", color: "orange", x: 430, y: 220 },
+      { id: "4", type: "tag", content: "A", color: "blue", x: 600, y: 100 },
+      { id: "5", type: "tag", content: "H", color: "blue", x: 570, y: 430 },
+    ],
+    edges: [
+      { source: "1", target: "3" },
+      { source: "2", target: "3" },
+      { source: "2", target: "5" },
+      { source: "1", target: "4" },
+      { source: "2", target: "4" },
+    ],
+  };
+}
+
+function loadStorymapCanvasState() {
+  try {
+    const raw = localStorage.getItem(STORYMAP_CANVAS_KEY);
+    if (!raw) return defaultStorymapCanvasState();
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return defaultStorymapCanvasState();
+    return parsed;
+  } catch {
+    return defaultStorymapCanvasState();
+  }
+}
+
+function saveStorymapCanvasState(payload) {
+  try {
+    localStorage.setItem(STORYMAP_CANVAS_KEY, JSON.stringify(payload));
+  } catch {
+    // ignore
+  }
+}
+
+function initCustomStorymapCanvas() {
+  const viewport = document.getElementById("storymapViewport");
+  const world = document.getElementById("storymapWorld");
+  const nodesLayer = document.getElementById("storymapNodes");
+  const edgesSvg = document.getElementById("storymapEdges");
+  const panel = document.getElementById("storymapAdminPanel");
+  if (!viewport || !world || !nodesLayer || !edgesSvg || !panel) return false;
+
+  const isAdmin = isAdminUnlocked();
+  let canvas = loadStorymapCanvasState();
+  let selectedId = null;
+  let view = { scale: 1, panX: 0, panY: 0 };
+  let panDraft = null;
+  let nodeDragDraft = null;
+
+  const contentInput = document.getElementById("smNodeContent");
+  const imageFileInput = document.getElementById("smNodeImageFile");
+  const colorSelect = document.getElementById("smNodeColor");
+  const saveBtn = document.getElementById("smSaveNode");
+  const addChildBtn = document.getElementById("smAddChildNode");
+  const linkExistingBtn = document.getElementById("smLinkExisting");
+  const deleteNodeBtn = document.getElementById("smDeleteNode");
+
+  const updateWorldTransform = () => {
+    world.style.transform = `translate(${view.panX}px, ${view.panY}px) scale(${view.scale})`;
+  };
+
+  const screenToWorld = (clientX, clientY) => {
+    const rect = viewport.getBoundingClientRect();
+    return {
+      x: (clientX - rect.left - view.panX) / view.scale,
+      y: (clientY - rect.top - view.panY) / view.scale,
+    };
+  };
+
+  const getNodeByIdLocal = (id) => canvas.nodes.find((n) => n.id === id) || null;
+
+  const syncPanel = () => {
+    const node = selectedId ? getNodeByIdLocal(selectedId) : null;
+    if (!node || !isAdmin) {
+      panel.classList.remove("storymapAdminPanel--open");
+      panel.setAttribute("aria-hidden", "true");
+      return;
+    }
+    panel.classList.add("storymapAdminPanel--open");
+    panel.setAttribute("aria-hidden", "false");
+    if (contentInput) contentInput.value = node.content || "";
+    if (colorSelect) colorSelect.value = node.color || "green";
+    if (imageFileInput) imageFileInput.value = "";
+  };
+
+  const drawEdges = () => {
+    edgesSvg.innerHTML = "";
+    const nodeEls = new Map();
+    nodesLayer.querySelectorAll(".smNode").forEach((elNode) => {
+      nodeEls.set(elNode.getAttribute("data-id"), elNode);
+    });
+    canvas.edges.forEach((edge) => {
+      const source = nodeEls.get(edge.source);
+      const target = nodeEls.get(edge.target);
+      if (!source || !target) return;
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      const x1 = source.offsetLeft + source.offsetWidth / 2;
+      const y1 = source.offsetTop + source.offsetHeight / 2;
+      const x2 = target.offsetLeft + target.offsetWidth / 2;
+      const y2 = target.offsetTop + target.offsetHeight / 2;
+      line.setAttribute("x1", String(x1));
+      line.setAttribute("y1", String(y1));
+      line.setAttribute("x2", String(x2));
+      line.setAttribute("y2", String(y2));
+      edgesSvg.appendChild(line);
+    });
+  };
+
+  const makeNodeEl = (node) => {
+    const div = document.createElement("div");
+    div.className = `smNode smNode--${node.type} smColor--${node.color || "green"}`;
+    if (selectedId === node.id) div.classList.add("smNode--selected");
+    div.dataset.id = node.id;
+    div.style.left = `${node.x}px`;
+    div.style.top = `${node.y}px`;
+
+    if (node.type === "image") {
+      const img = document.createElement("img");
+      img.src = node.content || storymapPlaceholderSvg();
+      img.alt = "Story node image";
+      img.addEventListener("error", () => {
+        img.src = storymapPlaceholderSvg();
+      });
+      div.appendChild(img);
+    } else {
+      div.textContent = node.content || "";
+    }
+    return div;
+  };
+
+  const renderCanvas = () => {
+    nodesLayer.innerHTML = "";
+    canvas.nodes.forEach((node) => {
+      const nodeEl = makeNodeEl(node);
+      nodeEl.addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        selectedId = node.id;
+        renderCanvas();
+        syncPanel();
+      });
+      nodeEl.addEventListener("mousedown", (evt) => {
+        if (!isAdmin || evt.button !== 0) return;
+        evt.stopPropagation();
+        const point = screenToWorld(evt.clientX, evt.clientY);
+        nodeDragDraft = { id: node.id, offsetX: point.x - node.x, offsetY: point.y - node.y };
+      });
+      nodesLayer.appendChild(nodeEl);
+    });
+    requestAnimationFrame(drawEdges);
+  };
+
+  viewport.addEventListener("mousedown", (evt) => {
+    if (evt.button !== 0) return;
+    const targetNode = evt.target && evt.target.closest ? evt.target.closest(".smNode") : null;
+    if (!targetNode) {
+      panDraft = { startX: evt.clientX, startY: evt.clientY, baseX: view.panX, baseY: view.panY };
+      if (!isAdmin) {
+        selectedId = null;
+        syncPanel();
+        renderCanvas();
+      }
+    }
+  });
+
+  window.addEventListener("mousemove", (evt) => {
+    if (nodeDragDraft && isAdmin) {
+      const node = getNodeByIdLocal(nodeDragDraft.id);
+      if (!node) return;
+      const point = screenToWorld(evt.clientX, evt.clientY);
+      node.x = point.x - nodeDragDraft.offsetX;
+      node.y = point.y - nodeDragDraft.offsetY;
+      renderCanvas();
+      return;
+    }
+    if (panDraft) {
+      view.panX = panDraft.baseX + (evt.clientX - panDraft.startX);
+      view.panY = panDraft.baseY + (evt.clientY - panDraft.startY);
+      updateWorldTransform();
+    }
+  });
+
+  window.addEventListener("mouseup", () => {
+    if (nodeDragDraft) saveStorymapCanvasState(canvas);
+    nodeDragDraft = null;
+    panDraft = null;
+  });
+
+  viewport.addEventListener(
+    "wheel",
+    (evt) => {
+      evt.preventDefault();
+      const before = screenToWorld(evt.clientX, evt.clientY);
+      const scaleFactor = evt.deltaY > 0 ? 0.92 : 1.08;
+      const nextScale = Math.max(0.6, Math.min(2.4, view.scale * scaleFactor));
+      const rect = viewport.getBoundingClientRect();
+      view.panX = evt.clientX - rect.left - before.x * nextScale;
+      view.panY = evt.clientY - rect.top - before.y * nextScale;
+      view.scale = nextScale;
+      updateWorldTransform();
+    },
+    { passive: false }
+  );
+
+  on(saveBtn, "click", () => {
+    if (!isAdmin || !selectedId) return;
+    const node = getNodeByIdLocal(selectedId);
+    if (!node) return;
+    if (contentInput) node.content = contentInput.value.trim();
+    if (colorSelect) node.color = colorSelect.value;
+    saveStorymapCanvasState(canvas);
+    renderCanvas();
+  });
+
+  on(imageFileInput, "change", (evt) => {
+    if (!isAdmin || !selectedId) return;
+    const file = evt.target?.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const node = getNodeByIdLocal(selectedId);
+      if (!node) return;
+      node.type = "image";
+      node.content = String(reader.result || "");
+      saveStorymapCanvasState(canvas);
+      renderCanvas();
+      syncPanel();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  on(addChildBtn, "click", () => {
+    if (!isAdmin || !selectedId) return;
+    const parent = getNodeByIdLocal(selectedId);
+    if (!parent) return;
+    const label = prompt("New node label:");
+    if (!label || !label.trim()) return;
+    const id = `n_${uuid().slice(0, 8)}`;
+    canvas.nodes.push({
+      id,
+      type: "text",
+      content: label.trim(),
+      color: "green",
+      x: parent.x + 130,
+      y: parent.y + 80,
+    });
+    canvas.edges.push({ source: parent.id, target: id });
+    selectedId = id;
+    saveStorymapCanvasState(canvas);
+    renderCanvas();
+    syncPanel();
+  });
+
+  on(linkExistingBtn, "click", () => {
+    if (!isAdmin || !selectedId) return;
+    const options = canvas.nodes.filter((n) => n.id !== selectedId).map((n) => `${n.id}: ${n.content}`).join("\n");
+    const id = prompt(`Target node id:\n${options}`);
+    if (!id) return;
+    const target = getNodeByIdLocal(id.trim());
+    if (!target) return;
+    const exists = canvas.edges.some((e) => e.source === selectedId && e.target === target.id);
+    if (!exists) {
+      canvas.edges.push({ source: selectedId, target: target.id });
+      saveStorymapCanvasState(canvas);
+      renderCanvas();
+    }
+  });
+
+  on(deleteNodeBtn, "click", () => {
+    if (!isAdmin || !selectedId) return;
+    canvas.nodes = canvas.nodes.filter((n) => n.id !== selectedId);
+    canvas.edges = canvas.edges.filter((e) => e.source !== selectedId && e.target !== selectedId);
+    selectedId = null;
+    saveStorymapCanvasState(canvas);
+    renderCanvas();
+    syncPanel();
+  });
+
+  viewport.addEventListener("click", (evt) => {
+    const targetNode = evt.target && evt.target.closest ? evt.target.closest(".smNode") : null;
+    if (targetNode) return;
+    if (!isAdmin) return;
+    selectedId = null;
+    syncPanel();
+    renderCanvas();
+  });
+
+  updateWorldTransform();
+  renderCanvas();
+  syncPanel();
+  return true;
 }
 
 function uuid() {
@@ -2195,7 +2505,10 @@ try {
   initHeroParallax();
   initContentEditorPanel();
   setStatus("Loading storymap...", { isLoading: true });
-  if (MODE === "history") {
+  if (IS_STORYMAP_PAGE) {
+    initCustomStorymapCanvas();
+    setStatus("");
+  } else if (MODE === "history") {
     setStatus("");
   } else {
     refreshAllUI();

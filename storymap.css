@@ -1,0 +1,150 @@
+.storymapLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 14px;
+  padding: 14px 14px 94px;
+  height: calc(100vh - 68px - 58px);
+}
+
+.storymapCanvasPanel {
+  background: #e8f0fe;
+  padding: 2rem;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.storymapViewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  cursor: grab;
+}
+
+.storymapViewport:active {
+  cursor: grabbing;
+}
+
+.storymapWorld {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+}
+
+.storymapEdges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.storymapEdges line {
+  stroke: #8f72ff;
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+}
+
+.storymapNodes {
+  position: absolute;
+  inset: 0;
+}
+
+.smNode {
+  position: absolute;
+  border: none;
+  transition: transform 0.3s ease;
+  user-select: none;
+}
+
+.smNode:hover {
+  transform: scale(1.05);
+}
+
+.smNode--text {
+  background: #a8e6cf;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111827;
+  white-space: normal;
+  width: max-content;
+  max-width: 16rem;
+}
+
+.smNode--image {
+  background: #fff;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
+  width: 8rem;
+  aspect-ratio: 1 / 1;
+}
+
+.smNode--image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  display: block;
+}
+
+.smNode--tag {
+  background: #a5d8ff;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
+}
+
+.smNode--selected {
+  box-shadow: 0 0 0 3px rgba(39, 84, 174, 0.3), 0 10px 24px rgba(15, 20, 25, 0.12);
+}
+
+.smColor--green {
+  background: #a8e6cf;
+}
+.smColor--teal {
+  background: #8be9d1;
+}
+.smColor--blue {
+  background: #a5d8ff;
+}
+.smColor--white {
+  background: #ffffff;
+}
+.smColor--orange {
+  background: #ffd89c;
+}
+
+.storymapAdminPanel {
+  display: none;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px;
+  overflow: auto;
+}
+
+.storymapAdminPanel--open {
+  display: block;
+}
+
+@media (max-width: 980px) {
+  .storymapLayout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .storymapCanvasPanel {
+    min-height: 62vh;
+  }
+}

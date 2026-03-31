@@ -11,6 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./storymap.css" />
   </head>
   <body data-mode="viewer" id="top">
     <nav class="siteNav" aria-label="Primary navigation">
@@ -25,33 +26,50 @@
       </div>
     </nav>
 
-    <div id="jsStatus" class="jsStatus jsStatus--loading">
-      Loading storymap...
-    </div>
+    <div id="jsStatus" class="jsStatus jsStatus--loading">Loading storymap...</div>
     <noscript>
       <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
     </noscript>
 
-    <main id="viewerRoot" class="viewer" data-section="storymap">
-      <aside id="viewerSidebar" class="viewerSidebar" aria-hidden="true">
-        <button id="btnCloseSidebar" class="viewerSidebar__close" type="button" aria-label="Close sidebar">X</button>
-        <div class="viewerSidebar__content">
-          <img id="sidebarThumb" class="viewerSidebar__thumb" alt="" />
-          <h3 id="sidebarTitle" class="viewerSidebar__title"></h3>
-          <p id="sidebarMeta" class="muted small"></p>
-          <p id="sidebarDescription" class="viewerSidebar__desc"></p>
-        </div>
-      </aside>
-
-      <section class="mapArea">
-        <div class="mapControls" aria-label="Zoom controls">
-          <button id="btnZoomIn" class="mapControls__btn" type="button" aria-label="Zoom in">+</button>
-          <button id="btnZoomOut" class="mapControls__btn" type="button" aria-label="Zoom out">-</button>
-        </div>
-        <div id="cy" class="cy cy--viewer" aria-label="Storymap">
-          <div class="cyFallback">Loading map...</div>
+    <main class="storymapLayout">
+      <section id="storymapCanvasPanel" class="storymapCanvasPanel" aria-label="Storymap canvas">
+        <div id="storymapViewport" class="storymapViewport">
+          <div id="storymapWorld" class="storymapWorld">
+            <svg id="storymapEdges" class="storymapEdges" aria-hidden="true"></svg>
+            <div id="storymapNodes" class="storymapNodes"></div>
+          </div>
         </div>
       </section>
+
+      <aside id="storymapAdminPanel" class="storymapAdminPanel" aria-hidden="true">
+        <h3>Node Editor</h3>
+        <div class="field">
+          <label for="smNodeContent">Content</label>
+          <textarea id="smNodeContent" rows="4"></textarea>
+        </div>
+        <div class="field">
+          <label for="smNodeImageFile">Image file</label>
+          <input id="smNodeImageFile" type="file" accept="image/*" />
+        </div>
+        <div class="field">
+          <label for="smNodeColor">Color</label>
+          <select id="smNodeColor">
+            <option value="green">Green</option>
+            <option value="teal">Teal</option>
+            <option value="blue">Blue</option>
+            <option value="white">White</option>
+            <option value="orange">Orange</option>
+          </select>
+        </div>
+        <div class="actions actions--row">
+          <button id="smSaveNode" class="btn" type="button">Save</button>
+          <button id="smAddChildNode" class="btn btn--secondary" type="button">Add Child</button>
+        </div>
+        <div class="actions actions--row">
+          <button id="smLinkExisting" class="btn btn--secondary" type="button">Link Existing</button>
+          <button id="smDeleteNode" class="btn btn--danger" type="button">Delete Node</button>
+        </div>
+      </aside>
     </main>
 
     <div class="stickyFooterLinks">
@@ -60,34 +78,6 @@
       <a href="mailto:tbh36@georgetown.edu">Contact Us</a>
       <button id="btnLogin" class="footerLoginBtn" type="button">Login</button>
     </div>
-
-    <div id="nodeModal" class="modal" aria-hidden="true">
-      <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="nodeModalTitle">
-        <div class="modal__header">
-          <div class="modal__titleWrap">
-            <h2 id="nodeModalTitle" class="modal__title">Node</h2>
-            <p id="nodeModalMeta" class="modal__meta muted small"></p>
-          </div>
-          <button id="btnCloseNodeModal" class="btn btn--secondary modal__close" type="button" aria-label="Close details">X</button>
-        </div>
-        <div class="modal__body">
-          <p id="nodeModalDescription" class="modal__desc"></p>
-          <img id="nodeModalImage" class="modal__img" alt="" />
-        </div>
-        <div class="modal__footer">
-          <button id="btnPrevNode" class="btn btn--secondary" type="button">Prev</button>
-          <button id="btnNextNode" class="btn" type="button">Next</button>
-        </div>
-      </div>
-    </div>
-
-    <section id="citationOverlay" class="citationOverlay">
-      <h3 data-i18n="citationsTitle">Chicago-Style References</h3>
-      <div id="citationList" class="citationList"></div>
-      <p class="muted small" data-i18n="pedagogyTooltip">
-        Pedagogy of feeling: feminist learning through shared affect, memory, and relational action.
-      </p>
-    </section>
 
     <div id="loginModal" class="loginModal" aria-hidden="true">
       <div class="loginModal__backdrop"></div>
@@ -106,7 +96,6 @@
       </div>
     </div>
 
-    <script src="./vendor/cytoscape.min.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
