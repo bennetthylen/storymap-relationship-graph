@@ -1080,3 +1080,145 @@ textarea {
   font-weight: 600;
 }
 
+.discussionPage {
+  max-width: 920px;
+  margin: 26px auto;
+  padding: 0 16px 120px;
+}
+
+.discussionComposer {
+  border: 1px solid rgba(39, 84, 174, 0.15);
+  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.08);
+}
+
+.discussionComposer h1 {
+  margin: 0 0 8px;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+#discussionPostBtn {
+  background: #bfa14a;
+  border-color: #bfa14a;
+}
+
+#discussionPostBtn:hover {
+  background: #ac8f3d;
+  border-color: #ac8f3d;
+}
+
+.discussionFeed {
+  margin-top: 16px;
+}
+
+.discussionPost {
+  background: #ffffff;
+  border: 1px solid rgba(39, 84, 174, 0.14);
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.06);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.discussionPost--empty {
+  margin-top: 0;
+}
+
+.discussionPost__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.discussionPost__header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.discussionPost__header time {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.discussionPost__description {
+  margin: 10px 0 12px;
+  white-space: pre-wrap;
+  line-height: 1.55;
+}
+
+.discussionReplies {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.discussionReplyItem {
+  border: 1px solid rgba(191, 161, 74, 0.24);
+  background: #fffdf6;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.discussionReplyItem p {
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+}
+
+.discussionReplyItem time {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.discussionReplyItem--empty {
+  background: #f8fafc;
+  border-color: rgba(39, 84, 174, 0.14);
+}
+
+.discussionReplyInput {
+  min-height: 78px;
+}
+
+.discussionPost--new {
+  animation: discussionPopIn 360ms ease-out both;
+}
+
+@keyframes discussionPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 820px) {
+  .siteNav {
+    align-items: flex-start;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  .siteNav__tabs {
+    width: 100%;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .stickyFooterLinks {
+    flex-wrap: wrap;
+    gap: 10px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discussionPost--new {
+    animation: none;
+  }
+}
+

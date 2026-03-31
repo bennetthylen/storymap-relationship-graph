@@ -17,8 +17,10 @@
     <nav class="siteNav" aria-label="Primary navigation">
       <a href="./index.html#home" class="siteNav__brand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
+        <a href="./index.html#home" class="siteNav__tab">Home</a>
         <a href="./storymap.html" class="siteNav__tab">StoryMap</a>
         <a href="./history.html" class="siteNav__tab">History</a>
+        <a href="./discussion.html" class="siteNav__tab">Discussion</a>
         <label class="siteNav__tab siteNav__tab--label" for="langSelect">Language</label>
         <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
           <option value="en">English</option>
@@ -86,6 +88,12 @@
         <section class="card">
           <h2>Creator Tips</h2>
           <p class="muted small">Click a node on the canvas to edit it, link it to other nodes, or delete it.</p>
+        </section>
+
+        <section class="card">
+          <h2>Discussion Controls</h2>
+          <p class="muted small">Clear all discussion posts and replies saved in local storage.</p>
+          <button id="btnClearDiscussions" class="btn btn--danger" type="button">Clear Discussions</button>
         </section>
       </aside>
 
@@ -263,7 +271,7 @@
     </div>
 
     <script src="./vendor/cytoscape.min.js"></script>
-    <script src="./app.js?v=20260331b"></script>
+    <script src="./app.js?v=20260331d"></script>
   </body>
 </html>
 

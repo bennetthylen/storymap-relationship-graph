@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Storymap Relationship Graph</title>
+    <title>Discussion - "Doing Well, Don't Worry"</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,16 +11,15 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="./storymap.css" />
   </head>
-  <body data-mode="viewer" id="top">
+  <body data-mode="discussion" id="top">
     <nav class="siteNav" aria-label="Primary navigation">
       <a href="./index.html#home" class="siteNav__brand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
         <a href="./index.html#home" class="siteNav__tab">Home</a>
-        <a href="./storymap.html" class="siteNav__tab siteNav__tab--active">StoryMap</a>
+        <a href="./storymap.html" class="siteNav__tab">StoryMap</a>
         <a href="./history.html" class="siteNav__tab">History</a>
-        <a href="./discussion.html" class="siteNav__tab">Discussion</a>
+        <a href="./discussion.html" class="siteNav__tab siteNav__tab--active">Discussion</a>
         <label class="siteNav__tab siteNav__tab--label" for="langSelect">Language</label>
         <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
           <option value="en">English</option>
@@ -28,29 +27,27 @@
       </div>
     </nav>
 
-    <div id="jsStatus" class="jsStatus jsStatus--loading">Loading storymap...</div>
-    <noscript>
-      <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
-    </noscript>
+    <div id="jsStatus" class="jsStatus jsStatus--hidden"></div>
 
-    <main class="storymapLayout">
-      <section id="storymapCanvasPanel" class="storymapCanvasPanel" aria-label="Storymap canvas">
-        <div class="mapControls" aria-label="Zoom controls">
-          <button id="smZoomIn" class="mapControls__btn" type="button" aria-label="Zoom in">+</button>
-          <button id="smZoomOut" class="mapControls__btn" type="button" aria-label="Zoom out">-</button>
+    <main class="discussionPage">
+      <section class="discussionComposer card" aria-label="Create discussion post">
+        <h1>Discussion Board</h1>
+        <p class="muted">Share reflections, add context, and reply to others.</p>
+        <div class="field">
+          <label for="discussionTitle">Title</label>
+          <input id="discussionTitle" type="text" maxlength="120" placeholder="Post title" />
         </div>
-        <div id="storymapViewport" class="storymapViewport">
-          <div id="storymapWorld" class="storymapWorld">
-            <svg id="storymapEdges" class="storymapEdges" aria-hidden="true"></svg>
-            <div id="storymapNodes" class="storymapNodes"></div>
-          </div>
+        <div class="field">
+          <label for="discussionDescription">Description</label>
+          <textarea id="discussionDescription" rows="4" placeholder="Write your post"></textarea>
         </div>
-        <aside id="smInfoPanel" class="smInfoPanel" aria-hidden="true">
-          <button id="smInfoClose" class="smInfoClose" type="button" aria-label="Close node info">X</button>
-          <h3 id="smInfoTitle"></h3>
-          <img id="smInfoImage" class="smInfoImage" alt="" />
-          <p id="smInfoBody"></p>
-        </aside>
+        <div class="actions">
+          <button id="discussionPostBtn" class="btn" type="button">Post</button>
+        </div>
+      </section>
+
+      <section class="discussionFeed" aria-label="Discussion posts">
+        <div id="discussionPosts"></div>
       </section>
     </main>
 

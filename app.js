@@ -11,6 +11,7 @@ const IS_STORYMAP_PAGE = /(^|\/)storymap\.html$/i.test(window.location.pathname 
 const ADMIN_UNLOCK_KEY = "storymapAdminUnlockedV1";
 const ADMIN_PASSWORD = "beebo";
 const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
+const DISCUSSION_STORAGE_KEY = "storymap-discussions";
 const STORYMAP_CANVAS_PUBLIC_KEY = "storymapCanvasPublicV1";
 const STORYMAP_CANVAS_ADMIN_KEY = "storymapCanvasAdminV1";
 const STORYMAP_CANVAS_RELEASE_KEY = "storymapCanvasPublishedReleaseV1";
@@ -574,6 +575,11 @@ const el = {
   cfgHistoryTitle: document.getElementById("cfgHistoryTitle"),
   cfgHistoryBody: document.getElementById("cfgHistoryBody"),
   btnSaveContentConfig: document.getElementById("btnSaveContentConfig"),
+  btnClearDiscussions: document.getElementById("btnClearDiscussions"),
+  discussionTitle: document.getElementById("discussionTitle"),
+  discussionDescription: document.getElementById("discussionDescription"),
+  discussionPostBtn: document.getElementById("discussionPostBtn"),
+  discussionPosts: document.getElementById("discussionPosts"),
   inlineNodeEditor: document.getElementById("inlineNodeEditor"),
   inlineNodeLabel: document.getElementById("inlineNodeLabel"),
   inlineNodeSave: document.getElementById("inlineNodeSave"),
@@ -617,6 +623,53 @@ function saveContentConfig(config) {
     localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(config));
   } catch {
     // ignore
+  }
+}
+
+function formatTimestamp(value) {
+  const dt = new Date(value);
+  if (Number.isNaN(dt.getTime())) return "Unknown time";
+  try {
+    return dt.toLocaleString();
+  } catch {
+    return dt.toISOString();
+  }
+}
+
+function loadDiscussions() {
+  try {
+    const raw = localStorage.getItem(DISCUSSION_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((post) => post && typeof post === "object")
+      .map((post) => ({
+        id: Number(post.id) || Date.now(),
+        title: String(post.title || "").trim(),
+        description: String(post.description || "").trim(),
+        timestamp: Number(post.timestamp) || Date.now(),
+        replies: Array.isArray(post.replies)
+          ? post.replies
+              .filter((reply) => reply && typeof reply === "object")
+              .map((reply) => ({
+                id: Number(reply.id) || Date.now(),
+                text: String(reply.text || "").trim(),
+                timestamp: Number(reply.timestamp) || Date.now(),
+              }))
+          : [],
+      }));
+  } catch {
+    return [];
+  }
+}
+
+function saveDiscussions(posts) {
+  try {
+    localStorage.setItem(DISCUSSION_STORAGE_KEY, JSON.stringify(posts));
+    return true;
+  } catch {
+    return false;
   }
 }
 
@@ -1634,6 +1687,136 @@ let state = loadGraph();
 let cy = null;
 let selected = null; // { kind: 'node'|'edge', id: string }
 let connectDraft = null;
+let discussionState = [];
+
+function renderDiscussionBoard({ animatePostId = null } = {}) {
+  if (!el.discussionPosts) return;
+  const orderedPosts = [...discussionState].sort((a, b) => b.timestamp - a.timestamp);
+  if (!orderedPosts.length) {
+    el.discussionPosts.innerHTML = `
+      <article class="discussionPost discussionPost--empty">
+        <p class="muted">No discussion posts yet. Be the first to share a thought.</p>
+      </article>
+    `;
+    return;
+  }
+
+  el.discussionPosts.innerHTML = orderedPosts
+    .map((post) => {
+      const replies = Array.isArray(post.replies) ? post.replies : [];
+      const repliesHtml = replies.length
+        ? replies
+            .sort((a, b) => a.timestamp - b.timestamp)
+            .map(
+              (reply) => `
+                <li class="discussionReplyItem">
+                  <p>${escapeHtml(reply.text)}</p>
+                  <time datetime="${escapeHtml(new Date(reply.timestamp).toISOString())}">${escapeHtml(
+                    formatTimestamp(reply.timestamp)
+                  )}</time>
+                </li>
+              `
+            )
+            .join("")
+        : '<li class="discussionReplyItem discussionReplyItem--empty"><p class="muted">No replies yet.</p></li>';
+      return `
+        <article class="discussionPost" data-post-id="${post.id}">
+          <header class="discussionPost__header">
+            <h2>${escapeHtml(post.title)}</h2>
+            <time datetime="${escapeHtml(new Date(post.timestamp).toISOString())}">${escapeHtml(
+              formatTimestamp(post.timestamp)
+            )}</time>
+          </header>
+          <p class="discussionPost__description">${escapeHtml(post.description)}</p>
+          <ul class="discussionReplies">${repliesHtml}</ul>
+          <div class="field">
+            <label for="discussionReplyInput-${post.id}">Reply</label>
+            <textarea id="discussionReplyInput-${post.id}" class="discussionReplyInput" data-post-id="${
+              post.id
+            }" rows="2" placeholder="Write a reply"></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn btn--secondary discussionReplyBtn" type="button" data-post-id="${post.id}">Reply</button>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  if (animatePostId !== null) {
+    const node = el.discussionPosts.querySelector(`[data-post-id="${animatePostId}"]`);
+    if (node) node.classList.add("discussionPost--new");
+  }
+}
+
+function initDiscussionBoard() {
+  if (!el.discussionPosts || !el.discussionPostBtn) return;
+  discussionState = loadDiscussions();
+  renderDiscussionBoard();
+
+  on(el.discussionPostBtn, "click", () => {
+    const title = el.discussionTitle ? el.discussionTitle.value.trim() : "";
+    const description = el.discussionDescription ? el.discussionDescription.value.trim() : "";
+    if (!title || !description) {
+      setStatus("Please add a title and description before posting.", { isError: true });
+      return;
+    }
+    const now = Date.now();
+    const post = { id: now, title, description, timestamp: now, replies: [] };
+    discussionState = [post, ...discussionState];
+    if (!saveDiscussions(discussionState)) {
+      setStatus("Could not save post. Check browser storage settings.", { isError: true });
+      return;
+    }
+    renderDiscussionBoard({ animatePostId: post.id });
+    if (el.discussionTitle) el.discussionTitle.value = "";
+    if (el.discussionDescription) el.discussionDescription.value = "";
+    setStatus("");
+  });
+
+  on(el.discussionPosts, "click", (evt) => {
+    const btn = evt.target && evt.target.closest ? evt.target.closest(".discussionReplyBtn") : null;
+    if (!btn) return;
+    const postId = Number(btn.getAttribute("data-post-id"));
+    if (!postId) return;
+    const input = el.discussionPosts.querySelector(`.discussionReplyInput[data-post-id="${postId}"]`);
+    const text = input ? String(input.value || "").trim() : "";
+    if (!text) {
+      setStatus("Reply text cannot be empty.", { isError: true });
+      return;
+    }
+    const now = Date.now();
+    discussionState = discussionState.map((post) => {
+      if (post.id !== postId) return post;
+      const replies = Array.isArray(post.replies) ? post.replies : [];
+      return {
+        ...post,
+        replies: [...replies, { id: now, text, timestamp: now }],
+      };
+    });
+    if (!saveDiscussions(discussionState)) {
+      setStatus("Could not save reply. Check browser storage settings.", { isError: true });
+      return;
+    }
+    renderDiscussionBoard();
+    setStatus("");
+  });
+}
+
+function initDiscussionAdminControls() {
+  if (!el.btnClearDiscussions) return;
+  on(el.btnClearDiscussions, "click", () => {
+    const ok = window.confirm("Clear all discussion posts and replies?");
+    if (!ok) return;
+    const saved = saveDiscussions([]);
+    if (!saved) {
+      setStatus("Failed to clear discussions. Check browser storage settings.", { isError: true });
+      return;
+    }
+    discussionState = [];
+    setStatus("Discussions cleared.", { isError: false });
+  });
+}
 
 function setSelected(next) {
   // Remove previous selection class.
@@ -2871,11 +3054,13 @@ try {
   initScrollReveals();
   initHeroParallax();
   initContentEditorPanel();
+  initDiscussionBoard();
+  initDiscussionAdminControls();
   setStatus("Loading storymap...", { isLoading: true });
   if (document.getElementById("storymapViewport")) {
     initCustomStorymapCanvas();
     setStatus("");
-  } else if (MODE === "history") {
+  } else if (MODE === "history" || el.discussionPosts) {
     setStatus("");
   } else {
     refreshAllUI();

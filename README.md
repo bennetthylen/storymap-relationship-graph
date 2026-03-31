@@ -11,7 +11,9 @@ This is a static, browser-only digital exhibition platform for The Women and Mem
 - Add a photo and story text to nodes (stored in the graph JSON)
 - Re-order “story nodes” using the **Story Order** controls
 - Connected “bubble” navigation: clicking a node dims everything outside its connected component
-- Navigate across persistent tabs: Home, Storymap, History, Admin
+- Navigate across persistent public tabs: Home, Storymap, History, Discussion
+- Post and reply anonymously in the Discussion board (saved to localStorage key `storymap-discussions`)
+- Clear all discussion posts/replies from the password-protected admin panel
 - Edit landing/history copy from the admin panel (saved in localStorage)
 - Export/import the whole graph as JSON
 - Create a shareable URL that encodes the graph in the query string (`?data=...`)
@@ -38,12 +40,14 @@ Any static hosting works. For GitHub Pages:
 - Pages URL: `https://bennetthylen.github.io/storymap-relationship-graph/`
 - Pages settings: `Deploy from a branch` -> `main` -> `/(root)`
 
-Upload/serve the contents of this folder (especially `index.html`, `history.html`, `admin.html`, `styles.css`, `app.js`).
+Upload/serve the contents of this folder (especially `index.html`, `storymap.html`, `history.html`, `discussion.html`, `admin.html`, `styles.css`, `app.js`).
 
 ## Routes
 
 - `index.html`: Landing page + public Storymap viewer
+- `storymap.html`: Public Storymap canvas page
 - `history.html`: Public history placeholder page (editable content source)
+- `discussion.html`: Public discussion board (anonymous posts/replies persisted in browser storage)
 - `admin.html`: Password-protected Storymap/content editor
 
 ## Data model (for JSON import/export)
