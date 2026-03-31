@@ -115,6 +115,23 @@
               </button>
             </div>
           </div>
+          <div class="toolbarRow">
+            <div class="toolbarLeft">
+              <div class="field" style="margin: 0; min-width: 300px">
+                <label for="smGithubToken" class="muted small">GitHub PAT</label>
+                <input id="smGithubToken" type="password" placeholder="ghp_..." autocomplete="off" />
+              </div>
+              <div class="field" style="margin: 0; min-width: 300px">
+                <label for="smPublishCommitMessage" class="muted small">Commit message (optional)</label>
+                <input id="smPublishCommitMessage" type="text" placeholder="Publish storymap from admin" />
+              </div>
+            </div>
+            <div class="toolbarRight">
+              <p id="smPublishHelp" class="muted small" style="margin: 0">
+                Publish writes to <code>published-storymap.json</code> on GitHub.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div class="storymapLayout storymapLayout--admin">
@@ -271,7 +288,7 @@
     </div>
 
     <script src="./vendor/cytoscape.min.js"></script>
-    <script src="./app.js?v=20260331d"></script>
+    <script src="./app.js?v=20260331e"></script>
   </body>
 </html>
 

@@ -42,6 +42,27 @@ Any static hosting works. For GitHub Pages:
 
 Upload/serve the contents of this folder (especially `index.html`, `storymap.html`, `history.html`, `discussion.html`, `admin.html`, `styles.css`, `app.js`).
 
+## Global Storymap Publish (Admin -> GitHub)
+
+The admin storymap canvas supports global publishing through GitHub:
+
+- Edit storymap nodes/edges in `admin.html` as usual (draft saves remain local).
+- Enter a GitHub PAT in the admin toolbar.
+- Click **Publish** to commit `published-storymap.json` to `main`.
+- Public `storymap.html` loads `published-storymap.json` first (global), then falls back to embedded default data if the fetch fails.
+
+### GitHub PAT requirements
+
+- Token type: fine-grained PAT
+- Repository access: `bennetthylen/storymap-relationship-graph`
+- Permission: **Contents: Read and write**
+
+### Notes
+
+- GitHub Pages may take about 1 minute to show the latest publish.
+- The PAT is saved in `sessionStorage` only for the current browser session.
+- Failed publish attempts do not delete local admin drafts.
+
 ## Routes
 
 - `index.html`: Landing page + public Storymap viewer

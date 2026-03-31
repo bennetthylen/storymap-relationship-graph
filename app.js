@@ -15,6 +15,11 @@ const DISCUSSION_STORAGE_KEY = "storymap-discussions";
 const STORYMAP_CANVAS_PUBLIC_KEY = "storymapCanvasPublicV1";
 const STORYMAP_CANVAS_ADMIN_KEY = "storymapCanvasAdminV1";
 const STORYMAP_CANVAS_RELEASE_KEY = "storymapCanvasPublishedReleaseV1";
+const GITHUB_TOKEN_SESSION_KEY = "storymapGithubPublishTokenV1";
+const GITHUB_PUBLISHED_CANVAS_PATH = "published-storymap.json";
+const GITHUB_REPO_OWNER = "bennetthylen";
+const GITHUB_REPO_NAME = "storymap-relationship-graph";
+const GITHUB_REPO_BRANCH = "main";
 
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
@@ -862,7 +867,8 @@ function cloneStorymapCanvasState(state) {
 function syncCanvasToPublishedRelease() {
   try {
     const currentRelease = localStorage.getItem(STORYMAP_CANVAS_RELEASE_KEY);
-    if (currentRelease === PUBLISHED_STORYMAP_RELEASE) return;
+    const hasPublishedCanvas = Boolean(localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY));
+    if (currentRelease === PUBLISHED_STORYMAP_RELEASE || hasPublishedCanvas) return;
     const serialized = JSON.stringify(PUBLISHED_STORYMAP_CANVAS);
     localStorage.setItem(STORYMAP_CANVAS_ADMIN_KEY, serialized);
     localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
@@ -968,6 +974,75 @@ function publishStorymapCanvasState(payload) {
   return normalized;
 }
 
+function githubApiUrlForPath(pathname) {
+  const cleanPath = String(pathname || "").replace(/^\/+/, "");
+  return `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${cleanPath}`;
+}
+
+function utf8ToBase64(input) {
+  const bytes = new TextEncoder().encode(String(input || ""));
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...chunk);
+  }
+  return btoa(binary);
+}
+
+async function getGithubFileSha(pathname, token) {
+  const response = await fetch(`${githubApiUrlForPath(pathname)}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${token}`,
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`GitHub file lookup failed (${response.status}): ${detail || response.statusText}`);
+  }
+  const json = await response.json();
+  return json && typeof json.sha === "string" ? json.sha : null;
+}
+
+async function publishStorymapCanvasToGithub(payload, token, commitMessage) {
+  if (!token) throw new Error("GitHub token is required.");
+  const normalized = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
+  const serialized = `${JSON.stringify(normalized, null, 2)}\n`;
+  const sha = await getGithubFileSha(GITHUB_PUBLISHED_CANVAS_PATH, token);
+  const body = {
+    message: commitMessage || `Publish storymap from admin (${new Date().toISOString()})`,
+    content: utf8ToBase64(serialized),
+    branch: GITHUB_REPO_BRANCH,
+  };
+  if (sha) body.sha = sha;
+  const response = await fetch(githubApiUrlForPath(GITHUB_PUBLISHED_CANVAS_PATH), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${token}`,
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`GitHub publish failed (${response.status}): ${detail || response.statusText}`);
+  }
+  return normalized;
+}
+
+async function loadPublishedStorymapFromRepo() {
+  const response = await fetch(`./${GITHUB_PUBLISHED_CANVAS_PATH}?t=${Date.now()}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Published storymap fetch failed (${response.status})`);
+  const payload = await response.json();
+  return normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
+}
+
 function initCustomStorymapCanvas() {
   const viewport = document.getElementById("storymapViewport");
   const world = document.getElementById("storymapWorld");
@@ -1002,6 +1077,9 @@ function initCustomStorymapCanvas() {
   const linkTargetSelect = document.getElementById("smLinkTarget");
   const colorSelect = document.getElementById("smNodeColor");
   const publishBtn = document.getElementById("smPublishCanvasBtn");
+  const githubTokenInput = document.getElementById("smGithubToken");
+  const publishCommitMessageInput = document.getElementById("smPublishCommitMessage");
+  const publishHelp = document.getElementById("smPublishHelp");
   const saveBtn = document.getElementById("smSaveNode");
   const addChildBtn = document.getElementById("smAddChildNode");
   const linkExistingBtn = document.getElementById("smLinkExisting");
@@ -1035,6 +1113,24 @@ function initCustomStorymapCanvas() {
   };
 
   const getNodeByIdLocal = (id) => canvas.nodes.find((n) => n.id === id) || null;
+  const readGithubToken = () => String(githubTokenInput?.value || "").trim();
+  const storeGithubToken = (tokenValue) => {
+    try {
+      if (!tokenValue) sessionStorage.removeItem(GITHUB_TOKEN_SESSION_KEY);
+      else sessionStorage.setItem(GITHUB_TOKEN_SESSION_KEY, tokenValue);
+    } catch {
+      // ignore
+    }
+  };
+  if (isAdmin && githubTokenInput) {
+    try {
+      const cachedToken = sessionStorage.getItem(GITHUB_TOKEN_SESSION_KEY) || "";
+      if (cachedToken) githubTokenInput.value = cachedToken;
+    } catch {
+      // ignore
+    }
+    on(githubTokenInput, "change", () => storeGithubToken(readGithubToken()));
+  }
   const fitViewToNodes = () => {
     if (!canvas.nodes.length) return;
     const rect = viewport.getBoundingClientRect();
@@ -1383,16 +1479,28 @@ function initCustomStorymapCanvas() {
     syncPanel();
   });
 
-  on(publishBtn, "click", () => {
+  on(publishBtn, "click", async () => {
     if (!isAdmin) return;
+    const token = readGithubToken();
+    if (!token) {
+      setStatus("GitHub PAT is required before publishing.", { isError: true });
+      if (publishHelp) publishHelp.textContent = "Enter a GitHub PAT with repo contents write access.";
+      return;
+    }
+    storeGithubToken(token);
     if (publishBtn) publishBtn.disabled = true;
     try {
-      setStatus("Publishing storymap...", { isLoading: true });
-      publishStorymapCanvasState(canvas);
-      setStatus("Storymap published to public view.");
+      const commitMessage = String(publishCommitMessageInput?.value || "").trim();
+      setStatus("Publishing storymap to GitHub...", { isLoading: true });
+      const published = await publishStorymapCanvasToGithub(canvas, token, commitMessage);
+      publishStorymapCanvasState(published);
+      if (publishHelp) publishHelp.textContent = `Published to ${GITHUB_PUBLISHED_CANVAS_PATH} on ${GITHUB_REPO_BRANCH}.`;
+      setStatus("Storymap published globally. GitHub Pages may take a minute to refresh.");
     } catch (err) {
       console.error("Publish failed:", err);
-      setStatus("Publish failed. Check console for details.", { isError: true });
+      const reason = err && err.message ? err.message : "Unknown error";
+      setStatus("Publish failed. Check token/repo permissions.", { isError: true });
+      if (publishHelp) publishHelp.textContent = reason;
     } finally {
       if (publishBtn) publishBtn.disabled = false;
     }
@@ -1410,6 +1518,19 @@ function initCustomStorymapCanvas() {
   updateWorldTransform();
   renderCanvas();
   syncPanel();
+  if (!isAdmin) {
+    void loadPublishedStorymapFromRepo()
+      .then((remoteCanvas) => {
+        canvas = remoteCanvas;
+        selectedId = null;
+        saveStorymapCanvasState(canvas);
+        renderCanvas();
+        syncPanel();
+      })
+      .catch((err) => {
+        console.warn("Published storymap fetch fallback:", err);
+      });
+  }
   return true;
 }
 
