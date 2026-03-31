@@ -1898,6 +1898,23 @@ function initScrollReveals() {
   revealNodes.forEach((n) => io.observe(n));
 }
 
+function initHeroParallax() {
+  const hero = document.getElementById("home");
+  if (!hero) return;
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY || window.pageYOffset || 0;
+      hero.style.setProperty("--hero-parallax", `${Math.min(48, y * 0.18)}px`);
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
 function initContentEditorPanel() {
   if (!el.btnSaveContentConfig) return;
   const cfg = loadContentConfig();
@@ -2015,6 +2032,7 @@ window.addEventListener("error", (evt) => {
 try {
   applyContentConfigToPage();
   initScrollReveals();
+  initHeroParallax();
   initContentEditorPanel();
   setStatus("Loading storymap...", { isLoading: true });
   if (MODE === "history") {
