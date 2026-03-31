@@ -41,11 +41,29 @@ body {
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text);
+  text-decoration: none;
 }
 
 .siteNav__tabs {
   display: flex;
   gap: 8px;
+  align-items: center;
+}
+
+.siteNav__langLabel {
+  font-size: 0.72rem;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.siteNav__langSelect {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: #fff;
+  color: var(--text);
+  font-size: 0.8rem;
 }
 
 .siteNav__tab {
@@ -737,6 +755,10 @@ textarea {
   transition: border-color 180ms ease, background-color 180ms ease;
 }
 
+.jsStatus--hidden {
+  display: none;
+}
+
 .jsStatus--error {
   border-color: rgba(255, 77, 109, 0.5);
   background: rgba(255, 77, 109, 0.12);
@@ -874,6 +896,17 @@ textarea {
   color: var(--primary);
   text-decoration: none;
   font-weight: 700;
+}
+
+.footerLoginBtn {
+  border: none;
+  background: transparent;
+  color: var(--primary);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  cursor: pointer;
+  padding: 0 2px;
 }
 
 .historyPage {

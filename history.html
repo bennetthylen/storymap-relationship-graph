@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History - Doing Well, Don't Worry</title>
+    <title>History - "Doing Well, Don't Worry"</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,21 +12,42 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-mode="history">
+  <body data-mode="history" id="top">
     <nav class="siteNav" aria-label="Primary navigation">
-      <div class="siteNav__brand">Doing Well, Don't Worry</div>
+      <a href="#top" class="siteNav__brand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
-        <a href="./index.html" class="siteNav__tab">Home</a>
         <a href="./index.html#storymap" class="siteNav__tab">Storymap</a>
         <a href="./history.html" class="siteNav__tab siteNav__tab--active">History</a>
-        <a href="./admin.html" class="siteNav__tab">Admin</a>
+        <label class="siteNav__langLabel" for="langSelect">language</label>
+        <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
+          <option value="en">English</option>
+        </select>
       </div>
     </nav>
 
     <main class="historyPage">
       <h1 id="historyTitle" data-content-key="historyTitle">History</h1>
       <p id="historyBody" data-content-key="historyBody">
-        Explore the historical context of women's mobility and work across Egypt, Jordan, Lebanon, and Denmark.
+        The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in
+        20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important.
+        Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and
+        anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian
+        activists struggled to connect with the working-class, and the discourse "creat[ed] a paternalistic and
+        detached dynamic" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were
+        expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside
+        shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape
+        feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into
+        women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's
+        activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim
+        2017, 15). In this political iteration, the "modern" West became the normative goal of feminism (Ibrahim 2017,
+        16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a
+        more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, "young and old, veiled and
+        unveiled, poor and affluent," joining together in Tahrir Square against the rule of the state (36). This
+        experience was likewise translated into discourse: feminists discredited both historical and contemporaneous
+        versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as
+        historical context. They also shape the archival material of "Doing Well, Don't Worry." Nasser's education
+        policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and
+        the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).
       </p>
     </main>
 

@@ -12,21 +12,20 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-mode="admin">
+  <body data-mode="admin" id="top">
     <nav class="siteNav" aria-label="Primary navigation">
-      <div class="siteNav__brand">Doing Well, Don't Worry</div>
+      <a href="#top" class="siteNav__brand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
-        <a href="./index.html" class="siteNav__tab">Home</a>
         <a href="./index.html#storymap" class="siteNav__tab">Storymap</a>
         <a href="./history.html" class="siteNav__tab">History</a>
-        <a href="./admin.html" class="siteNav__tab siteNav__tab--active">Admin</a>
+        <label class="siteNav__langLabel" for="langSelect">language</label>
+        <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
+          <option value="en">English</option>
+        </select>
       </div>
     </nav>
 
     <div class="cornerControls" aria-label="Top right controls">
-      <div class="langButtons" role="group" aria-label="Language">
-        <button id="btnLangEn" class="langBtn" data-lang="en" type="button">English</button>
-      </div>
       <button id="btnReset" class="btn btn--secondary" type="button" data-i18n="resetDemo">
         Reset Demo
       </button>

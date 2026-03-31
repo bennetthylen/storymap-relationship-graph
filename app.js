@@ -14,7 +14,7 @@ const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
   heroSubtitle:
-    "A Collaboration between Georgetown University's School of Foreign Service and the Women and Memory Forum.",
+    "A digital collaboration between Georgetown University's School of Foreign Service and the Women and Memory Forum.",
   heroCta: "Experience \"Doing Well, Don't Worry\"",
   section1: "Women are always on the move.",
   section2:
@@ -23,7 +23,7 @@ const DEFAULT_CONTENT = {
     "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
   historyTitle: "History",
   historyBody:
-    "Explore the historical context of women's mobility and work across Egypt, Jordan, Lebanon, and Denmark.",
+    "The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
 };
 
 function buildPageUrl(pageName) {
@@ -513,13 +513,8 @@ function applyTranslations() {
     node.setAttribute("placeholder", t(key));
   });
 
-  // Active state for language buttons.
-  const langBtnMap = { en: "btnLangEn" };
-  Object.entries(langBtnMap).forEach(([lang, id]) => {
-    const btn = document.getElementById(id);
-    if (!btn) return;
-    btn.classList.toggle("langBtn--active", lang === currentLang);
-  });
+  const langSelect = document.getElementById("langSelect");
+  if (langSelect) langSelect.value = currentLang;
 }
 
 const el = {
@@ -598,6 +593,7 @@ function setStatus(message, { isError = false, isLoading = false } = {}) {
   const status = document.getElementById("jsStatus");
   if (!status) return;
   status.textContent = message;
+  status.classList.toggle("jsStatus--hidden", !message);
   status.classList.toggle("jsStatus--error", Boolean(isError));
   status.classList.toggle("jsStatus--loading", Boolean(isLoading));
 }
@@ -1663,7 +1659,10 @@ on(el.selectedDetails, "change", (evt) => {
 });
 
 // Language switching.
-document.getElementById("btnLangEn")?.addEventListener("click", () => setLanguage("en"));
+document.getElementById("langSelect")?.addEventListener("change", (evt) => {
+  const nextLang = evt.target?.value || "en";
+  setLanguage(nextLang);
+});
 
 applyTranslations();
 
@@ -2036,11 +2035,11 @@ try {
   initContentEditorPanel();
   setStatus("Loading storymap...", { isLoading: true });
   if (MODE === "history") {
-    setStatus("Page ready.");
+    setStatus("");
   } else {
     refreshAllUI();
     if (MODE === "admin") upsertJsonAreaFromState();
-    setStatus("Storymap ready.");
+    setStatus("");
   }
 } catch (err) {
   console.error(err);

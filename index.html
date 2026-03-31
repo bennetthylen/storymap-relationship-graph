@@ -12,22 +12,18 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-mode="viewer">
+  <body data-mode="viewer" id="top">
     <nav class="siteNav" aria-label="Primary navigation">
-      <div class="siteNav__brand">Doing Well, Don't Worry</div>
+      <a href="#top" class="siteNav__brand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
-        <a href="./index.html" class="siteNav__tab siteNav__tab--active">Home</a>
         <a href="./index.html#storymap" class="siteNav__tab">Storymap</a>
         <a href="./history.html" class="siteNav__tab">History</a>
-        <a href="./admin.html" class="siteNav__tab">Admin</a>
+        <label class="siteNav__langLabel" for="langSelect">language</label>
+        <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
+          <option value="en">English</option>
+        </select>
       </div>
     </nav>
-
-    <div class="cornerControls" aria-label="Top right controls">
-      <div class="langButtons" role="group" aria-label="Language">
-        <button id="btnLangEn" class="langBtn" data-lang="en" type="button">English</button>
-      </div>
-    </div>
 
     <div id="jsStatus" class="jsStatus jsStatus--loading">
       Loading storymap...
@@ -40,7 +36,7 @@
       <div class="hero__bg" aria-hidden="true"></div>
       <h1 id="heroTitle" data-content-key="heroTitle" class="hero__title">Doing Well, Don't Worry</h1>
       <p id="heroSubtitle" data-content-key="heroSubtitle">
-        A Collaboration between Georgetown University's School of Foreign Service and the Women and Memory Forum.
+        A digital collaboration between Georgetown University's School of Foreign Service and the Women and Memory Forum.
       </p>
       <a class="heroCta" href="#storymap" data-content-key="heroCta">Experience "Doing Well, Don't Worry"</a>
     </section>
@@ -86,11 +82,11 @@
       </section>
     </main>
 
-    <button id="btnLogin" class="loginBtn" type="button">Login</button>
     <div class="stickyFooterLinks">
       <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer">Georgetown SFS</a>
       <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer">Women and Memory Forum</a>
       <a href="mailto:tbh36@georgetown.edu">tbh36@georgetown.edu</a>
+      <button id="btnLogin" class="footerLoginBtn" type="button">login</button>
     </div>
 
     <div id="nodeModal" class="modal" aria-hidden="true">
