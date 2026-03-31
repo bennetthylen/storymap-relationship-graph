@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Storymap Relationship Graph</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-mode="admin">
+    <div class="cornerHeader" aria-label="Header">
+      Doing Fine, Don’t Worry
+    </div>
+
+    <div class="cornerControls" aria-label="Top right controls">
+      <div class="langButtons" role="group" aria-label="Language">
+        <button id="btnLangAr" class="langBtn" data-lang="ar" type="button">العربية</button>
+        <button id="btnLangEn" class="langBtn" data-lang="en" type="button">English</button>
+        <button id="btnLangEs" class="langBtn" data-lang="es" type="button">Español</button>
+        <button id="btnLangFr" class="langBtn" data-lang="fr" type="button">Français</button>
+        <button id="btnLangDe" class="langBtn" data-lang="de" type="button">Deutsch</button>
+      </div>
+      <button id="btnReset" class="btn btn--secondary" type="button" data-i18n="resetDemo">
+        Reset Demo
+      </button>
+    </div>
+
+    <div id="jsStatus" class="jsStatus jsStatus--loading">
+      Loading storymap...
+    </div>
+    <noscript>
+      <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
+    </noscript>
+
+    <main class="layout layout--admin">
+      <aside class="panel panel--left">
+        <section class="card">
+          <h2 data-i18n="addPersonTitle">Add Person</h2>
+          <div class="field">
+            <label for="personName" data-i18n="personNameLabel">Name</label>
+            <input id="personName" type="text" data-i18n-placeholder="personNamePlaceholder" placeholder="e.g., Ada Lovelace" />
+          </div>
+          <div class="field">
+            <label for="personDesc" data-i18n="personDescLabel">Description (optional)</label>
+            <input id="personDesc" type="text" data-i18n-placeholder="personDescPlaceholder" placeholder="Short context" />
+          </div>
+          <button id="btnAddPerson" class="btn" type="button" data-i18n="addPersonButton">Add Person</button>
+        </section>
+
+        <section class="card">
+          <h2 data-i18n="addEventTitle">Add Event</h2>
+          <div class="field">
+            <label for="eventTitle" data-i18n="eventTitleLabel">Title</label>
+            <input id="eventTitle" type="text" data-i18n-placeholder="eventTitlePlaceholder" placeholder="e.g., Summer Workshop" />
+          </div>
+          <div class="field">
+            <label for="eventDate" data-i18n="eventDateLabel">Date (optional)</label>
+            <input id="eventDate" type="text" data-i18n-placeholder="eventDatePlaceholder" placeholder="e.g., 2020-08-14 or 'Spring 1936'" />
+          </div>
+          <button id="btnAddEvent" class="btn" type="button" data-i18n="addEventButton">Add Event</button>
+        </section>
+
+        <section class="card">
+          <h2 data-i18n="createRelationshipTitle">Create Relationship</h2>
+          <div class="field">
+            <label for="personSelectFrom" data-i18n="personSelectLabel">Person</label>
+            <select id="personSelectFrom"></select>
+          </div>
+          <div class="field">
+            <label for="eventSelectTo" data-i18n="eventSelectLabel">Event</label>
+            <select id="eventSelectTo"></select>
+          </div>
+          <div class="field">
+            <label for="edgeRole" data-i18n="edgeRoleLabel">Role / Label (optional)</label>
+            <input id="edgeRole" type="text" data-i18n-placeholder="edgeRolePlaceholder" placeholder="e.g., attended, worked on, mentioned in" />
+          </div>
+          <button id="btnLink" class="btn" type="button" data-i18n="linkButton">Link Person → Event</button>
+
+          <hr class="divider" />
+
+          <p class="muted small">
+            <span data-i18n="tipText">Tip: click nodes/edges in the graph to view details and delete.</span>
+          </p>
+        </section>
+      </aside>
+
+      <section class="graphWrap">
+        <div class="graphToolbar card">
+          <div class="toolbarRow">
+            <div class="toolbarLeft">
+              <label class="muted small" for="layoutSelect" data-i18n="layoutLabel">Layout</label>
+              <select id="layoutSelect" class="select">
+                <option value="cose" selected data-i18n="layoutOptionForce">Force (cose)</option>
+                <option value="breadthfirst" data-i18n="layoutOptionBreadth">Breadth-first</option>
+                <option value="grid" data-i18n="layoutOptionGrid">Grid</option>
+              </select>
+            </div>
+            <div class="toolbarRight">
+              <button id="btnReLayout" class="btn btn--secondary" type="button" data-i18n="reLayoutButton">
+                Re-layout
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="cy" class="cy">
+          <div class="cyFallback">Loading map...</div>
+        </div>
+      </section>
+
+      <aside class="panel panel--right">
+        <section class="card">
+          <h2 data-i18n="selectedTitle">Selected</h2>
+          <div id="selectedDetails" class="selectedDetails">
+            <p class="muted" data-i18n="nothingSelectedYet">Nothing selected yet.</p>
+          </div>
+
+          <div class="actions">
+            <button id="btnDeleteSelected" class="btn btn--danger" type="button" disabled data-i18n="deleteButton">
+              Delete
+            </button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 data-i18n="storyOrderTitle">Story Order</h2>
+          <p class="muted small" data-i18n="storyOrderInstruction">Control the order you want for story nodes.</p>
+          <div id="storyOrderList" class="storyOrderList"></div>
+          <div class="actions actions--row">
+            <button id="btnStoryMoveUp" class="btn btn--secondary" type="button" disabled data-i18n="moveUpButton">
+              Move Up
+            </button>
+            <button id="btnStoryMoveDown" class="btn btn--secondary" type="button" disabled data-i18n="moveDownButton">
+              Move Down
+            </button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 data-i18n="importExportTitle">Import / Export</h2>
+          <div class="field">
+            <label for="jsonArea" data-i18n="graphJsonLabel">Graph JSON</label>
+            <textarea
+              id="jsonArea"
+              rows="8"
+              spellcheck="false"
+              data-i18n-placeholder="jsonAreaPlaceholder"
+              placeholder='{"nodes":[...],"edges":[...]}'
+            ></textarea>
+          </div>
+          <div class="actions actions--row">
+            <button id="btnExportJson" class="btn btn--secondary" type="button" data-i18n="exportJsonButton">
+              Export JSON
+            </button>
+            <button id="btnImportJson" class="btn" type="button" data-i18n="importJsonButton">
+              Import JSON
+            </button>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="share">
+            <h3 data-i18n="shareableLinkTitle">Shareable Link</h3>
+            <p class="muted small" data-i18n="shareableLinkInstruction">
+              Creates a URL containing your graph state (best for small-to-medium graphs).
+            </p>
+            <button id="btnMakeShareLink" class="btn btn--secondary" type="button" data-i18n="createLinkButton">
+              Create Link
+            </button>
+            <input
+              id="shareLink"
+              type="text"
+              class="shareLink"
+              readonly
+              data-i18n-placeholder="shareLinkPlaceholder"
+              placeholder="Click “Create Link”"
+            />
+            <p id="shareWarning" class="muted small"></p>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <button id="btnLogoutAdmin" class="loginBtn loginBtn--logout" type="button">Logout Admin</button>
+
+    <script src="./vendor/cytoscape.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+
