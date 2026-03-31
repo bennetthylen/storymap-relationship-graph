@@ -1729,14 +1729,19 @@ function renderDiscussionBoard({ animatePostId = null } = {}) {
           </header>
           <p class="discussionPost__description">${escapeHtml(post.description)}</p>
           <ul class="discussionReplies">${repliesHtml}</ul>
-          <div class="field">
-            <label for="discussionReplyInput-${post.id}">Reply</label>
-            <textarea id="discussionReplyInput-${post.id}" class="discussionReplyInput" data-post-id="${
-              post.id
-            }" rows="2" placeholder="Write a reply"></textarea>
+          <div class="discussionPost__actions">
+            <button class="btn btn--secondary discussionReplyToggleBtn" type="button" data-post-id="${post.id}">Reply</button>
           </div>
-          <div class="actions">
-            <button class="btn btn--secondary discussionReplyBtn" type="button" data-post-id="${post.id}">Reply</button>
+          <div class="discussionReplyComposer" data-post-id="${post.id}" hidden>
+            <div class="field">
+              <label for="discussionReplyInput-${post.id}">Add a reply</label>
+              <textarea id="discussionReplyInput-${post.id}" class="discussionReplyInput" data-post-id="${
+                post.id
+              }" rows="2" placeholder="Write a reply"></textarea>
+            </div>
+            <div class="actions">
+              <button class="btn discussionReplySubmitBtn" type="button" data-post-id="${post.id}">Post Reply</button>
+            </div>
           </div>
         </article>
       `;
@@ -1775,11 +1780,29 @@ function initDiscussionBoard() {
   });
 
   on(el.discussionPosts, "click", (evt) => {
-    const btn = evt.target && evt.target.closest ? evt.target.closest(".discussionReplyBtn") : null;
-    if (!btn) return;
-    const postId = Number(btn.getAttribute("data-post-id"));
+    const toggleBtn = evt.target && evt.target.closest ? evt.target.closest(".discussionReplyToggleBtn") : null;
+    if (toggleBtn) {
+      const postId = Number(toggleBtn.getAttribute("data-post-id"));
+      if (!postId) return;
+      const composer = el.discussionPosts.querySelector(`.discussionReplyComposer[data-post-id="${postId}"]`);
+      if (!composer) return;
+      const isOpen = !composer.hasAttribute("hidden");
+      if (isOpen) {
+        composer.setAttribute("hidden", "");
+      } else {
+        composer.removeAttribute("hidden");
+        const input = composer.querySelector(".discussionReplyInput");
+        if (input) input.focus();
+      }
+      return;
+    }
+
+    const submitBtn = evt.target && evt.target.closest ? evt.target.closest(".discussionReplySubmitBtn") : null;
+    if (!submitBtn) return;
+    const postId = Number(submitBtn.getAttribute("data-post-id"));
     if (!postId) return;
-    const input = el.discussionPosts.querySelector(`.discussionReplyInput[data-post-id="${postId}"]`);
+    const composer = el.discussionPosts.querySelector(`.discussionReplyComposer[data-post-id="${postId}"]`);
+    const input = composer ? composer.querySelector(".discussionReplyInput") : null;
     const text = input ? String(input.value || "").trim() : "";
     if (!text) {
       setStatus("Reply text cannot be empty.", { isError: true });
