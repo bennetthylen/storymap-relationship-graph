@@ -11,7 +11,8 @@ const IS_STORYMAP_PAGE = /(^|\/)storymap\.html$/i.test(window.location.pathname 
 const ADMIN_UNLOCK_KEY = "storymapAdminUnlockedV1";
 const ADMIN_PASSWORD = "beebo";
 const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
-const STORYMAP_CANVAS_KEY = "storymapCanvasV1";
+const STORYMAP_CANVAS_PUBLIC_KEY = "storymapCanvasPublicV1";
+const STORYMAP_CANVAS_ADMIN_KEY = "storymapCanvasAdminV1";
 
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
@@ -666,21 +667,42 @@ function defaultStorymapCanvasState() {
   };
 }
 
+function defaultStorymapAdminCanvasState() {
+  return {
+    nodes: [
+      { id: "a1", type: "text", content: "Archive Intake Board", color: "green", x: 120, y: 90 },
+      { id: "a2", type: "text", content: "Curation Notes Desk", color: "teal", x: 120, y: 340 },
+      { id: "a3", type: "image", content: "", color: "orange", x: 470, y: 220 },
+      { id: "a4", type: "tag", content: "A", color: "blue", x: 650, y: 110 },
+      { id: "a5", type: "tag", content: "H", color: "blue", x: 620, y: 430 },
+    ],
+    edges: [
+      { source: "a1", target: "a3" },
+      { source: "a2", target: "a3" },
+      { source: "a2", target: "a5" },
+      { source: "a1", target: "a4" },
+    ],
+  };
+}
+
 function loadStorymapCanvasState() {
   try {
-    const raw = localStorage.getItem(STORYMAP_CANVAS_KEY);
-    if (!raw) return defaultStorymapCanvasState();
+    const key = MODE === "admin" ? STORYMAP_CANVAS_ADMIN_KEY : STORYMAP_CANVAS_PUBLIC_KEY;
+    const fallback = MODE === "admin" ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
     const parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return defaultStorymapCanvasState();
+    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return fallback;
     return parsed;
   } catch {
-    return defaultStorymapCanvasState();
+    return MODE === "admin" ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
   }
 }
 
 function saveStorymapCanvasState(payload) {
   try {
-    localStorage.setItem(STORYMAP_CANVAS_KEY, JSON.stringify(payload));
+    const key = MODE === "admin" ? STORYMAP_CANVAS_ADMIN_KEY : STORYMAP_CANVAS_PUBLIC_KEY;
+    localStorage.setItem(key, JSON.stringify(payload));
   } catch {
     // ignore
   }
@@ -692,9 +714,9 @@ function initCustomStorymapCanvas() {
   const nodesLayer = document.getElementById("storymapNodes");
   const edgesSvg = document.getElementById("storymapEdges");
   const panel = document.getElementById("storymapAdminPanel");
-  if (!viewport || !world || !nodesLayer || !edgesSvg || !panel) return false;
+  if (!viewport || !world || !nodesLayer || !edgesSvg) return false;
 
-  const isAdmin = isAdminUnlocked();
+  const isAdmin = MODE === "admin";
   let canvas = loadStorymapCanvasState();
   let selectedId = null;
   let view = { scale: 1, panX: 0, panY: 0 };
@@ -708,6 +730,8 @@ function initCustomStorymapCanvas() {
   const addChildBtn = document.getElementById("smAddChildNode");
   const linkExistingBtn = document.getElementById("smLinkExisting");
   const deleteNodeBtn = document.getElementById("smDeleteNode");
+  const zoomInBtn = document.getElementById("smZoomIn");
+  const zoomOutBtn = document.getElementById("smZoomOut");
 
   const updateWorldTransform = () => {
     world.style.transform = `translate(${view.panX}px, ${view.panY}px) scale(${view.scale})`;
@@ -725,7 +749,8 @@ function initCustomStorymapCanvas() {
 
   const syncPanel = () => {
     const node = selectedId ? getNodeByIdLocal(selectedId) : null;
-    if (!node || !isAdmin) {
+    if (!panel || !node || !isAdmin) {
+      if (!panel) return;
       panel.classList.remove("storymapAdminPanel--open");
       panel.setAttribute("aria-hidden", "true");
       return;
@@ -854,6 +879,30 @@ function initCustomStorymapCanvas() {
     },
     { passive: false }
   );
+
+  on(zoomInBtn, "click", () => {
+    const rect = viewport.getBoundingClientRect();
+    const cx = rect.width / 2;
+    const cyPoint = rect.height / 2;
+    const beforeX = (cx - view.panX) / view.scale;
+    const beforeY = (cyPoint - view.panY) / view.scale;
+    view.scale = Math.min(2.4, view.scale * 1.18);
+    view.panX = cx - beforeX * view.scale;
+    view.panY = cyPoint - beforeY * view.scale;
+    updateWorldTransform();
+  });
+
+  on(zoomOutBtn, "click", () => {
+    const rect = viewport.getBoundingClientRect();
+    const cx = rect.width / 2;
+    const cyPoint = rect.height / 2;
+    const beforeX = (cx - view.panX) / view.scale;
+    const beforeY = (cyPoint - view.panY) / view.scale;
+    view.scale = Math.max(0.6, view.scale / 1.18);
+    view.panX = cx - beforeX * view.scale;
+    view.panY = cyPoint - beforeY * view.scale;
+    updateWorldTransform();
+  });
 
   on(saveBtn, "click", () => {
     if (!isAdmin || !selectedId) return;
@@ -2505,7 +2554,7 @@ try {
   initHeroParallax();
   initContentEditorPanel();
   setStatus("Loading storymap...", { isLoading: true });
-  if (IS_STORYMAP_PAGE) {
+  if (document.getElementById("storymapViewport")) {
     initCustomStorymapCanvas();
     setStatus("");
   } else if (MODE === "history") {

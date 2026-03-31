@@ -1,9 +1,15 @@
 .storymapLayout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   padding: 14px 14px 94px;
   height: calc(100vh - 68px - 58px);
+}
+
+.storymapLayout--admin {
+  grid-template-columns: minmax(0, 1fr) 320px;
+  padding: 0;
+  height: auto;
 }
 
 .storymapCanvasPanel {
@@ -12,6 +18,7 @@
   border-radius: 16px;
   position: relative;
   overflow: hidden;
+  min-height: 68vh;
 }
 
 .storymapViewport {
@@ -143,6 +150,9 @@
   .storymapLayout {
     grid-template-columns: 1fr;
     height: auto;
+  }
+  .storymapLayout--admin {
+    grid-template-columns: 1fr;
   }
   .storymapCanvasPanel {
     min-height: 62vh;

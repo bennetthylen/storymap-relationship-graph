@@ -11,6 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./storymap.css" />
   </head>
   <body data-mode="admin" id="top">
     <nav class="siteNav" aria-label="Primary navigation">
@@ -120,15 +121,49 @@
           </div>
         </div>
 
-        <div id="cy" class="cy">
-          <div class="cyFallback">Loading map...</div>
-        </div>
-        <div id="inlineNodeEditor" class="inlineNodeEditor" aria-hidden="true">
-          <input id="inlineNodeLabel" type="text" placeholder="Node label" />
-          <button id="inlineNodeSave" class="btn" type="button">Save</button>
-          <button id="inlineNodeAddChild" class="btn btn--secondary" type="button">Add Child</button>
-          <button id="inlineNodeConnect" class="btn btn--secondary" type="button">Connect</button>
-          <div id="inlineConnectHandle" class="inlineConnectHandle" title="Drag to connect"></div>
+        <div class="storymapLayout storymapLayout--admin">
+          <section id="storymapCanvasPanel" class="storymapCanvasPanel" aria-label="Storymap canvas">
+            <div class="mapControls" aria-label="Zoom controls">
+              <button id="smZoomIn" class="mapControls__btn" type="button" aria-label="Zoom in">+</button>
+              <button id="smZoomOut" class="mapControls__btn" type="button" aria-label="Zoom out">-</button>
+            </div>
+            <div id="storymapViewport" class="storymapViewport">
+              <div id="storymapWorld" class="storymapWorld">
+                <svg id="storymapEdges" class="storymapEdges" aria-hidden="true"></svg>
+                <div id="storymapNodes" class="storymapNodes"></div>
+              </div>
+            </div>
+          </section>
+
+          <aside id="storymapAdminPanel" class="storymapAdminPanel" aria-hidden="true">
+            <h3>Node Editor</h3>
+            <div class="field">
+              <label for="smNodeContent">Content</label>
+              <textarea id="smNodeContent" rows="4"></textarea>
+            </div>
+            <div class="field">
+              <label for="smNodeImageFile">Image file</label>
+              <input id="smNodeImageFile" type="file" accept="image/*" />
+            </div>
+            <div class="field">
+              <label for="smNodeColor">Color</label>
+              <select id="smNodeColor">
+                <option value="green">Green</option>
+                <option value="teal">Teal</option>
+                <option value="blue">Blue</option>
+                <option value="white">White</option>
+                <option value="orange">Orange</option>
+              </select>
+            </div>
+            <div class="actions actions--row">
+              <button id="smSaveNode" class="btn" type="button">Save</button>
+              <button id="smAddChildNode" class="btn btn--secondary" type="button">Add Child</button>
+            </div>
+            <div class="actions actions--row">
+              <button id="smLinkExisting" class="btn btn--secondary" type="button">Link Existing</button>
+              <button id="smDeleteNode" class="btn btn--danger" type="button">Delete Node</button>
+            </div>
+          </aside>
         </div>
       </section>
 
