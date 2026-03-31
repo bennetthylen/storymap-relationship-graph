@@ -914,10 +914,13 @@ textarea {
   color: var(--primary);
   font-size: 0.78rem;
   letter-spacing: 0.08em;
-  text-transform: lowercase;
   cursor: pointer;
   padding: 0 2px;
   margin-left: auto;
+}
+
+.homePageBuffer {
+  height: 120px;
 }
 
 .historyPage {
