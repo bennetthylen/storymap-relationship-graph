@@ -13,6 +13,7 @@ const ADMIN_PASSWORD = "beebo";
 const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
 const STORYMAP_CANVAS_PUBLIC_KEY = "storymapCanvasPublicV1";
 const STORYMAP_CANVAS_ADMIN_KEY = "storymapCanvasAdminV1";
+const STORYMAP_CANVAS_RELEASE_KEY = "storymapCanvasPublishedReleaseV1";
 
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
@@ -657,9 +658,23 @@ const PUBLISHED_STORYMAP_CANVAS = {
     { source: "2", target: "4" },
   ],
 };
+const PUBLISHED_STORYMAP_RELEASE = "2026-03-31-a";
 
 function cloneStorymapCanvasState(state) {
   return JSON.parse(JSON.stringify(state));
+}
+
+function syncCanvasToPublishedRelease() {
+  try {
+    const currentRelease = localStorage.getItem(STORYMAP_CANVAS_RELEASE_KEY);
+    if (currentRelease === PUBLISHED_STORYMAP_RELEASE) return;
+    const serialized = JSON.stringify(PUBLISHED_STORYMAP_CANVAS);
+    localStorage.setItem(STORYMAP_CANVAS_ADMIN_KEY, serialized);
+    localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
+    localStorage.setItem(STORYMAP_CANVAS_RELEASE_KEY, PUBLISHED_STORYMAP_RELEASE);
+  } catch {
+    // ignore
+  }
 }
 
 function defaultStorymapCanvasState() {
@@ -2632,6 +2647,7 @@ window.addEventListener("error", (evt) => {
 });
 
 try {
+  syncCanvasToPublishedRelease();
   applyContentConfigToPage();
   initScrollReveals();
   initHeroParallax();
