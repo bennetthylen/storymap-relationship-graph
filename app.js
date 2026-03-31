@@ -990,29 +990,55 @@ function utf8ToBase64(input) {
   return btoa(binary);
 }
 
-async function getGithubFileSha(pathname, token) {
+async function parseGithubError(response) {
+  let detail = "";
+  try {
+    const data = await response.json();
+    if (data && typeof data.message === "string") detail = data.message;
+    if (data && Array.isArray(data.errors) && data.errors.length) {
+      const extra = data.errors
+        .map((entry) => (typeof entry === "string" ? entry : entry?.message || JSON.stringify(entry)))
+        .filter(Boolean)
+        .join("; ");
+      if (extra) detail = detail ? `${detail} (${extra})` : extra;
+    }
+  } catch {
+    try {
+      detail = await response.text();
+    } catch {
+      // ignore
+    }
+  }
+  return detail || response.statusText || "Unknown GitHub API error";
+}
+
+function githubAuthHeaders(token, scheme) {
+  return {
+    Accept: "application/vnd.github+json",
+    Authorization: `${scheme} ${token}`,
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+}
+
+async function getGithubFileSha(pathname, token, scheme = "Bearer") {
   const response = await fetch(`${githubApiUrlForPath(pathname)}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}`, {
     method: "GET",
-    headers: {
-      Accept: "application/vnd.github+json",
-      Authorization: `Bearer ${token}`,
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
+    headers: githubAuthHeaders(token, scheme),
   });
   if (response.status === 404) return null;
   if (!response.ok) {
-    const detail = await response.text();
+    const detail = await parseGithubError(response);
     throw new Error(`GitHub file lookup failed (${response.status}): ${detail || response.statusText}`);
   }
   const json = await response.json();
   return json && typeof json.sha === "string" ? json.sha : null;
 }
 
-async function publishStorymapCanvasToGithub(payload, token, commitMessage) {
+async function publishStorymapCanvasToGithubWithScheme(payload, token, commitMessage, scheme) {
   if (!token) throw new Error("GitHub token is required.");
   const normalized = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
   const serialized = `${JSON.stringify(normalized, null, 2)}\n`;
-  const sha = await getGithubFileSha(GITHUB_PUBLISHED_CANVAS_PATH, token);
+  const sha = await getGithubFileSha(GITHUB_PUBLISHED_CANVAS_PATH, token, scheme);
   const body = {
     message: commitMessage || `Publish storymap from admin (${new Date().toISOString()})`,
     content: utf8ToBase64(serialized),
@@ -1023,17 +1049,26 @@ async function publishStorymapCanvasToGithub(payload, token, commitMessage) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/vnd.github+json",
-      Authorization: `Bearer ${token}`,
-      "X-GitHub-Api-Version": "2022-11-28",
+      ...githubAuthHeaders(token, scheme),
     },
     body: JSON.stringify(body),
   });
   if (!response.ok) {
-    const detail = await response.text();
+    const detail = await parseGithubError(response);
     throw new Error(`GitHub publish failed (${response.status}): ${detail || response.statusText}`);
   }
   return normalized;
+}
+
+async function publishStorymapCanvasToGithub(payload, token, commitMessage) {
+  try {
+    return await publishStorymapCanvasToGithubWithScheme(payload, token, commitMessage, "Bearer");
+  } catch (err) {
+    const message = String(err?.message || "");
+    const shouldRetryWithToken = /\(401\)|\(403\)|Bad credentials|Requires authentication/i.test(message);
+    if (!shouldRetryWithToken) throw err;
+    return publishStorymapCanvasToGithubWithScheme(payload, token, commitMessage, "token");
+  }
 }
 
 async function loadPublishedStorymapFromRepo() {
