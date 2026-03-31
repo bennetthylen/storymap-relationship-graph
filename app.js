@@ -875,8 +875,11 @@ function loadStorymapCanvasState() {
   try {
     const isAdminCanvas = MODE === "admin";
     const fallback = isAdminCanvas ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
-    // Option 1: viewer always reads published code snapshot for cross-device consistency.
-    if (!isAdminCanvas) return normalizeStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS, fallback);
+    if (!isAdminCanvas) {
+      const publishedRaw = localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
+      if (publishedRaw) return normalizeStorymapCanvasState(JSON.parse(publishedRaw), fallback);
+      return normalizeStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS, fallback);
+    }
     const raw = isAdminCanvas
       ? localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY)
       : localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
@@ -894,15 +897,22 @@ function saveStorymapCanvasState(payload) {
   try {
     const serialized = JSON.stringify(payload);
     if (MODE === "admin") {
-      // Admin edits are the source of truth and should be visible on public storymap.
+      // Admin saves are draft-only; publishing is explicit.
       localStorage.setItem(STORYMAP_CANVAS_ADMIN_KEY, serialized);
-      localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
       return;
     }
     localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
   } catch {
     // ignore
   }
+}
+
+function publishStorymapCanvasState(payload) {
+  const normalized = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
+  const serialized = JSON.stringify(normalized);
+  localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
+  localStorage.setItem(STORYMAP_CANVAS_RELEASE_KEY, PUBLISHED_STORYMAP_RELEASE);
+  return normalized;
 }
 
 function initCustomStorymapCanvas() {
@@ -938,6 +948,7 @@ function initCustomStorymapCanvas() {
   const imageFileInput = document.getElementById("smNodeImageFile");
   const linkTargetSelect = document.getElementById("smLinkTarget");
   const colorSelect = document.getElementById("smNodeColor");
+  const publishBtn = document.getElementById("smPublishCanvasBtn");
   const saveBtn = document.getElementById("smSaveNode");
   const addChildBtn = document.getElementById("smAddChildNode");
   const linkExistingBtn = document.getElementById("smLinkExisting");
@@ -1317,6 +1328,21 @@ function initCustomStorymapCanvas() {
     saveStorymapCanvasState(canvas);
     renderCanvas();
     syncPanel();
+  });
+
+  on(publishBtn, "click", () => {
+    if (!isAdmin) return;
+    if (publishBtn) publishBtn.disabled = true;
+    try {
+      setStatus("Publishing storymap...", { isLoading: true });
+      publishStorymapCanvasState(canvas);
+      setStatus("Storymap published to public view.");
+    } catch (err) {
+      console.error("Publish failed:", err);
+      setStatus("Publish failed. Check console for details.", { isError: true });
+    } finally {
+      if (publishBtn) publishBtn.disabled = false;
+    }
   });
 
   viewport.addEventListener("click", (evt) => {
