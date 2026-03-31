@@ -582,6 +582,12 @@ const el = {
   cfgHistoryTitle: document.getElementById("cfgHistoryTitle"),
   cfgHistoryBody: document.getElementById("cfgHistoryBody"),
   btnSaveContentConfig: document.getElementById("btnSaveContentConfig"),
+  inlineNodeEditor: document.getElementById("inlineNodeEditor"),
+  inlineNodeLabel: document.getElementById("inlineNodeLabel"),
+  inlineNodeSave: document.getElementById("inlineNodeSave"),
+  inlineNodeAddChild: document.getElementById("inlineNodeAddChild"),
+  inlineNodeConnect: document.getElementById("inlineNodeConnect"),
+  inlineConnectHandle: document.getElementById("inlineConnectHandle"),
 };
 
 function on(elm, eventName, handler) {
@@ -855,6 +861,7 @@ function saveGraph(state) {
 let state = loadGraph();
 let cy = null;
 let selected = null; // { kind: 'node'|'edge', id: string }
+let connectDraft = null;
 
 function setSelected(next) {
   // Remove previous selection class.
@@ -1151,6 +1158,50 @@ function focusNodeById(nodeId) {
   );
 }
 
+function hideInlineNodeEditor() {
+  if (!el.inlineNodeEditor) return;
+  el.inlineNodeEditor.setAttribute("aria-hidden", "true");
+}
+
+function showInlineNodeEditor(nodeId) {
+  if (!el.inlineNodeEditor || !el.inlineNodeLabel || !cy) return;
+  const node = getNodeById(state, nodeId);
+  const cyNode = cy.getElementById(nodeId);
+  if (!node || !cyNode || !cyNode.length) return;
+  const box = cyNode.renderedBoundingBox();
+  el.inlineNodeEditor.style.left = `${Math.min(cy.width() - 360, box.x2 + 10)}px`;
+  el.inlineNodeEditor.style.top = `${Math.max(8, box.y1 - 8)}px`;
+  el.inlineNodeEditor.setAttribute("aria-hidden", "false");
+  el.inlineNodeLabel.value = node.label || "";
+}
+
+function clearConnectPreview() {
+  const preview = document.getElementById("connectPreviewLine");
+  if (preview) preview.remove();
+}
+
+function updateConnectPreview(clientX, clientY) {
+  if (!connectDraft || !el.cy) return;
+  const rect = el.cy.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  const dx = x - connectDraft.startX;
+  const dy = y - connectDraft.startY;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+  let preview = document.getElementById("connectPreviewLine");
+  if (!preview) {
+    preview = document.createElement("div");
+    preview.id = "connectPreviewLine";
+    preview.className = "connectPreviewLine";
+    el.cy.appendChild(preview);
+  }
+  preview.style.left = `${connectDraft.startX}px`;
+  preview.style.top = `${connectDraft.startY}px`;
+  preview.style.width = `${len}px`;
+  preview.style.transform = `rotate(${angle}deg)`;
+}
+
 function moveSelectedNodeStoryOrder(delta) {
   if (!selected || selected.kind !== "node") return;
   const items = orderedStoryNodes();
@@ -1182,11 +1233,14 @@ function escapeHtml(str) {
 function elementsFromState(graph) {
   const nodes = graph.nodes.map((n) => {
     const textLen = String(n.label || "").length;
-    const nodeSize = Math.max(88, Math.min(220, 56 + textLen * 4));
+    const notesLen = String(n.notes || "").length;
+    const isTag = textLen <= 2;
+    const nodeSize = isTag ? 60 : Math.max(96, Math.min(340, 62 + textLen * 6 + Math.min(36, Math.floor(notesLen / 16))));
     return {
       data: {
         id: n.id,
         type: n.type,
+        nodeKind: isTag ? "tag" : "content",
         label: n.label,
         description: n.description || "",
         date: n.date || "",
@@ -1262,36 +1316,47 @@ function renderGraph() {
         style: {
           label: "data(label)",
           "text-wrap": "wrap",
-          "text-max-width": 160,
-          color: "rgba(232,238,255,0.95)",
-          "font-size": 12.5,
+          "text-max-width": 220,
+          color: "#0f1419",
+          "font-size": 13,
           "text-valign": "center",
           "text-halign": "center",
           "overlay-padding": 2,
           "z-index": 10,
-          width: "data(nodeSize)",
-          height: "data(nodeSize)",
+          width: "label",
+          height: "label",
+          "padding-left": 18,
+          "padding-right": 18,
+          "padding-top": 14,
+          "padding-bottom": 14,
           "border-width": 0,
-          "shadow-blur": 16,
-          "shadow-color": "rgba(0,0,0,0.55)",
-          "shadow-opacity": 0.45,
+          "shadow-blur": 24,
+          "shadow-color": "rgba(0,0,0,0.12)",
+          "shadow-opacity": 0.9,
           "shadow-offset-x": 0,
-          "shadow-offset-y": 10,
+          "shadow-offset-y": 6,
+          "background-color": "#a8e6cf",
         },
       },
       {
-        selector: 'node[type="person"]',
+        selector: 'node[nodeKind = "content"]',
+        style: {
+          shape: "round-rectangle",
+          "background-color": "#a8e6cf",
+          "background-blacken": -0.18,
+        },
+      },
+      {
+        selector: 'node[nodeKind = "tag"]',
         style: {
           shape: "ellipse",
-          "background-color": "rgba(77,163,255,0.9)",
-        },
-      },
-      {
-        selector: 'node[type="event"]',
-        style: {
-          shape: "rectangle",
-          "background-color": "rgba(45,212,163,0.88)",
-          "text-rotation": 0,
+          width: 60,
+          height: 60,
+          "padding-left": 0,
+          "padding-right": 0,
+          "padding-top": 0,
+          "padding-bottom": 0,
+          "background-color": "#a5d8ff",
         },
       },
       {
@@ -1310,34 +1375,45 @@ function renderGraph() {
       {
         selector: "edge",
         style: {
-          width: 2,
+          width: 1.5,
           "curve-style": "bezier",
+          "line-style": "dashed",
           "target-arrow-shape": "triangle",
-          "target-arrow-color": "rgba(199,200,212,0.85)",
-          "line-color": "rgba(199,200,212,0.75)",
+          "target-arrow-color": "#bdc4d9",
+          "line-color": "#bdc4d9",
           "label": "data(label)",
           "font-size": 11,
           "text-rotation": "autorotate",
-          "text-background-opacity": 0.6,
-          "text-background-color": "rgba(11,16,32,0.9)",
+          "text-background-opacity": 0.78,
+          "text-background-color": "rgba(255,255,255,0.9)",
           "text-background-padding": 2,
+          color: "#596273",
         },
       },
       {
         selector: "edge.connected",
         style: {
-          width: 3.2,
-          "line-color": "#8f72ff",
-          "target-arrow-color": "#8f72ff",
+          width: 3.4,
+          "line-color": "rgba(53, 166, 141, 0.75)",
+          "target-arrow-color": "rgba(53, 166, 141, 0.75)",
           opacity: 1,
         },
       },
       {
         selector: "node.selected",
         style: {
-          "border-width": 4,
-          "border-color": "#7c5cff",
+          "border-width": 0,
+          "overlay-color": "rgba(39,84,174,0.08)",
+          "overlay-opacity": 1,
           "overlay-padding": 4,
+        },
+      },
+      {
+        selector: "node.hovered",
+        style: {
+          "background-blacken": -0.28,
+          "shadow-blur": 28,
+          "shadow-opacity": 1,
         },
       },
       {
@@ -1378,6 +1454,8 @@ function renderGraph() {
     if (MODE === "viewer") {
       openNodeModalById(node.id());
       openSidebarForNode(node.id());
+    } else if (MODE === "admin") {
+      showInlineNodeEditor(node.id());
     }
   });
 
@@ -1395,9 +1473,14 @@ function renderGraph() {
       if (MODE === "viewer") {
         closeNodeModal();
         closeSidebar();
+      } else if (MODE === "admin") {
+        hideInlineNodeEditor();
       }
     }
   });
+
+  cy.on("mouseover", "node", (evt) => evt.target.addClass("hovered"));
+  cy.on("mouseout", "node", (evt) => evt.target.removeClass("hovered"));
 
   if (MODE === "admin") {
     cy.on("cxttap", "node", (evt) => {
@@ -1405,6 +1488,43 @@ function renderGraph() {
       if (!confirm("Delete this node and its connected relationships?")) return;
       selected = { kind: "node", id: nodeId };
       deleteSelected();
+    });
+
+    on(el.inlineNodeSave, "click", () => {
+      if (!selected || selected.kind !== "node" || !el.inlineNodeLabel) return;
+      const label = el.inlineNodeLabel.value.trim();
+      if (!label) return;
+      const nextNodes = state.nodes.map((n) => (n.id === selected.id ? { ...n, label } : n));
+      setGraphAndRerender({ nodes: nextNodes, edges: state.edges }, { shouldSave: true, preserveSelection: true });
+      showInlineNodeEditor(selected.id);
+    });
+
+    on(el.inlineNodeAddChild, "click", () => {
+      if (!selected || selected.kind !== "node") return;
+      const parent = getNodeById(state, selected.id);
+      if (!parent) return;
+      const label = prompt("Child node label:");
+      if (!label || !label.trim()) return;
+      const child = parent.type === "person" ? makeEventNode({ title: label.trim(), date: "" }) : makePersonNode({ name: label.trim(), description: "" });
+      const edge =
+        parent.type === "person"
+          ? makeEdge({ sourcePersonId: parent.id, targetEventId: child.id, role: "" })
+          : makeEdge({ sourcePersonId: child.id, targetEventId: parent.id, role: "" });
+      setGraphAndRerender({ nodes: [...state.nodes, child], edges: [...state.edges, edge] }, { shouldSave: true, preserveSelection: false });
+    });
+
+    on(el.inlineNodeConnect, "click", () => {
+      if (!selected || selected.kind !== "node") return;
+      connectDraft = { sourceId: selected.id };
+    });
+
+    on(el.inlineConnectHandle, "mousedown", (evt) => {
+      if (!selected || selected.kind !== "node" || !el.cy || !cy) return;
+      evt.preventDefault();
+      const sourceNode = cy.getElementById(selected.id);
+      if (!sourceNode || !sourceNode.length) return;
+      const box = sourceNode.renderedBoundingBox();
+      connectDraft = { sourceId: selected.id, startX: box.x2, startY: (box.y1 + box.y2) / 2 };
     });
   }
 }
@@ -1907,6 +2027,7 @@ function initHeroParallax() {
     requestAnimationFrame(() => {
       const y = window.scrollY || window.pageYOffset || 0;
       hero.style.setProperty("--hero-parallax", `${Math.min(48, y * 0.18)}px`);
+      hero.style.setProperty("--hero-node-parallax", `${Math.min(64, y * 0.26)}px`);
       ticking = false;
     });
   };
@@ -1954,6 +2075,46 @@ on(document, "keydown", (evt) => {
   if (!el.nodeModal || el.nodeModal.getAttribute("aria-hidden") !== "false") return;
   if (evt.key === "ArrowLeft") viewerStepModal(-1);
   if (evt.key === "ArrowRight") viewerStepModal(1);
+});
+
+on(document, "mousemove", (evt) => {
+  if (!connectDraft || !("startX" in connectDraft)) return;
+  updateConnectPreview(evt.clientX, evt.clientY);
+});
+
+on(document, "mouseup", (evt) => {
+  if (!connectDraft || !cy) return;
+  const target = evt.target;
+  const rel = target && target.closest ? target.closest("#cy") : null;
+  if (!rel || !("sourceId" in connectDraft)) {
+    connectDraft = null;
+    clearConnectPreview();
+    return;
+  }
+  const rect = el.cy.getBoundingClientRect();
+  const x = evt.clientX - rect.left;
+  const y = evt.clientY - rect.top;
+  const hitNode = cy.nodes().filter((n) => {
+    const b = n.renderedBoundingBox();
+    return x >= b.x1 && x <= b.x2 && y >= b.y1 && y <= b.y2;
+  })[0];
+  if (hitNode && hitNode.id() !== connectDraft.sourceId) {
+    const source = getNodeById(state, connectDraft.sourceId);
+    const targetNode = getNodeById(state, hitNode.id());
+    let edgeToAdd = null;
+    if (source && targetNode) {
+      if (source.type === "person" && targetNode.type === "event") {
+        edgeToAdd = makeEdge({ sourcePersonId: source.id, targetEventId: targetNode.id, role: "" });
+      } else if (source.type === "event" && targetNode.type === "person") {
+        edgeToAdd = makeEdge({ sourcePersonId: targetNode.id, targetEventId: source.id, role: "" });
+      }
+    }
+    if (edgeToAdd) {
+      setGraphAndRerender({ nodes: state.nodes, edges: [...state.edges, edgeToAdd] }, { shouldSave: true, preserveSelection: true });
+    }
+  }
+  connectDraft = null;
+  clearConnectPreview();
 });
 
 on(el.btnZoomIn, "click", () => {
