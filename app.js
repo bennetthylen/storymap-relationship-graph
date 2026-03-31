@@ -732,6 +732,10 @@ function initCustomStorymapCanvas() {
   const deleteNodeBtn = document.getElementById("smDeleteNode");
   const zoomInBtn = document.getElementById("smZoomIn");
   const zoomOutBtn = document.getElementById("smZoomOut");
+  const infoPanel = document.getElementById("smInfoPanel");
+  const infoTitle = document.getElementById("smInfoTitle");
+  const infoBody = document.getElementById("smInfoBody");
+  const infoCloseBtn = document.getElementById("smInfoClose");
 
   const updateWorldTransform = () => {
     world.style.transform = `translate(${view.panX}px, ${view.panY}px) scale(${view.scale})`;
@@ -749,6 +753,16 @@ function initCustomStorymapCanvas() {
 
   const syncPanel = () => {
     const node = selectedId ? getNodeByIdLocal(selectedId) : null;
+    if (!isAdmin && infoPanel) {
+      if (!node) {
+        infoPanel.setAttribute("aria-hidden", "true");
+      } else {
+        if (infoTitle) infoTitle.textContent = node.content || node.id;
+        const bodyText = node.type === "image" ? "Image node" : `${node.type === "tag" ? "Tag" : "Text"} node`;
+        if (infoBody) infoBody.textContent = bodyText;
+        infoPanel.setAttribute("aria-hidden", "false");
+      }
+    }
     if (!panel || !node || !isAdmin) {
       if (!panel) return;
       panel.classList.remove("storymapAdminPanel--open");
@@ -904,6 +918,12 @@ function initCustomStorymapCanvas() {
     updateWorldTransform();
   });
 
+  on(infoCloseBtn, "click", () => {
+    selectedId = null;
+    if (infoPanel) infoPanel.setAttribute("aria-hidden", "true");
+    renderCanvas();
+  });
+
   on(saveBtn, "click", () => {
     if (!isAdmin || !selectedId) return;
     const node = getNodeByIdLocal(selectedId);
@@ -981,7 +1001,6 @@ function initCustomStorymapCanvas() {
   viewport.addEventListener("click", (evt) => {
     const targetNode = evt.target && evt.target.closest ? evt.target.closest(".smNode") : null;
     if (targetNode) return;
-    if (!isAdmin) return;
     selectedId = null;
     syncPanel();
     renderCanvas();
