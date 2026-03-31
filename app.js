@@ -691,7 +691,7 @@ function loadStorymapCanvasState() {
     const fallback = isAdminCanvas ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
     const raw = isAdminCanvas
       ? localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY)
-      : localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY) || localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY);
+      : localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
     if (!raw) return fallback;
     const parsed = JSON.parse(raw);
     if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return fallback;
@@ -753,7 +753,12 @@ function initCustomStorymapCanvas() {
   const infoTitle = document.getElementById("smInfoTitle");
   const infoBody = document.getElementById("smInfoBody");
   const infoCloseBtn = document.getElementById("smInfoClose");
-  const getNodeLabel = (node) => String(node?.label || node?.content || "").trim();
+  const getNodeLabel = (node) => {
+    const explicit = String(node?.label || "").trim();
+    if (explicit) return explicit;
+    if (node?.type === "image") return "";
+    return String(node?.content || "").trim();
+  };
   const getNodeText = (node) => String(node?.text || "").trim();
   const getNodeImageSrc = (node) => String(node?.imageSrc || node?.content || "").trim();
 
@@ -856,6 +861,13 @@ function initCustomStorymapCanvas() {
         img.src = storymapPlaceholderSvg();
       });
       div.appendChild(img);
+      const title = getNodeLabel(node);
+      if (title) {
+        const caption = document.createElement("span");
+        caption.className = "smNodeImageTitle";
+        caption.textContent = title;
+        div.appendChild(caption);
+      }
     } else {
       div.textContent = getNodeLabel(node);
     }
