@@ -7,15 +7,19 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-mode="viewer">
-    <div class="cornerHeader" aria-label="Header">Doing Fine, Don’t Worry</div>
+    <nav class="siteNav" aria-label="Primary navigation">
+      <div class="siteNav__brand">Doing Well, Don't Worry</div>
+      <div class="siteNav__tabs">
+        <a href="./index.html" class="siteNav__tab siteNav__tab--active">Home</a>
+        <a href="./index.html#storymap" class="siteNav__tab">Storymap</a>
+        <a href="./history.html" class="siteNav__tab">History</a>
+        <a href="./admin.html" class="siteNav__tab">Admin</a>
+      </div>
+    </nav>
 
     <div class="cornerControls" aria-label="Top right controls">
       <div class="langButtons" role="group" aria-label="Language">
-        <button id="btnLangAr" class="langBtn" data-lang="ar" type="button">العربية الفصحى</button>
         <button id="btnLangEn" class="langBtn" data-lang="en" type="button">English</button>
-        <button id="btnLangEs" class="langBtn" data-lang="es" type="button">Español</button>
-        <button id="btnLangDe" class="langBtn" data-lang="de" type="button">Deutsch</button>
-        <button id="btnLangIt" class="langBtn" data-lang="it" type="button">Italiano</button>
       </div>
     </div>
 
@@ -26,14 +30,34 @@
       <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
     </noscript>
 
-    <section class="exhibitionBanner">
-      <h1 id="exhibitionTitle" data-i18n="exhibitionTitle">Doing Well, Don’t Worry: A Relational Feminist Archive</h1>
-      <p id="exhibitionSubtitle" data-i18n="exhibitionSubtitle">
-        Women and Memory Forum reframes Wedad Mitri’s archive as mentorship, solidarity, and collective political learning.
+    <section class="hero" id="home">
+      <h1 id="heroTitle" data-content-key="heroTitle">Doing Well, Don't Worry</h1>
+      <p id="heroSubtitle" data-content-key="heroSubtitle">
+        A Collaboration between Georgetown University's School of Foreign Service and the Women and Memory Forum.
+      </p>
+      <a class="heroCta" href="#storymap" data-content-key="heroCta">Experience "Doing Well, Don't Worry"</a>
+    </section>
+
+    <section class="scrollSection reveal">
+      <p data-content-key="section1">
+        Women are always on the move.
       </p>
     </section>
 
-    <main id="viewerRoot" class="viewer">
+    <section class="scrollSection reveal">
+      <p data-content-key="section2">
+        Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.
+      </p>
+    </section>
+
+    <section class="scrollSection reveal">
+      <p data-content-key="section3">
+        This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.
+      </p>
+    </section>
+
+    <main id="viewerRoot" class="viewer" data-section="storymap">
+      <a id="storymap"></a>
       <aside id="viewerSidebar" class="viewerSidebar" aria-hidden="true">
         <button id="btnCloseSidebar" class="viewerSidebar__close" type="button" aria-label="Close sidebar">X</button>
         <div class="viewerSidebar__content">
@@ -56,6 +80,11 @@
     </main>
 
     <button id="btnLogin" class="loginBtn" type="button">Login</button>
+    <div class="stickyFooterLinks">
+      <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer">Georgetown SFS</a>
+      <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer">Women and Memory Forum</a>
+      <a href="mailto:tbh36@georgetown.edu">tbh36@georgetown.edu</a>
+    </div>
 
     <div id="nodeModal" class="modal" aria-hidden="true">
       <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="nodeModalTitle">

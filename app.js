@@ -3,11 +3,28 @@
 const STORAGE_KEY = "storymapGraphV1";
 const LANG_STORAGE_KEY = "storymapLangV1";
 
-const SUPPORTED_LANGS = ["ar", "en", "es", "de", "it"];
+const SUPPORTED_LANGS = ["en"];
 
-const MODE = document.body?.dataset?.mode === "admin" ? "admin" : "viewer";
+const BODY_MODE = document.body?.dataset?.mode;
+const MODE = BODY_MODE === "admin" || BODY_MODE === "history" ? BODY_MODE : "viewer";
 const ADMIN_UNLOCK_KEY = "storymapAdminUnlockedV1";
 const ADMIN_PASSWORD = "beebo";
+const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
+
+const DEFAULT_CONTENT = {
+  heroTitle: "Doing Well, Don't Worry",
+  heroSubtitle:
+    "A Collaboration between Georgetown University's School of Foreign Service and the Women and Memory Forum.",
+  heroCta: "Experience \"Doing Well, Don't Worry\"",
+  section1: "Women are always on the move.",
+  section2:
+    "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",
+  section3:
+    "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
+  historyTitle: "History",
+  historyBody:
+    "Explore the historical context of women's mobility and work across Egypt, Jordan, Lebanon, and Denmark.",
+};
 
 function buildPageUrl(pageName) {
   const url = new URL(window.location.href);
@@ -497,13 +514,7 @@ function applyTranslations() {
   });
 
   // Active state for language buttons.
-  const langBtnMap = {
-    ar: "btnLangAr",
-    en: "btnLangEn",
-    es: "btnLangEs",
-    de: "btnLangDe",
-    it: "btnLangIt",
-  };
+  const langBtnMap = { en: "btnLangEn" };
   Object.entries(langBtnMap).forEach(([lang, id]) => {
     const btn = document.getElementById(id);
     if (!btn) return;
@@ -570,6 +581,12 @@ const el = {
   btnSubmitLogin: document.getElementById("btnSubmitLogin"),
   btnLogoutAdmin: document.getElementById("btnLogoutAdmin"),
   citationList: document.getElementById("citationList"),
+  cfgHeroTitle: document.getElementById("cfgHeroTitle"),
+  cfgHeroSubtitle: document.getElementById("cfgHeroSubtitle"),
+  cfgHeroCta: document.getElementById("cfgHeroCta"),
+  cfgHistoryTitle: document.getElementById("cfgHistoryTitle"),
+  cfgHistoryBody: document.getElementById("cfgHistoryBody"),
+  btnSaveContentConfig: document.getElementById("btnSaveContentConfig"),
 };
 
 function on(elm, eventName, handler) {
@@ -583,6 +600,36 @@ function setStatus(message, { isError = false, isLoading = false } = {}) {
   status.textContent = message;
   status.classList.toggle("jsStatus--error", Boolean(isError));
   status.classList.toggle("jsStatus--loading", Boolean(isLoading));
+}
+
+function loadContentConfig() {
+  try {
+    const raw = localStorage.getItem(CONTENT_STORAGE_KEY);
+    if (!raw) return { ...DEFAULT_CONTENT };
+    const parsed = JSON.parse(raw);
+    return { ...DEFAULT_CONTENT, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+  } catch {
+    return { ...DEFAULT_CONTENT };
+  }
+}
+
+function saveContentConfig(config) {
+  try {
+    localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(config));
+  } catch {
+    // ignore
+  }
+}
+
+function applyContentConfigToPage() {
+  const cfg = loadContentConfig();
+  document.querySelectorAll("[data-content-key]").forEach((node) => {
+    const key = node.getAttribute("data-content-key");
+    if (!key) return;
+    const value = cfg[key];
+    if (typeof value !== "string") return;
+    node.textContent = value;
+  });
 }
 
 function uuid() {
@@ -936,6 +983,10 @@ function renderSelectedPanel() {
         </div>
 
         <button id="btnSaveNodeDetails" class="btn" type="button">${escapeHtml(t("saveNodeDetails"))}</button>
+        <div class="actions actions--row" style="margin-top:10px;">
+          <button id="btnAddChildNode" class="btn btn--secondary" type="button">Add Child Node</button>
+          <button id="btnConnectToExisting" class="btn btn--secondary" type="button">Connect to Existing</button>
+        </div>
         <p class="muted small" style="margin-top:10px;">
           ${escapeHtml(t("noteLongLinks"))}
         </p>
@@ -1134,6 +1185,8 @@ function escapeHtml(str) {
 
 function elementsFromState(graph) {
   const nodes = graph.nodes.map((n) => {
+    const textLen = String(n.label || "").length;
+    const nodeSize = Math.max(88, Math.min(220, 56 + textLen * 4));
     return {
       data: {
         id: n.id,
@@ -1145,6 +1198,7 @@ function elementsFromState(graph) {
         photo: n.photo || "",
         hasPhoto: n.photo ? 1 : 0,
         storyOrder: typeof n.storyOrder === "number" ? n.storyOrder : 0,
+        nodeSize,
       },
     };
   });
@@ -1187,6 +1241,7 @@ function makeLayoutOptions() {
 }
 
 function renderGraph() {
+  if (!el.cy) return;
   if (cy) {
     cy.destroy();
     cy = null;
@@ -1218,10 +1273,9 @@ function renderGraph() {
           "text-halign": "center",
           "overlay-padding": 2,
           "z-index": 10,
-          width: 92,
-          height: 58,
-          "border-width": 1,
-          "border-color": "rgba(232,238,255,0.22)",
+          width: "data(nodeSize)",
+          height: "data(nodeSize)",
+          "border-width": 0,
           "shadow-blur": 16,
           "shadow-color": "rgba(0,0,0,0.55)",
           "shadow-opacity": 0.45,
@@ -1239,11 +1293,9 @@ function renderGraph() {
       {
         selector: 'node[type="event"]',
         style: {
-          shape: "round-rectangle",
+          shape: "rectangle",
           "background-color": "rgba(45,212,163,0.88)",
           "text-rotation": 0,
-          width: 138,
-          height: 62,
         },
       },
       {
@@ -1350,6 +1402,15 @@ function renderGraph() {
       }
     }
   });
+
+  if (MODE === "admin") {
+    cy.on("cxttap", "node", (evt) => {
+      const nodeId = evt.target.id();
+      if (!confirm("Delete this node and its connected relationships?")) return;
+      selected = { kind: "node", id: nodeId };
+      deleteSelected();
+    });
+  }
 }
 
 function updateSelectOptions() {
@@ -1472,6 +1533,8 @@ on(el.selectedDetails, "click", (evt) => {
   const target = evt.target;
   const removeBtn = target && target.closest ? target.closest("#btnRemovePhoto") : null;
   const saveBtn = target && target.closest ? target.closest("#btnSaveNodeDetails") : null;
+  const addChildBtn = target && target.closest ? target.closest("#btnAddChildNode") : null;
+  const connectBtn = target && target.closest ? target.closest("#btnConnectToExisting") : null;
 
   if (removeBtn) {
     const nodeId = selected.id;
@@ -1530,6 +1593,52 @@ on(el.selectedDetails, "click", (evt) => {
     const nextNodes = state.nodes.map((n) => (n.id === node.id ? { ...n, ...patch } : n));
     setGraphAndRerender({ nodes: nextNodes, edges: state.edges }, { shouldSave: true, preserveSelection: true });
   }
+
+  if (addChildBtn) {
+    const parent = getNodeById(state, selected.id);
+    if (!parent) return;
+    const childLabel = prompt("Child node label:");
+    if (!childLabel || !childLabel.trim()) return;
+    const roleLabel = prompt("Connection label (optional):") || "";
+    const newChild =
+      parent.type === "person"
+        ? makeEventNode({ title: childLabel.trim(), date: "" })
+        : makePersonNode({ name: childLabel.trim(), description: "" });
+    const newEdge =
+      parent.type === "person"
+        ? makeEdge({ sourcePersonId: parent.id, targetEventId: newChild.id, role: roleLabel })
+        : makeEdge({ sourcePersonId: newChild.id, targetEventId: parent.id, role: roleLabel });
+    setGraphAndRerender(
+      { nodes: [...state.nodes, newChild], edges: [...state.edges, newEdge] },
+      { shouldSave: true, preserveSelection: false }
+    );
+    return;
+  }
+
+  if (connectBtn) {
+    const source = getNodeById(state, selected.id);
+    if (!source) return;
+    const candidates = state.nodes.filter((n) => n.id !== source.id);
+    const list = candidates.map((n) => `${n.id}: ${n.label}`).join("\n");
+    const picked = prompt(`Enter target node id:\n${list}`);
+    if (!picked) return;
+    const targetNode = getNodeById(state, picked.trim());
+    if (!targetNode) {
+      alert("Node not found.");
+      return;
+    }
+    const role = prompt("Connection label (optional):") || "";
+    let edgeToAdd = null;
+    if (source.type === "person" && targetNode.type === "event") {
+      edgeToAdd = makeEdge({ sourcePersonId: source.id, targetEventId: targetNode.id, role });
+    } else if (source.type === "event" && targetNode.type === "person") {
+      edgeToAdd = makeEdge({ sourcePersonId: targetNode.id, targetEventId: source.id, role });
+    } else {
+      alert("Connections must be between Person and Event nodes.");
+      return;
+    }
+    setGraphAndRerender({ nodes: state.nodes, edges: [...state.edges, edgeToAdd] }, { shouldSave: true, preserveSelection: true });
+  }
 });
 
 on(el.selectedDetails, "change", (evt) => {
@@ -1554,11 +1663,7 @@ on(el.selectedDetails, "change", (evt) => {
 });
 
 // Language switching.
-document.getElementById("btnLangAr")?.addEventListener("click", () => setLanguage("ar"));
 document.getElementById("btnLangEn")?.addEventListener("click", () => setLanguage("en"));
-document.getElementById("btnLangEs")?.addEventListener("click", () => setLanguage("es"));
-document.getElementById("btnLangDe")?.addEventListener("click", () => setLanguage("de"));
-document.getElementById("btnLangIt")?.addEventListener("click", () => setLanguage("it"));
 
 applyTranslations();
 
@@ -1775,6 +1880,47 @@ function viewerStepModal(delta) {
   openNodeModalById(nextId);
 }
 
+function initScrollReveals() {
+  const revealNodes = Array.from(document.querySelectorAll(".reveal"));
+  if (!revealNodes.length) return;
+  if (typeof IntersectionObserver !== "function") {
+    revealNodes.forEach((n) => n.classList.add("reveal--visible"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("reveal--visible");
+      });
+    },
+    { threshold: 0.12 }
+  );
+  revealNodes.forEach((n) => io.observe(n));
+}
+
+function initContentEditorPanel() {
+  if (!el.btnSaveContentConfig) return;
+  const cfg = loadContentConfig();
+  if (el.cfgHeroTitle) el.cfgHeroTitle.value = cfg.heroTitle || "";
+  if (el.cfgHeroSubtitle) el.cfgHeroSubtitle.value = cfg.heroSubtitle || "";
+  if (el.cfgHeroCta) el.cfgHeroCta.value = cfg.heroCta || "";
+  if (el.cfgHistoryTitle) el.cfgHistoryTitle.value = cfg.historyTitle || "";
+  if (el.cfgHistoryBody) el.cfgHistoryBody.value = cfg.historyBody || "";
+
+  on(el.btnSaveContentConfig, "click", () => {
+    const nextCfg = {
+      ...cfg,
+      heroTitle: el.cfgHeroTitle ? el.cfgHeroTitle.value.trim() : cfg.heroTitle,
+      heroSubtitle: el.cfgHeroSubtitle ? el.cfgHeroSubtitle.value.trim() : cfg.heroSubtitle,
+      heroCta: el.cfgHeroCta ? el.cfgHeroCta.value.trim() : cfg.heroCta,
+      historyTitle: el.cfgHistoryTitle ? el.cfgHistoryTitle.value.trim() : cfg.historyTitle,
+      historyBody: el.cfgHistoryBody ? el.cfgHistoryBody.value.trim() : cfg.historyBody,
+    };
+    saveContentConfig(nextCfg);
+    setStatus("Editable content saved.", { isError: false });
+  });
+}
+
 on(el.btnCloseNodeModal, "click", () => closeNodeModal());
 on(el.btnPrevNode, "click", () => viewerStepModal(-1));
 on(el.btnNextNode, "click", () => viewerStepModal(1));
@@ -1867,10 +2013,17 @@ window.addEventListener("error", (evt) => {
 });
 
 try {
+  applyContentConfigToPage();
+  initScrollReveals();
+  initContentEditorPanel();
   setStatus("Loading storymap...", { isLoading: true });
-  refreshAllUI();
-  if (MODE === "admin") upsertJsonAreaFromState();
-  setStatus("Storymap ready.");
+  if (MODE === "history") {
+    setStatus("Page ready.");
+  } else {
+    refreshAllUI();
+    if (MODE === "admin") upsertJsonAreaFromState();
+    setStatus("Storymap ready.");
+  }
 } catch (err) {
   console.error(err);
   setStatus("Failed to initialize storymap. Check console for details.", { isError: true });

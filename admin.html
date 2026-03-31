@@ -7,15 +7,19 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-mode="admin">
-    <div class="cornerHeader" aria-label="Header">Doing Fine, Don’t Worry</div>
+    <nav class="siteNav" aria-label="Primary navigation">
+      <div class="siteNav__brand">Doing Well, Don't Worry</div>
+      <div class="siteNav__tabs">
+        <a href="./index.html" class="siteNav__tab">Home</a>
+        <a href="./index.html#storymap" class="siteNav__tab">Storymap</a>
+        <a href="./history.html" class="siteNav__tab">History</a>
+        <a href="./admin.html" class="siteNav__tab siteNav__tab--active">Admin</a>
+      </div>
+    </nav>
 
     <div class="cornerControls" aria-label="Top right controls">
       <div class="langButtons" role="group" aria-label="Language">
-        <button id="btnLangAr" class="langBtn" data-lang="ar" type="button">العربية الفصحى</button>
         <button id="btnLangEn" class="langBtn" data-lang="en" type="button">English</button>
-        <button id="btnLangEs" class="langBtn" data-lang="es" type="button">Español</button>
-        <button id="btnLangDe" class="langBtn" data-lang="de" type="button">Deutsch</button>
-        <button id="btnLangIt" class="langBtn" data-lang="it" type="button">Italiano</button>
       </div>
       <button id="btnReset" class="btn btn--secondary" type="button" data-i18n="resetDemo">
         Reset Demo
@@ -55,6 +59,17 @@
             <input id="eventDate" type="text" data-i18n-placeholder="eventDatePlaceholder" placeholder="e.g., 2020-08-14 or 'Spring 1936'" />
           </div>
           <button id="btnAddEvent" class="btn" type="button" data-i18n="addEventButton">Add Event</button>
+        </section>
+
+        <section class="card">
+          <h2>Editable Content</h2>
+          <p class="muted small">Edit landing and history page text shown to public visitors.</p>
+          <div class="field"><label for="cfgHeroTitle">Hero title</label><input id="cfgHeroTitle" type="text" /></div>
+          <div class="field"><label for="cfgHeroSubtitle">Hero subtitle</label><textarea id="cfgHeroSubtitle"></textarea></div>
+          <div class="field"><label for="cfgHeroCta">Hero CTA label</label><input id="cfgHeroCta" type="text" /></div>
+          <div class="field"><label for="cfgHistoryTitle">History title</label><input id="cfgHistoryTitle" type="text" /></div>
+          <div class="field"><label for="cfgHistoryBody">History body</label><textarea id="cfgHistoryBody"></textarea></div>
+          <button id="btnSaveContentConfig" class="btn" type="button">Save Content Text</button>
         </section>
 
         <section class="card">
