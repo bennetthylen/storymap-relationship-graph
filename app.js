@@ -641,41 +641,34 @@ function storymapPlaceholderSvg() {
   );
 }
 
+const PUBLISHED_STORYMAP_CANVAS = {
+  nodes: [
+    { id: "1", type: "text", content: "Demonstration & Lecture", color: "green", x: 100, y: 70 },
+    { id: "2", type: "text", content: "Analytical Engine Workshop", color: "green", x: 70, y: 330 },
+    { id: "3", type: "image", content: "/people-lantern.jpg", color: "orange", x: 430, y: 220 },
+    { id: "4", type: "tag", content: "A", color: "blue", x: 600, y: 100 },
+    { id: "5", type: "tag", content: "H", color: "blue", x: 570, y: 430 },
+  ],
+  edges: [
+    { source: "1", target: "3" },
+    { source: "2", target: "3" },
+    { source: "2", target: "5" },
+    { source: "1", target: "4" },
+    { source: "2", target: "4" },
+  ],
+};
+
+function cloneStorymapCanvasState(state) {
+  return JSON.parse(JSON.stringify(state));
+}
+
 function defaultStorymapCanvasState() {
-  return {
-    nodes: [
-      { id: "1", type: "text", content: "Demonstration & Lecture", color: "green", x: 100, y: 70 },
-      { id: "2", type: "text", content: "Analytical Engine Workshop", color: "green", x: 70, y: 330 },
-      { id: "3", type: "image", content: "/people-lantern.jpg", color: "orange", x: 430, y: 220 },
-      { id: "4", type: "tag", content: "A", color: "blue", x: 600, y: 100 },
-      { id: "5", type: "tag", content: "H", color: "blue", x: 570, y: 430 },
-    ],
-    edges: [
-      { source: "1", target: "3" },
-      { source: "2", target: "3" },
-      { source: "2", target: "5" },
-      { source: "1", target: "4" },
-      { source: "2", target: "4" },
-    ],
-  };
+  return cloneStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS);
 }
 
 function defaultStorymapAdminCanvasState() {
-  return {
-    nodes: [
-      { id: "a1", type: "text", content: "Archive Intake Board", color: "green", x: 120, y: 90 },
-      { id: "a2", type: "text", content: "Curation Notes Desk", color: "teal", x: 120, y: 340 },
-      { id: "a3", type: "image", content: "", color: "orange", x: 470, y: 220 },
-      { id: "a4", type: "tag", content: "A", color: "blue", x: 650, y: 110 },
-      { id: "a5", type: "tag", content: "H", color: "blue", x: 620, y: 430 },
-    ],
-    edges: [
-      { source: "a1", target: "a3" },
-      { source: "a2", target: "a3" },
-      { source: "a2", target: "a5" },
-      { source: "a1", target: "a4" },
-    ],
-  };
+  // Admin and public now share one published baseline for cross-device consistency.
+  return cloneStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS);
 }
 
 function normalizeStorymapCanvasNode(node, index) {
