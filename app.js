@@ -3,7 +3,7 @@
 const STORAGE_KEY = "storymapGraphV1";
 const LANG_STORAGE_KEY = "storymapLangV1";
 
-const SUPPORTED_LANGS = ["en", "ar", "es", "fr", "de"];
+const SUPPORTED_LANGS = ["ar", "en", "es", "de", "it"];
 
 const MODE = document.body?.dataset?.mode === "admin" ? "admin" : "viewer";
 const ADMIN_UNLOCK_KEY = "storymapAdminUnlockedV1";
@@ -391,6 +391,66 @@ const TRANSLATIONS = {
   },
 };
 
+// Ensure Italian exists even if not fully customized yet.
+TRANSLATIONS.it = {
+  ...TRANSLATIONS.en,
+  appTitle: "Archivio Relazionale della Storymap",
+  exhibitionTitle: "Doing Well, Don’t Worry: Un archivio femminista relazionale",
+  exhibitionSubtitle:
+    "Women and Memory Forum ripensa l'archivio di Wedad Mitri come pratica di mentorship, solidarieta e apprendimento collettivo.",
+  citationsTitle: "Riferimenti in stile Chicago",
+  pedagogyTooltip:
+    "Pedagogia del sentire: apprendimento femminista attraverso memoria, affetto e azione relazionale.",
+};
+
+const CHICAGO_CITATIONS = [
+  "Hopkins, Nicholas S., and Kirsten Westergaard, eds. 2001. Directions of Change in Rural Egypt.",
+  "Hassan, Rania. 2021. Feminist Memory and Archival Praxis in Egypt.",
+  "Ibrahim, Hoda. 2017. Pedagogy of Feeling and Relational Activism in Arab Feminist Movements.",
+];
+
+Object.values(TRANSLATIONS).forEach((bundle) => {
+  if (!bundle.exhibitionTitle) bundle.exhibitionTitle = "Doing Well, Don’t Worry: A Relational Feminist Archive";
+  if (!bundle.exhibitionSubtitle)
+    bundle.exhibitionSubtitle =
+      "Women and Memory Forum reframes Wedad Mitri's archive as mentorship, solidarity, and collective political learning.";
+  if (!bundle.citationsTitle) bundle.citationsTitle = "Chicago-Style References";
+  if (!bundle.pedagogyTooltip)
+    bundle.pedagogyTooltip =
+      "Pedagogy of feeling: feminist learning through shared affect, memory, and relational action.";
+  if (!bundle.labelDateRange) bundle.labelDateRange = "Date range";
+  if (!bundle.labelContextTags) bundle.labelContextTags = "Context tags";
+  if (!bundle.labelAudioDescription) bundle.labelAudioDescription = "Audio description";
+  if (!bundle.labelPedagogyNotes) bundle.labelPedagogyNotes = "Pedagogy notes";
+  if (!bundle.labelMentorshipRole) bundle.labelMentorshipRole = "Mentorship role";
+  if (!bundle.labelCitationIds) bundle.labelCitationIds = "Citation IDs";
+});
+
+Object.assign(TRANSLATIONS.ar, {
+  exhibitionTitle: "بخير، لا تقلقي: أرشيف نسوي علائقي",
+  exhibitionSubtitle:
+    "يعيد منتدى المرأة والذاكرة قراءة أرشيف وداد متري بوصفه إرشادًا نسويًا عابرًا للأجيال والطبقات.",
+  citationsTitle: "مراجع وفق أسلوب شيكاغو",
+  labelDateRange: "النطاق الزمني",
+  labelContextTags: "وسوم السياق",
+  labelAudioDescription: "وصف صوتي",
+  labelPedagogyNotes: "ملاحظات تربوية",
+  labelMentorshipRole: "دور الإرشاد",
+  labelCitationIds: "معرّفات المراجع",
+});
+Object.assign(TRANSLATIONS.es, {
+  exhibitionTitle: "Doing Well, Don’t Worry: Archivo feminista relacional",
+  exhibitionSubtitle:
+    "Women and Memory Forum replantea el archivo de Wedad Mitri como mentoría, solidaridad y aprendizaje político colectivo.",
+  citationsTitle: "Referencias estilo Chicago",
+});
+Object.assign(TRANSLATIONS.de, {
+  exhibitionTitle: "Doing Well, Don’t Worry: Relationales feministisches Archiv",
+  exhibitionSubtitle:
+    "Das Women and Memory Forum rahmt Wedad Mitris Archiv als Mentoring, Solidarität und kollektives politisches Lernen neu.",
+  citationsTitle: "Literatur im Chicago-Stil",
+});
+
 let currentLang = "en";
 try {
   currentLang = localStorage.getItem(LANG_STORAGE_KEY) || "en";
@@ -415,6 +475,7 @@ function setLanguage(nextLang) {
   // Update the dynamic selected panel too.
   renderSelectedPanel();
   renderStoryOrderList();
+  renderCitationOverlay();
 }
 
 function applyTranslations() {
@@ -440,8 +501,8 @@ function applyTranslations() {
     ar: "btnLangAr",
     en: "btnLangEn",
     es: "btnLangEs",
-    fr: "btnLangFr",
     de: "btnLangDe",
+    it: "btnLangIt",
   };
   Object.entries(langBtnMap).forEach(([lang, id]) => {
     const btn = document.getElementById(id);
@@ -508,6 +569,7 @@ const el = {
   btnCancelLogin: document.getElementById("btnCancelLogin"),
   btnSubmitLogin: document.getElementById("btnSubmitLogin"),
   btnLogoutAdmin: document.getElementById("btnLogoutAdmin"),
+  citationList: document.getElementById("citationList"),
 };
 
 function on(elm, eventName, handler) {
@@ -542,6 +604,12 @@ function makePersonNode({ name, description }) {
     notes: "",
     photo: "",
     storyOrder: null,
+    dateRange: "",
+    contextTags: "",
+    audioDescription: "",
+    pedagogyNotes: "",
+    mentorshipRole: "mentor",
+    citationIds: "",
   };
 }
 
@@ -554,6 +622,12 @@ function makeEventNode({ title, date }) {
     notes: "",
     photo: "",
     storyOrder: null,
+    dateRange: "",
+    contextTags: "",
+    audioDescription: "",
+    pedagogyNotes: "",
+    mentorshipRole: "context",
+    citationIds: "",
   };
 }
 
@@ -598,6 +672,12 @@ function normalizeGraph(maybeGraph) {
       notes: coerceStringOrEmpty(n.notes),
       photo: coerceStringOrEmpty(n.photo),
       storyOrder: coerceStoryOrder(n.storyOrder),
+      dateRange: coerceStringOrEmpty(n.dateRange),
+      contextTags: coerceStringOrEmpty(n.contextTags),
+      audioDescription: coerceStringOrEmpty(n.audioDescription),
+      pedagogyNotes: coerceStringOrEmpty(n.pedagogyNotes),
+      mentorshipRole: coerceStringOrEmpty(n.mentorshipRole),
+      citationIds: coerceStringOrEmpty(n.citationIds),
     });
   });
 
@@ -633,15 +713,56 @@ function normalizeGraph(maybeGraph) {
 }
 
 function sampleGraph() {
-  const ada = makePersonNode({ name: "Ada Lovelace", description: "Wrote about early computing ideas." });
-  const workshop = makeEventNode({ title: "Analytical Engine Workshop", date: "1843" });
-  const visit = makeEventNode({ title: "Demonstration & Lecture", date: "1844" });
-  const edge1 = makeEdge({ sourcePersonId: ada.id, targetEventId: workshop.id, role: "interested in" });
-  const edge2 = makeEdge({ sourcePersonId: ada.id, targetEventId: visit.id, role: "gave insight to" });
+  const wedad = makePersonNode({
+    name: "Wedad Mitri",
+    description: "Educator and mentor foregrounding relational feminist pedagogy across class and literacy lines.",
+  });
+  wedad.notes =
+    "Archive fragments show mentorship as collective care, not elite individual leadership. Oral storytelling linked rural women with urban organizers.";
+  wedad.dateRange = "1950s-1980s";
+  wedad.contextTags = "nasser,rural_pedagogy,working_class";
+  wedad.audioDescription = "Voice note describing Wedad teaching in mixed-age rural circles.";
+  wedad.pedagogyNotes = "Pedagogy of feeling; intergenerational trust-building.";
+  wedad.citationIds = "1,2";
+
+  const student = makePersonNode({
+    name: "Student-Protege Collective",
+    description: "Young women mentored into literacy, legal awareness, and neighborhood organizing.",
+  });
+  student.notes = "Some members later joined labor and neighborhood committees in Cairo and Delta regions.";
+  student.dateRange = "1970s-2010s";
+  student.contextTags = "infitah,arab_spring,youth";
+  student.audioDescription = "Recorded testimony about learning from Wedad.";
+  student.mentorshipRole = "protege";
+  student.citationIds = "2,3";
+
+  const nasser = makeEventNode({ title: "1952 Revolution & Nasser Education Policies", date: "1952-1970" });
+  nasser.notes = "Expansion of education opened possibilities while preserving stratified access across region and class.";
+  nasser.dateRange = "1952-1970";
+  nasser.contextTags = "nasser,education_policy";
+  nasser.citationIds = "1";
+
+  const infitah = makeEventNode({ title: "Sadat Infitah Economic Liberalization", date: "1974-1981" });
+  infitah.notes = "Economic opening reshaped labor precarity and women’s survival strategies, sharpening class divides.";
+  infitah.dateRange = "1974-1981";
+  infitah.contextTags = "infitah,class";
+  infitah.citationIds = "1,3";
+
+  const tahrir = makeEventNode({ title: "2011 Tahrir Intersectional Coalitions", date: "2011-2013" });
+  tahrir.notes = "Coalitions connected labor, feminist, youth, and rural-origin activists in fluid networks of care and dissent.";
+  tahrir.dateRange = "2011-2013";
+  tahrir.contextTags = "arab_spring,intersectional";
+  tahrir.citationIds = "2,3";
 
   return {
-    nodes: [ada, workshop, visit],
-    edges: [edge1, edge2],
+    nodes: [wedad, student, nasser, infitah, tahrir],
+    edges: [
+      makeEdge({ sourcePersonId: wedad.id, targetEventId: nasser.id, role: "teaches within policy shift" }),
+      makeEdge({ sourcePersonId: wedad.id, targetEventId: infitah.id, role: "adapts pedagogy under precarity" }),
+      makeEdge({ sourcePersonId: student.id, targetEventId: infitah.id, role: "experiences class pressure" }),
+      makeEdge({ sourcePersonId: student.id, targetEventId: tahrir.id, role: "joins coalition politics" }),
+      makeEdge({ sourcePersonId: wedad.id, targetEventId: tahrir.id, role: "legacy of mentorship" }),
+    ],
   };
 }
 
@@ -785,6 +906,31 @@ function renderSelectedPanel() {
         </div>
 
         <div class="field">
+          <label for="nodeDateRangeInput">${escapeHtml(t("labelDateRange"))}</label>
+          <input id="nodeDateRangeInput" type="text" value="${escapeHtml(node.dateRange || "")}" />
+        </div>
+        <div class="field">
+          <label for="nodeContextTagsInput">${escapeHtml(t("labelContextTags"))}</label>
+          <input id="nodeContextTagsInput" type="text" value="${escapeHtml(node.contextTags || "")}" placeholder="nasser,infitah,arab_spring" />
+        </div>
+        <div class="field">
+          <label for="nodeAudioDescriptionInput">${escapeHtml(t("labelAudioDescription"))}</label>
+          <textarea id="nodeAudioDescriptionInput" spellcheck="false">${escapeHtml(node.audioDescription || "")}</textarea>
+        </div>
+        <div class="field">
+          <label for="nodePedagogyNotesInput">${escapeHtml(t("labelPedagogyNotes"))}</label>
+          <textarea id="nodePedagogyNotesInput" spellcheck="false">${escapeHtml(node.pedagogyNotes || "")}</textarea>
+        </div>
+        <div class="field">
+          <label for="nodeMentorshipRoleInput">${escapeHtml(t("labelMentorshipRole"))}</label>
+          <input id="nodeMentorshipRoleInput" type="text" value="${escapeHtml(node.mentorshipRole || "")}" />
+        </div>
+        <div class="field">
+          <label for="nodeCitationIdsInput">${escapeHtml(t("labelCitationIds"))}</label>
+          <input id="nodeCitationIdsInput" type="text" value="${escapeHtml(node.citationIds || "")}" placeholder="1,2" />
+        </div>
+
+        <div class="field">
           <label for="nodeStoryOrderInput">${escapeHtml(t("labelStoryOrder"))}</label>
           <input id="nodeStoryOrderInput" type="text" value="${escapeHtml(String(node.storyOrder ?? 0))}" placeholder="${escapeHtml(t("storyOrderInputPlaceholder"))}" />
         </div>
@@ -803,14 +949,14 @@ function renderSelectedPanel() {
     const edge = state.edges.find((e) => e.id === selected.id);
     if (!edge) return;
 
-    const s = getNodeById(state, edge.source);
-    const t = getNodeById(state, edge.target);
+    const sourceNode = getNodeById(state, edge.source);
+    const targetNode = getNodeById(state, edge.target);
 
     el.selectedDetails.innerHTML = `
       <div class="selectedItem">
         <p><strong>${escapeHtml(t("relationshipTitle"))}</strong></p>
-        <p><strong>${escapeHtml(t("edgeLabelPerson"))}:</strong> ${escapeHtml(s?.label || edge.source)}</p>
-        <p><strong>${escapeHtml(t("edgeLabelEvent"))}:</strong> ${escapeHtml(t?.label || edge.target)}</p>
+        <p><strong>${escapeHtml(t("edgeLabelPerson"))}:</strong> ${escapeHtml(sourceNode?.label || edge.source)}</p>
+        <p><strong>${escapeHtml(t("edgeLabelEvent"))}:</strong> ${escapeHtml(targetNode?.label || edge.target)}</p>
         ${
           edge.role
             ? `<p><strong>${escapeHtml(t("edgeLabelRole"))}:</strong> ${escapeHtml(edge.role)}</p>`
@@ -873,6 +1019,24 @@ function renderStoryOrderList() {
   const idx = items.findIndex((n) => n.id === selectedId);
   el.btnStoryMoveUp.disabled = idx <= 0;
   el.btnStoryMoveDown.disabled = idx < 0 || idx >= items.length - 1;
+}
+
+function renderCitationOverlay() {
+  if (!el.citationList) return;
+  const citationIdsRaw =
+    selected && selected.kind === "node" ? getNodeById(state, selected.id)?.citationIds || "" : "";
+  const ids = citationIdsRaw
+    .split(",")
+    .map((v) => parseInt(v.trim(), 10))
+    .filter((v) => Number.isFinite(v) && v > 0);
+  const source = ids.length ? ids.map((id) => CHICAGO_CITATIONS[id - 1]).filter(Boolean) : CHICAGO_CITATIONS;
+  el.citationList.innerHTML = "";
+  source.forEach((entry, i) => {
+    const div = document.createElement("div");
+    div.className = "citationItem";
+    div.textContent = `${i + 1}. ${entry}`;
+    el.citationList.appendChild(div);
+  });
 }
 
 function connectedComponentIds(startNodeIds) {
@@ -1231,6 +1395,7 @@ function refreshAllUI() {
     renderStoryOrderList();
   }
   renderGraph();
+  renderCitationOverlay();
 
   // Keep JSON area in sync only when empty or it currently matches saved state.
   // (Avoid fighting the user's edits.)
@@ -1323,6 +1488,12 @@ on(el.selectedDetails, "click", (evt) => {
     const notesEl = document.getElementById("nodeNotesInput");
     const orderEl = document.getElementById("nodeStoryOrderInput");
     const photoUrlEl = document.getElementById("nodePhotoUrlInput");
+    const dateRangeEl = document.getElementById("nodeDateRangeInput");
+    const contextTagsEl = document.getElementById("nodeContextTagsInput");
+    const audioDescriptionEl = document.getElementById("nodeAudioDescriptionInput");
+    const pedagogyNotesEl = document.getElementById("nodePedagogyNotesInput");
+    const mentorshipRoleEl = document.getElementById("nodeMentorshipRoleInput");
+    const citationIdsEl = document.getElementById("nodeCitationIdsInput");
 
     const label = labelEl ? labelEl.value.trim() : "";
     if (!label) {
@@ -1336,6 +1507,12 @@ on(el.selectedDetails, "click", (evt) => {
     const patch = {
       label,
       notes,
+      dateRange: dateRangeEl ? dateRangeEl.value.trim() : "",
+      contextTags: contextTagsEl ? contextTagsEl.value.trim() : "",
+      audioDescription: audioDescriptionEl ? audioDescriptionEl.value.trim() : "",
+      pedagogyNotes: pedagogyNotesEl ? pedagogyNotesEl.value.trim() : "",
+      mentorshipRole: mentorshipRoleEl ? mentorshipRoleEl.value.trim() : "",
+      citationIds: citationIdsEl ? citationIdsEl.value.trim() : "",
     };
     if (typeof storyOrder === "number") patch.storyOrder = storyOrder;
 
@@ -1380,8 +1557,8 @@ on(el.selectedDetails, "change", (evt) => {
 document.getElementById("btnLangAr")?.addEventListener("click", () => setLanguage("ar"));
 document.getElementById("btnLangEn")?.addEventListener("click", () => setLanguage("en"));
 document.getElementById("btnLangEs")?.addEventListener("click", () => setLanguage("es"));
-document.getElementById("btnLangFr")?.addEventListener("click", () => setLanguage("fr"));
 document.getElementById("btnLangDe")?.addEventListener("click", () => setLanguage("de"));
+document.getElementById("btnLangIt")?.addEventListener("click", () => setLanguage("it"));
 
 applyTranslations();
 
@@ -1502,8 +1679,10 @@ function openSidebarForNode(nodeId) {
   }
   if (el.sidebarDescription) {
     const desc = (node.notes || "").trim() || (node.description || "").trim();
-    el.sidebarDescription.textContent = desc || "";
-    el.sidebarDescription.style.display = desc ? "block" : "none";
+    const meta = [node.dateRange, node.contextTags, node.mentorshipRole].filter(Boolean).join(" | ");
+    const text = [desc, meta].filter(Boolean).join("\n");
+    el.sidebarDescription.textContent = text || "";
+    el.sidebarDescription.style.display = text ? "block" : "none";
   }
   if (el.sidebarThumb) {
     if (node.photo) {
@@ -1553,8 +1732,14 @@ function openNodeModalById(nodeId) {
     (node.notes || "").trim() ||
     (node.type === "person" ? (node.description || "").trim() : "") ||
     "";
-  el.nodeModalDescription.textContent = desc || "";
-  el.nodeModalDescription.style.display = desc ? "block" : "none";
+  const detailParts = [];
+  if ((node.dateRange || "").trim()) detailParts.push(`Date range: ${node.dateRange.trim()}`);
+  if ((node.contextTags || "").trim()) detailParts.push(`Tags: ${node.contextTags.trim()}`);
+  if ((node.audioDescription || "").trim()) detailParts.push(`Audio: ${node.audioDescription.trim()}`);
+  if ((node.pedagogyNotes || "").trim()) detailParts.push(`Pedagogy: ${node.pedagogyNotes.trim()}`);
+  const combinedDesc = [desc, ...detailParts].filter(Boolean).join("\n\n");
+  el.nodeModalDescription.textContent = combinedDesc || "";
+  el.nodeModalDescription.style.display = combinedDesc ? "block" : "none";
 
   const hasPhoto = Boolean((node.photo || "").trim());
   if (hasPhoto) {

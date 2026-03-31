@@ -94,6 +94,24 @@ body {
   transition: grid-template-columns 240ms ease;
 }
 
+.exhibitionBanner {
+  margin: 10px 14px 0;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: linear-gradient(90deg, rgba(124, 92, 255, 0.22), rgba(45, 212, 163, 0.12));
+}
+
+.exhibitionBanner h1 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+.exhibitionBanner p {
+  margin: 0;
+  color: rgba(232, 238, 255, 0.86);
+}
+
 .viewer--withSidebar {
   grid-template-columns: 280px minmax(0, 1fr);
   gap: 12px;
@@ -158,6 +176,33 @@ body {
 
 .mapArea {
   position: relative;
+}
+
+.citationOverlay {
+  margin: 8px 14px 92px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.citationOverlay h3 {
+  margin: 0 0 8px;
+}
+
+.citationList {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.citationItem {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(232, 238, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .graphWrap {

@@ -7,17 +7,15 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-mode="admin">
-    <div class="cornerHeader" aria-label="Header">
-      Doing Fine, Don’t Worry
-    </div>
+    <div class="cornerHeader" aria-label="Header">Doing Fine, Don’t Worry</div>
 
     <div class="cornerControls" aria-label="Top right controls">
       <div class="langButtons" role="group" aria-label="Language">
-        <button id="btnLangAr" class="langBtn" data-lang="ar" type="button">العربية</button>
+        <button id="btnLangAr" class="langBtn" data-lang="ar" type="button">العربية الفصحى</button>
         <button id="btnLangEn" class="langBtn" data-lang="en" type="button">English</button>
         <button id="btnLangEs" class="langBtn" data-lang="es" type="button">Español</button>
-        <button id="btnLangFr" class="langBtn" data-lang="fr" type="button">Français</button>
         <button id="btnLangDe" class="langBtn" data-lang="de" type="button">Deutsch</button>
+        <button id="btnLangIt" class="langBtn" data-lang="it" type="button">Italiano</button>
       </div>
       <button id="btnReset" class="btn btn--secondary" type="button" data-i18n="resetDemo">
         Reset Demo
@@ -110,6 +108,7 @@
       <aside class="panel panel--right">
         <section class="card">
           <h2 data-i18n="selectedTitle">Selected</h2>
+          <p class="muted small">Edit archival metadata: date range, context tags, audio description, pedagogy notes, and citations.</p>
           <div id="selectedDetails" class="selectedDetails">
             <p class="muted" data-i18n="nothingSelectedYet">Nothing selected yet.</p>
           </div>

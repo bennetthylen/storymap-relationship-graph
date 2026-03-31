@@ -7,17 +7,15 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-mode="viewer">
-    <div class="cornerHeader" aria-label="Header">
-      Doing Fine, Don’t Worry
-    </div>
+    <div class="cornerHeader" aria-label="Header">Doing Fine, Don’t Worry</div>
 
     <div class="cornerControls" aria-label="Top right controls">
       <div class="langButtons" role="group" aria-label="Language">
-        <button id="btnLangAr" class="langBtn" data-lang="ar" type="button">العربية</button>
+        <button id="btnLangAr" class="langBtn" data-lang="ar" type="button">العربية الفصحى</button>
         <button id="btnLangEn" class="langBtn" data-lang="en" type="button">English</button>
         <button id="btnLangEs" class="langBtn" data-lang="es" type="button">Español</button>
-        <button id="btnLangFr" class="langBtn" data-lang="fr" type="button">Français</button>
         <button id="btnLangDe" class="langBtn" data-lang="de" type="button">Deutsch</button>
+        <button id="btnLangIt" class="langBtn" data-lang="it" type="button">Italiano</button>
       </div>
     </div>
 
@@ -27,6 +25,13 @@
     <noscript>
       <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
     </noscript>
+
+    <section class="exhibitionBanner">
+      <h1 id="exhibitionTitle" data-i18n="exhibitionTitle">Doing Well, Don’t Worry: A Relational Feminist Archive</h1>
+      <p id="exhibitionSubtitle" data-i18n="exhibitionSubtitle">
+        Women and Memory Forum reframes Wedad Mitri’s archive as mentorship, solidarity, and collective political learning.
+      </p>
+    </section>
 
     <main id="viewerRoot" class="viewer">
       <aside id="viewerSidebar" class="viewerSidebar" aria-hidden="true">
@@ -71,6 +76,14 @@
         </div>
       </div>
     </div>
+
+    <section id="citationOverlay" class="citationOverlay">
+      <h3 data-i18n="citationsTitle">Chicago-Style References</h3>
+      <div id="citationList" class="citationList"></div>
+      <p class="muted small" data-i18n="pedagogyTooltip">
+        Pedagogy of feeling: feminist learning through shared affect, memory, and relational action.
+      </p>
+    </section>
 
     <div id="loginModal" class="loginModal" aria-hidden="true">
       <div class="loginModal__backdrop"></div>
