@@ -15,6 +15,7 @@ const DISCUSSION_STORAGE_KEY = "storymap-discussions";
 const STORYMAP_CANVAS_PUBLIC_KEY = "storymapCanvasPublicV1";
 const STORYMAP_CANVAS_ADMIN_KEY = "storymapCanvasAdminV1";
 const STORYMAP_CANVAS_RELEASE_KEY = "storymapCanvasPublishedReleaseV1";
+const STORYMAP_PROGRESS_KEY = "storymapProgressV1";
 const GITHUB_TOKEN_SESSION_KEY = "storymapGithubPublishTokenV1";
 const GITHUB_PUBLISHED_CANVAS_PATH = "published-storymap.json";
 const GITHUB_REPO_OWNER = "bennetthylen";
@@ -31,7 +32,7 @@ const DEFAULT_CONTENT = {
     "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",
   section3:
     "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
-  historyTitle: "Feminism in Egypt and Beyond.",
+  historyTitle: "Feminism in Egypt and Beyond",
   historyBody:
     "[EXAMPLE TEXT] The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
 };
@@ -930,6 +931,54 @@ function normalizeStorymapCanvasState(payload, fallbackState) {
   return { nodes, edges };
 }
 
+function storymapEdgeKey(a, b) {
+  return a < b ? `${a}||${b}` : `${b}||${a}`;
+}
+
+function getStorymapEntryNodeIds(canvas) {
+  if (!canvas?.nodes?.length) return [];
+  const ids = canvas.nodes.map((n) => n.id);
+  const incoming = new Set();
+  canvas.edges.forEach((e) => incoming.add(e.target));
+  const roots = ids.filter((id) => !incoming.has(id));
+  if (roots.length) return roots;
+  return [ids[0]];
+}
+
+function getUndirectedStorymapNeighbors(canvas, nodeId) {
+  const out = new Set();
+  canvas.edges.forEach((e) => {
+    if (e.source === nodeId) out.add(e.target);
+    if (e.target === nodeId) out.add(e.source);
+  });
+  return [...out];
+}
+
+function loadStorymapViewerProgress() {
+  try {
+    const raw = localStorage.getItem(STORYMAP_PROGRESS_KEY);
+    if (!raw) return { unlocked: [], visited: [] };
+    const p = JSON.parse(raw);
+    return {
+      unlocked: Array.isArray(p?.unlocked) ? p.unlocked : [],
+      visited: Array.isArray(p?.visited) ? p.visited : [],
+    };
+  } catch {
+    return { unlocked: [], visited: [] };
+  }
+}
+
+function saveStorymapViewerProgress(unlockedArr, visitedArr) {
+  try {
+    localStorage.setItem(
+      STORYMAP_PROGRESS_KEY,
+      JSON.stringify({ unlocked: [...unlockedArr], visited: [...visitedArr] })
+    );
+  } catch {
+    // ignore
+  }
+}
+
 function loadStorymapCanvasState() {
   try {
     const isAdminCanvas = MODE === "admin";
@@ -1105,6 +1154,31 @@ function initCustomStorymapCanvas() {
   let view = { scale: 1, panX: 0, panY: 0 };
   let panDraft = null;
   let nodeDragDraft = null;
+  let previewAsUser = false;
+  const createConnectSelect = document.getElementById("smCreateConnectTo");
+  const previewToggle = document.getElementById("smPreviewAsUser");
+
+  const pruneIdsToCanvas = (idSet) => {
+    const valid = new Set(canvas.nodes.map((n) => n.id));
+    return new Set([...idSet].filter((id) => valid.has(id)));
+  };
+
+  const mergeViewerProgress = () => {
+    const entryNodeIds = getStorymapEntryNodeIds(canvas);
+    const progress = loadStorymapViewerProgress();
+    viewerUnlocked = pruneIdsToCanvas(new Set([...entryNodeIds, ...progress.unlocked]));
+    viewerVisited = pruneIdsToCanvas(new Set(progress.visited));
+  };
+
+  let viewerUnlocked = new Set();
+  let viewerVisited = new Set();
+  mergeViewerProgress();
+  const pendingEdgeAnim = new Set();
+
+  const prefersReducedMotion = () =>
+    typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const isViewerLike = () => !isAdmin || previewAsUser;
 
   const labelInput = document.getElementById("smNodeLabel");
   const textInput = document.getElementById("smNodeText");
@@ -1192,6 +1266,146 @@ function initCustomStorymapCanvas() {
     view.panY = height / 2 - graphCenterY * fittedScale;
   };
 
+  const syncCreateConnectOptions = () => {
+    if (!createConnectSelect || !isAdmin) return;
+    const preserve = createConnectSelect.value;
+    createConnectSelect.innerHTML = [
+      '<option value="">None (no link)</option>',
+      ...canvas.nodes.map(
+        (n) => `<option value="${escapeHtml(n.id)}">${escapeHtml(getNodeLabel(n) || n.id)}</option>`
+      ),
+    ].join("");
+    if (preserve && canvas.nodes.some((n) => n.id === preserve)) {
+      createConnectSelect.value = preserve;
+    } else if (selectedId && canvas.nodes.some((n) => n.id === selectedId)) {
+      createConnectSelect.value = selectedId;
+    }
+  };
+
+  const saveViewerState = () => {
+    if (!isViewerLike()) return;
+    saveStorymapViewerProgress([...viewerUnlocked], [...viewerVisited]);
+  };
+
+  const nodeElById = (nodeId) =>
+    nodesLayer.querySelector(`.smNode[data-id="${String(nodeId).replace(/"/g, '\\"')}"]`);
+
+  const pulseNodeById = (nodeId) => {
+    const el = nodeElById(nodeId);
+    if (!el) return;
+    el.classList.remove("smNode--pulse");
+    void el.offsetWidth;
+    el.classList.add("smNode--pulse");
+    const onEnd = (evt) => {
+      if (evt.animationName && evt.animationName !== "smNodePulseRing") return;
+      el.classList.remove("smNode--pulse");
+      el.removeEventListener("animationend", onEnd);
+    };
+    el.addEventListener("animationend", onEnd);
+  };
+
+  const runUnlockAnim = (el, parentId, nid, edgeKey, opts = {}) => {
+    const { updateProgress = true, onFinish = null } = opts;
+    const parent = getNodeByIdLocal(parentId);
+    const node = getNodeByIdLocal(nid);
+    if (!el || !parent || !node) {
+      if (typeof onFinish === "function") onFinish();
+      return;
+    }
+    el.classList.remove("smNode--locked");
+    const w = el.offsetWidth || 48;
+    const h = el.offsetHeight || 48;
+    const imgEl = el.querySelector("img");
+    el.style.transition = "none";
+    el.style.left = `${parent.x - w / 2}px`;
+    el.style.top = `${parent.y - h / 2}px`;
+    el.style.transform = "scale(0.18)";
+    el.style.opacity = "0.35";
+    if (imgEl) {
+      imgEl.style.transition = "none";
+      imgEl.style.filter = "grayscale(1)";
+    }
+    void el.offsetWidth;
+    const dur = prefersReducedMotion() ? "0.01ms" : "450ms";
+    const colorDur = prefersReducedMotion() ? "0.01ms" : "600ms";
+    el.style.transition = `left ${dur} cubic-bezier(0.22, 1, 0.36, 1), top ${dur} cubic-bezier(0.22, 1, 0.36, 1), transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
+    if (imgEl) imgEl.style.transition = `filter ${colorDur} ease`;
+    el.style.left = `${node.x}px`;
+    el.style.top = `${node.y}px`;
+    el.style.transform = "scale(1)";
+    el.style.opacity = "1";
+    if (imgEl) imgEl.style.filter = "grayscale(0)";
+
+    const finish = () => {
+      el.style.transition = "";
+      el.style.transform = "";
+      el.style.opacity = "";
+      if (imgEl) {
+        imgEl.style.transition = "";
+        imgEl.style.filter = "";
+      }
+      pendingEdgeAnim.delete(edgeKey);
+      if (updateProgress) {
+        viewerUnlocked.add(nid);
+        saveViewerState();
+      }
+      if (typeof onFinish === "function") onFinish();
+      else renderCanvas();
+    };
+
+    if (prefersReducedMotion()) {
+      finish();
+      return;
+    }
+
+    let done = false;
+    let fallbackTimer = null;
+    const onEnd = (evt) => {
+      if (evt.propertyName !== "left") return;
+      if (done) return;
+      done = true;
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
+      el.removeEventListener("transitionend", onEnd);
+      finish();
+    };
+    el.addEventListener("transitionend", onEnd);
+    fallbackTimer = window.setTimeout(() => {
+      if (done) return;
+      done = true;
+      el.removeEventListener("transitionend", onEnd);
+      finish();
+    }, 950);
+  };
+
+  const queueNeighborUnlockAnimations = (clickedId) => {
+    if (!isViewerLike()) return;
+    const neighbors = getUndirectedStorymapNeighbors(canvas, clickedId).filter((nid) => !viewerUnlocked.has(nid));
+    if (!neighbors.length) return;
+    if (prefersReducedMotion()) {
+      neighbors.forEach((id) => viewerUnlocked.add(id));
+      saveViewerState();
+      renderCanvas();
+      return;
+    }
+    const stagger = 100;
+    let waveActive = 0;
+    const waveDone = () => {
+      waveActive -= 1;
+      if (waveActive <= 0) renderCanvas();
+    };
+    neighbors.forEach((nid, i) => {
+      window.setTimeout(() => {
+        const el = nodeElById(nid);
+        if (!el) return;
+        const ek = storymapEdgeKey(clickedId, nid);
+        pendingEdgeAnim.add(ek);
+        drawEdges();
+        waveActive += 1;
+        runUnlockAnim(el, clickedId, nid, ek, { updateProgress: true, onFinish: waveDone });
+      }, i * stagger);
+    });
+  };
+
   const syncPanel = () => {
     const node = selectedId ? getNodeByIdLocal(selectedId) : null;
     if (!isAdmin && infoPanel) {
@@ -1223,6 +1437,7 @@ function initCustomStorymapCanvas() {
       if (!panel) return;
       panel.classList.remove("storymapAdminPanel--open");
       panel.setAttribute("aria-hidden", "true");
+      if (isAdmin) syncCreateConnectOptions();
       return;
     }
     panel.classList.add("storymapAdminPanel--open");
@@ -1238,6 +1453,7 @@ function initCustomStorymapCanvas() {
     }
     if (colorSelect) colorSelect.value = node.color || "green";
     if (imageFileInput) imageFileInput.value = "";
+    syncCreateConnectOptions();
   };
 
   const drawEdges = () => {
@@ -1246,7 +1462,16 @@ function initCustomStorymapCanvas() {
     nodesLayer.querySelectorAll(".smNode").forEach((elNode) => {
       nodeEls.set(elNode.getAttribute("data-id"), elNode);
     });
+    const showAllEdges = isAdmin && !previewAsUser;
     canvas.edges.forEach((edge) => {
+      const ek = storymapEdgeKey(edge.source, edge.target);
+      if (!showAllEdges) {
+        const aUn = viewerUnlocked.has(edge.source);
+        const bUn = viewerUnlocked.has(edge.target);
+        const bothUnlocked = aUn && bUn;
+        const pending = pendingEdgeAnim.has(ek);
+        if (!bothUnlocked && !pending) return;
+      }
       const source = nodeEls.get(edge.source);
       const target = nodeEls.get(edge.target);
       if (!source || !target) return;
@@ -1259,6 +1484,9 @@ function initCustomStorymapCanvas() {
       line.setAttribute("y1", String(y1));
       line.setAttribute("x2", String(x2));
       line.setAttribute("y2", String(y2));
+      if (pendingEdgeAnim.has(ek)) {
+        line.classList.add("storymapEdge--draw");
+      }
       edgesSvg.appendChild(line);
     });
   };
@@ -1270,6 +1498,11 @@ function initCustomStorymapCanvas() {
     div.dataset.id = node.id;
     div.style.left = `${node.x}px`;
     div.style.top = `${node.y}px`;
+
+    const vl = isViewerLike();
+    const unlocked = viewerUnlocked.has(node.id);
+    if (vl && !unlocked) div.classList.add("smNode--locked");
+    if (vl && viewerVisited.has(node.id) && unlocked) div.classList.add("smNode--visited");
 
     if (node.type === "image") {
       const img = document.createElement("img");
@@ -1292,18 +1525,38 @@ function initCustomStorymapCanvas() {
     return div;
   };
 
+  const handleNodeClick = (node, evt) => {
+    evt.stopPropagation();
+    if (isViewerLike()) {
+      if (!viewerUnlocked.has(node.id)) {
+        return;
+      }
+      selectedId = node.id;
+      viewerVisited.add(node.id);
+      saveViewerState();
+      renderCanvas();
+      syncPanel();
+      requestAnimationFrame(() => {
+        pulseNodeById(node.id);
+        window.setTimeout(
+          () => queueNeighborUnlockAnimations(node.id),
+          prefersReducedMotion() ? 0 : 520
+        );
+      });
+      return;
+    }
+    selectedId = node.id;
+    renderCanvas();
+    syncPanel();
+  };
+
   const renderCanvas = () => {
     nodesLayer.innerHTML = "";
     canvas.nodes.forEach((node) => {
       const nodeEl = makeNodeEl(node);
-      nodeEl.addEventListener("click", (evt) => {
-        evt.stopPropagation();
-        selectedId = node.id;
-        renderCanvas();
-        syncPanel();
-      });
+      nodeEl.addEventListener("click", (evt) => handleNodeClick(node, evt));
       nodeEl.addEventListener("mousedown", (evt) => {
-        if (!isAdmin || evt.button !== 0) return;
+        if (!isAdmin || previewAsUser || evt.button !== 0) return;
         evt.stopPropagation();
         const point = screenToWorld(evt.clientX, evt.clientY);
         nodeDragDraft = { id: node.id, offsetX: point.x - node.x, offsetY: point.y - node.y };
@@ -1318,7 +1571,7 @@ function initCustomStorymapCanvas() {
     const targetNode = evt.target && evt.target.closest ? evt.target.closest(".smNode") : null;
     if (!targetNode) {
       panDraft = { startX: evt.clientX, startY: evt.clientY, baseX: view.panX, baseY: view.panY };
-      if (!isAdmin) {
+      if (!isAdmin || previewAsUser) {
         selectedId = null;
         syncPanel();
         renderCanvas();
@@ -1327,7 +1580,7 @@ function initCustomStorymapCanvas() {
   });
 
   window.addEventListener("mousemove", (evt) => {
-    if (nodeDragDraft && isAdmin) {
+    if (nodeDragDraft && isAdmin && !previewAsUser) {
       const node = getNodeByIdLocal(nodeDragDraft.id);
       if (!node) return;
       const point = screenToWorld(evt.clientX, evt.clientY);
@@ -1399,6 +1652,7 @@ function initCustomStorymapCanvas() {
     if (!isAdmin) return;
     canvas = normalizeStorymapCanvasState(defaultStorymapAdminCanvasState(), defaultStorymapAdminCanvasState());
     selectedId = null;
+    mergeViewerProgress();
     fitViewToNodes();
     updateWorldTransform();
     saveStorymapCanvasState(canvas);
@@ -1430,8 +1684,9 @@ function initCustomStorymapCanvas() {
     }
     const text = String(createTextInput?.value || "").trim();
     const color = String(createColorInput?.value || "green");
+    const connectTo = String(createConnectSelect?.value || "").trim();
     const id = `n_${uuid().slice(0, 8)}`;
-    const anchor = selectedId ? getNodeByIdLocal(selectedId) : null;
+    const anchor = connectTo ? getNodeByIdLocal(connectTo) : selectedId ? getNodeByIdLocal(selectedId) : null;
     const nextNode = {
       id,
       type: type === "image" || type === "tag" ? type : "text",
@@ -1445,10 +1700,25 @@ function initCustomStorymapCanvas() {
       legacyType: "",
     };
     canvas.nodes.push(nextNode);
+    if (connectTo && connectTo !== id) {
+      const exists = canvas.edges.some((e) => e.source === connectTo && e.target === id);
+      if (!exists) {
+        canvas.edges.push({ source: connectTo, target: id, label: "" });
+      }
+    }
     selectedId = id;
     saveStorymapCanvasState(canvas);
     renderCanvas();
     syncPanel();
+    if (connectTo && connectTo !== id) {
+      const ek = storymapEdgeKey(connectTo, id);
+      pendingEdgeAnim.add(ek);
+      drawEdges();
+      requestAnimationFrame(() => {
+        const el = nodeElById(id);
+        if (el) runUnlockAnim(el, connectTo, id, ek, { updateProgress: false });
+      });
+    }
     if (createLabelInput) createLabelInput.value = "";
     if (createTextInput) createTextInput.value = "";
   });
@@ -1493,6 +1763,13 @@ function initCustomStorymapCanvas() {
     saveStorymapCanvasState(canvas);
     renderCanvas();
     syncPanel();
+    const ek = storymapEdgeKey(parent.id, id);
+    pendingEdgeAnim.add(ek);
+    drawEdges();
+    requestAnimationFrame(() => {
+      const el = nodeElById(id);
+      if (el) runUnlockAnim(el, parent.id, id, ek, { updateProgress: false });
+    });
   });
 
   on(linkExistingBtn, "click", () => {
@@ -1554,14 +1831,25 @@ function initCustomStorymapCanvas() {
     renderCanvas();
   });
 
+  if (isAdmin && previewToggle) {
+    on(previewToggle, "change", () => {
+      previewAsUser = previewToggle.checked;
+      document.body.classList.toggle("layout--storymapPreview", previewAsUser);
+      renderCanvas();
+      syncPanel();
+    });
+  }
+
   fitViewToNodes();
   updateWorldTransform();
   renderCanvas();
   syncPanel();
+  if (isAdmin) syncCreateConnectOptions();
   if (!isAdmin) {
     void loadPublishedStorymapFromRepo()
       .then((remoteCanvas) => {
         canvas = remoteCanvas;
+        mergeViewerProgress();
         selectedId = null;
         renderCanvas();
         syncPanel();

@@ -71,6 +71,15 @@
               <option value="orange">Orange</option>
             </select>
           </div>
+          <div class="field">
+            <label for="smCreateConnectTo">Connect to (parent)</label>
+            <select id="smCreateConnectTo" aria-describedby="smCreateConnectHelp">
+              <option value="">None (no link)</option>
+            </select>
+            <p id="smCreateConnectHelp" class="muted small" style="margin: 0.35rem 0 0">
+              Defaults to the selected canvas node. Creates a directed edge parent → new node. Clear to skip.
+            </p>
+          </div>
           <button id="smCreateNodeBtn" class="btn" type="button">Create Node</button>
         </section>
 
@@ -140,6 +149,10 @@
               <button id="smZoomIn" class="mapControls__btn" type="button" aria-label="Zoom in">+</button>
               <button id="smZoomOut" class="mapControls__btn" type="button" aria-label="Zoom out">-</button>
             </div>
+            <label class="smPreviewToggle" title="Hide admin panels and interact like a visitor">
+              <input id="smPreviewAsUser" type="checkbox" />
+              <span>Preview as user</span>
+            </label>
             <div id="storymapViewport" class="storymapViewport">
               <div id="storymapWorld" class="storymapWorld">
                 <svg id="storymapEdges" class="storymapEdges" aria-hidden="true"></svg>
