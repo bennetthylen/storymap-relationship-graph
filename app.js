@@ -134,9 +134,53 @@ function applyStorymapUrlStorageHints() {
   if (q.has("debugStorymapStorage")) storymapDumpLocalStorage();
 }
 
+/**
+ * Hard refresh (Ctrl/Cmd+Shift+R, Ctrl+F5) cannot be detected after the fact in JS.
+ * We arm sessionStorage on those shortcuts; the next load clears viewer progress so the storymap
+ * UI resets. A normal refresh (F5 / Cmd+R) does not arm, so progress persists.
+ * (Reload from the browser menu without the shortcut is still a "normal" refresh for this purpose.)
+ */
+const STORYMAP_HARD_RELOAD_NEXT_KEY = "storymapHardReloadNext";
+
+function applyStorymapHardRefreshReset() {
+  if (typeof sessionStorage === "undefined" || typeof localStorage === "undefined") return;
+  try {
+    if (sessionStorage.getItem(STORYMAP_HARD_RELOAD_NEXT_KEY) !== "1") return;
+    sessionStorage.removeItem(STORYMAP_HARD_RELOAD_NEXT_KEY);
+    localStorage.removeItem(STORYMAP_PROGRESS_KEY);
+    localStorage.removeItem(STORYMAP_PROGRESS_PREVIEW_KEY);
+    if (typeof console !== "undefined" && console.info) {
+      console.info("[storymap] Viewer progress cleared after hard-refresh shortcut (see STORYMAP_HARD_RELOAD_NEXT_KEY).");
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function installStorymapHardRefreshArming() {
+  if (typeof window === "undefined" || typeof sessionStorage === "undefined") return;
+  window.addEventListener(
+    "keydown",
+    (e) => {
+      const key = e.key || "";
+      const hardReloadCombo =
+        (e.ctrlKey || e.metaKey) && e.shiftKey && (key === "r" || key === "R");
+      const ctrlF5 = e.ctrlKey && !e.metaKey && !e.shiftKey && (key === "F5" || key === "f5");
+      if (!hardReloadCombo && !ctrlF5) return;
+      try {
+        sessionStorage.setItem(STORYMAP_HARD_RELOAD_NEXT_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+    },
+    true
+  );
+}
+
 if (typeof window !== "undefined") {
   window.STORYMAP_STORAGE_KEYS = STORYMAP_STORAGE_KEYS;
   window.storymapDumpLocalStorage = storymapDumpLocalStorage;
+  window.findCentralRootNodes = findCentralRootNodes;
 }
 
 const GITHUB_PUBLISHED_CANVAS_PATH = "published-storymap.json";
@@ -1105,12 +1149,113 @@ function dedupeStorymapEdges(edges) {
 }
 
 /**
+ * Builds adjacency lists for a directed graph (multi-edge safe; duplicates still traverse once per target).
+ * @param {Array<{source: string, target: string}>} edges
+ * @returns {Map<string, string[]>}
+ */
+function buildDirectedAdjacencyMap(edges) {
+  const adj = new Map();
+  if (!Array.isArray(edges)) return adj;
+  edges.forEach((e) => {
+    const s = String(e?.source || "").trim();
+    const t = String(e?.target || "").trim();
+    if (!s || !t || s === t) return;
+    if (!adj.has(s)) adj.set(s, []);
+    adj.get(s).push(t);
+  });
+  return adj;
+}
+
+/**
+ * BFS: nodes reachable from `startId` following directed edges (only ids in `allNodeIds`).
+ * @param {string} startId
+ * @param {Map<string, string[]>} adj
+ * @param {Set<string>} allNodeIds
+ * @returns {Set<string>}
+ */
+function reachableNodesFrom(startId, adj, allNodeIds) {
+  const visited = new Set();
+  if (!allNodeIds.has(startId)) return visited;
+  const q = [startId];
+  visited.add(startId);
+  while (q.length) {
+    const u = q.shift();
+    const outs = adj.get(u);
+    if (!outs) continue;
+    outs.forEach((v) => {
+      if (!allNodeIds.has(v) || visited.has(v)) return;
+      visited.add(v);
+      q.push(v);
+    });
+  }
+  return visited;
+}
+
+/**
+ * **Central / root candidates** for a directed story graph (not hardcoded):
+ * - in-degree 0 (no incoming edges),
+ * - at least one outgoing edge,
+ * - from this node, BFS reaches **every** node in the graph (single origin spanning the map).
+ *
+ * Example: if **B** is the hub with edges B→A, B→C, B→D and nothing points into B, then B has in-degree 0,
+ * out-degree ≥ 1, and BFS from B visits {A,B,C,D} — **B** is returned. Nodes with only incoming edges to B
+ * are discovered from B, so B is the unique central root.
+ *
+ * @param {{ nodes: Array<{id: string}>, edges: Array<{source: string, target: string}> }} graph
+ * @returns {string[]} All node ids that satisfy the definition; `[]` if none (e.g. pure cycle, or no universal root).
+ */
+function findCentralRootNodes(graph) {
+  const nodes = graph?.nodes;
+  const edges = graph?.edges;
+  if (!Array.isArray(nodes) || !nodes.length) return [];
+  const allNodeIds = new Set(
+    nodes.map((n) => String(n?.id || "").trim()).filter(Boolean)
+  );
+  if (allNodeIds.size === 0) return [];
+  const nTotal = allNodeIds.size;
+  const edgeList = Array.isArray(edges) ? edges : [];
+  const indegree = new Map();
+  const outdegree = new Map();
+  allNodeIds.forEach((id) => {
+    indegree.set(id, 0);
+    outdegree.set(id, 0);
+  });
+  edgeList.forEach((e) => {
+    const s = String(e?.source || "").trim();
+    const t = String(e?.target || "").trim();
+    if (!allNodeIds.has(s) || !allNodeIds.has(t) || s === t) return;
+    indegree.set(t, (indegree.get(t) || 0) + 1);
+    outdegree.set(s, (outdegree.get(s) || 0) + 1);
+  });
+  const adj = buildDirectedAdjacencyMap(
+    edgeList.filter((e) => {
+      const s = String(e?.source || "").trim();
+      const t = String(e?.target || "").trim();
+      return allNodeIds.has(s) && allNodeIds.has(t) && s !== t;
+    })
+  );
+  const roots = [];
+  allNodeIds.forEach((id) => {
+    if (indegree.get(id) !== 0) return;
+    if ((outdegree.get(id) || 0) < 1) return;
+    const reached = reachableNodesFrom(id, adj, allNodeIds);
+    if (reached.size === nTotal) roots.push(id);
+  });
+  return roots;
+}
+
+/** Storymap canvas wrapper: dynamic central roots (see {@link findCentralRootNodes}). */
+function getStorymapCentralRootIds(canvas) {
+  return findCentralRootNodes({ nodes: canvas?.nodes || [], edges: canvas?.edges || [] });
+}
+
+/**
  * Nodes that start unlocked (full color): optional `entryNodeIds` in canvas JSON,
- * else the union of **sources** (no incoming edges) and **sinks** (no outgoing edges).
- * Sources are where you can start clicking; sinks are innermost hubs and stay revealed.
+ * else **central root(s)** ({@link findCentralRootNodes}) when they exist — one or more origins that span the graph,
+ * else the union of **sources** and **sinks** (legacy fallback), else first node.
  *
  * **Directed unlock:** clicking node A reveals only targets of edges A → B (see `getOutgoingStorymapNeighbors`).
- * If flow feels wrong, edit edge directions in admin or set explicit `entryNodeIds` (e.g. one clear starter).
+ * Override with `entryNodeIds` in JSON if you need a custom set.
  */
 function getStorymapEntryNodeIds(canvas) {
   if (!canvas?.nodes?.length) return [];
@@ -1119,6 +1264,8 @@ function getStorymapEntryNodeIds(canvas) {
     const picked = canvas.entryNodeIds.filter((id) => valid.has(id));
     if (picked.length) return picked;
   }
+  const central = findCentralRootNodes(canvas);
+  if (central.length) return central;
   const ids = canvas.nodes.map((n) => n.id);
   const incoming = new Set();
   const outgoing = new Set();
@@ -1147,7 +1294,7 @@ function storymapGraphSignature(canvas) {
   const ids = canvas.nodes.map((n) => n.id).sort();
   const es = canvas.edges.map((e) => `${e.source}\t${e.target}`).sort();
   const ent = Array.isArray(canvas.entryNodeIds) ? [...canvas.entryNodeIds].sort().join(",") : "";
-  return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}|rule:sourcesSinks-out`;
+  return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}|rule:centralOrSourcesSinks-out`;
 }
 
 /**
@@ -1402,6 +1549,8 @@ function initCustomStorymapCanvas() {
   let viewerVisited = new Set();
   if (isAdmin) mergeViewerProgress();
   const pendingEdgeAnim = new Set();
+  /** Unlocked node ids that should play the post-unlock bloom after the next render (survives renderCanvas). */
+  const postUnlockBloomIds = new Set();
 
   const prefersReducedMotion = () =>
     typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1580,36 +1729,49 @@ function initCustomStorymapCanvas() {
       const w = el.offsetWidth || 48;
       const h = el.offsetHeight || 48;
       const imgEl = el.querySelector("img");
-      // Final slot: animate with transform only (GPU-friendly). Avoids left/top layout thrash.
+      // Final slot: transform-only (GPU). Ease-out + slight overshoot on scale feels intentional.
       const dx = parent.x - node.x - w / 2;
       const dy = parent.y - node.y - h / 2;
+      const easePop = "cubic-bezier(0.34, 1.2, 0.64, 1)";
+      const easeOpacity = "cubic-bezier(0.2, 0.85, 0.35, 1)";
+      const easeColor = "cubic-bezier(0.22, 1, 0.45, 1)";
       el.style.transition = "none";
       el.style.left = `${node.x}px`;
       el.style.top = `${node.y}px`;
-      el.style.transform = `translate(${dx}px, ${dy}px) scale(0.18)`;
-      el.style.opacity = "0.35";
+      el.style.transform = `translate(${dx}px, ${dy}px) scale(0.12)`;
+      el.style.opacity = "0.2";
       if (imgEl) {
         imgEl.style.transition = "none";
-        imgEl.style.filter = "grayscale(1)";
+        imgEl.style.filter = "grayscale(1) saturate(0.65)";
       } else {
-        el.style.filter = "grayscale(1)";
+        el.style.filter = "grayscale(1) saturate(0.7)";
       }
       void el.offsetWidth;
-      const dur = prefersReducedMotion() ? "0.01ms" : "420ms";
-      const colorDur = prefersReducedMotion() ? "0.01ms" : "520ms";
-      const moveEasing = `transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
-      el.style.transition = imgEl ? moveEasing : `${moveEasing}, filter ${colorDur} ease`;
-      if (imgEl) imgEl.style.transition = `filter ${colorDur} ease`;
-      el.style.transform = "translate(0px, 0px) scale(1)";
+      const dur = prefersReducedMotion() ? "0.01ms" : "520ms";
+      const colorDur = prefersReducedMotion() ? "0.01ms" : "620ms";
+      el.style.transition = [
+        `transform ${dur} ${easePop}`,
+        `opacity ${dur} ${easeOpacity}`,
+        imgEl ? "" : `filter ${colorDur} ${easeColor}`,
+      ]
+        .filter(Boolean)
+        .join(", ");
+      if (imgEl) {
+        imgEl.style.transition = `filter ${colorDur} ${easeColor}`;
+      }
+      el.style.transform = `translate(0px, 0px) scale(1)`;
       el.style.opacity = "1";
       if (imgEl) {
-        imgEl.style.filter = "grayscale(0)";
+        imgEl.style.filter = "grayscale(0) saturate(1)";
       } else {
         el.style.filter = "none";
       }
 
       const finish = () => {
         el.classList.remove("smNode--unlocking");
+        if (!prefersReducedMotion()) {
+          postUnlockBloomIds.add(nid);
+        }
         el.style.transition = "";
         el.style.transform = "";
         el.style.opacity = "";
@@ -1654,7 +1816,7 @@ function initCustomStorymapCanvas() {
         done = true;
         cleanup();
         finish();
-      }, 1000);
+      }, 1250);
     };
 
     if (prefersReducedMotion()) {
@@ -1676,7 +1838,7 @@ function initCustomStorymapCanvas() {
       renderCanvas();
       return;
     }
-    const stagger = 100;
+    const stagger = 135;
     let waveActive = 0;
     const waveDone = () => {
       waveActive -= 1;
@@ -1746,7 +1908,7 @@ function initCustomStorymapCanvas() {
   };
 
   const drawEdges = () => {
-    edgesSvg.innerHTML = "";
+    edgesSvg.querySelectorAll("line").forEach((ln) => ln.remove());
     const nodeEls = new Map();
     nodesLayer.querySelectorAll(".smNode").forEach((elNode) => {
       nodeEls.set(elNode.getAttribute("data-id"), elNode);
@@ -1774,6 +1936,8 @@ function initCustomStorymapCanvas() {
       line.setAttribute("x2", String(x2));
       line.setAttribute("y2", String(y2));
       if (pendingEdgeAnim.has(ek)) {
+        const len = Math.hypot(x2 - x1, y2 - y1) || 1;
+        line.style.setProperty("--sm-edge-len", `${len}`);
         line.classList.add("storymapEdge--draw");
       }
       edgesSvg.appendChild(line);
@@ -1795,6 +1959,15 @@ function initCustomStorymapCanvas() {
       div.title = "Locked — click a highlighted node you’ve already opened to unlock the next steps.";
     }
     if (vl && viewerVisited.has(node.id) && unlocked) div.classList.add("smNode--visited");
+
+    if (postUnlockBloomIds.has(node.id)) {
+      div.classList.add("smNode--postUnlock");
+      window.setTimeout(() => {
+        postUnlockBloomIds.delete(node.id);
+        const bloomEl = nodeElById(node.id);
+        if (bloomEl) bloomEl.classList.remove("smNode--postUnlock");
+      }, 1000);
+    }
 
     if (node.type === "image") {
       const img = document.createElement("img");
@@ -1836,7 +2009,7 @@ function initCustomStorymapCanvas() {
         pulseNodeById(node.id);
         window.setTimeout(
           () => queueNeighborUnlockAnimations(node.id),
-          prefersReducedMotion() ? 0 : 380
+          prefersReducedMotion() ? 0 : 420
         );
       });
       return;
@@ -3827,6 +4000,8 @@ window.addEventListener("error", (evt) => {
 });
 
 try {
+  installStorymapHardRefreshArming();
+  applyStorymapHardRefreshReset();
   applyStorymapUrlStorageHints();
   syncCanvasToPublishedRelease();
   applyContentConfigToPage();
