@@ -72,12 +72,12 @@
             </select>
           </div>
           <div class="field">
-            <label for="smCreateConnectTo">Connect to (parent)</label>
+            <label for="smCreateConnectTo">New node: directed edge from</label>
             <select id="smCreateConnectTo" aria-describedby="smCreateConnectHelp">
               <option value="">None (no link)</option>
             </select>
             <p id="smCreateConnectHelp" class="muted small" style="margin: 0.35rem 0 0">
-              Defaults to the selected canvas node. Creates a directed edge parent → new node. Clear to skip.
+              Optional. Only affects <strong>Create Node</strong>: adds one edge <strong>from that node → the new node</strong>. Choosing a canvas node for editing does not change this menu—pick the source here only when you want it.
             </p>
           </div>
           <button id="smCreateNodeBtn" class="btn" type="button">Create Node</button>
@@ -200,7 +200,10 @@
             </div>
             <div class="field">
               <label for="smLinkTarget">Link target</label>
-              <select id="smLinkTarget"></select>
+              <select id="smLinkTarget" aria-describedby="smLinkTargetHelp"></select>
+              <p id="smLinkTargetHelp" class="muted small" style="margin: 0.35rem 0 0">
+                Adds <strong>one</strong> edge: <strong>selected node → link target</strong>. This is separate from “New node: directed edge from” on the left. Multiple edges into the same node are allowed but create multiple unlock paths.
+              </p>
             </div>
             <div class="actions actions--row">
               <button id="smLinkExisting" class="btn btn--secondary" type="button">Link Existing</button>
@@ -310,7 +313,7 @@
     </div>
 
     <script src="./vendor/cytoscape.min.js"></script>
-    <script src="./app.js?v=20260331h"></script>
+    <script src="./app.js?v=20260331i"></script>
   </body>
 </html>
 

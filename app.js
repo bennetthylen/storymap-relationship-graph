@@ -1108,6 +1108,9 @@ function dedupeStorymapEdges(edges) {
  * Nodes that start unlocked (full color): optional `entryNodeIds` in canvas JSON,
  * else the union of **sources** (no incoming edges) and **sinks** (no outgoing edges).
  * Sources are where you can start clicking; sinks are innermost hubs and stay revealed.
+ *
+ * **Directed unlock:** clicking node A reveals only targets of edges A → B (see `getOutgoingStorymapNeighbors`).
+ * If flow feels wrong, edit edge directions in admin or set explicit `entryNodeIds` (e.g. one clear starter).
  */
 function getStorymapEntryNodeIds(canvas) {
   if (!canvas?.nodes?.length) return [];
@@ -1283,9 +1286,11 @@ function githubAuthHeaders(token, scheme) {
 }
 
 async function getGithubFileSha(pathname, token, scheme = "Bearer") {
-  const response = await fetch(`${githubApiUrlForPath(pathname)}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}`, {
+  const bust = `ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}&_=${Date.now()}`;
+  const response = await fetch(`${githubApiUrlForPath(pathname)}?${bust}`, {
     method: "GET",
     headers: githubAuthHeaders(token, scheme),
+    cache: "no-store",
   });
   if (response.status === 404) return null;
   if (!response.ok) {
@@ -1296,7 +1301,7 @@ async function getGithubFileSha(pathname, token, scheme = "Bearer") {
   return json && typeof json.sha === "string" ? json.sha : null;
 }
 
-async function publishStorymapCanvasToGithubWithScheme(payload, token, commitMessage, scheme) {
+async function publishStorymapCanvasToGithubWithScheme(payload, token, commitMessage, scheme, isRetry = false) {
   if (!token) throw new Error("GitHub token is required.");
   const normalized = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
   const serialized = `${JSON.stringify(normalized, null, 2)}\n`;
@@ -1314,7 +1319,12 @@ async function publishStorymapCanvasToGithubWithScheme(payload, token, commitMes
       ...githubAuthHeaders(token, scheme),
     },
     body: JSON.stringify(body),
+    cache: "no-store",
   });
+  if (response.status === 409 && !isRetry) {
+    await response.text().catch(() => {});
+    return publishStorymapCanvasToGithubWithScheme(payload, token, commitMessage, scheme, true);
+  }
   if (!response.ok) {
     const detail = await parseGithubError(response);
     throw new Error(`GitHub publish failed (${response.status}): ${detail || response.statusText}`);
@@ -1521,8 +1531,10 @@ function initCustomStorymapCanvas() {
     ].join("");
     if (preserve && canvas.nodes.some((n) => n.id === preserve)) {
       createConnectSelect.value = preserve;
-    } else if (selectedId && canvas.nodes.some((n) => n.id === selectedId)) {
-      createConnectSelect.value = selectedId;
+    } else {
+      // Do not mirror the canvas selection here — linking uses the Node Editor only;
+      // defaulting "from" to selected made every selected node look like a "parent" for create.
+      createConnectSelect.value = "";
     }
   };
 
@@ -1564,13 +1576,17 @@ function initCustomStorymapCanvas() {
 
     const runSteps = () => {
       el.classList.remove("smNode--locked");
+      el.classList.add("smNode--unlocking");
       const w = el.offsetWidth || 48;
       const h = el.offsetHeight || 48;
       const imgEl = el.querySelector("img");
+      // Final slot: animate with transform only (GPU-friendly). Avoids left/top layout thrash.
+      const dx = parent.x - node.x - w / 2;
+      const dy = parent.y - node.y - h / 2;
       el.style.transition = "none";
-      el.style.left = `${parent.x - w / 2}px`;
-      el.style.top = `${parent.y - h / 2}px`;
-      el.style.transform = "scale(0.18)";
+      el.style.left = `${node.x}px`;
+      el.style.top = `${node.y}px`;
+      el.style.transform = `translate(${dx}px, ${dy}px) scale(0.18)`;
       el.style.opacity = "0.35";
       if (imgEl) {
         imgEl.style.transition = "none";
@@ -1579,14 +1595,12 @@ function initCustomStorymapCanvas() {
         el.style.filter = "grayscale(1)";
       }
       void el.offsetWidth;
-      const dur = prefersReducedMotion() ? "0.01ms" : "450ms";
-      const colorDur = prefersReducedMotion() ? "0.01ms" : "600ms";
-      const moveEasing = `left ${dur} cubic-bezier(0.22, 1, 0.36, 1), top ${dur} cubic-bezier(0.22, 1, 0.36, 1), transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
+      const dur = prefersReducedMotion() ? "0.01ms" : "420ms";
+      const colorDur = prefersReducedMotion() ? "0.01ms" : "520ms";
+      const moveEasing = `transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
       el.style.transition = imgEl ? moveEasing : `${moveEasing}, filter ${colorDur} ease`;
       if (imgEl) imgEl.style.transition = `filter ${colorDur} ease`;
-      el.style.left = `${node.x}px`;
-      el.style.top = `${node.y}px`;
-      el.style.transform = "scale(1)";
+      el.style.transform = "translate(0px, 0px) scale(1)";
       el.style.opacity = "1";
       if (imgEl) {
         imgEl.style.filter = "grayscale(0)";
@@ -1595,6 +1609,7 @@ function initCustomStorymapCanvas() {
       }
 
       const finish = () => {
+        el.classList.remove("smNode--unlocking");
         el.style.transition = "";
         el.style.transform = "";
         el.style.opacity = "";
@@ -1639,7 +1654,7 @@ function initCustomStorymapCanvas() {
         done = true;
         cleanup();
         finish();
-      }, 1100);
+      }, 1000);
     };
 
     if (prefersReducedMotion()) {
@@ -1821,7 +1836,7 @@ function initCustomStorymapCanvas() {
         pulseNodeById(node.id);
         window.setTimeout(
           () => queueNeighborUnlockAnimations(node.id),
-          prefersReducedMotion() ? 0 : 520
+          prefersReducedMotion() ? 0 : 380
         );
       });
       return;
