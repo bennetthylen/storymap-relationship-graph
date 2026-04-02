@@ -44,8 +44,8 @@
       "imageSrc": "",
       "content": "A",
       "color": "green",
-      "x": 198.17570889766978,
-      "y": 377.881892924301,
+      "x": 6.509042231003107,
+      "y": 321.21522625763436,
       "legacyType": "person"
     },
     {
@@ -56,44 +56,8 @@
       "imageSrc": "",
       "content": "Hi",
       "color": "green",
-      "x": 241.6341817491678,
-      "y": 317.85309201331563,
-      "legacyType": "person"
-    },
-    {
-      "id": "e_d468ea4c-0b8b-4c2a-9d86-b887b85772e9",
-      "type": "text",
-      "label": "Hi",
-      "text": "",
-      "imageSrc": "",
-      "content": "Hi",
-      "color": "green",
-      "x": 311.82909125416114,
-      "y": 424.6087292741346,
-      "legacyType": "event"
-    },
-    {
-      "id": "p_0aa9cee9-2d1e-446a-8343-2663209e40b4",
-      "type": "text",
-      "label": "Hello",
-      "text": "",
-      "imageSrc": "",
-      "content": "Hello",
-      "color": "green",
-      "x": 306.90734539933425,
-      "y": 363.3067647129827,
-      "legacyType": "person"
-    },
-    {
-      "id": "p_d2b7ed28-3533-4aa0-b125-a72329493901",
-      "type": "text",
-      "label": "Hello",
-      "text": "",
-      "imageSrc": "",
-      "content": "Hello",
-      "color": "green",
-      "x": 421.66298266015315,
-      "y": 349.1118552079894,
+      "x": 281.6341817491678,
+      "y": 262.85309201331563,
       "legacyType": "person"
     }
   ],
@@ -114,8 +78,8 @@
       "label": ""
     },
     {
-      "source": "p_d2b7ed28-3533-4aa0-b125-a72329493901",
-      "target": "e_78eafbf9-c67b-4295-999b-1ae6649638b6",
+      "source": "p_86d0bf75-aaf9-4096-b197-6436d710357f",
+      "target": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
       "label": ""
     }
   ]
