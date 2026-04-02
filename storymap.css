@@ -141,6 +141,13 @@ body.layout--storymapPreview .storymapAdminPanel {
   user-select: none;
 }
 
+/* Unlock flight uses inline transform-only transitions (composited); hint GPU during the burst */
+.smNode--unlocking {
+  will-change: transform, opacity;
+  z-index: 6;
+  pointer-events: none;
+}
+
 .smNode:hover:not(.smNode--locked) {
   transform: scale(1.05);
 }
