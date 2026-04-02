@@ -749,6 +749,7 @@ const el = {
   cfgHistoryBody: document.getElementById("cfgHistoryBody"),
   btnSaveContentConfig: document.getElementById("btnSaveContentConfig"),
   btnClearDiscussions: document.getElementById("btnClearDiscussions"),
+  discussionAdminClearHint: document.getElementById("discussionAdminClearHint"),
   discussionTitle: document.getElementById("discussionTitle"),
   discussionDescription: document.getElementById("discussionDescription"),
   discussionPostBtn: document.getElementById("discussionPostBtn"),
@@ -916,6 +917,34 @@ async function persistDiscussions(posts) {
     return true;
   }
   return saveDiscussionsLocal(normalized);
+}
+
+/** Admin-only: clear online board when Supabase is configured; never pretends success if remote write fails. */
+async function clearDiscussionsForAdmin() {
+  await bootstrapDiscussionRemote();
+  discussionState = [];
+  if (discussionRemoteEnabled && discussionSupabaseClient) {
+    const { error } = await discussionSupabaseClient.from("discussion_board").upsert(
+      {
+        id: 1,
+        payload: [],
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "id" }
+    );
+    if (error) {
+      console.warn("[discussion] Remote clear failed:", error);
+      return { ok: false, mode: "remote" };
+    }
+    try {
+      localStorage.setItem(DISCUSSION_STORAGE_KEY, JSON.stringify([]));
+    } catch {
+      /* ignore */
+    }
+    return { ok: true, mode: "remote" };
+  }
+  const ok = saveDiscussionsLocal([]);
+  return { ok, mode: "local" };
 }
 
 function updateDiscussionBackendNotice() {
@@ -2925,17 +2954,47 @@ async function initDiscussionBoard() {
 
 function initDiscussionAdminControls() {
   if (!el.btnClearDiscussions) return;
-  on(el.btnClearDiscussions, "click", async () => {
-    const ok = window.confirm("Clear all discussion posts and replies?");
-    if (!ok) return;
+
+  async function refreshDiscussionAdminHint() {
     await bootstrapDiscussionRemote();
-    discussionState = [];
-    const saved = await persistDiscussions([]);
-    if (!saved) {
-      setStatus("Failed to clear discussions. Check storage or Supabase settings.", { isError: true });
+    const hint = el.discussionAdminClearHint;
+    if (!hint) return;
+    if (discussionRemoteEnabled) {
+      hint.textContent =
+        "Supabase is configured: the button below clears the shared online discussion for everyone (and empties this browser’s cached copy).";
+    } else {
+      hint.textContent =
+        "Supabase URL/key are not set in discussion-config.js: the button only clears discussion data stored in this browser.";
+    }
+  }
+
+  void refreshDiscussionAdminHint();
+
+  on(el.btnClearDiscussions, "click", async () => {
+    await bootstrapDiscussionRemote();
+    const msg = discussionRemoteEnabled
+      ? "Clear the shared online discussion board for all visitors? This cannot be undone."
+      : "Clear discussion data stored only in this browser?";
+    const ok = window.confirm(msg);
+    if (!ok) return;
+    const result = await clearDiscussionsForAdmin();
+    if (!result.ok) {
+      setStatus(
+        "Could not clear the online discussion. Check discussion-config.js, Supabase RLS, and your network.",
+        { isError: true }
+      );
+      if (el.discussionAdminClearHint) {
+        el.discussionAdminClearHint.textContent =
+          "Clear failed. Verify discussion-config.js and that discussion-supabase.sql policies allow anon upsert on discussion_board.";
+      }
       return;
     }
-    setStatus("Discussions cleared.", { isError: false });
+    if (result.mode === "remote") {
+      setStatus("Shared discussion board cleared (Supabase + this device’s cache).", { isError: false });
+    } else {
+      setStatus("Local discussion cache cleared (no shared backend configured).", { isError: false });
+    }
+    void refreshDiscussionAdminHint();
   });
 }
 

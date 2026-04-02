@@ -101,11 +101,8 @@
 
         <section class="card">
           <h2>Discussion Controls</h2>
-          <p class="muted small">
-            Clear all discussion posts and replies. When Supabase is configured in discussion-config.js, this clears the
-            shared online board; otherwise it clears the copy stored in this browser only.
-          </p>
-          <button id="btnClearDiscussions" class="btn btn--danger" type="button">Clear Discussions</button>
+          <p id="discussionAdminClearHint" class="muted small" aria-live="polite"></p>
+          <button id="btnClearDiscussions" class="btn btn--danger" type="button">Clear shared discussion board</button>
         </section>
       </aside>
 
@@ -317,7 +314,7 @@
 
     <script src="./vendor/cytoscape.min.js"></script>
     <script src="./discussion-config.js"></script>
-    <script src="./app.js?v=20260331j"></script>
+    <script src="./app.js?v=20260331k"></script>
   </body>
 </html>
 
