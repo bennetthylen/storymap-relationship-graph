@@ -1101,6 +1101,11 @@ textarea {
   font-size: clamp(1.8rem, 3vw, 2.4rem);
 }
 
+.discussionBackendNote {
+  margin: 8px 0 0;
+  line-height: 1.45;
+}
+
 #discussionPostBtn {
   background: #bfa14a;
   border-color: #bfa14a;

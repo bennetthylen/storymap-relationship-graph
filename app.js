@@ -181,6 +181,7 @@ if (typeof window !== "undefined") {
   window.STORYMAP_STORAGE_KEYS = STORYMAP_STORAGE_KEYS;
   window.storymapDumpLocalStorage = storymapDumpLocalStorage;
   window.findCentralRootNodes = findCentralRootNodes;
+  window.findStorymapHubEntryNodes = findStorymapHubEntryNodes;
 }
 
 const GITHUB_PUBLISHED_CANVAS_PATH = "published-storymap.json";
@@ -752,6 +753,7 @@ const el = {
   discussionDescription: document.getElementById("discussionDescription"),
   discussionPostBtn: document.getElementById("discussionPostBtn"),
   discussionPosts: document.getElementById("discussionPosts"),
+  discussionBackendNote: document.getElementById("discussionBackendNote"),
   inlineNodeEditor: document.getElementById("inlineNodeEditor"),
   inlineNodeLabel: document.getElementById("inlineNodeLabel"),
   inlineNodeSave: document.getElementById("inlineNodeSave"),
@@ -808,40 +810,124 @@ function formatTimestamp(value) {
   }
 }
 
-function loadDiscussions() {
+/** Supabase client when discussion-config.js provides URL + anon key (shared public data). */
+let discussionSupabaseClient = null;
+let discussionRemoteEnabled = false;
+
+function normalizeDiscussionPosts(rawList) {
+  if (!Array.isArray(rawList)) return [];
+  return rawList
+    .filter((post) => post && typeof post === "object")
+    .map((post) => ({
+      id: Number(post.id) || Date.now(),
+      title: String(post.title || "").trim(),
+      description: String(post.description || "").trim(),
+      timestamp: Number(post.timestamp) || Date.now(),
+      replies: Array.isArray(post.replies)
+        ? post.replies
+            .filter((reply) => reply && typeof reply === "object")
+            .map((reply) => ({
+              id: Number(reply.id) || Date.now(),
+              text: String(reply.text || "").trim(),
+              timestamp: Number(reply.timestamp) || Date.now(),
+            }))
+        : [],
+    }));
+}
+
+function loadDiscussionsLocal() {
   try {
     const raw = localStorage.getItem(DISCUSSION_STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed
-      .filter((post) => post && typeof post === "object")
-      .map((post) => ({
-        id: Number(post.id) || Date.now(),
-        title: String(post.title || "").trim(),
-        description: String(post.description || "").trim(),
-        timestamp: Number(post.timestamp) || Date.now(),
-        replies: Array.isArray(post.replies)
-          ? post.replies
-              .filter((reply) => reply && typeof reply === "object")
-              .map((reply) => ({
-                id: Number(reply.id) || Date.now(),
-                text: String(reply.text || "").trim(),
-                timestamp: Number(reply.timestamp) || Date.now(),
-              }))
-          : [],
-      }));
+    return normalizeDiscussionPosts(parsed);
   } catch {
     return [];
   }
 }
 
-function saveDiscussions(posts) {
+function saveDiscussionsLocal(posts) {
   try {
     localStorage.setItem(DISCUSSION_STORAGE_KEY, JSON.stringify(posts));
     return true;
   } catch {
     return false;
+  }
+}
+
+async function bootstrapDiscussionRemote() {
+  discussionSupabaseClient = null;
+  discussionRemoteEnabled = false;
+  const url = typeof window !== "undefined" && String(window.STORYMAP_DISCUSSION_SUPABASE_URL || "").trim();
+  const key = typeof window !== "undefined" && String(window.STORYMAP_DISCUSSION_SUPABASE_ANON_KEY || "").trim();
+  if (!url || !key) return;
+  try {
+    const mod = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/+esm");
+    const createClient = mod.createClient;
+    if (typeof createClient !== "function") return;
+    discussionSupabaseClient = createClient(url, key);
+    discussionRemoteEnabled = true;
+  } catch (err) {
+    console.warn("[discussion] Supabase client failed to load:", err);
+    discussionSupabaseClient = null;
+    discussionRemoteEnabled = false;
+  }
+}
+
+async function loadDiscussionsRemote() {
+  if (!discussionSupabaseClient) return loadDiscussionsLocal();
+  const { data, error } = await discussionSupabaseClient
+    .from("discussion_board")
+    .select("payload")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) {
+    console.warn("[discussion] Remote load failed:", error);
+    return loadDiscussionsLocal();
+  }
+  return normalizeDiscussionPosts(data?.payload);
+}
+
+/**
+ * Persist discussion posts: Supabase singleton row when configured, else localStorage.
+ * Mirrors to localStorage on remote success so the device keeps an offline copy.
+ */
+async function persistDiscussions(posts) {
+  const normalized = normalizeDiscussionPosts(posts);
+  discussionState = normalized;
+  if (discussionRemoteEnabled && discussionSupabaseClient) {
+    const { error } = await discussionSupabaseClient.from("discussion_board").upsert(
+      {
+        id: 1,
+        payload: normalized,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "id" }
+    );
+    if (error) {
+      console.warn("[discussion] Remote save failed:", error);
+      return saveDiscussionsLocal(normalized);
+    }
+    try {
+      localStorage.setItem(DISCUSSION_STORAGE_KEY, JSON.stringify(normalized));
+    } catch {
+      /* ignore */
+    }
+    return true;
+  }
+  return saveDiscussionsLocal(normalized);
+}
+
+function updateDiscussionBackendNotice() {
+  const node = el.discussionBackendNote || document.getElementById("discussionBackendNote");
+  if (!node) return;
+  if (discussionRemoteEnabled) {
+    node.textContent = "Discussion is stored online and shared with all visitors.";
+    node.hidden = false;
+  } else {
+    node.textContent =
+      "Discussion is only saved on this device until you add Supabase URL and anon key in discussion-config.js (see README).";
+    node.hidden = false;
   }
 }
 
@@ -1054,6 +1140,11 @@ function defaultStorymapAdminCanvasState() {
   return cloneStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS);
 }
 
+/** Trim; primary id form for lookups and edge keys. */
+function canonicalStorymapId(id) {
+  return String(id ?? "").trim();
+}
+
 function normalizeStorymapCanvasNode(node, index) {
   const fallbackId = `n_${index + 1}`;
   const typeRaw = String(node?.type || "text").toLowerCase();
@@ -1068,7 +1159,7 @@ function normalizeStorymapCanvasNode(node, index) {
   const content = type === "image" ? contentRaw || imageSrc : label;
   const color = String(node?.color || "green").trim() || "green";
   return {
-    id: String(node?.id || fallbackId),
+    id: canonicalStorymapId(node?.id || fallbackId) || fallbackId,
     type,
     label,
     text,
@@ -1081,15 +1172,31 @@ function normalizeStorymapCanvasNode(node, index) {
   };
 }
 
+/**
+ * If an edge endpoint string differs only by case/whitespace from a node id, map it to that node's canonical id.
+ */
+function remapStorymapEdgeEndpoint(raw, nodeIds, idByLowercase) {
+  const s = canonicalStorymapId(raw);
+  if (!s) return "";
+  if (nodeIds.has(s)) return s;
+  const mapped = idByLowercase.get(s.toLowerCase());
+  return mapped || s;
+}
+
 function normalizeStorymapCanvasState(payload, fallbackState) {
   const source = payload && typeof payload === "object" ? payload : fallbackState;
   const nodesInput = Array.isArray(source?.nodes) ? source.nodes : fallbackState.nodes;
   const edgesInput = Array.isArray(source?.edges) ? source.edges : fallbackState.edges;
   const nodes = nodesInput.map((node, index) => normalizeStorymapCanvasNode(node, index));
   const nodeIds = new Set(nodes.map((n) => n.id));
+  const idByLowercase = new Map();
+  nodes.forEach((n) => {
+    const low = n.id.toLowerCase();
+    if (!idByLowercase.has(low)) idByLowercase.set(low, n.id);
+  });
   const mappedEdges = edgesInput.map((edge) => ({
-    source: String(edge?.source || "").trim(),
-    target: String(edge?.target || "").trim(),
+    source: remapStorymapEdgeEndpoint(edge?.source, nodeIds, idByLowercase),
+    target: remapStorymapEdgeEndpoint(edge?.target, nodeIds, idByLowercase),
     label: String(edge?.label || edge?.role || "").trim(),
   }));
   const edges = dedupeStorymapEdges(
@@ -1104,7 +1211,7 @@ function normalizeStorymapCanvasState(payload, fallbackState) {
   );
   const rawEntry = Array.isArray(source?.entryNodeIds) ? source.entryNodeIds : null;
   const entryFiltered = rawEntry
-    ? rawEntry.map((id) => String(id || "").trim()).filter((id) => id && nodeIds.has(id))
+    ? rawEntry.map((id) => canonicalStorymapId(id)).filter((id) => id && nodeIds.has(id))
     : [];
   const out = { nodes, edges };
   if (entryFiltered.length) out.entryNodeIds = entryFiltered;
@@ -1115,13 +1222,20 @@ function storymapEdgeKey(a, b) {
   return a < b ? `${a}||${b}` : `${b}||${a}`;
 }
 
+/** Brute-force directed edge check (same semantics as dedupe keys). */
+function hasStorymapDirectedEdge(edges, srcId, tgtId) {
+  const s = canonicalStorymapId(srcId);
+  const t = canonicalStorymapId(tgtId);
+  if (!s || !t) return false;
+  return (edges || []).some((e) => canonicalStorymapId(e?.source) === s && canonicalStorymapId(e?.target) === t);
+}
+
 /** Directed: at most one edge per ordered pair (source → target). */
 function canAddStorymapEdge(canvas, srcId, tgtId) {
-  const s = String(srcId || "").trim();
-  const t = String(tgtId || "").trim();
+  const s = canonicalStorymapId(srcId);
+  const t = canonicalStorymapId(tgtId);
   if (!s || !t || s === t) return false;
-  if (!canvas?.edges?.length) return true;
-  return !canvas.edges.some((e) => e.source === s && e.target === t);
+  return !hasStorymapDirectedEdge(canvas?.edges, s, t);
 }
 
 /**
@@ -1133,8 +1247,8 @@ function dedupeStorymapEdges(edges) {
   const list = Array.isArray(edges) ? edges : [];
   const out = [];
   list.forEach((edge) => {
-    const source = String(edge?.source || "").trim();
-    const target = String(edge?.target || "").trim();
+    const source = canonicalStorymapId(edge?.source);
+    const target = canonicalStorymapId(edge?.target);
     if (!source || !target || source === target) return;
     const k = `${source}\t${target}`;
     if (edgeSeen.has(k)) return;
@@ -1157,8 +1271,8 @@ function buildDirectedAdjacencyMap(edges) {
   const adj = new Map();
   if (!Array.isArray(edges)) return adj;
   edges.forEach((e) => {
-    const s = String(e?.source || "").trim();
-    const t = String(e?.target || "").trim();
+    const s = canonicalStorymapId(e?.source);
+    const t = canonicalStorymapId(e?.target);
     if (!s || !t || s === t) return;
     if (!adj.has(s)) adj.set(s, []);
     adj.get(s).push(t);
@@ -1208,9 +1322,7 @@ function findCentralRootNodes(graph) {
   const nodes = graph?.nodes;
   const edges = graph?.edges;
   if (!Array.isArray(nodes) || !nodes.length) return [];
-  const allNodeIds = new Set(
-    nodes.map((n) => String(n?.id || "").trim()).filter(Boolean)
-  );
+  const allNodeIds = new Set(nodes.map((n) => canonicalStorymapId(n?.id)).filter(Boolean));
   if (allNodeIds.size === 0) return [];
   const nTotal = allNodeIds.size;
   const edgeList = Array.isArray(edges) ? edges : [];
@@ -1221,16 +1333,16 @@ function findCentralRootNodes(graph) {
     outdegree.set(id, 0);
   });
   edgeList.forEach((e) => {
-    const s = String(e?.source || "").trim();
-    const t = String(e?.target || "").trim();
+    const s = canonicalStorymapId(e?.source);
+    const t = canonicalStorymapId(e?.target);
     if (!allNodeIds.has(s) || !allNodeIds.has(t) || s === t) return;
     indegree.set(t, (indegree.get(t) || 0) + 1);
     outdegree.set(s, (outdegree.get(s) || 0) + 1);
   });
   const adj = buildDirectedAdjacencyMap(
     edgeList.filter((e) => {
-      const s = String(e?.source || "").trim();
-      const t = String(e?.target || "").trim();
+      const s = canonicalStorymapId(e?.source);
+      const t = canonicalStorymapId(e?.target);
       return allNodeIds.has(s) && allNodeIds.has(t) && s !== t;
     })
   );
@@ -1244,6 +1356,40 @@ function findCentralRootNodes(graph) {
   return roots;
 }
 
+/**
+ * When no strict central root exists (in-degree 0 + full reach), pick **hub-like** entry node(s):
+ * maximize out-degree (branching), then minimize in-degree, then maximize directed reach count.
+ * Uniquely picks a star hub such as **B** when one node has strictly more outgoing edges than any other.
+ */
+function findStorymapHubEntryNodes(canvas) {
+  const nodes = canvas?.nodes;
+  const edges = canvas?.edges;
+  if (!Array.isArray(nodes) || !nodes.length) return [];
+  const ids = nodes.map((n) => n.id);
+  const idSet = new Set(ids);
+  const indeg = new Map(ids.map((id) => [id, 0]));
+  const outdeg = new Map(ids.map((id) => [id, 0]));
+  (edges || []).forEach((e) => {
+    const s = canonicalStorymapId(e?.source);
+    const t = canonicalStorymapId(e?.target);
+    if (!idSet.has(s) || !idSet.has(t) || s === t) return;
+    outdeg.set(s, (outdeg.get(s) || 0) + 1);
+    indeg.set(t, (indeg.get(t) || 0) + 1);
+  });
+  const maxOut = Math.max(0, ...ids.map((id) => outdeg.get(id) || 0));
+  if (maxOut < 1) return [];
+  let cand = ids.filter((id) => (outdeg.get(id) || 0) === maxOut);
+  if (cand.length === 1) return cand;
+  const minIn = Math.min(...cand.map((id) => indeg.get(id) || 0));
+  cand = cand.filter((id) => (indeg.get(id) || 0) === minIn);
+  if (cand.length === 1) return cand;
+  const adj = buildDirectedAdjacencyMap(edges || []);
+  const allIds = new Set(ids);
+  const scored = cand.map((id) => ({ id, r: reachableNodesFrom(id, adj, allIds).size }));
+  const maxR = Math.max(...scored.map((x) => x.r));
+  return scored.filter((x) => x.r === maxR).map((x) => x.id);
+}
+
 /** Storymap canvas wrapper: dynamic central roots (see {@link findCentralRootNodes}). */
 function getStorymapCentralRootIds(canvas) {
   return findCentralRootNodes({ nodes: canvas?.nodes || [], edges: canvas?.edges || [] });
@@ -1252,6 +1398,7 @@ function getStorymapCentralRootIds(canvas) {
 /**
  * Nodes that start unlocked (full color): optional `entryNodeIds` in canvas JSON,
  * else **central root(s)** ({@link findCentralRootNodes}) when they exist — one or more origins that span the graph,
+ * else **hub entry** ({@link findStorymapHubEntryNodes}) when non-empty (max out-degree heuristic),
  * else the union of **sources** and **sinks** (legacy fallback), else first node.
  *
  * **Directed unlock:** clicking node A reveals only targets of edges A → B (see `getOutgoingStorymapNeighbors`).
@@ -1261,11 +1408,13 @@ function getStorymapEntryNodeIds(canvas) {
   if (!canvas?.nodes?.length) return [];
   const valid = new Set(canvas.nodes.map((n) => n.id));
   if (Array.isArray(canvas.entryNodeIds) && canvas.entryNodeIds.length) {
-    const picked = canvas.entryNodeIds.filter((id) => valid.has(id));
+    const picked = canvas.entryNodeIds.map((id) => canonicalStorymapId(id)).filter((id) => id && valid.has(id));
     if (picked.length) return picked;
   }
   const central = findCentralRootNodes(canvas);
   if (central.length) return central;
+  const hub = findStorymapHubEntryNodes(canvas);
+  if (hub.length) return hub;
   const ids = canvas.nodes.map((n) => n.id);
   const incoming = new Set();
   const outgoing = new Set();
@@ -1282,9 +1431,10 @@ function getStorymapEntryNodeIds(canvas) {
 
 /** Directed next step: targets of edges leaving `nodeId` (unlock by clicking forward along arrows). */
 function getOutgoingStorymapNeighbors(canvas, nodeId) {
+  const nid = canonicalStorymapId(nodeId);
   const out = [];
   canvas.edges.forEach((e) => {
-    if (e.source === nodeId) out.push(e.target);
+    if (canonicalStorymapId(e.source) === nid) out.push(e.target);
   });
   return out;
 }
@@ -1294,7 +1444,7 @@ function storymapGraphSignature(canvas) {
   const ids = canvas.nodes.map((n) => n.id).sort();
   const es = canvas.edges.map((e) => `${e.source}\t${e.target}`).sort();
   const ent = Array.isArray(canvas.entryNodeIds) ? [...canvas.entryNodeIds].sort().join(",") : "";
-  return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}|rule:centralOrSourcesSinks-out`;
+  return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}|rule:centralOrHubOrSourcesSinks-out`;
 }
 
 /**
@@ -1724,8 +1874,8 @@ function initCustomStorymapCanvas() {
     }
 
     const runSteps = () => {
-      el.classList.remove("smNode--locked");
       el.classList.add("smNode--unlocking");
+      el.classList.remove("smNode--locked");
       const w = el.offsetWidth || 48;
       const h = el.offsetHeight || 48;
       const imgEl = el.querySelector("img");
@@ -2682,12 +2832,29 @@ function renderDiscussionBoard({ animatePostId = null } = {}) {
   }
 }
 
-function initDiscussionBoard() {
+async function initDiscussionBoard() {
   if (!el.discussionPosts || !el.discussionPostBtn) return;
-  discussionState = loadDiscussions();
+  setStatus("Loading discussion…", { isLoading: true });
+  try {
+    await bootstrapDiscussionRemote();
+    if (discussionRemoteEnabled) {
+      try {
+        discussionState = await loadDiscussionsRemote();
+      } catch (err) {
+        console.warn("[discussion] Load error, using local cache:", err);
+        discussionState = loadDiscussionsLocal();
+        setStatus("Could not load shared discussion. Showing saved copy on this device.", { isError: true });
+      }
+    } else {
+      discussionState = loadDiscussionsLocal();
+    }
+  } finally {
+    setStatus("");
+  }
+  updateDiscussionBackendNotice();
   renderDiscussionBoard();
 
-  on(el.discussionPostBtn, "click", () => {
+  on(el.discussionPostBtn, "click", async () => {
     const title = el.discussionTitle ? el.discussionTitle.value.trim() : "";
     const description = el.discussionDescription ? el.discussionDescription.value.trim() : "";
     if (!title || !description) {
@@ -2697,8 +2864,9 @@ function initDiscussionBoard() {
     const now = Date.now();
     const post = { id: now, title, description, timestamp: now, replies: [] };
     discussionState = [post, ...discussionState];
-    if (!saveDiscussions(discussionState)) {
-      setStatus("Could not save post. Check browser storage settings.", { isError: true });
+    const saved = await persistDiscussions(discussionState);
+    if (!saved) {
+      setStatus("Could not save post. Check storage or Supabase settings.", { isError: true });
       return;
     }
     renderDiscussionBoard({ animatePostId: post.id });
@@ -2707,7 +2875,7 @@ function initDiscussionBoard() {
     setStatus("");
   });
 
-  on(el.discussionPosts, "click", (evt) => {
+  on(el.discussionPosts, "click", async (evt) => {
     const toggleBtn = evt.target && evt.target.closest ? evt.target.closest(".discussionReplyToggleBtn") : null;
     if (toggleBtn) {
       const postId = Number(toggleBtn.getAttribute("data-post-id"));
@@ -2736,17 +2904,18 @@ function initDiscussionBoard() {
       setStatus("Reply text cannot be empty.", { isError: true });
       return;
     }
-    const now = Date.now();
+    const replyNow = Date.now();
     discussionState = discussionState.map((post) => {
       if (post.id !== postId) return post;
       const replies = Array.isArray(post.replies) ? post.replies : [];
       return {
         ...post,
-        replies: [...replies, { id: now, text, timestamp: now }],
+        replies: [...replies, { id: replyNow, text, timestamp: replyNow }],
       };
     });
-    if (!saveDiscussions(discussionState)) {
-      setStatus("Could not save reply. Check browser storage settings.", { isError: true });
+    const saved = await persistDiscussions(discussionState);
+    if (!saved) {
+      setStatus("Could not save reply. Check storage or Supabase settings.", { isError: true });
       return;
     }
     renderDiscussionBoard();
@@ -2756,15 +2925,16 @@ function initDiscussionBoard() {
 
 function initDiscussionAdminControls() {
   if (!el.btnClearDiscussions) return;
-  on(el.btnClearDiscussions, "click", () => {
+  on(el.btnClearDiscussions, "click", async () => {
     const ok = window.confirm("Clear all discussion posts and replies?");
     if (!ok) return;
-    const saved = saveDiscussions([]);
+    await bootstrapDiscussionRemote();
+    discussionState = [];
+    const saved = await persistDiscussions([]);
     if (!saved) {
-      setStatus("Failed to clear discussions. Check browser storage settings.", { isError: true });
+      setStatus("Failed to clear discussions. Check storage or Supabase settings.", { isError: true });
       return;
     }
-    discussionState = [];
     setStatus("Discussions cleared.", { isError: false });
   });
 }
@@ -3999,37 +4169,39 @@ window.addEventListener("error", (evt) => {
   console.error("Runtime error:", evt.error || evt.message);
 });
 
-try {
-  installStorymapHardRefreshArming();
-  applyStorymapHardRefreshReset();
-  applyStorymapUrlStorageHints();
-  syncCanvasToPublishedRelease();
-  applyContentConfigToPage();
-  initScrollReveals();
-  initHeroParallax();
-  initContentEditorPanel();
-  initDiscussionBoard();
-  initDiscussionAdminControls();
-  setStatus("Loading storymap...", { isLoading: true });
-  if (document.getElementById("storymapViewport")) {
-    initCustomStorymapCanvas();
-    // Status cleared from bootstrapStorymapUi when the canvas is ready (viewer waits for published JSON).
-  } else if (MODE === "history" || el.discussionPosts) {
-    setStatus("");
-  } else {
-    refreshAllUI();
-    if (MODE === "admin") upsertJsonAreaFromState();
-    setStatus("");
-  }
-} catch (err) {
-  console.error(err);
-  setStatus("Failed to initialize storymap. Check console for details.", { isError: true });
-  if (el && el.cy) {
-    el.cy.innerHTML = `
+(async () => {
+  try {
+    installStorymapHardRefreshArming();
+    applyStorymapHardRefreshReset();
+    applyStorymapUrlStorageHints();
+    syncCanvasToPublishedRelease();
+    applyContentConfigToPage();
+    initScrollReveals();
+    initHeroParallax();
+    initContentEditorPanel();
+    await initDiscussionBoard();
+    initDiscussionAdminControls();
+    setStatus("Loading storymap...", { isLoading: true });
+    if (document.getElementById("storymapViewport")) {
+      initCustomStorymapCanvas();
+      // Status cleared from bootstrapStorymapUi when the canvas is ready (viewer waits for published JSON).
+    } else if (MODE === "history" || el.discussionPosts) {
+      setStatus("");
+    } else {
+      refreshAllUI();
+      if (MODE === "admin") upsertJsonAreaFromState();
+      setStatus("");
+    }
+  } catch (err) {
+    console.error(err);
+    setStatus("Failed to initialize storymap. Check console for details.", { isError: true });
+    if (el && el.cy) {
+      el.cy.innerHTML = `
       <div class="muted" style="padding:12px;">
         Failed to initialize the app. See console for details.
       </div>
     `;
+    }
   }
-}
+})();
 

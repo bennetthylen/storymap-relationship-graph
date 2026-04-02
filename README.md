@@ -12,8 +12,8 @@ This is a static, browser-only digital exhibition platform for The Women and Mem
 - Re-order “story nodes” using the **Story Order** controls
 - Connected “bubble” navigation: clicking a node dims everything outside its connected component
 - Navigate across persistent public tabs: Home, Storymap, History, Discussion
-- Post and reply anonymously in the Discussion board (saved to localStorage key `storymap-discussions`)
-- Clear all discussion posts/replies from the password-protected admin panel
+- Post and reply anonymously in the Discussion board: **shared online** when Supabase is configured (see below), otherwise cached per browser in localStorage key `storymap-discussions`
+- Clear all discussion posts/replies from the password-protected admin panel (clears shared data when Supabase is configured)
 - Edit landing/history copy from the admin panel (saved in localStorage)
 - Export/import the whole graph as JSON
 - Create a shareable URL that encodes the graph in the query string (`?data=...`)
@@ -40,7 +40,19 @@ Any static hosting works. For GitHub Pages:
 - Pages URL: `https://bennetthylen.github.io/storymap-relationship-graph/`
 - Pages settings: `Deploy from a branch` -> `main` -> `/(root)`
 
-Upload/serve the contents of this folder (especially `index.html`, `storymap.html`, `history.html`, `discussion.html`, `admin.html`, `styles.css`, `app.js`).
+Upload/serve the contents of this folder (especially `index.html`, `storymap.html`, `history.html`, `discussion.html`, `admin.html`, `discussion-config.js`, `styles.css`, `app.js`).
+
+## Shared discussion (Supabase)
+
+GitHub Pages cannot write to the repo from visitors’ browsers, so **public, cross-device discussion** uses a free [Supabase](https://supabase.com/) project:
+
+1. Create a project and open **SQL Editor**.
+2. Paste and run [`discussion-supabase.sql`](discussion-supabase.sql) (creates table `discussion_board` with public read/write policies for the anon role).
+3. In Supabase **Project Settings → API**, copy the **Project URL** and **anon public** key.
+4. Edit [`discussion-config.js`](discussion-config.js) and set `window.STORYMAP_DISCUSSION_SUPABASE_URL` and `window.STORYMAP_DISCUSSION_SUPABASE_ANON_KEY`, then deploy.
+5. Load `discussion.html` — you should see the note *“stored online and shared with all visitors.”*
+
+The app stores the full thread list as JSON in row `id = 1`. Last save wins if two people post at the exact same moment; that is acceptable for a lightweight board.
 
 ## Global Storymap Publish (Admin -> GitHub)
 

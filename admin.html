@@ -101,7 +101,10 @@
 
         <section class="card">
           <h2>Discussion Controls</h2>
-          <p class="muted small">Clear all discussion posts and replies saved in local storage.</p>
+          <p class="muted small">
+            Clear all discussion posts and replies. When Supabase is configured in discussion-config.js, this clears the
+            shared online board; otherwise it clears the copy stored in this browser only.
+          </p>
           <button id="btnClearDiscussions" class="btn btn--danger" type="button">Clear Discussions</button>
         </section>
       </aside>
@@ -313,7 +316,8 @@
     </div>
 
     <script src="./vendor/cytoscape.min.js"></script>
-    <script src="./app.js?v=20260331i"></script>
+    <script src="./discussion-config.js"></script>
+    <script src="./app.js?v=20260331j"></script>
   </body>
 </html>
 
