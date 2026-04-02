@@ -954,6 +954,13 @@ function getUndirectedStorymapNeighbors(canvas, nodeId) {
   return [...out];
 }
 
+function storymapGraphSignature(canvas) {
+  if (!canvas?.nodes?.length) return "";
+  const ids = canvas.nodes.map((n) => n.id).sort();
+  const es = canvas.edges.map((e) => `${e.source}\t${e.target}`).sort();
+  return `${ids.join(",")}|e:${es.join(",")}`;
+}
+
 function loadStorymapViewerProgress() {
   try {
     const raw = localStorage.getItem(STORYMAP_PROGRESS_KEY);
@@ -968,12 +975,11 @@ function loadStorymapViewerProgress() {
   }
 }
 
-function saveStorymapViewerProgress(unlockedArr, visitedArr) {
+function saveStorymapViewerProgress(unlockedArr, visitedArr, graphSig = null) {
   try {
-    localStorage.setItem(
-      STORYMAP_PROGRESS_KEY,
-      JSON.stringify({ unlocked: [...unlockedArr], visited: [...visitedArr] })
-    );
+    const payload = { unlocked: [...unlockedArr], visited: [...visitedArr] };
+    if (graphSig) payload.graphSig = graphSig;
+    localStorage.setItem(STORYMAP_PROGRESS_KEY, JSON.stringify(payload));
   } catch {
     // ignore
   }
@@ -1138,7 +1144,10 @@ function initCustomStorymapCanvas() {
   const nodesLayer = document.getElementById("storymapNodes");
   const edgesSvg = document.getElementById("storymapEdges");
   const panel = document.getElementById("storymapAdminPanel");
-  if (!viewport || !world || !nodesLayer || !edgesSvg) return false;
+  if (!viewport || !world || !nodesLayer || !edgesSvg) {
+    setStatus("");
+    return false;
+  }
 
   const isAdmin = MODE === "admin";
   if (isAdmin) {
@@ -1172,7 +1181,7 @@ function initCustomStorymapCanvas() {
 
   let viewerUnlocked = new Set();
   let viewerVisited = new Set();
-  mergeViewerProgress();
+  if (isAdmin) mergeViewerProgress();
   const pendingEdgeAnim = new Set();
 
   const prefersReducedMotion = () =>
@@ -1284,7 +1293,7 @@ function initCustomStorymapCanvas() {
 
   const saveViewerState = () => {
     if (!isViewerLike()) return;
-    saveStorymapViewerProgress([...viewerUnlocked], [...viewerVisited]);
+    saveStorymapViewerProgress([...viewerUnlocked], [...viewerVisited], storymapGraphSignature(canvas));
   };
 
   const nodeElById = (nodeId) =>
@@ -1835,27 +1844,36 @@ function initCustomStorymapCanvas() {
     on(previewToggle, "change", () => {
       previewAsUser = previewToggle.checked;
       document.body.classList.toggle("layout--storymapPreview", previewAsUser);
+      mergeViewerProgress();
       renderCanvas();
       syncPanel();
     });
   }
 
-  fitViewToNodes();
-  updateWorldTransform();
-  renderCanvas();
-  syncPanel();
-  if (isAdmin) syncCreateConnectOptions();
-  if (!isAdmin) {
+  const bootstrapStorymapUi = () => {
+    fitViewToNodes();
+    updateWorldTransform();
+    renderCanvas();
+    syncPanel();
+    if (isAdmin) syncCreateConnectOptions();
+    setStatus("");
+  };
+
+  if (isAdmin) {
+    bootstrapStorymapUi();
+  } else {
     void loadPublishedStorymapFromRepo()
       .then((remoteCanvas) => {
         canvas = remoteCanvas;
         mergeViewerProgress();
         selectedId = null;
-        renderCanvas();
-        syncPanel();
+        bootstrapStorymapUi();
       })
       .catch((err) => {
         console.warn("Published storymap fetch fallback:", err);
+        mergeViewerProgress();
+        selectedId = null;
+        bootstrapStorymapUi();
       });
   }
   return true;
@@ -3530,7 +3548,7 @@ try {
   setStatus("Loading storymap...", { isLoading: true });
   if (document.getElementById("storymapViewport")) {
     initCustomStorymapCanvas();
-    setStatus("");
+    // Status cleared from bootstrapStorymapUi when the canvas is ready (viewer waits for published JSON).
   } else if (MODE === "history" || el.discussionPosts) {
     setStatus("");
   } else {
