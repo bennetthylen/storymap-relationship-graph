@@ -2864,6 +2864,7 @@ function renderDiscussionBoard({ animatePostId = null } = {}) {
 async function initDiscussionBoard() {
   if (!el.discussionPosts || !el.discussionPostBtn) return;
   setStatus("Loading discussion…", { isLoading: true });
+  let showedRemoteLoadError = false;
   try {
     await bootstrapDiscussionRemote();
     if (discussionRemoteEnabled) {
@@ -2872,13 +2873,14 @@ async function initDiscussionBoard() {
       } catch (err) {
         console.warn("[discussion] Load error, using local cache:", err);
         discussionState = loadDiscussionsLocal();
+        showedRemoteLoadError = true;
         setStatus("Could not load shared discussion. Showing saved copy on this device.", { isError: true });
       }
     } else {
       discussionState = loadDiscussionsLocal();
     }
   } finally {
-    setStatus("");
+    if (!showedRemoteLoadError) setStatus("");
   }
   updateDiscussionBackendNotice();
   renderDiscussionBoard();
@@ -4240,7 +4242,10 @@ window.addEventListener("error", (evt) => {
     initContentEditorPanel();
     await initDiscussionBoard();
     initDiscussionAdminControls();
-    setStatus("Loading storymap...", { isLoading: true });
+    // Avoid flashing "Loading storymap" on discussion.html (discussion has its own load path).
+    if (!el.discussionPosts) {
+      setStatus("Loading storymap...", { isLoading: true });
+    }
     if (document.getElementById("storymapViewport")) {
       initCustomStorymapCanvas();
       // Status cleared from bootstrapStorymapUi when the canvas is ready (viewer waits for published JSON).
