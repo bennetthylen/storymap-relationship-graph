@@ -142,7 +142,8 @@
             </div>
             <div class="toolbarRight">
               <p id="smPublishHelp" class="muted small" style="margin: 0">
-                Publish writes to <code>published-storymap.json</code> on GitHub.
+                Publish writes to <code>published-storymap.json</code> on GitHub. The public Storymap page loads that file;
+                it does not use your unsaved local draft until you publish.
               </p>
             </div>
           </div>
@@ -154,7 +155,10 @@
               <button id="smZoomIn" class="mapControls__btn" type="button" aria-label="Zoom in">+</button>
               <button id="smZoomOut" class="mapControls__btn" type="button" aria-label="Zoom out">-</button>
             </div>
-            <label class="smPreviewToggle" title="Hide admin panels and interact like a visitor">
+            <label
+              class="smPreviewToggle"
+              title="Hide admin panels and interact like a visitor. Unlock progress is saved separately from storymap.html so testing here does not change visitors’ saved state."
+            >
               <input id="smPreviewAsUser" type="checkbox" />
               <span>Preview as user</span>
             </label>

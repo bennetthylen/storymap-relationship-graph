@@ -16,8 +16,129 @@ const STORYMAP_CANVAS_PUBLIC_KEY = "storymapCanvasPublicV1";
 const STORYMAP_CANVAS_ADMIN_KEY = "storymapCanvasAdminV1";
 const STORYMAP_CANVAS_RELEASE_KEY = "storymapCanvasPublishedReleaseV1";
 const STORYMAP_PROGRESS_KEY = "storymapProgressV1";
+/** Admin-only “Preview as user” progress so testing unlock state does not overwrite the real viewer key. */
+const STORYMAP_PROGRESS_PREVIEW_KEY = "storymapProgressPreviewV1";
 /** Persists across browser restarts so you reuse one PAT; clear with "Forget PAT". */
 const GITHUB_TOKEN_STORAGE_KEY = "storymapGithubPublishTokenV1";
+
+/**
+ * All localStorage keys used by this app (same origin = shared across pages; never synced across browsers).
+ * Use `storymapDumpLocalStorage()` in the console to inspect sizes and parse JSON values.
+ */
+const STORYMAP_STORAGE_KEYS = {
+  graph: STORAGE_KEY,
+  lang: LANG_STORAGE_KEY,
+  content: CONTENT_STORAGE_KEY,
+  discussion: DISCUSSION_STORAGE_KEY,
+  canvasPublic: STORYMAP_CANVAS_PUBLIC_KEY,
+  canvasAdmin: STORYMAP_CANVAS_ADMIN_KEY,
+  canvasRelease: STORYMAP_CANVAS_RELEASE_KEY,
+  progress: STORYMAP_PROGRESS_KEY,
+  progressPreview: STORYMAP_PROGRESS_PREVIEW_KEY,
+  githubToken: GITHUB_TOKEN_STORAGE_KEY,
+};
+
+function storymapClearableStorageKeys() {
+  return [
+    STORYMAP_PROGRESS_KEY,
+    STORYMAP_PROGRESS_PREVIEW_KEY,
+    STORYMAP_CANVAS_PUBLIC_KEY,
+    STORYMAP_CANVAS_ADMIN_KEY,
+    STORYMAP_CANVAS_RELEASE_KEY,
+    CONTENT_STORAGE_KEY,
+    DISCUSSION_STORAGE_KEY,
+    LANG_STORAGE_KEY,
+    STORAGE_KEY,
+  ];
+}
+
+/** Console helper: table of storymap-related localStorage entries (JSON pretty-printed when small). */
+function storymapDumpLocalStorage() {
+  if (typeof localStorage === "undefined") return;
+  const rows = [];
+  const all = [];
+  try {
+    for (let i = 0; i < localStorage.length; i += 1) {
+      const k = localStorage.key(i);
+      if (k) all.push(k);
+    }
+  } catch {
+    return;
+  }
+  const storyKeys = all.filter((k) => /^storymap/i.test(k) || k === STORAGE_KEY);
+  storyKeys.sort();
+  storyKeys.forEach((key) => {
+    let raw = "";
+    try {
+      raw = localStorage.getItem(key) || "";
+    } catch {
+      raw = "(unreadable)";
+    }
+    let preview = raw;
+    if (raw.length > 200) preview = `${raw.slice(0, 200)}… (${raw.length} chars)`;
+    try {
+      const parsed = JSON.parse(raw);
+      if (typeof parsed === "object" && parsed !== null) {
+        preview = JSON.stringify(parsed, null, 0).length > 220 ? `${JSON.stringify(parsed).slice(0, 220)}…` : JSON.stringify(parsed);
+      }
+    } catch {
+      /* keep raw preview */
+    }
+    rows.push({ key, length: raw.length, preview });
+  });
+  if (typeof console !== "undefined" && console.table) console.table(rows);
+  else if (typeof console !== "undefined" && console.log) console.log(rows);
+  return rows;
+}
+
+function applyStorymapUrlStorageHints() {
+  if (typeof window === "undefined" || typeof localStorage === "undefined") return;
+  let q;
+  try {
+    q = new URLSearchParams(window.location.search);
+  } catch {
+    return;
+  }
+  if (q.has("clearStorymapProgress")) {
+    try {
+      localStorage.removeItem(STORYMAP_PROGRESS_KEY);
+      localStorage.removeItem(STORYMAP_PROGRESS_PREVIEW_KEY);
+      if (typeof console !== "undefined" && console.info) {
+        console.info("[storymap] Removed viewer + preview progress keys (?clearStorymapProgress=1)");
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  if (q.has("clearStorymapStorage")) {
+    storymapClearableStorageKeys().forEach((k) => {
+      try {
+        localStorage.removeItem(k);
+      } catch {
+        /* ignore */
+      }
+    });
+    if (q.has("clearStorymapGithubToken")) {
+      try {
+        localStorage.removeItem(GITHUB_TOKEN_STORAGE_KEY);
+      } catch {
+        /* ignore */
+      }
+    }
+    if (typeof console !== "undefined" && console.info) {
+      console.info(
+        "[storymap] Cleared storymap storage keys (?clearStorymapStorage=1). Add &clearStorymapGithubToken=1 to also remove the GitHub PAT."
+      );
+    }
+  }
+  if (q.has("debugStorymapStorage")) storymapDumpLocalStorage();
+}
+
+if (typeof window !== "undefined") {
+  window.STORYMAP_STORAGE_KEYS = STORYMAP_STORAGE_KEYS;
+  window.storymapDumpLocalStorage = storymapDumpLocalStorage;
+}
+
 const GITHUB_PUBLISHED_CANVAS_PATH = "published-storymap.json";
 const GITHUB_REPO_OWNER = "bennetthylen";
 const GITHUB_REPO_NAME = "storymap-relationship-graph";
@@ -922,13 +1043,21 @@ function normalizeStorymapCanvasState(payload, fallbackState) {
   const edgesInput = Array.isArray(source?.edges) ? source.edges : fallbackState.edges;
   const nodes = nodesInput.map((node, index) => normalizeStorymapCanvasNode(node, index));
   const nodeIds = new Set(nodes.map((n) => n.id));
-  const edges = edgesInput
-    .map((edge) => ({
-      source: String(edge?.source || "").trim(),
-      target: String(edge?.target || "").trim(),
-      label: String(edge?.label || edge?.role || "").trim(),
-    }))
-    .filter((edge) => edge.source && edge.target && nodeIds.has(edge.source) && nodeIds.has(edge.target));
+  const mappedEdges = edgesInput.map((edge) => ({
+    source: String(edge?.source || "").trim(),
+    target: String(edge?.target || "").trim(),
+    label: String(edge?.label || edge?.role || "").trim(),
+  }));
+  const edges = dedupeStorymapEdges(
+    mappedEdges.filter(
+      (edge) =>
+        edge.source &&
+        edge.target &&
+        edge.source !== edge.target &&
+        nodeIds.has(edge.source) &&
+        nodeIds.has(edge.target)
+    )
+  );
   const rawEntry = Array.isArray(source?.entryNodeIds) ? source.entryNodeIds : null;
   const entryFiltered = rawEntry
     ? rawEntry.map((id) => String(id || "").trim()).filter((id) => id && nodeIds.has(id))
@@ -940,6 +1069,39 @@ function normalizeStorymapCanvasState(payload, fallbackState) {
 
 function storymapEdgeKey(a, b) {
   return a < b ? `${a}||${b}` : `${b}||${a}`;
+}
+
+/** Directed: at most one edge per ordered pair (source → target). */
+function canAddStorymapEdge(canvas, srcId, tgtId) {
+  const s = String(srcId || "").trim();
+  const t = String(tgtId || "").trim();
+  if (!s || !t || s === t) return false;
+  if (!canvas?.edges?.length) return true;
+  return !canvas.edges.some((e) => e.source === s && e.target === t);
+}
+
+/**
+ * Returns a new edges array with at most one edge per (source, target); first occurrence wins.
+ * Same rule as {@link normalizeStorymapCanvasState} (used on load/import/publish).
+ */
+function dedupeStorymapEdges(edges) {
+  const edgeSeen = new Set();
+  const list = Array.isArray(edges) ? edges : [];
+  const out = [];
+  list.forEach((edge) => {
+    const source = String(edge?.source || "").trim();
+    const target = String(edge?.target || "").trim();
+    if (!source || !target || source === target) return;
+    const k = `${source}\t${target}`;
+    if (edgeSeen.has(k)) return;
+    edgeSeen.add(k);
+    out.push({
+      source,
+      target,
+      label: String(edge?.label || edge?.role || "").trim(),
+    });
+  });
+  return out;
 }
 
 /**
@@ -985,25 +1147,41 @@ function storymapGraphSignature(canvas) {
   return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}|rule:sourcesSinks-out`;
 }
 
-function loadStorymapViewerProgress() {
+/**
+ * Loads viewer unlock/visit progress. If stored `graphSig` does not match the current canvas,
+ * progress is reset (avoids stale IDs/coords after a publish or import). Cross-browser “sync”
+ * is not possible with localStorage—each browser has its own partition.
+ */
+function loadStorymapViewerProgressForCanvas(canvas, storageKey = STORYMAP_PROGRESS_KEY) {
+  const sig = storymapGraphSignature(canvas);
   try {
-    const raw = localStorage.getItem(STORYMAP_PROGRESS_KEY);
-    if (!raw) return { unlocked: [], visited: [] };
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return { unlocked: [], visited: [], hadGraphSigMismatch: false };
     const p = JSON.parse(raw);
+    const storedSig = p?.graphSig;
+    if (storedSig && sig && storedSig !== sig) {
+      return { unlocked: [], visited: [], hadGraphSigMismatch: true };
+    }
     return {
       unlocked: Array.isArray(p?.unlocked) ? p.unlocked : [],
       visited: Array.isArray(p?.visited) ? p.visited : [],
+      hadGraphSigMismatch: false,
     };
   } catch {
-    return { unlocked: [], visited: [] };
+    return { unlocked: [], visited: [], hadGraphSigMismatch: false };
   }
 }
 
-function saveStorymapViewerProgress(unlockedArr, visitedArr, graphSig = null) {
+function saveStorymapViewerProgress(
+  unlockedArr,
+  visitedArr,
+  graphSig = null,
+  storageKey = STORYMAP_PROGRESS_KEY
+) {
   try {
     const payload = { unlocked: [...unlockedArr], visited: [...visitedArr] };
     if (graphSig) payload.graphSig = graphSig;
-    localStorage.setItem(STORYMAP_PROGRESS_KEY, JSON.stringify(payload));
+    localStorage.setItem(storageKey, JSON.stringify(payload));
   } catch {
     // ignore
   }
@@ -1188,6 +1366,9 @@ function initCustomStorymapCanvas() {
   let panDraft = null;
   let nodeDragDraft = null;
   let previewAsUser = false;
+  /** Real viewer progress vs admin preview (separate localStorage keys). */
+  const progressStorageKey = () =>
+    isAdmin && previewAsUser ? STORYMAP_PROGRESS_PREVIEW_KEY : STORYMAP_PROGRESS_KEY;
   const createConnectSelect = document.getElementById("smCreateConnectTo");
   const previewToggle = document.getElementById("smPreviewAsUser");
 
@@ -1197,10 +1378,14 @@ function initCustomStorymapCanvas() {
   };
 
   const mergeViewerProgress = () => {
+    const key = progressStorageKey();
     const entryNodeIds = getStorymapEntryNodeIds(canvas);
-    const progress = loadStorymapViewerProgress();
+    const progress = loadStorymapViewerProgressForCanvas(canvas, key);
     viewerUnlocked = pruneIdsToCanvas(new Set([...entryNodeIds, ...progress.unlocked]));
     viewerVisited = pruneIdsToCanvas(new Set(progress.visited));
+    if (progress.hadGraphSigMismatch) {
+      saveStorymapViewerProgress([...viewerUnlocked], [...viewerVisited], storymapGraphSignature(canvas), key);
+    }
   };
 
   let viewerUnlocked = new Set();
@@ -1343,7 +1528,12 @@ function initCustomStorymapCanvas() {
 
   const saveViewerState = () => {
     if (!isViewerLike()) return;
-    saveStorymapViewerProgress([...viewerUnlocked], [...viewerVisited], storymapGraphSignature(canvas));
+    saveStorymapViewerProgress(
+      [...viewerUnlocked],
+      [...viewerVisited],
+      storymapGraphSignature(canvas),
+      progressStorageKey()
+    );
   };
 
   const nodeElById = (nodeId) =>
@@ -1371,83 +1561,94 @@ function initCustomStorymapCanvas() {
       if (typeof onFinish === "function") onFinish();
       return;
     }
-    el.classList.remove("smNode--locked");
-    const w = el.offsetWidth || 48;
-    const h = el.offsetHeight || 48;
-    const imgEl = el.querySelector("img");
-    el.style.transition = "none";
-    el.style.left = `${parent.x - w / 2}px`;
-    el.style.top = `${parent.y - h / 2}px`;
-    el.style.transform = "scale(0.18)";
-    el.style.opacity = "0.35";
-    if (imgEl) {
-      imgEl.style.transition = "none";
-      imgEl.style.filter = "grayscale(1)";
-    } else {
-      el.style.filter = "grayscale(1)";
-    }
-    void el.offsetWidth;
-    const dur = prefersReducedMotion() ? "0.01ms" : "450ms";
-    const colorDur = prefersReducedMotion() ? "0.01ms" : "600ms";
-    const moveEasing = `left ${dur} cubic-bezier(0.22, 1, 0.36, 1), top ${dur} cubic-bezier(0.22, 1, 0.36, 1), transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
-    el.style.transition = imgEl ? moveEasing : `${moveEasing}, filter ${colorDur} ease`;
-    if (imgEl) imgEl.style.transition = `filter ${colorDur} ease`;
-    el.style.left = `${node.x}px`;
-    el.style.top = `${node.y}px`;
-    el.style.transform = "scale(1)";
-    el.style.opacity = "1";
-    if (imgEl) {
-      imgEl.style.filter = "grayscale(0)";
-    } else {
-      el.style.filter = "none";
-    }
 
-    const finish = () => {
-      el.style.transition = "";
-      el.style.transform = "";
-      el.style.opacity = "";
-      el.style.filter = "";
+    const runSteps = () => {
+      el.classList.remove("smNode--locked");
+      const w = el.offsetWidth || 48;
+      const h = el.offsetHeight || 48;
+      const imgEl = el.querySelector("img");
+      el.style.transition = "none";
+      el.style.left = `${parent.x - w / 2}px`;
+      el.style.top = `${parent.y - h / 2}px`;
+      el.style.transform = "scale(0.18)";
+      el.style.opacity = "0.35";
       if (imgEl) {
-        imgEl.style.transition = "";
-        imgEl.style.filter = "";
+        imgEl.style.transition = "none";
+        imgEl.style.filter = "grayscale(1)";
+      } else {
+        el.style.filter = "grayscale(1)";
       }
-      pendingEdgeAnim.delete(edgeKey);
-      if (updateProgress) {
-        viewerUnlocked.add(nid);
-        saveViewerState();
+      void el.offsetWidth;
+      const dur = prefersReducedMotion() ? "0.01ms" : "450ms";
+      const colorDur = prefersReducedMotion() ? "0.01ms" : "600ms";
+      const moveEasing = `left ${dur} cubic-bezier(0.22, 1, 0.36, 1), top ${dur} cubic-bezier(0.22, 1, 0.36, 1), transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
+      el.style.transition = imgEl ? moveEasing : `${moveEasing}, filter ${colorDur} ease`;
+      if (imgEl) imgEl.style.transition = `filter ${colorDur} ease`;
+      el.style.left = `${node.x}px`;
+      el.style.top = `${node.y}px`;
+      el.style.transform = "scale(1)";
+      el.style.opacity = "1";
+      if (imgEl) {
+        imgEl.style.filter = "grayscale(0)";
+      } else {
+        el.style.filter = "none";
       }
-      if (typeof onFinish === "function") onFinish();
-      else renderCanvas();
+
+      const finish = () => {
+        el.style.transition = "";
+        el.style.transform = "";
+        el.style.opacity = "";
+        el.style.filter = "";
+        if (imgEl) {
+          imgEl.style.transition = "";
+          imgEl.style.filter = "";
+        }
+        pendingEdgeAnim.delete(edgeKey);
+        if (updateProgress) {
+          viewerUnlocked.add(nid);
+          saveViewerState();
+        }
+        if (typeof onFinish === "function") onFinish();
+        else renderCanvas();
+      };
+
+      if (prefersReducedMotion()) {
+        finish();
+        return;
+      }
+
+      // Position finishes in ~450ms; color uses `colorDur` (~600ms). Finish when the
+      // filter transition ends so grayscale → color is not cut off by clearing inline styles.
+      let done = false;
+      let fallbackTimer = null;
+      const colorTarget = imgEl || el;
+      const cleanup = () => {
+        if (fallbackTimer) window.clearTimeout(fallbackTimer);
+        colorTarget.removeEventListener("transitionend", onColorEnd);
+      };
+      const onColorEnd = (evt) => {
+        if (evt.propertyName !== "filter" && evt.propertyName !== "-webkit-filter") return;
+        if (done) return;
+        done = true;
+        cleanup();
+        finish();
+      };
+      colorTarget.addEventListener("transitionend", onColorEnd);
+      fallbackTimer = window.setTimeout(() => {
+        if (done) return;
+        done = true;
+        cleanup();
+        finish();
+      }, 1100);
     };
 
     if (prefersReducedMotion()) {
-      finish();
+      runSteps();
       return;
     }
-
-    // Position finishes in ~450ms; color uses `colorDur` (~600ms). Finish when the
-    // filter transition ends so grayscale → color is not cut off by clearing inline styles.
-    let done = false;
-    let fallbackTimer = null;
-    const colorTarget = imgEl || el;
-    const cleanup = () => {
-      if (fallbackTimer) window.clearTimeout(fallbackTimer);
-      colorTarget.removeEventListener("transitionend", onColorEnd);
-    };
-    const onColorEnd = (evt) => {
-      if (evt.propertyName !== "filter" && evt.propertyName !== "-webkit-filter") return;
-      if (done) return;
-      done = true;
-      cleanup();
-      finish();
-    };
-    colorTarget.addEventListener("transitionend", onColorEnd);
-    fallbackTimer = window.setTimeout(() => {
-      if (done) return;
-      done = true;
-      cleanup();
-      finish();
-    }, 1100);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(runSteps);
+    });
   };
 
   const queueNeighborUnlockAnimations = (clickedId) => {
@@ -1574,7 +1775,10 @@ function initCustomStorymapCanvas() {
 
     const vl = isViewerLike();
     const unlocked = viewerUnlocked.has(node.id);
-    if (vl && !unlocked) div.classList.add("smNode--locked");
+    if (vl && !unlocked) {
+      div.classList.add("smNode--locked");
+      div.title = "Locked — click a highlighted node you’ve already opened to unlock the next steps.";
+    }
     if (vl && viewerVisited.has(node.id) && unlocked) div.classList.add("smNode--visited");
 
     if (node.type === "image") {
@@ -1602,6 +1806,10 @@ function initCustomStorymapCanvas() {
     evt.stopPropagation();
     if (isViewerLike()) {
       if (!viewerUnlocked.has(node.id)) {
+        setStatus(
+          "This node is still locked. Click a highlighted node you’ve already opened; new steps unlock along the arrows.",
+          { isError: false }
+        );
         return;
       }
       selectedId = node.id;
@@ -1774,8 +1982,7 @@ function initCustomStorymapCanvas() {
     };
     canvas.nodes.push(nextNode);
     if (connectTo && connectTo !== id) {
-      const exists = canvas.edges.some((e) => e.source === connectTo && e.target === id);
-      if (!exists) {
+      if (canAddStorymapEdge(canvas, connectTo, id)) {
         canvas.edges.push({ source: connectTo, target: id, label: "" });
       }
     }
@@ -1831,7 +2038,9 @@ function initCustomStorymapCanvas() {
       x: parent.x + 130,
       y: parent.y + 80,
     });
-    canvas.edges.push({ source: parent.id, target: id });
+    if (canAddStorymapEdge(canvas, parent.id, id)) {
+      canvas.edges.push({ source: parent.id, target: id, label: "" });
+    }
     selectedId = id;
     saveStorymapCanvasState(canvas);
     renderCanvas();
@@ -1851,12 +2060,13 @@ function initCustomStorymapCanvas() {
     const target = getNodeByIdLocal(pickedId);
     if (!target) return;
     if (target.id === selectedId) return;
-    const exists = canvas.edges.some((e) => e.source === selectedId && e.target === target.id);
-    if (!exists) {
-      canvas.edges.push({ source: selectedId, target: target.id, label: "" });
-      saveStorymapCanvasState(canvas);
-      renderCanvas();
+    if (!canAddStorymapEdge(canvas, selectedId, target.id)) {
+      setStatus("That directed link already exists (only one edge per source → target).", { isError: true });
+      return;
     }
+    canvas.edges.push({ source: selectedId, target: target.id, label: "" });
+    saveStorymapCanvasState(canvas);
+    renderCanvas();
   });
 
   on(deleteNodeBtn, "click", () => {
@@ -3602,6 +3812,7 @@ window.addEventListener("error", (evt) => {
 });
 
 try {
+  applyStorymapUrlStorageHints();
   syncCanvasToPublishedRelease();
   applyContentConfigToPage();
   initScrollReveals();
