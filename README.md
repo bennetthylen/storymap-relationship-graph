@@ -60,7 +60,7 @@ The admin storymap canvas supports global publishing through GitHub:
 ### Notes
 
 - GitHub Pages may take about 1 minute to show the latest publish.
-- The PAT is saved in `sessionStorage` only for the current browser session.
+- The PAT is saved in this browser’s `localStorage` so you can reuse the same token after closing the tab (use **Forget PAT** to remove it).
 - Failed publish attempts do not delete local admin drafts.
 
 ## Routes

@@ -16,7 +16,8 @@ const STORYMAP_CANVAS_PUBLIC_KEY = "storymapCanvasPublicV1";
 const STORYMAP_CANVAS_ADMIN_KEY = "storymapCanvasAdminV1";
 const STORYMAP_CANVAS_RELEASE_KEY = "storymapCanvasPublishedReleaseV1";
 const STORYMAP_PROGRESS_KEY = "storymapProgressV1";
-const GITHUB_TOKEN_SESSION_KEY = "storymapGithubPublishTokenV1";
+/** Persists across browser restarts so you reuse one PAT; clear with "Forget PAT". */
+const GITHUB_TOKEN_STORAGE_KEY = "storymapGithubPublishTokenV1";
 const GITHUB_PUBLISHED_CANVAS_PATH = "published-storymap.json";
 const GITHUB_REPO_OWNER = "bennetthylen";
 const GITHUB_REPO_NAME = "storymap-relationship-graph";
@@ -928,7 +929,13 @@ function normalizeStorymapCanvasState(payload, fallbackState) {
       label: String(edge?.label || edge?.role || "").trim(),
     }))
     .filter((edge) => edge.source && edge.target && nodeIds.has(edge.source) && nodeIds.has(edge.target));
-  return { nodes, edges };
+  const rawEntry = Array.isArray(source?.entryNodeIds) ? source.entryNodeIds : null;
+  const entryFiltered = rawEntry
+    ? rawEntry.map((id) => String(id || "").trim()).filter((id) => id && nodeIds.has(id))
+    : [];
+  const out = { nodes, edges };
+  if (entryFiltered.length) out.entryNodeIds = entryFiltered;
+  return out;
 }
 
 function storymapEdgeKey(a, b) {
@@ -937,6 +944,11 @@ function storymapEdgeKey(a, b) {
 
 function getStorymapEntryNodeIds(canvas) {
   if (!canvas?.nodes?.length) return [];
+  const valid = new Set(canvas.nodes.map((n) => n.id));
+  if (Array.isArray(canvas.entryNodeIds) && canvas.entryNodeIds.length) {
+    const picked = canvas.entryNodeIds.filter((id) => valid.has(id));
+    if (picked.length) return picked;
+  }
   const ids = canvas.nodes.map((n) => n.id);
   const incoming = new Set();
   canvas.edges.forEach((e) => incoming.add(e.target));
@@ -958,7 +970,8 @@ function storymapGraphSignature(canvas) {
   if (!canvas?.nodes?.length) return "";
   const ids = canvas.nodes.map((n) => n.id).sort();
   const es = canvas.edges.map((e) => `${e.source}\t${e.target}`).sort();
-  return `${ids.join(",")}|e:${es.join(",")}`;
+  const ent = Array.isArray(canvas.entryNodeIds) ? [...canvas.entryNodeIds].sort().join(",") : "";
+  return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}`;
 }
 
 function loadStorymapViewerProgress() {
@@ -1239,20 +1252,46 @@ function initCustomStorymapCanvas() {
   const readGithubToken = () => String(githubTokenInput?.value || "").trim();
   const storeGithubToken = (tokenValue) => {
     try {
-      if (!tokenValue) sessionStorage.removeItem(GITHUB_TOKEN_SESSION_KEY);
-      else sessionStorage.setItem(GITHUB_TOKEN_SESSION_KEY, tokenValue);
+      if (!tokenValue) localStorage.removeItem(GITHUB_TOKEN_STORAGE_KEY);
+      else localStorage.setItem(GITHUB_TOKEN_STORAGE_KEY, tokenValue);
     } catch {
       // ignore
     }
   };
-  if (isAdmin && githubTokenInput) {
+  const loadStoredGithubToken = () => {
     try {
-      const cachedToken = sessionStorage.getItem(GITHUB_TOKEN_SESSION_KEY) || "";
-      if (cachedToken) githubTokenInput.value = cachedToken;
+      let t = localStorage.getItem(GITHUB_TOKEN_STORAGE_KEY) || "";
+      if (!t) {
+        const legacy = sessionStorage.getItem(GITHUB_TOKEN_STORAGE_KEY) || "";
+        if (legacy) {
+          localStorage.setItem(GITHUB_TOKEN_STORAGE_KEY, legacy);
+          sessionStorage.removeItem(GITHUB_TOKEN_STORAGE_KEY);
+          t = legacy;
+        }
+      }
+      return t;
     } catch {
-      // ignore
+      return "";
     }
-    on(githubTokenInput, "change", () => storeGithubToken(readGithubToken()));
+  };
+  if (isAdmin && githubTokenInput) {
+    const cachedToken = loadStoredGithubToken();
+    if (cachedToken) githubTokenInput.value = cachedToken;
+    const persistTokenField = () => storeGithubToken(readGithubToken());
+    on(githubTokenInput, "input", persistTokenField);
+    on(githubTokenInput, "change", persistTokenField);
+    on(githubTokenInput, "blur", persistTokenField);
+    const clearTokenBtn = document.getElementById("smClearGithubToken");
+    on(clearTokenBtn, "click", () => {
+      try {
+        localStorage.removeItem(GITHUB_TOKEN_STORAGE_KEY);
+        sessionStorage.removeItem(GITHUB_TOKEN_STORAGE_KEY);
+      } catch {
+        // ignore
+      }
+      if (githubTokenInput) githubTokenInput.value = "";
+      if (publishHelp) publishHelp.textContent = "Saved PAT cleared from this browser.";
+    });
   }
   const fitViewToNodes = () => {
     if (!canvas.nodes.length) return;

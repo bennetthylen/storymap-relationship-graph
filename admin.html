@@ -128,7 +128,12 @@
             <div class="toolbarLeft">
               <div class="field" style="margin: 0; min-width: 300px">
                 <label for="smGithubToken" class="muted small">GitHub PAT</label>
-                <input id="smGithubToken" type="password" placeholder="ghp_..." autocomplete="off" />
+                <div class="actions actions--row" style="align-items: flex-end; gap: 8px; flex-wrap: wrap">
+                  <input id="smGithubToken" type="password" placeholder="ghp_..." autocomplete="off" style="flex: 1; min-width: 180px" />
+                  <button id="smClearGithubToken" class="btn btn--secondary" type="button" title="Remove saved token from this browser">
+                    Forget PAT
+                  </button>
+                </div>
               </div>
               <div class="field" style="margin: 0; min-width: 300px">
                 <label for="smPublishCommitMessage" class="muted small">Commit message (optional)</label>
@@ -301,7 +306,7 @@
     </div>
 
     <script src="./vendor/cytoscape.min.js"></script>
-    <script src="./app.js?v=20260331g"></script>
+    <script src="./app.js?v=20260331h"></script>
   </body>
 </html>
 
