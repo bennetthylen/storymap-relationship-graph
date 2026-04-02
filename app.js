@@ -942,6 +942,11 @@ function storymapEdgeKey(a, b) {
   return a < b ? `${a}||${b}` : `${b}||${a}`;
 }
 
+/**
+ * Nodes that start unlocked (full color): optional `entryNodeIds` in canvas JSON,
+ * else the union of **sources** (no incoming edges) and **sinks** (no outgoing edges).
+ * Sources are where you can start clicking; sinks are innermost hubs and stay revealed.
+ */
 function getStorymapEntryNodeIds(canvas) {
   if (!canvas?.nodes?.length) return [];
   const valid = new Set(canvas.nodes.map((n) => n.id));
@@ -951,19 +956,25 @@ function getStorymapEntryNodeIds(canvas) {
   }
   const ids = canvas.nodes.map((n) => n.id);
   const incoming = new Set();
-  canvas.edges.forEach((e) => incoming.add(e.target));
-  const roots = ids.filter((id) => !incoming.has(id));
-  if (roots.length) return roots;
+  const outgoing = new Set();
+  canvas.edges.forEach((e) => {
+    incoming.add(e.target);
+    outgoing.add(e.source);
+  });
+  const sources = ids.filter((id) => !incoming.has(id));
+  const sinks = ids.filter((id) => !outgoing.has(id));
+  const union = [...new Set([...sources, ...sinks])];
+  if (union.length) return union;
   return [ids[0]];
 }
 
-function getUndirectedStorymapNeighbors(canvas, nodeId) {
-  const out = new Set();
+/** Directed next step: targets of edges leaving `nodeId` (unlock by clicking forward along arrows). */
+function getOutgoingStorymapNeighbors(canvas, nodeId) {
+  const out = [];
   canvas.edges.forEach((e) => {
-    if (e.source === nodeId) out.add(e.target);
-    if (e.target === nodeId) out.add(e.source);
+    if (e.source === nodeId) out.push(e.target);
   });
-  return [...out];
+  return out;
 }
 
 function storymapGraphSignature(canvas) {
@@ -971,7 +982,7 @@ function storymapGraphSignature(canvas) {
   const ids = canvas.nodes.map((n) => n.id).sort();
   const es = canvas.edges.map((e) => `${e.source}\t${e.target}`).sort();
   const ent = Array.isArray(canvas.entryNodeIds) ? [...canvas.entryNodeIds].sort().join(",") : "";
-  return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}`;
+  return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}|rule:sourcesSinks-out`;
 }
 
 function loadStorymapViewerProgress() {
@@ -1372,22 +1383,30 @@ function initCustomStorymapCanvas() {
     if (imgEl) {
       imgEl.style.transition = "none";
       imgEl.style.filter = "grayscale(1)";
+    } else {
+      el.style.filter = "grayscale(1)";
     }
     void el.offsetWidth;
     const dur = prefersReducedMotion() ? "0.01ms" : "450ms";
     const colorDur = prefersReducedMotion() ? "0.01ms" : "600ms";
-    el.style.transition = `left ${dur} cubic-bezier(0.22, 1, 0.36, 1), top ${dur} cubic-bezier(0.22, 1, 0.36, 1), transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
+    const moveEasing = `left ${dur} cubic-bezier(0.22, 1, 0.36, 1), top ${dur} cubic-bezier(0.22, 1, 0.36, 1), transform ${dur} cubic-bezier(0.22, 1, 0.36, 1), opacity ${dur} ease`;
+    el.style.transition = imgEl ? moveEasing : `${moveEasing}, filter ${colorDur} ease`;
     if (imgEl) imgEl.style.transition = `filter ${colorDur} ease`;
     el.style.left = `${node.x}px`;
     el.style.top = `${node.y}px`;
     el.style.transform = "scale(1)";
     el.style.opacity = "1";
-    if (imgEl) imgEl.style.filter = "grayscale(0)";
+    if (imgEl) {
+      imgEl.style.filter = "grayscale(0)";
+    } else {
+      el.style.filter = "none";
+    }
 
     const finish = () => {
       el.style.transition = "";
       el.style.transform = "";
       el.style.opacity = "";
+      el.style.filter = "";
       if (imgEl) {
         imgEl.style.transition = "";
         imgEl.style.filter = "";
@@ -1406,28 +1425,34 @@ function initCustomStorymapCanvas() {
       return;
     }
 
+    // Position finishes in ~450ms; color uses `colorDur` (~600ms). Finish when the
+    // filter transition ends so grayscale → color is not cut off by clearing inline styles.
     let done = false;
     let fallbackTimer = null;
-    const onEnd = (evt) => {
-      if (evt.propertyName !== "left") return;
+    const colorTarget = imgEl || el;
+    const cleanup = () => {
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
+      colorTarget.removeEventListener("transitionend", onColorEnd);
+    };
+    const onColorEnd = (evt) => {
+      if (evt.propertyName !== "filter" && evt.propertyName !== "-webkit-filter") return;
       if (done) return;
       done = true;
-      if (fallbackTimer) window.clearTimeout(fallbackTimer);
-      el.removeEventListener("transitionend", onEnd);
+      cleanup();
       finish();
     };
-    el.addEventListener("transitionend", onEnd);
+    colorTarget.addEventListener("transitionend", onColorEnd);
     fallbackTimer = window.setTimeout(() => {
       if (done) return;
       done = true;
-      el.removeEventListener("transitionend", onEnd);
+      cleanup();
       finish();
-    }, 950);
+    }, 1100);
   };
 
   const queueNeighborUnlockAnimations = (clickedId) => {
     if (!isViewerLike()) return;
-    const neighbors = getUndirectedStorymapNeighbors(canvas, clickedId).filter((nid) => !viewerUnlocked.has(nid));
+    const neighbors = getOutgoingStorymapNeighbors(canvas, clickedId).filter((nid) => !viewerUnlocked.has(nid));
     if (!neighbors.length) return;
     if (prefersReducedMotion()) {
       neighbors.forEach((id) => viewerUnlocked.add(id));
