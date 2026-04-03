@@ -698,9 +698,9 @@ Object.values(TRANSLATIONS).forEach((bundle) => {
 });
 
 Object.assign(TRANSLATIONS.ar, {
-  exhibitionTitle: "بخير، لا تقلقي: أرشيف نسوي علائقي",
+  exhibitionTitle: "أنا بخير، اطمئنوا: أرشيف نسوي علائقي",
   exhibitionSubtitle:
-    "يعيد منتدى المرأة والذاكرة قراءة أرشيف وداد متري بوصفه إرشادًا نسويًا عابرًا للأجيال والطبقات.",
+    "تعيد «المرأة والذاكرة» قراءة أرشيف وداد متري بوصفه إرشادًا نسويًا عابرًا للأجيال والطبقات.",
   citationsTitle: "مراجع وفق أسلوب شيكاغو",
   labelDateRange: "النطاق الزمني",
   labelContextTags: "وسوم السياق",
