@@ -792,6 +792,7 @@ function setLanguage(nextLang) {
       openNodeModalById(viewerOpenNodeId);
     }
   }
+  if (typeof window.storymapRefreshCanvasI18n === "function") window.storymapRefreshCanvasI18n();
 }
 
 /**
@@ -2106,6 +2107,30 @@ function initCustomStorymapCanvas() {
   const getNodeText = (node) => normalizeStorymapBodyText(String(node?.text || ""));
   const getNodeImageSrc = (node) => String(node?.imageSrc || node?.content || "").trim();
 
+  const storymapCanvasLabelKey = (node) => {
+    const fromLabel = String(node?.label || "").trim();
+    if (fromLabel) return fromLabel;
+    return String(node?.content || "").trim();
+  };
+  const getStorymapCanvasI18nPack = (node) => {
+    if (typeof STORYMAP_CANVAS_NODE_I18N === "undefined" || currentLang === "en") return null;
+    const langMap = STORYMAP_CANVAS_NODE_I18N[currentLang];
+    if (!langMap) return null;
+    return langMap[storymapCanvasLabelKey(node)] || null;
+  };
+  const getStorymapCanvasDisplayLabel = (node, baseLabel) => {
+    if (!isViewerLike() || currentLang === "en") return baseLabel;
+    const pack = getStorymapCanvasI18nPack(node);
+    if (pack && pack.label) return pack.label;
+    return baseLabel;
+  };
+  const getStorymapCanvasDisplayText = (node, baseText) => {
+    if (!isViewerLike() || currentLang === "en") return baseText;
+    const pack = getStorymapCanvasI18nPack(node);
+    if (pack && pack.text) return pack.text;
+    return baseText;
+  };
+
   const updateWorldTransform = () => {
     world.style.transform = `translate(${view.panX}px, ${view.panY}px) scale(${view.scale})`;
   };
@@ -2458,8 +2483,10 @@ function initCustomStorymapCanvas() {
         infoPanel.setAttribute("aria-hidden", "true");
       } else {
         applySmInfoPanelSafeInsets();
-        const label = getNodeLabel(node);
-        const bodyText = getNodeText(node);
+        const baseLabel = getNodeLabel(node);
+        const baseBody = getNodeText(node);
+        const label = getStorymapCanvasDisplayLabel(node, baseLabel);
+        const bodyText = getStorymapCanvasDisplayText(node, baseBody);
         const imageSrc = getNodeImageSrc(node);
         const showImageSidebar = node.type === "image" && Boolean(imageSrc);
 
@@ -2483,7 +2510,7 @@ function initCustomStorymapCanvas() {
             const ar = nw / nh;
             px = Math.min(cap, Math.max(half, Math.min(640, Math.max(288, 268 + Math.min(200, ar * 95)))));
           } else {
-            const len = Math.max(bodyText.length, label.length);
+            const len = Math.max(baseBody.length, baseLabel.length);
             px = Math.min(cap, Math.max(half, Math.min(520, Math.max(272, 260 + Math.min(160, len * 1.6)))));
           }
           infoPanel.style.width = `${Math.round(px)}px`;
@@ -2679,23 +2706,28 @@ function initCustomStorymapCanvas() {
       });
       div.appendChild(img);
       if (img.complete && img.naturalWidth) applyImageBoxSize();
-      const title = getNodeLabel(node);
+      const baseTitle = getNodeLabel(node);
+      const title = getStorymapCanvasDisplayLabel(node, baseTitle);
       if (title) {
         const caption = document.createElement("span");
         caption.className = "smNodeImageTitle";
         caption.textContent = title;
+        applyTextDirToNode(caption);
         div.appendChild(caption);
       }
     } else if (node.type === "text") {
       const inner = document.createElement("span");
       inner.className = "smNodeTextInner";
-      inner.textContent = getNodeLabel(node);
+      const baseLbl = getNodeLabel(node);
+      inner.textContent = getStorymapCanvasDisplayLabel(node, baseLbl);
+      applyTextDirToNode(inner);
       div.appendChild(inner);
-      const raw = getNodeLabel(node);
-      const mw = Math.min(290, Math.max(112, 88 + Math.min(220, raw.length * 2.8)));
+      const mw = Math.min(290, Math.max(112, 88 + Math.min(220, baseLbl.length * 2.8)));
       div.style.maxWidth = `${Math.round(mw)}px`;
     } else {
-      div.textContent = getNodeLabel(node);
+      const baseLbl = getNodeLabel(node);
+      div.textContent = getStorymapCanvasDisplayLabel(node, baseLbl);
+      applyTextDirToNode(div);
     }
     return div;
   };
@@ -3076,6 +3108,10 @@ function initCustomStorymapCanvas() {
         bootstrapStorymapUi();
       });
   }
+  window.storymapRefreshCanvasI18n = () => {
+    renderCanvas();
+    syncPanel();
+  };
   return true;
 }
 

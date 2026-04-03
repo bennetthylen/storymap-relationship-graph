@@ -1,6 +1,6 @@
 /**
  * Site-wide UI strings merged into TRANSLATIONS in app.js (nav, pages, modals, admin chrome).
- * Graph node UI strings live in app.js TRANSLATIONS.
+ * Storymap canvas node label/body copy: see canvas-nodes-i18n.js (source: i18n/canvas-bodies/, i18n/canvas-labels.json).
  */
 var STORYMAP_EXTRA_I18N = {
   en: {
