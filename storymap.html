@@ -47,9 +47,15 @@
         </div>
         <aside id="smInfoPanel" class="smInfoPanel" aria-hidden="true">
           <button id="smInfoClose" class="smInfoClose" type="button" aria-label="Close node info">X</button>
-          <h3 id="smInfoTitle"></h3>
-          <img id="smInfoImage" class="smInfoImage" alt="" />
-          <p id="smInfoBody"></p>
+          <div class="smInfoPanel__inner">
+            <div id="smInfoMediaWrap" class="smInfoPanel__media" hidden>
+              <img id="smInfoImage" class="smInfoImage" alt="" />
+            </div>
+            <div class="smInfoPanel__copy">
+              <h3 id="smInfoTitle" class="smInfoTitle"></h3>
+              <p id="smInfoBody" class="smInfoBody"></p>
+            </div>
+          </div>
         </aside>
       </section>
     </main>

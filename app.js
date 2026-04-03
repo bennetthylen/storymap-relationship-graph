@@ -1525,12 +1525,13 @@ function loadStorymapCanvasState() {
       if (publishedRaw) return normalizeStorymapCanvasState(JSON.parse(publishedRaw), fallback);
       return normalizeStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS, fallback);
     }
-    const raw = isAdminCanvas
-      ? localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY)
-      : localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
-    if (!raw) return fallback;
+    // Admin: prefer draft key, then fall back to whatever the public viewer last used.
+    const raw = localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
+    if (!raw) return normalizeStorymapCanvasState(fallback, fallback);
     const parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) return normalizeStorymapCanvasState(fallback, fallback);
+    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) {
+      return normalizeStorymapCanvasState(fallback, fallback);
+    }
     return normalizeStorymapCanvasState(parsed, fallback);
   } catch {
     const fallback = MODE === "admin" ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
@@ -1540,10 +1541,12 @@ function loadStorymapCanvasState() {
 
 function saveStorymapCanvasState(payload) {
   try {
-    const serialized = JSON.stringify(payload);
+    const normalized = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
+    const serialized = JSON.stringify(normalized);
     if (MODE === "admin") {
-      // Admin saves are draft-only; publishing is explicit.
       localStorage.setItem(STORYMAP_CANVAS_ADMIN_KEY, serialized);
+      // Keep public cache in sync so storymap.html shows the same canvas without a separate publish step.
+      localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
       return;
     }
     localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
@@ -1676,6 +1679,54 @@ async function loadPublishedStorymapFromRepo() {
   return normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
 }
 
+/**
+ * Point where a ray from (ax,ay) toward (bx,by) exits the axis-aligned rect [left,top]+(w,h).
+ * Used so edge dashes start/end at node bounds instead of vanishing under nodes.
+ */
+function rayExitRectToward(ax, ay, bx, by, left, top, w, h) {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len = Math.hypot(dx, dy) || 1e-9;
+  const ux = dx / len;
+  const uy = dy / len;
+  const right = left + w;
+  const bottom = top + h;
+  let tMin = Infinity;
+  const tryT = (t) => {
+    if (t > 1e-6 && Number.isFinite(t)) tMin = Math.min(tMin, t);
+  };
+  if (ux > 1e-8) tryT((right - ax) / ux);
+  if (ux < -1e-8) tryT((left - ax) / ux);
+  if (uy > 1e-8) tryT((bottom - ay) / uy);
+  if (uy < -1e-8) tryT((top - ay) / uy);
+  if (!Number.isFinite(tMin) || tMin <= 0) return { x: ax, y: ay };
+  return { x: ax + ux * tMin, y: ay + uy * tMin };
+}
+
+/** Proportional on-canvas size for an image node from natural dimensions (chic, bounded). */
+function computeStorymapImageNodeSize(nw, nh) {
+  const iw = Math.max(1, Number(nw) || 1);
+  const ih = Math.max(1, Number(nh) || 1);
+  const maxSide = 232;
+  const minShort = 92;
+  const scale = Math.min(1, maxSide / Math.max(iw, ih));
+  let dw = Math.round(iw * scale);
+  let dh = Math.round(ih * scale);
+  const shortSide = Math.min(dw, dh);
+  if (shortSide < minShort) {
+    const boost = minShort / shortSide;
+    dw = Math.round(dw * boost);
+    dh = Math.round(dh * boost);
+  }
+  const longSide = Math.max(dw, dh);
+  if (longSide > maxSide + 24) {
+    const shrink = (maxSide + 24) / longSide;
+    dw = Math.round(dw * shrink);
+    dh = Math.round(dh * shrink);
+  }
+  return { w: dw, h: dh };
+}
+
 function initCustomStorymapCanvas() {
   const viewport = document.getElementById("storymapViewport");
   const world = document.getElementById("storymapWorld");
@@ -1760,6 +1811,7 @@ function initCustomStorymapCanvas() {
   const infoTitle = document.getElementById("smInfoTitle");
   const infoImage = document.getElementById("smInfoImage");
   const infoBody = document.getElementById("smInfoBody");
+  const infoMediaWrap = document.getElementById("smInfoMediaWrap");
   const infoCloseBtn = document.getElementById("smInfoClose");
   const getNodeLabel = (node) => {
     const explicit = String(node?.label || "").trim();
@@ -1911,9 +1963,9 @@ function initCustomStorymapCanvas() {
       // Final slot: transform-only (GPU). Ease-out + slight overshoot on scale feels intentional.
       const dx = parent.x - node.x - w / 2;
       const dy = parent.y - node.y - h / 2;
-      const easePop = "cubic-bezier(0.34, 1.2, 0.64, 1)";
-      const easeOpacity = "cubic-bezier(0.2, 0.85, 0.35, 1)";
-      const easeColor = "cubic-bezier(0.22, 1, 0.45, 1)";
+      const easePop = "cubic-bezier(0.45, 0, 0.55, 1)";
+      const easeOpacity = "cubic-bezier(0.45, 0, 0.55, 1)";
+      const easeColor = "cubic-bezier(0.45, 0, 0.55, 1)";
       el.style.transition = "none";
       el.style.left = `${node.x}px`;
       el.style.top = `${node.y}px`;
@@ -1926,8 +1978,8 @@ function initCustomStorymapCanvas() {
         el.style.filter = "grayscale(1) saturate(0.7)";
       }
       void el.offsetWidth;
-      const dur = prefersReducedMotion() ? "0.01ms" : "520ms";
-      const colorDur = prefersReducedMotion() ? "0.01ms" : "620ms";
+      const dur = prefersReducedMotion() ? "0.01ms" : "680ms";
+      const colorDur = prefersReducedMotion() ? "0.01ms" : "800ms";
       el.style.transition = [
         `transform ${dur} ${easePop}`,
         `opacity ${dur} ${easeOpacity}`,
@@ -1995,7 +2047,7 @@ function initCustomStorymapCanvas() {
         done = true;
         cleanup();
         finish();
-      }, 1250);
+      }, 1750);
     };
 
     if (prefersReducedMotion()) {
@@ -2017,22 +2069,90 @@ function initCustomStorymapCanvas() {
       renderCanvas();
       return;
     }
-    const stagger = 135;
+    /** Stagger between neighbors; ~30% slower than the prior 135ms cadence. */
+    const neighborStaggerMs = 175;
+    /** Purple glow on source (box 1): ~100–150ms */
+    const sourceGlowMs = 125;
+    /** Line begins shortly after source glow starts (50–100ms stagger). */
+    const lineStartAfterGlowMs = 78;
+    /** Must match `storymap.css` `--sm-edge-reveal-dur` on `.storymapEdge--draw`. */
+    const edgeRevealMs = 980;
+    const findLineByEdgeKey = (ek) => {
+      const lines = edgesSvg.querySelectorAll("line[data-sm-edge-key]");
+      for (let li = 0; li < lines.length; li++) {
+        if (lines[li].getAttribute("data-sm-edge-key") === ek) return lines[li];
+      }
+      return null;
+    };
+
     let waveActive = 0;
     const waveDone = () => {
       waveActive -= 1;
       if (waveActive <= 0) renderCanvas();
     };
+
     neighbors.forEach((nid, i) => {
       window.setTimeout(() => {
-        const el = nodeElById(nid);
-        if (!el) return;
+        const parentEl = nodeElById(clickedId);
+        if (!parentEl) return;
         const ek = storymapEdgeKey(clickedId, nid);
-        pendingEdgeAnim.add(ek);
-        drawEdges();
-        waveActive += 1;
-        runUnlockAnim(el, clickedId, nid, ek, { updateProgress: true, onFinish: waveDone });
-      }, i * stagger);
+
+        parentEl.classList.add("smNode--edgeGlowSource");
+        window.setTimeout(() => parentEl.classList.remove("smNode--edgeGlowSource"), sourceGlowMs + 24);
+
+        window.setTimeout(() => {
+          pendingEdgeAnim.add(ek);
+          drawEdges();
+          const lineEl = findLineByEdgeKey(ek);
+
+          let linePhaseDone = false;
+          const finishLineAndUnlock = () => {
+            if (linePhaseDone) return;
+            linePhaseDone = true;
+            pendingEdgeAnim.delete(ek);
+            drawEdges();
+
+            let targetEl = nodeElById(nid);
+            if (!targetEl) {
+              return;
+            }
+            targetEl.classList.add("smNode--edgeGlowTarget");
+            let unlockStarted = false;
+            let glowFallbackTimer = null;
+            let onGlowEnd;
+            const startUnlock = () => {
+              if (unlockStarted) return;
+              unlockStarted = true;
+              if (glowFallbackTimer !== null) window.clearTimeout(glowFallbackTimer);
+              const el = nodeElById(nid);
+              if (!el) return;
+              el.removeEventListener("animationend", onGlowEnd);
+              el.classList.remove("smNode--edgeGlowTarget");
+              void el.offsetWidth;
+              waveActive += 1;
+              runUnlockAnim(el, clickedId, nid, ek, { updateProgress: true, onFinish: waveDone });
+            };
+            onGlowEnd = (evt) => {
+              if (evt.animationName && evt.animationName !== "smNodeEdgeGlowTo") return;
+              startUnlock();
+            };
+            targetEl.addEventListener("animationend", onGlowEnd);
+            glowFallbackTimer = window.setTimeout(startUnlock, 200);
+          };
+
+          if (lineEl) {
+            lineEl.addEventListener(
+              "animationend",
+              (evt) => {
+                if (evt.animationName !== "smEdgeReveal") return;
+                finishLineAndUnlock();
+              },
+              { once: true }
+            );
+          }
+          window.setTimeout(() => finishLineAndUnlock(), edgeRevealMs + 140);
+        }, lineStartAfterGlowMs);
+      }, i * neighborStaggerMs);
     });
   };
 
@@ -2043,23 +2163,100 @@ function initCustomStorymapCanvas() {
         if (infoImage) {
           infoImage.removeAttribute("src");
           infoImage.alt = "";
-          infoImage.style.display = "none";
+          infoImage.classList.remove("smInfoImage--enter");
+        }
+        if (infoMediaWrap) infoMediaWrap.hidden = true;
+        infoPanel.classList.remove("smInfoPanel--withImage");
+        infoPanel.style.width = "";
+        if (infoTitle) {
+          infoTitle.textContent = "";
+          infoTitle.hidden = false;
+        }
+        if (infoBody) {
+          infoBody.textContent = "";
+          infoBody.hidden = false;
         }
         infoPanel.setAttribute("aria-hidden", "true");
       } else {
-        if (infoTitle) infoTitle.textContent = getNodeLabel(node) || node.id;
+        const label = getNodeLabel(node);
+        const bodyText = getNodeText(node);
         const imageSrc = getNodeImageSrc(node);
-        if (infoImage && imageSrc) {
-          infoImage.src = imageSrc;
-          infoImage.alt = `${getNodeLabel(node) || "Node"} image`;
-          infoImage.style.display = "block";
-        } else if (infoImage) {
-          infoImage.removeAttribute("src");
-          infoImage.alt = "";
-          infoImage.style.display = "none";
+        const showImageSidebar = node.type === "image" && Boolean(imageSrc);
+
+        if (infoTitle) {
+          infoTitle.textContent = label;
+          infoTitle.hidden = !label;
         }
-        const bodyText = getNodeText(node) || (node.type === "image" ? "Image node" : `${node.type === "tag" ? "Tag" : "Text"} node`);
-        if (infoBody) infoBody.textContent = bodyText;
+        if (infoBody) {
+          infoBody.textContent = bodyText;
+          infoBody.hidden = !bodyText;
+        }
+
+        const setInfoPanelWidth = (nw, nh) => {
+          let px;
+          if (showImageSidebar && nw > 0 && nh > 0) {
+            const ar = nw / nh;
+            px = Math.min(600, Math.max(288, 268 + Math.min(200, ar * 95)));
+          } else {
+            const len = Math.max(bodyText.length, label.length);
+            px = Math.min(440, Math.max(272, 260 + Math.min(160, len * 1.6)));
+          }
+          infoPanel.style.width = `${Math.round(px)}px`;
+        };
+
+        if (showImageSidebar && infoImage && infoMediaWrap) {
+          infoMediaWrap.hidden = false;
+          infoPanel.classList.add("smInfoPanel--withImage");
+          infoImage.alt = "";
+          infoImage.classList.remove("smInfoImage--enter");
+
+          const onDecoded = () => {
+            if (infoImage.naturalWidth && infoImage.naturalHeight) {
+              setInfoPanelWidth(infoImage.naturalWidth, infoImage.naturalHeight);
+            } else {
+              setInfoPanelWidth(256, 256);
+            }
+            if (prefersReducedMotion()) {
+              infoImage.classList.add("smInfoImage--enter");
+              return;
+            }
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                infoImage.classList.add("smInfoImage--enter");
+              });
+            });
+          };
+
+          infoImage.src = imageSrc;
+          const runDecode = () => {
+            if (typeof infoImage.decode === "function") {
+              infoImage
+                .decode()
+                .then(onDecoded)
+                .catch(() => onDecoded());
+            } else {
+              onDecoded();
+            }
+          };
+          if (infoImage.complete && infoImage.naturalWidth) {
+            runDecode();
+          } else {
+            infoImage.onload = () => {
+              infoImage.onload = null;
+              runDecode();
+            };
+          }
+        } else {
+          if (infoMediaWrap) infoMediaWrap.hidden = true;
+          if (infoImage) {
+            infoImage.removeAttribute("src");
+            infoImage.alt = "";
+            infoImage.classList.remove("smInfoImage--enter");
+          }
+          infoPanel.classList.remove("smInfoPanel--withImage");
+          setInfoPanelWidth(0, 0);
+        }
+
         infoPanel.setAttribute("aria-hidden", "false");
       }
     }
@@ -2105,17 +2302,38 @@ function initCustomStorymapCanvas() {
       const source = nodeEls.get(edge.source);
       const target = nodeEls.get(edge.target);
       if (!source || !target) return;
+      const x1c = source.offsetLeft + source.offsetWidth / 2;
+      const y1c = source.offsetTop + source.offsetHeight / 2;
+      const x2c = target.offsetLeft + target.offsetWidth / 2;
+      const y2c = target.offsetTop + target.offsetHeight / 2;
+      const p1 = rayExitRectToward(
+        x1c,
+        y1c,
+        x2c,
+        y2c,
+        source.offsetLeft,
+        source.offsetTop,
+        source.offsetWidth,
+        source.offsetHeight
+      );
+      const p2 = rayExitRectToward(
+        x2c,
+        y2c,
+        x1c,
+        y1c,
+        target.offsetLeft,
+        target.offsetTop,
+        target.offsetWidth,
+        target.offsetHeight
+      );
       const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      const x1 = source.offsetLeft + source.offsetWidth / 2;
-      const y1 = source.offsetTop + source.offsetHeight / 2;
-      const x2 = target.offsetLeft + target.offsetWidth / 2;
-      const y2 = target.offsetTop + target.offsetHeight / 2;
-      line.setAttribute("x1", String(x1));
-      line.setAttribute("y1", String(y1));
-      line.setAttribute("x2", String(x2));
-      line.setAttribute("y2", String(y2));
+      line.setAttribute("x1", String(p1.x));
+      line.setAttribute("y1", String(p1.y));
+      line.setAttribute("x2", String(p2.x));
+      line.setAttribute("y2", String(p2.y));
+      line.setAttribute("data-sm-edge-key", ek);
       if (pendingEdgeAnim.has(ek)) {
-        const len = Math.hypot(x2 - x1, y2 - y1) || 1;
+        const len = Math.hypot(p2.x - p1.x, p2.y - p1.y) || 1;
         line.style.setProperty("--sm-edge-len", `${len}`);
         line.classList.add("storymapEdge--draw");
       }
@@ -2151,11 +2369,26 @@ function initCustomStorymapCanvas() {
     if (node.type === "image") {
       const img = document.createElement("img");
       img.src = getNodeImageSrc(node) || storymapPlaceholderSvg();
-      img.alt = "Story node image";
+      img.alt = "";
+      const applyImageBoxSize = () => {
+        let nw = img.naturalWidth || 0;
+        let nh = img.naturalHeight || 0;
+        if (nw < 2 || nh < 2) {
+          nw = 256;
+          nh = 256;
+        }
+        const { w, h } = computeStorymapImageNodeSize(nw, nh);
+        div.style.width = `${w}px`;
+        div.style.height = `${h}px`;
+        div.style.aspectRatio = "auto";
+        requestAnimationFrame(drawEdges);
+      };
+      img.addEventListener("load", applyImageBoxSize);
       img.addEventListener("error", () => {
         img.src = storymapPlaceholderSvg();
       });
       div.appendChild(img);
+      if (img.complete && img.naturalWidth) applyImageBoxSize();
       const title = getNodeLabel(node);
       if (title) {
         const caption = document.createElement("span");
@@ -2163,6 +2396,14 @@ function initCustomStorymapCanvas() {
         caption.textContent = title;
         div.appendChild(caption);
       }
+    } else if (node.type === "text") {
+      const inner = document.createElement("span");
+      inner.className = "smNodeTextInner";
+      inner.textContent = getNodeLabel(node);
+      div.appendChild(inner);
+      const raw = getNodeLabel(node);
+      const mw = Math.min(290, Math.max(112, 88 + Math.min(220, raw.length * 2.8)));
+      div.style.maxWidth = `${Math.round(mw)}px`;
     } else {
       div.textContent = getNodeLabel(node);
     }
@@ -2188,7 +2429,7 @@ function initCustomStorymapCanvas() {
         pulseNodeById(node.id);
         window.setTimeout(
           () => queueNeighborUnlockAnimations(node.id),
-          prefersReducedMotion() ? 0 : 420
+          prefersReducedMotion() ? 0 : 550
         );
       });
       return;
@@ -2292,7 +2533,25 @@ function initCustomStorymapCanvas() {
 
   on(infoCloseBtn, "click", () => {
     selectedId = null;
-    if (infoPanel) infoPanel.setAttribute("aria-hidden", "true");
+    if (infoPanel) {
+      infoPanel.setAttribute("aria-hidden", "true");
+      infoPanel.classList.remove("smInfoPanel--withImage");
+      infoPanel.style.width = "";
+    }
+    if (infoImage) {
+      infoImage.removeAttribute("src");
+      infoImage.alt = "";
+      infoImage.classList.remove("smInfoImage--enter");
+    }
+    if (infoMediaWrap) infoMediaWrap.hidden = true;
+    if (infoTitle) {
+      infoTitle.textContent = "";
+      infoTitle.hidden = false;
+    }
+    if (infoBody) {
+      infoBody.textContent = "";
+      infoBody.hidden = false;
+    }
     renderCanvas();
   });
 
