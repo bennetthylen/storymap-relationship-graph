@@ -364,18 +364,22 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 .smInfoPanel {
-  position: absolute;
-  top: 12px;
+  position: fixed;
+  top: var(--sm-info-panel-top, 12px);
+  bottom: var(--sm-info-panel-bottom, 12px);
   right: 12px;
-  width: min(360px, calc(100% - 24px));
-  max-height: calc(100% - 24px);
+  left: auto;
+  width: min(50vw, calc(100vw - 24px));
+  max-width: min(720px, calc(100vw - 24px));
+  max-height: none;
   overflow: auto;
   background: rgba(255, 255, 255, 0.96);
   border-radius: 14px;
   box-shadow: 0 20px 44px rgba(15, 20, 25, 0.2);
   padding: 12px 12px 14px;
   display: none;
-  z-index: 25;
+  z-index: 55;
+  box-sizing: border-box;
 }
 
 .smInfoPanel[aria-hidden="false"] {
@@ -448,8 +452,11 @@ body.layout--storymapPreview .storymapAdminPanel {
   display: block;
   width: auto;
   height: auto;
-  max-width: min(100%, calc(100vw - 48px));
-  max-height: min(72vh, 560px);
+  max-width: 100%;
+  max-height: min(
+    56vh,
+    calc(100dvh - var(--sm-info-panel-top, 72px) - var(--sm-info-panel-bottom, 72px) - 140px)
+  );
   object-fit: contain;
   object-position: center;
   border-radius: 10px;

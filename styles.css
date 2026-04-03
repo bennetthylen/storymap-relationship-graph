@@ -23,6 +23,24 @@ body {
   color: var(--text);
 }
 
+/* Arabic: layout stays LTR; body uses Arabic-capable font for glyph shaping. */
+body.lang-ar {
+  font-family: "Noto Sans Arabic", "Inter", "Futura", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+/* Arabic: RTL text inside controls; layout/grid stays LTR — no mirroring of panels. */
+body.lang-ar input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+body.lang-ar textarea,
+body.lang-ar select {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+body.lang-ar #jsStatus {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
 .siteNav {
   position: sticky;
   top: 0;
@@ -54,22 +72,95 @@ body {
   margin-left: auto;
 }
 
-.siteNav__langSelect {
+.siteNav__lang {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  margin-left: 4px;
+}
+
+.siteNav__langBtn {
   border: 1px solid rgba(39, 84, 174, 0.25);
   border-radius: 999px;
   padding: 6px 12px;
+  min-height: 34px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(255, 255, 255, 0.95);
   color: var(--text);
   font-size: 0.8rem;
-  letter-spacing: 0.04em;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 
-.siteNav__langSelect:hover,
-.siteNav__langSelect:focus {
+.siteNav__langBtn:hover,
+.siteNav__langBtn:focus {
   border-color: rgba(39, 84, 174, 0.55);
   box-shadow: 0 0 0 3px rgba(39, 84, 174, 0.08);
   outline: none;
+  color: var(--primary);
+}
+
+.siteNav__langMenu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 80;
+  min-width: 11rem;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(209, 213, 219, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15, 20, 25, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
+}
+
+.siteNav__lang:hover .siteNav__langMenu,
+.siteNav__lang:focus-within .siteNav__langMenu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.siteNav__langMenu li {
+  margin: 0;
+  padding: 0;
+}
+
+.siteNav__langOption {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.siteNav__langOption:hover,
+.siteNav__langOption:focus {
+  background: rgba(39, 84, 174, 0.06);
+  outline: none;
+}
+
+.siteNav__langOption.is-active {
+  color: var(--primary);
+  font-weight: 600;
 }
 
 .siteNav__tab {
@@ -83,14 +174,6 @@ body {
   font-size: 0.8rem;
   position: relative;
   transition: color 220ms ease, transform 220ms ease;
-}
-
-.siteNav__tab--label {
-  transform: none !important;
-  color: var(--text) !important;
-  background: transparent !important;
-  border-color: transparent !important;
-  padding-right: 0;
 }
 
 .siteNav__tab::after {

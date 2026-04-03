@@ -7,31 +7,77 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-mode="viewer" id="top">
-    <nav class="siteNav" aria-label="Primary navigation">
-      <a href="./index.html#home" class="siteNav__brand">Doing Well, Don't Worry</a>
+    <nav class="siteNav" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
+      <a href="./index.html#home" class="siteNav__brand" data-i18n="siteBrand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
-        <a href="./index.html#home" class="siteNav__tab siteNav__tab--active">Home</a>
-        <a href="./storymap.html" class="siteNav__tab">StoryMap</a>
-        <a href="./history.html" class="siteNav__tab">History</a>
-        <a href="./discussion.html" class="siteNav__tab">Discussion</a>
-        <label class="siteNav__tab siteNav__tab--label" for="langSelect">Language</label>
-        <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
-          <option value="en">English</option>
-        </select>
+        <a href="./index.html#home" class="siteNav__tab siteNav__tab--active" data-i18n="navHome">Home</a>
+        <a href="./storymap.html" class="siteNav__tab" data-i18n="navStorymap">StoryMap</a>
+        <a href="./history.html" class="siteNav__tab" data-i18n="navHistory">History</a>
+        <a href="./discussion.html" class="siteNav__tab" data-i18n="navDiscussion">Discussion</a>
+        <div class="siteNav__lang">
+          <button
+            type="button"
+            class="siteNav__langBtn"
+            id="langMenuBtn"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-controls="langMenuList"
+            data-i18n-aria-label="langButtonAria"
+            aria-label="Languages"
+          >
+            <span id="langCurrentLabel">EN</span>
+          </button>
+          <ul
+            id="langMenuList"
+            class="siteNav__langMenu"
+            role="listbox"
+            data-i18n-aria-label="langMenuAria"
+            aria-label="Choose language"
+          >
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="en" aria-selected="true">
+                English
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="ar" aria-selected="false">
+                العربية الفصحى
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="it" aria-selected="false">
+                Italiano
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="fr" aria-selected="false">
+                Français
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="es" aria-selected="false">
+                Español
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="de" aria-selected="false">
+                Deutsch
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
-    <div id="jsStatus" class="jsStatus jsStatus--loading">
-      Loading storymap...
-    </div>
+    <div id="jsStatus" class="jsStatus jsStatus--loading" data-i18n="statusLoadingStorymap">Loading storymap…</div>
     <noscript>
-      <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
+      <div class="jsStatus jsStatus--error" data-i18n="statusJsRequired">JavaScript is required to run this app.</div>
     </noscript>
 
     <section class="hero" id="home">
@@ -62,35 +108,40 @@
     </section>
 
     <section class="scrollSection reveal">
-      <a class="heroCta" href="./history.html">Engage with History</a>
+      <a class="heroCta" href="./history.html" data-i18n="engageHistoryCta">Engage with History</a>
     </section>
 
     <div class="homePageBuffer" aria-hidden="true"></div>
 
     <div class="stickyFooterLinks">
-      <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer">Georgetown SFS</a>
-      <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer">The Women and Memory Forum</a>
-      <a href="mailto:tbh36@georgetown.edu">Contact Us</a>
-      <button id="btnLogin" class="footerLoginBtn" type="button">Login</button>
+      <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer" data-i18n="footerGeorgetownSfs"
+        >Georgetown SFS</a
+      >
+      <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer" data-i18n="footerWmf"
+        >The Women and Memory Forum</a
+      >
+      <a href="mailto:tbh36@georgetown.edu" data-i18n="footerContact">Contact us</a>
+      <button id="btnLogin" class="footerLoginBtn" type="button" data-i18n="footerLogin">Login</button>
     </div>
 
     <div id="loginModal" class="loginModal" aria-hidden="true">
       <div class="loginModal__backdrop"></div>
       <div class="loginModal__panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-        <h2 id="loginTitle" class="loginModal__title">Admin Login</h2>
-        <p class="muted small">Enter password to unlock admin mode.</p>
+        <h2 id="loginTitle" class="loginModal__title" data-i18n="loginModalTitle">Admin login</h2>
+        <p class="muted small" data-i18n="loginModalHint">Enter password to unlock admin mode.</p>
         <div class="field">
-          <label for="adminPassword">Password</label>
+          <label for="adminPassword" data-i18n="loginPasswordLabel">Password</label>
           <input id="adminPassword" type="password" autocomplete="current-password" />
         </div>
         <p id="loginError" class="loginModal__error" aria-live="polite"></p>
         <div class="actions actions--row">
-          <button id="btnCancelLogin" class="btn btn--secondary" type="button">Cancel</button>
-          <button id="btnSubmitLogin" class="btn" type="button">Unlock</button>
+          <button id="btnCancelLogin" class="btn btn--secondary" type="button" data-i18n="loginCancel">Cancel</button>
+          <button id="btnSubmitLogin" class="btn" type="button" data-i18n="loginUnlock">Unlock</button>
         </div>
       </div>
     </div>
 
+    <script src="./site-i18n.js"></script>
     <script src="./vendor/cytoscape.min.js"></script>
     <script src="./app.js?v=20260331l"></script>
   </body>

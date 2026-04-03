@@ -7,24 +7,72 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="stylesheet" href="./storymap.css" />
   </head>
   <body data-mode="admin" id="top">
-    <nav class="siteNav" aria-label="Primary navigation">
-      <a href="./index.html#home" class="siteNav__brand">Doing Well, Don't Worry</a>
+    <nav class="siteNav" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
+      <a href="./index.html#home" class="siteNav__brand" data-i18n="siteBrand">Doing Well, Don't Worry</a>
       <div class="siteNav__tabs">
-        <a href="./index.html#home" class="siteNav__tab">Home</a>
-        <a href="./storymap.html" class="siteNav__tab">StoryMap</a>
-        <a href="./history.html" class="siteNav__tab">History</a>
-        <a href="./discussion.html" class="siteNav__tab">Discussion</a>
-        <label class="siteNav__tab siteNav__tab--label" for="langSelect">Language</label>
-        <select id="langSelect" class="siteNav__langSelect" aria-label="Language">
-          <option value="en">English</option>
-        </select>
+        <a href="./index.html#home" class="siteNav__tab" data-i18n="navHome">Home</a>
+        <a href="./storymap.html" class="siteNav__tab" data-i18n="navStorymap">StoryMap</a>
+        <a href="./history.html" class="siteNav__tab" data-i18n="navHistory">History</a>
+        <a href="./discussion.html" class="siteNav__tab" data-i18n="navDiscussion">Discussion</a>
+        <div class="siteNav__lang">
+          <button
+            type="button"
+            class="siteNav__langBtn"
+            id="langMenuBtn"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-controls="langMenuList"
+            data-i18n-aria-label="langButtonAria"
+            aria-label="Languages"
+          >
+            <span id="langCurrentLabel">EN</span>
+          </button>
+          <ul
+            id="langMenuList"
+            class="siteNav__langMenu"
+            role="listbox"
+            data-i18n-aria-label="langMenuAria"
+            aria-label="Choose language"
+          >
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="en" aria-selected="true">
+                English
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="ar" aria-selected="false">
+                العربية الفصحى
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="it" aria-selected="false">
+                Italiano
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="fr" aria-selected="false">
+                Français
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="es" aria-selected="false">
+                Español
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="siteNav__langOption" role="option" data-lang="de" aria-selected="false">
+                Deutsch
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -34,75 +82,90 @@
       </button>
     </div>
 
-    <div id="jsStatus" class="jsStatus jsStatus--loading">
-      Loading storymap...
-    </div>
+    <div id="jsStatus" class="jsStatus jsStatus--loading" data-i18n="statusLoadingStorymap">Loading storymap…</div>
     <noscript>
-      <div class="jsStatus jsStatus--error">JavaScript is required to run this app.</div>
+      <div class="jsStatus jsStatus--error" data-i18n="statusJsRequired">JavaScript is required to run this app.</div>
     </noscript>
 
     <main class="layout layout--admin">
       <aside class="panel panel--left">
         <section class="card">
-          <h2>Create Node</h2>
+          <h2 data-i18n="adminCreateNodeH2">Create node</h2>
           <div class="field">
-            <label for="smCreateType">Node type</label>
+            <label for="smCreateType" data-i18n="adminNodeType">Node type</label>
             <select id="smCreateType">
-              <option value="text">Text</option>
-              <option value="image">Image</option>
-              <option value="tag">Tag</option>
+              <option value="text" data-i18n="adminTypeText">Text</option>
+              <option value="image" data-i18n="adminTypeImage">Image</option>
+              <option value="tag" data-i18n="adminTypeTag">Tag</option>
             </select>
           </div>
           <div class="field">
-            <label for="smCreateLabel">Label</label>
-            <input id="smCreateLabel" type="text" placeholder="Node label" />
+            <label for="smCreateLabel" data-i18n="adminLabel">Label</label>
+            <input id="smCreateLabel" type="text" data-i18n-placeholder="adminNodeLabelPh" placeholder="Node label" />
           </div>
           <div class="field">
-            <label for="smCreateText">Text</label>
-            <textarea id="smCreateText" rows="3" placeholder="Text shown when this node is clicked"></textarea>
+            <label for="smCreateText" data-i18n="adminText">Text</label>
+            <textarea
+              id="smCreateText"
+              rows="3"
+              data-i18n-placeholder="adminTextHelp"
+              placeholder="Text shown when this node is clicked"
+            ></textarea>
           </div>
           <div class="field">
-            <label for="smCreateColor">Color</label>
+            <label for="smCreateColor" data-i18n="adminColor">Color</label>
             <select id="smCreateColor">
-              <option value="green">Green</option>
-              <option value="teal">Teal</option>
-              <option value="blue">Blue</option>
-              <option value="white">White</option>
-              <option value="orange">Orange</option>
+              <option value="green" data-i18n="colorGreen">Green</option>
+              <option value="teal" data-i18n="colorTeal">Teal</option>
+              <option value="blue" data-i18n="colorBlue">Blue</option>
+              <option value="white" data-i18n="colorWhite">White</option>
+              <option value="orange" data-i18n="colorOrange">Orange</option>
             </select>
           </div>
           <div class="field">
-            <label for="smCreateConnectTo">New node: directed edge from</label>
+            <label for="smCreateConnectTo" data-i18n="adminNewEdgeFrom">New node: directed edge from</label>
             <select id="smCreateConnectTo" aria-describedby="smCreateConnectHelp">
-              <option value="">None (no link)</option>
+              <option value="" data-i18n="adminNoneNoLink">None (no link)</option>
             </select>
-            <p id="smCreateConnectHelp" class="muted small" style="margin: 0.35rem 0 0">
-              Optional. Only affects <strong>Create Node</strong>: adds one edge <strong>from that node → the new node</strong>. Choosing a canvas node for editing does not change this menu—pick the source here only when you want it.
+            <p id="smCreateConnectHelp" class="muted small" style="margin: 0.35rem 0 0" data-i18n="adminCreateEdgeHelp">
+              Optional help text.
             </p>
           </div>
-          <button id="smCreateNodeBtn" class="btn" type="button">Create Node</button>
+          <button id="smCreateNodeBtn" class="btn" type="button" data-i18n="adminCreateNodeBtn">Create node</button>
         </section>
 
         <section class="card">
-          <h2>Editable Content</h2>
-          <p class="muted small">Edit landing and history page text shown to public visitors.</p>
-          <div class="field"><label for="cfgHeroTitle">Hero title</label><input id="cfgHeroTitle" type="text" /></div>
-          <div class="field"><label for="cfgHeroSubtitle">Hero subtitle</label><textarea id="cfgHeroSubtitle"></textarea></div>
-          <div class="field"><label for="cfgHeroCta">Hero CTA label</label><input id="cfgHeroCta" type="text" /></div>
-          <div class="field"><label for="cfgHistoryTitle">History title</label><input id="cfgHistoryTitle" type="text" /></div>
-          <div class="field"><label for="cfgHistoryBody">History body</label><textarea id="cfgHistoryBody"></textarea></div>
-          <button id="btnSaveContentConfig" class="btn" type="button">Save Content Text</button>
+          <h2 data-i18n="adminEditableContentH2">Editable content</h2>
+          <p class="muted small" data-i18n="adminEditableContentHint">Edit landing and history page text shown to public visitors.</p>
+          <div class="field">
+            <label for="cfgHeroTitle" data-i18n="adminCfgHeroTitle">Hero title</label><input id="cfgHeroTitle" type="text" />
+          </div>
+          <div class="field">
+            <label for="cfgHeroSubtitle" data-i18n="adminCfgHeroSubtitle">Hero subtitle</label><textarea id="cfgHeroSubtitle"></textarea>
+          </div>
+          <div class="field">
+            <label for="cfgHeroCta" data-i18n="adminCfgHeroCta">Hero CTA label</label><input id="cfgHeroCta" type="text" />
+          </div>
+          <div class="field">
+            <label for="cfgHistoryTitle" data-i18n="adminCfgHistoryTitle">History title</label><input id="cfgHistoryTitle" type="text" />
+          </div>
+          <div class="field">
+            <label for="cfgHistoryBody" data-i18n="adminCfgHistoryBody">History body</label><textarea id="cfgHistoryBody"></textarea>
+          </div>
+          <button id="btnSaveContentConfig" class="btn" type="button" data-i18n="adminSaveContentBtn">Save content text</button>
         </section>
 
         <section class="card">
-          <h2>Creator Tips</h2>
-          <p class="muted small">Click a node on the canvas to edit it, link it to other nodes, or delete it.</p>
+          <h2 data-i18n="adminCreatorTipsH2">Creator tips</h2>
+          <p class="muted small" data-i18n="adminCreatorTipsBody">Click a node on the canvas to edit it, link it to other nodes, or delete it.</p>
         </section>
 
         <section class="card">
-          <h2>Discussion Controls</h2>
+          <h2 data-i18n="adminDiscussionH2">Discussion controls</h2>
           <p id="discussionAdminClearHint" class="muted small" aria-live="polite"></p>
-          <button id="btnClearDiscussions" class="btn btn--danger" type="button">Clear shared discussion board</button>
+          <button id="btnClearDiscussions" class="btn btn--danger" type="button" data-i18n="adminClearBoardBtn">
+            Clear shared discussion board
+          </button>
         </section>
       </aside>
 
@@ -118,7 +181,7 @@
               </select>
             </div>
             <div class="toolbarRight">
-              <button id="smPublishCanvasBtn" class="btn" type="button">Publish</button>
+              <button id="smPublishCanvasBtn" class="btn" type="button" data-i18n="adminPublish">Publish</button>
               <button id="btnReLayout" class="btn btn--secondary" type="button" data-i18n="reLayoutButton">
                 Re-layout
               </button>
@@ -127,40 +190,69 @@
           <div class="toolbarRow">
             <div class="toolbarLeft">
               <div class="field" style="margin: 0; min-width: 300px">
-                <label for="smGithubToken" class="muted small">GitHub PAT</label>
+                <label for="smGithubToken" class="muted small" data-i18n="adminGithubPat">GitHub PAT</label>
                 <div class="actions actions--row" style="align-items: flex-end; gap: 8px; flex-wrap: wrap">
                   <input id="smGithubToken" type="password" placeholder="ghp_..." autocomplete="off" style="flex: 1; min-width: 180px" />
-                  <button id="smClearGithubToken" class="btn btn--secondary" type="button" title="Remove saved token from this browser">
+                  <button
+                    id="smClearGithubToken"
+                    class="btn btn--secondary"
+                    type="button"
+                    data-i18n-title="adminForgetPatTitle"
+                    title="Remove saved token from this browser"
+                    data-i18n="adminForgetPat"
+                  >
                     Forget PAT
                   </button>
                 </div>
               </div>
               <div class="field" style="margin: 0; min-width: 300px">
-                <label for="smPublishCommitMessage" class="muted small">Commit message (optional)</label>
-                <input id="smPublishCommitMessage" type="text" placeholder="Publish storymap from admin" />
+                <label for="smPublishCommitMessage" class="muted small" data-i18n="adminCommitMsg">Commit message (optional)</label>
+                <input
+                  id="smPublishCommitMessage"
+                  type="text"
+                  data-i18n-placeholder="adminCommitPh"
+                  placeholder="Publish storymap from admin"
+                />
               </div>
             </div>
             <div class="toolbarRight">
-              <p id="smPublishHelp" class="muted small" style="margin: 0">
-                Publish writes to <code>published-storymap.json</code> on GitHub. The public Storymap page loads that file;
-                it does not use your unsaved local draft until you publish.
+              <p id="smPublishHelp" class="muted small" style="margin: 0" data-i18n="adminPublishHelp">
+                Publish help text.
               </p>
             </div>
           </div>
         </div>
 
         <div class="storymapLayout storymapLayout--admin">
-          <section id="storymapCanvasPanel" class="storymapCanvasPanel" aria-label="Storymap canvas">
-            <div class="mapControls" aria-label="Zoom controls">
-              <button id="smZoomIn" class="mapControls__btn" type="button" aria-label="Zoom in">+</button>
-              <button id="smZoomOut" class="mapControls__btn" type="button" aria-label="Zoom out">-</button>
+          <section
+            id="storymapCanvasPanel"
+            class="storymapCanvasPanel"
+            data-i18n-aria-label="ariaStorymapCanvas"
+            aria-label="Storymap canvas"
+          >
+            <div class="mapControls" data-i18n-aria-label="ariaZoomControls" aria-label="Zoom controls">
+              <button
+                id="smZoomIn"
+                class="mapControls__btn"
+                type="button"
+                data-i18n-aria-label="ariaZoomIn"
+                aria-label="Zoom in"
+              >
+                +
+              </button>
+              <button
+                id="smZoomOut"
+                class="mapControls__btn"
+                type="button"
+                data-i18n-aria-label="ariaZoomOut"
+                aria-label="Zoom out"
+              >
+                -
+              </button>
             </div>
-            <label
-              class="smPreviewToggle"
-              title="Hide admin panels and interact like a visitor. Unlock progress is saved separately from storymap.html so testing here does not change visitors’ saved state."
-            >
+            <label class="smPreviewToggle" data-i18n-title="adminPreviewTitle" title="">
               <input id="smPreviewAsUser" type="checkbox" />
-              <span>Preview as user</span>
+              <span data-i18n="adminPreviewAsUser">Preview as user</span>
             </label>
             <div id="storymapViewport" class="storymapViewport">
               <div id="storymapWorld" class="storymapWorld">
@@ -171,43 +263,45 @@
           </section>
 
           <aside id="storymapAdminPanel" class="storymapAdminPanel" aria-hidden="true">
-            <h3>Node Editor</h3>
+            <h3 data-i18n="adminNodeEditorH3">Node editor</h3>
             <div class="field">
-              <label for="smNodeLabel">Label</label>
+              <label for="smNodeLabel" data-i18n="adminLabel">Label</label>
               <input id="smNodeLabel" type="text" />
             </div>
             <div class="field">
-              <label for="smNodeText">Text</label>
+              <label for="smNodeText" data-i18n="adminText">Text</label>
               <textarea id="smNodeText" rows="4"></textarea>
             </div>
             <div class="field">
-              <label for="smNodeImageFile">Image file</label>
+              <label for="smNodeImageFile" data-i18n="adminImageFile">Image file</label>
               <input id="smNodeImageFile" type="file" accept="image/*" />
             </div>
             <div class="field">
-              <label for="smNodeColor">Color</label>
+              <label for="smNodeColor" data-i18n="adminColor">Color</label>
               <select id="smNodeColor">
-                <option value="green">Green</option>
-                <option value="teal">Teal</option>
-                <option value="blue">Blue</option>
-                <option value="white">White</option>
-                <option value="orange">Orange</option>
+                <option value="green" data-i18n="colorGreen">Green</option>
+                <option value="teal" data-i18n="colorTeal">Teal</option>
+                <option value="blue" data-i18n="colorBlue">Blue</option>
+                <option value="white" data-i18n="colorWhite">White</option>
+                <option value="orange" data-i18n="colorOrange">Orange</option>
               </select>
             </div>
             <div class="actions actions--row">
-              <button id="smSaveNode" class="btn" type="button">Save</button>
-              <button id="smAddChildNode" class="btn btn--secondary" type="button">Add Child</button>
+              <button id="smSaveNode" class="btn" type="button" data-i18n="adminSave">Save</button>
+              <button id="smAddChildNode" class="btn btn--secondary" type="button" data-i18n="adminAddChild">Add child</button>
             </div>
             <div class="field">
-              <label for="smLinkTarget">Link target</label>
+              <label for="smLinkTarget" data-i18n="adminLinkTarget">Link target</label>
               <select id="smLinkTarget" aria-describedby="smLinkTargetHelp"></select>
-              <p id="smLinkTargetHelp" class="muted small" style="margin: 0.35rem 0 0">
-                Adds <strong>one</strong> edge: <strong>selected node → link target</strong>. This is separate from “New node: directed edge from” on the left. Multiple edges into the same node are allowed but create multiple unlock paths.
+              <p id="smLinkTargetHelp" class="muted small" style="margin: 0.35rem 0 0" data-i18n="adminLinkTargetHelp">
+                Link help.
               </p>
             </div>
             <div class="actions actions--row">
-              <button id="smLinkExisting" class="btn btn--secondary" type="button">Link Existing</button>
-              <button id="smDeleteNode" class="btn btn--danger" type="button">Delete Node</button>
+              <button id="smLinkExisting" class="btn btn--secondary" type="button" data-i18n="adminLinkExisting">
+                Link existing
+              </button>
+              <button id="smDeleteNode" class="btn btn--danger" type="button" data-i18n="adminDeleteNode">Delete node</button>
             </div>
           </aside>
         </div>
@@ -216,7 +310,7 @@
       <aside class="panel panel--right">
         <section class="card">
           <h2 data-i18n="selectedTitle">Selected</h2>
-          <p class="muted small">Edit archival metadata: date range, context tags, audio description, pedagogy notes, and citations.</p>
+          <p class="muted small" data-i18n="adminSelectedMetaHint">Edit archival metadata: date range, context tags, audio description, pedagogy notes, and citations.</p>
           <div id="selectedDetails" class="selectedDetails">
             <p class="muted" data-i18n="nothingSelectedYet">Nothing selected yet.</p>
           </div>
@@ -287,32 +381,37 @@
       </aside>
     </main>
 
-    <button id="btnLogoutAdmin" class="loginBtn loginBtn--logout" type="button">Logout Admin</button>
+    <button id="btnLogoutAdmin" class="loginBtn loginBtn--logout" type="button" data-i18n="adminLogout">Logout admin</button>
     <div class="stickyFooterLinks">
-      <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer">Georgetown SFS</a>
-      <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer">The Women and Memory Forum</a>
-      <a href="mailto:tbh36@georgetown.edu">Contact Us</a>
-      <button id="btnLogin" class="footerLoginBtn" type="button">Login</button>
+      <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer" data-i18n="footerGeorgetownSfs"
+        >Georgetown SFS</a
+      >
+      <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer" data-i18n="footerWmf"
+        >The Women and Memory Forum</a
+      >
+      <a href="mailto:tbh36@georgetown.edu" data-i18n="footerContact">Contact us</a>
+      <button id="btnLogin" class="footerLoginBtn" type="button" data-i18n="footerLogin">Login</button>
     </div>
 
     <div id="loginModal" class="loginModal" aria-hidden="true">
       <div class="loginModal__backdrop"></div>
       <div class="loginModal__panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-        <h2 id="loginTitle" class="loginModal__title">Admin Login</h2>
-        <p class="muted small">Enter password to unlock admin mode.</p>
+        <h2 id="loginTitle" class="loginModal__title" data-i18n="loginModalTitle">Admin login</h2>
+        <p class="muted small" data-i18n="loginModalHint">Enter password to unlock admin mode.</p>
         <div class="field">
-          <label for="adminPassword">Password</label>
+          <label for="adminPassword" data-i18n="loginPasswordLabel">Password</label>
           <input id="adminPassword" type="password" autocomplete="current-password" />
         </div>
         <p id="loginError" class="loginModal__error" aria-live="polite"></p>
         <div class="actions actions--row">
-          <button id="btnCancelLogin" class="btn btn--secondary" type="button">Cancel</button>
-          <button id="btnSubmitLogin" class="btn" type="button">Unlock</button>
+          <button id="btnCancelLogin" class="btn btn--secondary" type="button" data-i18n="loginCancel">Cancel</button>
+          <button id="btnSubmitLogin" class="btn" type="button" data-i18n="loginUnlock">Unlock</button>
         </div>
       </div>
     </div>
 
     <script src="./vendor/cytoscape.min.js"></script>
+    <script src="./site-i18n.js"></script>
     <script src="./discussion-config.js"></script>
     <script src="./app.js?v=20260331l"></script>
   </body>

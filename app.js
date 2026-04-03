@@ -3,7 +3,10 @@
 const STORAGE_KEY = "storymapGraphV1";
 const LANG_STORAGE_KEY = "storymapLangV1";
 
-const SUPPORTED_LANGS = ["en"];
+const SUPPORTED_LANGS = ["en", "ar", "it", "fr", "es", "de"];
+
+/** Short label shown on the language button (layout stays LTR). */
+const LANG_BUTTON_CODES = { en: "EN", ar: "AR", it: "IT", fr: "FR", es: "ES", de: "DE" };
 
 const BODY_MODE = document.body?.dataset?.mode;
 const MODE = BODY_MODE === "admin" || BODY_MODE === "history" ? BODY_MODE : "viewer";
@@ -192,7 +195,7 @@ const GITHUB_REPO_BRANCH = "main";
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
   heroSubtitle:
-    "A digital collaboration between students atGeorgetown University's School of Foreign Service and The Women and Memory Forum.",
+    "A digital collaboration between students at Georgetown University's School of Foreign Service and The Women and Memory Forum.",
   heroCta: "Experience \"Doing Well, Don't Worry\"",
   section1: "Women are always on the move.",
   section2:
@@ -586,17 +589,90 @@ const TRANSLATIONS = {
   },
 };
 
-// Ensure Italian exists even if not fully customized yet.
-TRANSLATIONS.it = {
-  ...TRANSLATIONS.en,
-  appTitle: "Archivio Relazionale della Storymap",
+TRANSLATIONS.it = { ...TRANSLATIONS.en };
+Object.assign(TRANSLATIONS.it, {
+  appTitle: "Mappa della storia: Grafo delle relazioni",
+  appPeopleLabel: "Persone",
+  appEventsLabel: "Eventi",
+  resetDemo: "Reimposta demo",
+  addPersonTitle: "Aggiungi persona",
+  personNameLabel: "Nome",
+  personNamePlaceholder: "es. Ada Lovelace",
+  personDescLabel: "Descrizione (facoltativa)",
+  personDescPlaceholder: "Breve contesto",
+  addPersonButton: "Aggiungi persona",
+  addEventTitle: "Aggiungi evento",
+  eventTitleLabel: "Titolo",
+  eventTitlePlaceholder: "es. Laboratorio estivo",
+  eventDateLabel: "Data (facoltativa)",
+  eventDatePlaceholder: "es. 2020-08-14 o «Primavera 1936»",
+  addEventButton: "Aggiungi evento",
+  createRelationshipTitle: "Crea relazione",
+  personSelectLabel: "Persona",
+  eventSelectLabel: "Evento",
+  edgeRoleLabel: "Ruolo / etichetta (facoltativo)",
+  edgeRolePlaceholder: "es. ha partecipato, ha lavorato a, menzionato in",
+  linkButton: "Collega persona → evento",
+  tipText: "Suggerimento: clic su nodi/archi per dettagli ed eliminazione.",
+  layoutLabel: "Layout",
+  layoutOptionForce: "Forza (cose)",
+  layoutOptionBreadth: "Ampiezza prima",
+  layoutOptionGrid: "Griglia",
+  reLayoutButton: "Ri-layout",
+  selectedTitle: "Selezione",
+  nothingSelectedYet: "Nessuna selezione.",
+  deleteButton: "Elimina",
+  storyOrderTitle: "Ordine della storia",
+  storyOrderInstruction: "Controlla l'ordine dei nodi della storia.",
+  moveUpButton: "Su",
+  moveDownButton: "Giù",
+  importExportTitle: "Importa / Esporta",
+  graphJsonLabel: "JSON del grafo",
+  jsonAreaPlaceholder: '{"nodes":[...],"edges":[...]}',
+  exportJsonButton: "Esporta JSON",
+  importJsonButton: "Importa JSON",
+  shareableLinkTitle: "Link condivisibile",
+  shareableLinkInstruction:
+    "Crea un URL con lo stato del grafo (adatto a grafi piccoli e medi).",
+  createLinkButton: "Crea link",
+  shareLinkPlaceholder: "Clicca «Crea link»",
+  nodePerson: "Persona",
+  nodeEvent: "Evento",
+  labelName: "Nome",
+  labelDescription: "Descrizione",
+  labelTitle: "Titolo",
+  labelDate: "Data",
+  labelUploadPhoto: "Carica foto (salvata in locale)",
+  labelPhotoUrlOptional: "O URL foto (facoltativo)",
+  noPhotoYet: "Nessuna foto. Aggiungine una sotto.",
+  removePhoto: "Rimuovi foto",
+  labelNotes: "Testo / note",
+  labelStoryOrder: "Ordine della storia (per la visualizzazione)",
+  saveNodeDetails: "Salva dettagli nodo",
+  noteLongLinks: "Nota: con le foto, i link di condivisione possono diventare molto lunghi.",
+  optionalContextPlaceholder: "Contesto facoltativo",
+  optionalDatePlaceholder: "Facoltativo (es. 2020-08-14)",
+  photoUrlPlaceholder: "https://...",
+  notesPlaceholder: "Aggiungi testo di storia per questo nodo...",
+  storyOrderInputPlaceholder: "es. 0",
+  relationshipTitle: "Relazione",
+  edgeLabelPerson: "Persona",
+  edgeLabelEvent: "Evento",
+  edgeLabelRole: "Ruolo",
+  noRoleLabel: "Nessuna etichetta di ruolo.",
   exhibitionTitle: "Doing Well, Don’t Worry: Un archivio femminista relazionale",
   exhibitionSubtitle:
-    "The Women and Memory Forum ripensa l'archivio di Wedad Mitri come pratica di mentorship, solidarieta e apprendimento collettivo.",
+    "The Women and Memory Forum ripensa l'archivio di Wedad Mitri come pratica di mentorship, solidarietà e apprendimento politico collettivo.",
   citationsTitle: "Riferimenti in stile Chicago",
   pedagogyTooltip:
     "Pedagogia del sentire: apprendimento femminista attraverso memoria, affetto e azione relazionale.",
-};
+});
+
+if (typeof STORYMAP_EXTRA_I18N !== "undefined") {
+  Object.keys(STORYMAP_EXTRA_I18N).forEach((lang) => {
+    if (TRANSLATIONS[lang]) Object.assign(TRANSLATIONS[lang], STORYMAP_EXTRA_I18N[lang]);
+  });
+}
 
 const CHICAGO_CITATIONS = [
   "Hopkins, Nicholas S., and Kirsten Westergaard, eds. 2001. Directions of Change in Rural Egypt.",
@@ -646,16 +722,47 @@ Object.assign(TRANSLATIONS.de, {
   citationsTitle: "Literatur im Chicago-Stil",
 });
 
+function readLangFromUrl() {
+  try {
+    const q = new URLSearchParams(window.location.search);
+    const v = q.get("lang");
+    if (v && SUPPORTED_LANGS.includes(v)) return v;
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 let currentLang = "en";
 try {
   currentLang = localStorage.getItem(LANG_STORAGE_KEY) || "en";
 } catch {
   // If localStorage is blocked, keep default language.
 }
+const langFromUrl = readLangFromUrl();
+if (langFromUrl) {
+  currentLang = langFromUrl;
+  try {
+    localStorage.setItem(LANG_STORAGE_KEY, currentLang);
+  } catch {
+    /* ignore */
+  }
+}
 if (!SUPPORTED_LANGS.includes(currentLang)) currentLang = "en";
 
 function t(key) {
   return TRANSLATIONS[currentLang]?.[key] ?? TRANSLATIONS.en?.[key] ?? key;
+}
+
+function syncLangToUrl() {
+  try {
+    const url = new URL(window.location.href);
+    if (currentLang === "en") url.searchParams.delete("lang");
+    else url.searchParams.set("lang", currentLang);
+    history.replaceState(null, "", url.toString());
+  } catch {
+    /* ignore */
+  }
 }
 
 function setLanguage(nextLang) {
@@ -666,33 +773,115 @@ function setLanguage(nextLang) {
   } catch {
     // ignore
   }
+  syncLangToUrl();
   applyTranslations();
+  const createConnect = document.getElementById("smCreateConnectTo");
+  if (createConnect && createConnect.options[0] && createConnect.options[0].value === "") {
+    createConnect.options[0].textContent = t("adminNoneNoLink");
+    applyTextDirToNode(createConnect.options[0]);
+  }
   // Update the dynamic selected panel too.
   renderSelectedPanel();
   renderStoryOrderList();
   renderCitationOverlay();
+  if (typeof viewerOpenNodeId !== "undefined" && viewerOpenNodeId) {
+    if (el.viewerSidebar && el.viewerSidebar.classList.contains("viewerSidebar--open")) {
+      openSidebarForNode(viewerOpenNodeId);
+    }
+    if (el.nodeModal && el.nodeModal.getAttribute("aria-hidden") === "false") {
+      openNodeModalById(viewerOpenNodeId);
+    }
+  }
+}
+
+/**
+ * Apply RTL only to text/display nodes for Arabic. Form controls use CSS (body.lang-ar) so widths
+ * and layout stay fixed while text direction is still correct inside fields.
+ */
+function applyTextDirToNode(node) {
+  if (!node || !node.setAttribute) return;
+  const tag = (node.tagName && String(node.tagName).toLowerCase()) || "";
+  if (tag === "input" || tag === "textarea" || tag === "select") {
+    node.removeAttribute("dir");
+    return;
+  }
+  if (currentLang === "ar") node.setAttribute("dir", "rtl");
+  else node.removeAttribute("dir");
 }
 
 function applyTranslations() {
-  const dir = currentLang === "ar" ? "rtl" : "ltr";
-  document.documentElement.dir = dir;
+  // Layout stays LTR site-wide; Arabic uses RTL only on text nodes (see applyTextDirToNode).
+  document.documentElement.setAttribute("dir", "ltr");
   document.documentElement.lang = currentLang === "ar" ? "ar" : currentLang;
+  document.body.classList.toggle("lang-ar", currentLang === "ar");
   document.title = t("appTitle");
 
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     const key = node.getAttribute("data-i18n");
     if (!key) return;
     node.textContent = t(key);
+    applyTextDirToNode(node);
   });
 
   document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
     const key = node.getAttribute("data-i18n-placeholder");
     if (!key) return;
     node.setAttribute("placeholder", t(key));
+    applyTextDirToNode(node);
   });
 
-  const langSelect = document.getElementById("langSelect");
-  if (langSelect) langSelect.value = currentLang;
+  document.querySelectorAll("[data-i18n-title]").forEach((node) => {
+    const key = node.getAttribute("data-i18n-title");
+    if (!key) return;
+    node.setAttribute("title", t(key));
+    applyTextDirToNode(node);
+  });
+
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((node) => {
+    const key = node.getAttribute("data-i18n-aria-label");
+    if (!key) return;
+    node.setAttribute("aria-label", t(key));
+  });
+
+  document.querySelectorAll("option[data-i18n]").forEach((node) => {
+    const key = node.getAttribute("data-i18n");
+    if (!key) return;
+    node.textContent = t(key);
+    applyTextDirToNode(node);
+  });
+
+  const langBtnLabel = document.getElementById("langCurrentLabel");
+  if (langBtnLabel) {
+    langBtnLabel.textContent = LANG_BUTTON_CODES[currentLang] || String(currentLang).toUpperCase();
+  }
+
+  document.querySelectorAll("#langMenuList [data-lang]").forEach((btn) => {
+    const code = btn.getAttribute("data-lang");
+    const active = code === currentLang;
+    btn.classList.toggle("is-active", active);
+    if (btn.setAttribute) btn.setAttribute("aria-selected", active ? "true" : "false");
+    if (code === "ar") btn.setAttribute("dir", "rtl");
+    else btn.removeAttribute("dir");
+  });
+
+  applyContentConfigToPage();
+  updateDiscussionBackendNotice();
+  if (typeof renderDiscussionBoard === "function" && document.getElementById("discussionPosts")) {
+    renderDiscussionBoard();
+  }
+  void refreshDiscussionAdminHintForI18n();
+}
+
+function refreshDiscussionAdminHintForI18n() {
+  if (MODE !== "admin") return;
+  const hint = document.getElementById("discussionAdminClearHint");
+  if (!hint) return;
+  void (async () => {
+    await bootstrapDiscussionRemote();
+    if (discussionRemoteEnabled) hint.textContent = t("adminDiscussionSupabaseHint");
+    else hint.textContent = t("adminDiscussionLocalHint");
+    applyTextDirToNode(hint);
+  })();
 }
 
 const el = {
@@ -775,6 +964,8 @@ function setStatus(message, { isError = false, isLoading = false } = {}) {
   status.classList.toggle("jsStatus--hidden", !message);
   status.classList.toggle("jsStatus--error", Boolean(isError));
   status.classList.toggle("jsStatus--loading", Boolean(isLoading));
+  if (message) applyTextDirToNode(status);
+  else status.removeAttribute("dir");
 }
 
 function loadContentConfig() {
@@ -951,13 +1142,13 @@ function updateDiscussionBackendNotice() {
   const node = el.discussionBackendNote || document.getElementById("discussionBackendNote");
   if (!node) return;
   if (discussionRemoteEnabled) {
-    node.textContent = "Discussion is stored online and shared with all visitors.";
+    node.textContent = t("discussionBackendRemote");
     node.hidden = false;
   } else {
-    node.textContent =
-      "Discussion is only saved on this device until you add Supabase URL and anon key in discussion-config.js (see README).";
+    node.textContent = t("discussionBackendLocal");
     node.hidden = false;
   }
+  applyTextDirToNode(node);
 }
 
 function applyContentConfigToPage() {
@@ -965,9 +1156,21 @@ function applyContentConfigToPage() {
   document.querySelectorAll("[data-content-key]").forEach((node) => {
     const key = node.getAttribute("data-content-key");
     if (!key) return;
-    const value = cfg[key];
+    const fromCfg = cfg[key];
+    const defVal = DEFAULT_CONTENT[key];
+    let value = fromCfg;
+    const cfgMatchesDefault =
+      typeof fromCfg === "string" && typeof defVal === "string" && fromCfg === defVal;
+    const missing = typeof fromCfg !== "string";
+    if (missing || cfgMatchesDefault) {
+      const tr = t(key);
+      if (typeof tr === "string" && tr !== key) value = tr;
+      else if (typeof fromCfg === "string") value = fromCfg;
+      else value = defVal;
+    }
     if (typeof value !== "string") return;
     node.textContent = value;
+    applyTextDirToNode(node);
   });
 }
 
@@ -1873,6 +2076,27 @@ function initCustomStorymapCanvas() {
   const infoBody = document.getElementById("smInfoBody");
   const infoMediaWrap = document.getElementById("smInfoMediaWrap");
   const infoCloseBtn = document.getElementById("smInfoClose");
+
+  /** Keep the viewer node info sheet between sticky header + fixed footer (viewport coords). */
+  const applySmInfoPanelSafeInsets = () => {
+    const root = document.documentElement;
+    const nav = document.querySelector(".siteNav");
+    const footer = document.querySelector(".stickyFooterLinks");
+    const gap = 10;
+    let topPx = gap;
+    let bottomPx = gap;
+    if (nav) {
+      const r = nav.getBoundingClientRect();
+      topPx = Math.max(gap, r.bottom + gap);
+    }
+    if (footer) {
+      const r = footer.getBoundingClientRect();
+      bottomPx = Math.max(gap, window.innerHeight - r.top + gap);
+    }
+    root.style.setProperty("--sm-info-panel-top", `${Math.round(topPx)}px`);
+    root.style.setProperty("--sm-info-panel-bottom", `${Math.round(bottomPx)}px`);
+  };
+
   const getNodeLabel = (node) => {
     const explicit = String(node?.label || "").trim();
     if (explicit) return normalizeStorymapTitleText(explicit);
@@ -1964,7 +2188,7 @@ function initCustomStorymapCanvas() {
     if (!createConnectSelect || !isAdmin) return;
     const preserve = createConnectSelect.value;
     createConnectSelect.innerHTML = [
-      '<option value="">None (no link)</option>',
+      `<option value="">${escapeHtml(t("adminNoneNoLink"))}</option>`,
       ...canvas.nodes.map(
         (n) => `<option value="${escapeHtml(n.id)}">${escapeHtml(getNodeLabel(n) || n.id)}</option>`
       ),
@@ -2217,6 +2441,12 @@ function initCustomStorymapCanvas() {
         if (infoMediaWrap) infoMediaWrap.hidden = true;
         infoPanel.classList.remove("smInfoPanel--withImage");
         infoPanel.style.width = "";
+        try {
+          document.documentElement.style.removeProperty("--sm-info-panel-top");
+          document.documentElement.style.removeProperty("--sm-info-panel-bottom");
+        } catch {
+          // ignore
+        }
         if (infoTitle) {
           infoTitle.textContent = "";
           infoTitle.hidden = false;
@@ -2227,6 +2457,7 @@ function initCustomStorymapCanvas() {
         }
         infoPanel.setAttribute("aria-hidden", "true");
       } else {
+        applySmInfoPanelSafeInsets();
         const label = getNodeLabel(node);
         const bodyText = getNodeText(node);
         const imageSrc = getNodeImageSrc(node);
@@ -2235,20 +2466,25 @@ function initCustomStorymapCanvas() {
         if (infoTitle) {
           infoTitle.textContent = label;
           infoTitle.hidden = !label;
+          applyTextDirToNode(infoTitle);
         }
         if (infoBody) {
           infoBody.textContent = bodyText;
           infoBody.hidden = !bodyText;
+          applyTextDirToNode(infoBody);
         }
 
         const setInfoPanelWidth = (nw, nh) => {
+          const vw = window.innerWidth;
+          const half = Math.round(vw * 0.5);
+          const cap = Math.max(200, vw - 24);
           let px;
           if (showImageSidebar && nw > 0 && nh > 0) {
             const ar = nw / nh;
-            px = Math.min(600, Math.max(288, 268 + Math.min(200, ar * 95)));
+            px = Math.min(cap, Math.max(half, Math.min(640, Math.max(288, 268 + Math.min(200, ar * 95)))));
           } else {
             const len = Math.max(bodyText.length, label.length);
-            px = Math.min(440, Math.max(272, 260 + Math.min(160, len * 1.6)));
+            px = Math.min(cap, Math.max(half, Math.min(520, Math.max(272, 260 + Math.min(160, len * 1.6)))));
           }
           infoPanel.style.width = `${Math.round(px)}px`;
         };
@@ -2560,6 +2796,11 @@ function initCustomStorymapCanvas() {
     { passive: false }
   );
 
+  window.addEventListener("resize", () => {
+    if (!infoPanel || infoPanel.getAttribute("aria-hidden") === "true") return;
+    applySmInfoPanelSafeInsets();
+  });
+
   on(zoomInBtn, "click", () => {
     const rect = viewport.getBoundingClientRect();
     const cx = rect.width / 2;
@@ -2590,6 +2831,12 @@ function initCustomStorymapCanvas() {
       infoPanel.setAttribute("aria-hidden", "true");
       infoPanel.classList.remove("smInfoPanel--withImage");
       infoPanel.style.width = "";
+    }
+    try {
+      document.documentElement.style.removeProperty("--sm-info-panel-top");
+      document.documentElement.style.removeProperty("--sm-info-panel-bottom");
+    } catch {
+      // ignore
     }
     if (infoImage) {
       infoImage.removeAttribute("src");
@@ -3114,7 +3361,7 @@ function renderDiscussionBoard({ animatePostId = null } = {}) {
   if (!orderedPosts.length) {
     el.discussionPosts.innerHTML = `
       <article class="discussionPost discussionPost--empty">
-        <p class="muted">No discussion posts yet. Be the first to share a thought.</p>
+        <p class="muted">${escapeHtml(t("discussionEmpty"))}</p>
       </article>
     `;
     return;
@@ -3137,7 +3384,9 @@ function renderDiscussionBoard({ animatePostId = null } = {}) {
               `
             )
             .join("")
-        : '<li class="discussionReplyItem discussionReplyItem--empty"><p class="muted">No replies yet.</p></li>';
+        : `<li class="discussionReplyItem discussionReplyItem--empty"><p class="muted">${escapeHtml(
+            t("discussionNoReplies")
+          )}</p></li>`;
       return `
         <article class="discussionPost" data-post-id="${post.id}">
           <header class="discussionPost__header">
@@ -3149,17 +3398,21 @@ function renderDiscussionBoard({ animatePostId = null } = {}) {
           <p class="discussionPost__description">${escapeHtml(post.description)}</p>
           <ul class="discussionReplies">${repliesHtml}</ul>
           <div class="discussionPost__actions">
-            <button class="btn btn--secondary discussionReplyToggleBtn" type="button" data-post-id="${post.id}">Reply</button>
+            <button class="btn btn--secondary discussionReplyToggleBtn" type="button" data-post-id="${post.id}">${escapeHtml(
+              t("discussionReply")
+            )}</button>
           </div>
           <div class="discussionReplyComposer" data-post-id="${post.id}" hidden>
             <div class="field">
-              <label for="discussionReplyInput-${post.id}">Add a reply</label>
+              <label for="discussionReplyInput-${post.id}">${escapeHtml(t("discussionAddReply"))}</label>
               <textarea id="discussionReplyInput-${post.id}" class="discussionReplyInput" data-post-id="${
                 post.id
-              }" rows="2" placeholder="Write a reply"></textarea>
+              }" rows="2" placeholder="${escapeHtml(t("discussionReplyPlaceholder"))}"></textarea>
             </div>
             <div class="actions">
-              <button class="btn discussionReplySubmitBtn" type="button" data-post-id="${post.id}">Post Reply</button>
+              <button class="btn discussionReplySubmitBtn" type="button" data-post-id="${post.id}">${escapeHtml(
+                t("discussionPostReply")
+              )}</button>
             </div>
           </div>
         </article>
@@ -3175,7 +3428,7 @@ function renderDiscussionBoard({ animatePostId = null } = {}) {
 
 async function initDiscussionBoard() {
   if (!el.discussionPosts || !el.discussionPostBtn) return;
-  setStatus("Loading discussion…", { isLoading: true });
+  setStatus(t("statusLoadingDiscussion"), { isLoading: true });
   let showedRemoteLoadError = false;
   try {
     await bootstrapDiscussionRemote();
@@ -3186,7 +3439,7 @@ async function initDiscussionBoard() {
         console.warn("[discussion] Load error, using local cache:", err);
         discussionState = loadDiscussionsLocal();
         showedRemoteLoadError = true;
-        setStatus("Could not load shared discussion. Showing saved copy on this device.", { isError: true });
+        setStatus(t("statusDiscussionLoadError"), { isError: true });
       }
     } else {
       discussionState = loadDiscussionsLocal();
@@ -3201,7 +3454,7 @@ async function initDiscussionBoard() {
     const title = el.discussionTitle ? el.discussionTitle.value.trim() : "";
     const description = el.discussionDescription ? el.discussionDescription.value.trim() : "";
     if (!title || !description) {
-      setStatus("Please add a title and description before posting.", { isError: true });
+      setStatus(t("statusDiscussionPostMissing"), { isError: true });
       return;
     }
     const now = Date.now();
@@ -3209,7 +3462,7 @@ async function initDiscussionBoard() {
     discussionState = [post, ...discussionState];
     const saved = await persistDiscussions(discussionState);
     if (!saved) {
-      setStatus("Could not save post. Check storage or Supabase settings.", { isError: true });
+      setStatus(t("statusDiscussionSaveFail"), { isError: true });
       return;
     }
     renderDiscussionBoard({ animatePostId: post.id });
@@ -3244,7 +3497,7 @@ async function initDiscussionBoard() {
     const input = composer ? composer.querySelector(".discussionReplyInput") : null;
     const text = input ? String(input.value || "").trim() : "";
     if (!text) {
-      setStatus("Reply text cannot be empty.", { isError: true });
+      setStatus(t("statusReplyEmpty"), { isError: true });
       return;
     }
     const replyNow = Date.now();
@@ -3258,7 +3511,7 @@ async function initDiscussionBoard() {
     });
     const saved = await persistDiscussions(discussionState);
     if (!saved) {
-      setStatus("Could not save reply. Check storage or Supabase settings.", { isError: true });
+      setStatus(t("statusReplySaveFail"), { isError: true });
       return;
     }
     renderDiscussionBoard();
@@ -3274,39 +3527,33 @@ function initDiscussionAdminControls() {
     const hint = el.discussionAdminClearHint;
     if (!hint) return;
     if (discussionRemoteEnabled) {
-      hint.textContent =
-        "Supabase is configured: the button below clears the shared online discussion for everyone (and empties this browser’s cached copy).";
+      hint.textContent = t("adminDiscussionSupabaseHint");
     } else {
-      hint.textContent =
-        "Supabase URL/key are not set in discussion-config.js: the button only clears discussion data stored in this browser.";
+      hint.textContent = t("adminDiscussionLocalHint");
     }
+    applyTextDirToNode(hint);
   }
 
   void refreshDiscussionAdminHint();
 
   on(el.btnClearDiscussions, "click", async () => {
     await bootstrapDiscussionRemote();
-    const msg = discussionRemoteEnabled
-      ? "Clear the shared online discussion board for all visitors? This cannot be undone."
-      : "Clear discussion data stored only in this browser?";
+    const msg = discussionRemoteEnabled ? t("adminClearConfirmRemote") : t("adminClearConfirmLocal");
     const ok = window.confirm(msg);
     if (!ok) return;
     const result = await clearDiscussionsForAdmin();
     if (!result.ok) {
-      setStatus(
-        "Could not clear the online discussion. Check discussion-config.js, Supabase RLS, and your network.",
-        { isError: true }
-      );
+      setStatus(t("adminClearFailed"), { isError: true });
       if (el.discussionAdminClearHint) {
-        el.discussionAdminClearHint.textContent =
-          "Clear failed. Verify discussion-config.js and that discussion-supabase.sql policies allow anon upsert on discussion_board.";
+        el.discussionAdminClearHint.textContent = t("adminClearFailedHint");
+        applyTextDirToNode(el.discussionAdminClearHint);
       }
       return;
     }
     if (result.mode === "remote") {
-      setStatus("Shared discussion board cleared (Supabase + this device’s cache).", { isError: false });
+      setStatus(t("adminClearOkRemote"), { isError: false });
     } else {
-      setStatus("Local discussion cache cleared (no shared backend configured).", { isError: false });
+      setStatus(t("adminClearOkLocal"), { isError: false });
     }
     void refreshDiscussionAdminHint();
   });
@@ -4192,13 +4439,27 @@ on(el.selectedDetails, "change", (evt) => {
   reader.readAsDataURL(file);
 });
 
-// Language switching.
-document.getElementById("langSelect")?.addEventListener("change", (evt) => {
-  const nextLang = evt.target?.value || "en";
-  setLanguage(nextLang);
-});
+function initLanguageMenu() {
+  const menu = document.getElementById("langMenuList");
+  if (!menu) return;
+  menu.addEventListener("click", (e) => {
+    const target = e.target && e.target.closest ? e.target.closest("[data-lang]") : null;
+    if (!target) return;
+    e.preventDefault();
+    const lang = target.getAttribute("data-lang");
+    if (lang && SUPPORTED_LANGS.includes(lang)) setLanguage(lang);
+  });
+}
 
+initLanguageMenu();
+syncLangToUrl();
 applyTranslations();
+
+/** Public hooks so embedders/tests can switch language and refresh strings after dynamic edits. */
+window.storymapGetLanguage = () => currentLang;
+window.storymapSetLanguage = (code) => setLanguage(code);
+window.storymapApplyTranslations = () => applyTranslations();
+window.storymapSupportedLanguages = () => [...SUPPORTED_LANGS];
 
 // Wire up UI events.
 on(el.btnReset, "click", () => {
@@ -4248,11 +4509,15 @@ function openSidebarForNode(nodeId) {
   el.viewerSidebar.setAttribute("aria-hidden", "false");
   el.viewerRoot.classList.add("viewer--withSidebar");
 
-  if (el.sidebarTitle) el.sidebarTitle.textContent = node.label || node.id;
+  if (el.sidebarTitle) {
+    el.sidebarTitle.textContent = node.label || node.id;
+    applyTextDirToNode(el.sidebarTitle);
+  }
   if (el.sidebarMeta) {
     const meta = [node.type === "person" ? t("nodePerson") : t("nodeEvent")];
     if (node.type === "event" && (node.date || "").trim()) meta.push(node.date.trim());
     el.sidebarMeta.textContent = meta.join(" • ");
+    applyTextDirToNode(el.sidebarMeta);
   }
   if (el.sidebarDescription) {
     const desc = (node.notes || "").trim() || (node.description || "").trim();
@@ -4260,6 +4525,7 @@ function openSidebarForNode(nodeId) {
     const text = [desc, meta].filter(Boolean).join("\n");
     el.sidebarDescription.textContent = text || "";
     el.sidebarDescription.style.display = text ? "block" : "none";
+    applyTextDirToNode(el.sidebarDescription);
   }
   if (el.sidebarThumb) {
     if (node.photo) {
@@ -4299,29 +4565,34 @@ function openNodeModalById(nodeId) {
   el.nodeModal.setAttribute("aria-hidden", "false");
 
   el.nodeModalTitle.textContent = node.label || node.id;
+  applyTextDirToNode(el.nodeModalTitle);
 
   const metaParts = [];
   metaParts.push(node.type === "person" ? t("nodePerson") : t("nodeEvent"));
   if (node.type === "event" && (node.date || "").trim()) metaParts.push(node.date.trim());
-  if (el.nodeModalMeta) el.nodeModalMeta.textContent = metaParts.join(" • ");
+  if (el.nodeModalMeta) {
+    el.nodeModalMeta.textContent = metaParts.join(" • ");
+    applyTextDirToNode(el.nodeModalMeta);
+  }
 
   const desc =
     (node.notes || "").trim() ||
     (node.type === "person" ? (node.description || "").trim() : "") ||
     "";
   const detailParts = [];
-  if ((node.dateRange || "").trim()) detailParts.push(`Date range: ${node.dateRange.trim()}`);
-  if ((node.contextTags || "").trim()) detailParts.push(`Tags: ${node.contextTags.trim()}`);
-  if ((node.audioDescription || "").trim()) detailParts.push(`Audio: ${node.audioDescription.trim()}`);
-  if ((node.pedagogyNotes || "").trim()) detailParts.push(`Pedagogy: ${node.pedagogyNotes.trim()}`);
+  if ((node.dateRange || "").trim()) detailParts.push(`${t("detailPrefixDateRange")} ${node.dateRange.trim()}`);
+  if ((node.contextTags || "").trim()) detailParts.push(`${t("detailPrefixTags")} ${node.contextTags.trim()}`);
+  if ((node.audioDescription || "").trim()) detailParts.push(`${t("detailPrefixAudio")} ${node.audioDescription.trim()}`);
+  if ((node.pedagogyNotes || "").trim()) detailParts.push(`${t("detailPrefixPedagogy")} ${node.pedagogyNotes.trim()}`);
   const combinedDesc = [desc, ...detailParts].filter(Boolean).join("\n\n");
   el.nodeModalDescription.textContent = combinedDesc || "";
   el.nodeModalDescription.style.display = combinedDesc ? "block" : "none";
+  applyTextDirToNode(el.nodeModalDescription);
 
   const hasPhoto = Boolean((node.photo || "").trim());
   if (hasPhoto) {
     el.nodeModalImage.src = node.photo;
-    el.nodeModalImage.alt = `${node.label || "Node"} image`;
+    el.nodeModalImage.alt = `${node.label || "Node"} ${t("nodeImageAltSuffix")}`;
     el.nodeModalImage.style.display = "block";
   } else {
     el.nodeModalImage.removeAttribute("src");
@@ -4407,7 +4678,8 @@ function initContentEditorPanel() {
       historyBody: el.cfgHistoryBody ? el.cfgHistoryBody.value.trim() : cfg.historyBody,
     };
     saveContentConfig(nextCfg);
-    setStatus("Editable content saved.", { isError: false });
+    applyContentConfigToPage();
+    setStatus(t("statusContentSaved"), { isError: false });
   });
 }
 
@@ -4530,15 +4802,8 @@ on(el.btnLogoutAdmin, "click", () => {
   window.location.href = buildPageUrl("index.html");
 });
 
-// Initial render.
-if (document.readyState === "loading") {
-  on(document, "DOMContentLoaded", () => console.log("Page loaded"));
-} else {
-  console.log("Page loaded");
-}
-
 window.addEventListener("error", (evt) => {
-  setStatus("A runtime error occurred. Showing fallback content.", { isError: true });
+  setStatus(t("statusRuntimeError"), { isError: true });
   console.error("Runtime error:", evt.error || evt.message);
 });
 
@@ -4548,7 +4813,6 @@ window.addEventListener("error", (evt) => {
     applyStorymapHardRefreshReset();
     applyStorymapUrlStorageHints();
     syncCanvasToPublishedRelease();
-    applyContentConfigToPage();
     initScrollReveals();
     initHeroParallax();
     initContentEditorPanel();
@@ -4556,7 +4820,7 @@ window.addEventListener("error", (evt) => {
     initDiscussionAdminControls();
     // Avoid flashing "Loading storymap" on discussion.html (discussion has its own load path).
     if (!el.discussionPosts) {
-      setStatus("Loading storymap...", { isLoading: true });
+      setStatus(t("statusLoadingStorymap"), { isLoading: true });
     }
     if (document.getElementById("storymapViewport")) {
       initCustomStorymapCanvas();
@@ -4570,11 +4834,11 @@ window.addEventListener("error", (evt) => {
     }
   } catch (err) {
     console.error(err);
-    setStatus("Failed to initialize storymap. Check console for details.", { isError: true });
+    setStatus(t("statusInitFailed"), { isError: true });
     if (el && el.cy) {
       el.cy.innerHTML = `
       <div class="muted" style="padding:12px;">
-        Failed to initialize the app. See console for details.
+        ${escapeHtml(t("statusFallbackInit"))}
       </div>
     `;
     }
