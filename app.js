@@ -2152,10 +2152,10 @@ function initCustomStorymapCanvas() {
     const sourceGlowMs = 125;
     /** Line begins shortly after source glow starts (50–100ms stagger). */
     const lineStartAfterGlowMs = 78;
-    /** Must match `storymap.css` `--sm-edge-reveal-dur` on `.storymapEdge--draw`. */
+    /** Must match `storymap.css` `--sm-edge-overlay-dur` on `.storymapEdgeOverlay--fade`. */
     const edgeRevealMs = 980;
-    const findLineByEdgeKey = (ek) => {
-      const lines = edgesSvg.querySelectorAll("line[data-sm-edge-key]");
+    const findOverlayLineByEdgeKey = (ek) => {
+      const lines = edgesSvg.querySelectorAll('line[data-sm-edge-key][data-sm-edge-overlay="1"]');
       for (let li = 0; li < lines.length; li++) {
         if (lines[li].getAttribute("data-sm-edge-key") === ek) return lines[li];
       }
@@ -2199,14 +2199,12 @@ function initCustomStorymapCanvas() {
         window.setTimeout(() => {
           pendingEdgeAnim.add(ek);
           drawEdges();
-          const lineEl = findLineByEdgeKey(ek);
+          const overlayEl = findOverlayLineByEdgeKey(ek);
 
           let linePhaseDone = false;
           const finishLineAndUnlock = () => {
             if (linePhaseDone) return;
             linePhaseDone = true;
-            pendingEdgeAnim.delete(ek);
-            drawEdges();
 
             let targetEl = nodeElById(nid);
             if (!targetEl) {
@@ -2240,17 +2238,17 @@ function initCustomStorymapCanvas() {
             glowFallbackTimer = window.setTimeout(startUnlock, 200);
           };
 
-          if (lineEl) {
-            lineEl.addEventListener(
+          if (overlayEl) {
+            overlayEl.addEventListener(
               "animationend",
               (evt) => {
-                if (evt.animationName !== "smEdgeReveal") return;
+                if (evt.animationName && evt.animationName !== "smEdgeOverlayFade") return;
                 finishLineAndUnlock();
               },
               { once: true }
             );
           }
-          window.setTimeout(() => finishLineAndUnlock(), edgeRevealMs + 140);
+          window.setTimeout(() => finishLineAndUnlock(), edgeRevealMs + 160);
         }, lineStartAfterGlowMs);
       }, i * neighborStaggerMs);
     });
@@ -2392,12 +2390,17 @@ function initCustomStorymapCanvas() {
     const showAllEdges = isAdmin && !previewAsUser;
     canvas.edges.forEach((edge) => {
       const ek = storymapEdgeKey(edge.source, edge.target);
+      let edgeMode = "normal"; // normal | hint
       if (!showAllEdges) {
         const aUn = viewerUnlocked.has(edge.source);
         const bUn = viewerUnlocked.has(edge.target);
         const bothUnlocked = aUn && bUn;
         const pending = pendingEdgeAnim.has(ek);
-        if (!bothUnlocked && !pending) return;
+        // Viewer: keep edges visible from unlocked → locked as a dashed hint.
+        if (!bothUnlocked && !pending) {
+          if (!(aUn && !bUn)) return;
+          edgeMode = "hint";
+        }
       }
       const source = nodeEls.get(edge.source);
       const target = nodeEls.get(edge.target);
@@ -2432,12 +2435,21 @@ function initCustomStorymapCanvas() {
       line.setAttribute("x2", String(p2.x));
       line.setAttribute("y2", String(p2.y));
       line.setAttribute("data-sm-edge-key", ek);
-      if (pendingEdgeAnim.has(ek)) {
-        const len = Math.hypot(p2.x - p1.x, p2.y - p1.y) || 1;
-        line.style.setProperty("--sm-edge-len", `${len}`);
-        line.classList.add("storymapEdge--draw");
-      }
+      if (edgeMode === "hint") line.classList.add("storymapEdge--hint");
       edgesSvg.appendChild(line);
+
+      // Solid overlay that fades away, revealing dashed base line underneath.
+      if (pendingEdgeAnim.has(ek)) {
+        const overlay = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        overlay.setAttribute("x1", String(p1.x));
+        overlay.setAttribute("y1", String(p1.y));
+        overlay.setAttribute("x2", String(p2.x));
+        overlay.setAttribute("y2", String(p2.y));
+        overlay.setAttribute("data-sm-edge-key", ek);
+        overlay.setAttribute("data-sm-edge-overlay", "1");
+        overlay.classList.add("storymapEdgeOverlay--fade");
+        edgesSvg.appendChild(overlay);
+      }
     });
   };
 

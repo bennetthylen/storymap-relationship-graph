@@ -102,34 +102,37 @@ body.layout--storymapPreview .storymapAdminPanel {
   stroke-dashoffset: 0;
 }
 
-/* Edge draws from source toward target (stroke reveals along line length) */
-.storymapEdges line.storymapEdge--draw {
-  --sm-edge-reveal-dur: 0.98s;
-  stroke-dasharray: var(--sm-edge-len, 400px);
-  stroke-dashoffset: var(--sm-edge-len, 400px);
-  opacity: 0.4;
-  animation: smEdgeReveal var(--sm-edge-reveal-dur) cubic-bezier(0.45, 0, 0.55, 1) forwards;
+.storymapEdges line.storymapEdge--hint {
+  opacity: 0.28;
 }
 
-@keyframes smEdgeReveal {
-  58% {
+/* Solid overlay during unlock; fades away into dashed base line. */
+.storymapEdges line.storymapEdgeOverlay--fade {
+  --sm-edge-overlay-dur: 0.98s;
+  stroke: #8f72ff;
+  stroke-width: 3.25;
+  stroke-linecap: round;
+  stroke-dasharray: none;
+  opacity: 1;
+  animation: smEdgeOverlayFade var(--sm-edge-overlay-dur) cubic-bezier(0.45, 0, 0.55, 1) forwards;
+}
+
+@keyframes smEdgeOverlayFade {
+  0% {
+    opacity: 0.92;
+  }
+  55% {
     opacity: 1;
-    stroke-dashoffset: 0;
-    stroke-dasharray: var(--sm-edge-len, 400px);
   }
   100% {
-    opacity: 1;
-    stroke-dashoffset: 0;
-    stroke-dasharray: 6 6;
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .storymapEdges line.storymapEdge--draw {
+  .storymapEdges line.storymapEdgeOverlay--fade {
     animation: none;
-    opacity: 1;
-    stroke-dasharray: 6 6;
-    stroke-dashoffset: 0;
+    opacity: 0;
   }
   .smNode--pulse {
     animation: none;
