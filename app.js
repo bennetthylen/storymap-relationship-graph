@@ -192,7 +192,7 @@ const GITHUB_REPO_BRANCH = "main";
 const DEFAULT_CONTENT = {
   heroTitle: "Doing Well, Don't Worry",
   heroSubtitle:
-    "A digital collaboration between Georgetown University's School of Foreign Service and The Women and Memory Forum.",
+    "A digital collaboration between students atGeorgetown University's School of Foreign Service and The Women and Memory Forum.",
   heroCta: "Experience \"Doing Well, Don't Worry\"",
   section1: "Women are always on the move.",
   section2:
@@ -2008,7 +2008,7 @@ function initCustomStorymapCanvas() {
   };
 
   const runUnlockAnim = (el, parentId, nid, edgeKey, opts = {}) => {
-    const { updateProgress = true, onFinish = null } = opts;
+    const { updateProgress = true, onFinish = null, deferDomFinish = false } = opts;
     const parent = getNodeByIdLocal(parentId);
     const node = getNodeByIdLocal(nid);
     if (!el || !parent || !node) {
@@ -2059,6 +2059,16 @@ function initCustomStorymapCanvas() {
         el.style.filter = "none";
       }
 
+      const structuralFinish = () => {
+        pendingEdgeAnim.delete(edgeKey);
+        if (updateProgress) {
+          viewerUnlocked.add(nid);
+          saveViewerState();
+        }
+        if (typeof onFinish === "function") onFinish();
+        else renderCanvas();
+      };
+
       const finish = () => {
         el.classList.remove("smNode--unlocking");
         if (!prefersReducedMotion()) {
@@ -2072,13 +2082,7 @@ function initCustomStorymapCanvas() {
           imgEl.style.transition = "";
           imgEl.style.filter = "";
         }
-        pendingEdgeAnim.delete(edgeKey);
-        if (updateProgress) {
-          viewerUnlocked.add(nid);
-          saveViewerState();
-        }
-        if (typeof onFinish === "function") onFinish();
-        else renderCanvas();
+        structuralFinish();
       };
 
       if (prefersReducedMotion()) {
@@ -2097,7 +2101,11 @@ function initCustomStorymapCanvas() {
         if (done) return;
         done = true;
         cleanup();
-        finish();
+        if (deferDomFinish) {
+          structuralFinish();
+        } else {
+          finish();
+        }
       };
 
       let remaining = imgEl ? 2 : 1;
@@ -2158,7 +2166,24 @@ function initCustomStorymapCanvas() {
     const waveDone = () => {
       waveActive -= 1;
       if (waveActive <= 0) {
-        renderCanvas();
+        requestAnimationFrame(() => {
+          neighbors.forEach((nid) => {
+            const el = nodeElById(nid);
+            if (!el) return;
+            const imgEl = el.querySelector("img");
+            el.classList.remove("smNode--unlocking");
+            if (!prefersReducedMotion()) postUnlockBloomIds.add(nid);
+            el.style.transition = "";
+            el.style.transform = "";
+            el.style.opacity = "";
+            el.style.filter = "";
+            if (imgEl) {
+              imgEl.style.transition = "";
+              imgEl.style.filter = "";
+            }
+          });
+          renderCanvas();
+        });
       }
     };
 
@@ -2201,7 +2226,11 @@ function initCustomStorymapCanvas() {
               el.classList.remove("smNode--edgeGlowTarget");
               void el.offsetWidth;
               waveActive += 1;
-              runUnlockAnim(el, clickedId, nid, ek, { updateProgress: true, onFinish: waveDone });
+              runUnlockAnim(el, clickedId, nid, ek, {
+                updateProgress: true,
+                onFinish: waveDone,
+                deferDomFinish: true,
+              });
             };
             onGlowEnd = (evt) => {
               if (evt.animationName && evt.animationName !== "smNodeEdgeGlowTo") return;
