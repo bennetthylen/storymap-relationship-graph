@@ -1841,8 +1841,6 @@ function initCustomStorymapCanvas() {
   let viewerVisited = new Set();
   if (isAdmin) mergeViewerProgress();
   const pendingEdgeAnim = new Set();
-  /** Unlocked node ids that should play the post-unlock bloom after the next render (survives renderCanvas). */
-  const postUnlockBloomIds = new Set();
 
   const prefersReducedMotion = () =>
     typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1993,20 +1991,6 @@ function initCustomStorymapCanvas() {
   const nodeElById = (nodeId) =>
     nodesLayer.querySelector(`.smNode[data-id="${String(nodeId).replace(/"/g, '\\"')}"]`);
 
-  const pulseNodeById = (nodeId) => {
-    const el = nodeElById(nodeId);
-    if (!el) return;
-    el.classList.remove("smNode--pulse");
-    void el.offsetWidth;
-    el.classList.add("smNode--pulse");
-    const onEnd = (evt) => {
-      if (evt.animationName && evt.animationName !== "smNodePulseRing") return;
-      el.classList.remove("smNode--pulse");
-      el.removeEventListener("animationend", onEnd);
-    };
-    el.addEventListener("animationend", onEnd);
-  };
-
   const runUnlockAnim = (el, parentId, nid, edgeKey, opts = {}) => {
     const { updateProgress = true, onFinish = null, deferDomFinish = false } = opts;
     const parent = getNodeByIdLocal(parentId);
@@ -2071,9 +2055,6 @@ function initCustomStorymapCanvas() {
 
       const finish = () => {
         el.classList.remove("smNode--unlocking");
-        if (!prefersReducedMotion()) {
-          postUnlockBloomIds.add(nid);
-        }
         el.style.transition = "";
         el.style.transform = "";
         el.style.opacity = "";
@@ -2136,6 +2117,10 @@ function initCustomStorymapCanvas() {
     requestAnimationFrame(runSteps);
   };
 
+  /**
+   * Single timeline for all outgoing edges from a click (no per-neighbor stagger).
+   * Keep numbers aligned with `storymap.css` overlay duration (`--sm-edge-overlay-dur`).
+   */
   const queueNeighborUnlockAnimations = (clickedId) => {
     if (!isViewerLike()) return;
     const neighbors = getOutgoingStorymapNeighbors(canvas, clickedId).filter((nid) => !viewerUnlocked.has(nid));
@@ -2146,23 +2131,14 @@ function initCustomStorymapCanvas() {
       renderCanvas();
       return;
     }
-    /** Stagger between neighbors; ~30% slower than the prior 135ms cadence. */
-    const neighborStaggerMs = 175;
-    /** Purple glow on source (box 1): ~100–150ms */
-    const sourceGlowMs = 125;
-    /** Line begins shortly after source glow starts (50–100ms stagger). */
-    const lineStartAfterGlowMs = 78;
-    /** Must match `storymap.css` `--sm-edge-overlay-dur` on `.storymapEdgeOverlay--fade`. */
-    const edgeRevealMs = 980;
-    const findOverlayLineByEdgeKey = (ek) => {
-      const lines = edgesSvg.querySelectorAll('line[data-sm-edge-key][data-sm-edge-overlay="1"]');
-      for (let li = 0; li < lines.length; li++) {
-        if (lines[li].getAttribute("data-sm-edge-key") === ek) return lines[li];
-      }
-      return null;
-    };
 
+    const LINE_DELAY_MS = 72;
+    const EDGE_OVERLAY_MS = 980;
+    const TARGET_GLOW_MS = 120;
+
+    const parentEl = nodeElById(clickedId);
     let waveActive = 0;
+
     const waveDone = () => {
       waveActive -= 1;
       if (waveActive <= 0) {
@@ -2172,7 +2148,6 @@ function initCustomStorymapCanvas() {
             if (!el) return;
             const imgEl = el.querySelector("img");
             el.classList.remove("smNode--unlocking");
-            if (!prefersReducedMotion()) postUnlockBloomIds.add(nid);
             el.style.transition = "";
             el.style.transform = "";
             el.style.opacity = "";
@@ -2187,71 +2162,47 @@ function initCustomStorymapCanvas() {
       }
     };
 
-    neighbors.forEach((nid, i) => {
-      window.setTimeout(() => {
-        const parentEl = nodeElById(clickedId);
-        if (!parentEl) return;
+    const startUnlockPhase = () => {
+      neighbors.forEach((nid) => {
+        const el = nodeElById(nid);
         const ek = storymapEdgeKey(clickedId, nid);
+        waveActive += 1;
+        runUnlockAnim(el, clickedId, nid, ek, {
+          updateProgress: true,
+          onFinish: waveDone,
+          deferDomFinish: true,
+        });
+      });
+    };
 
-        parentEl.classList.add("smNode--edgeGlowSource");
-        window.setTimeout(() => parentEl.classList.remove("smNode--edgeGlowSource"), sourceGlowMs + 24);
+    const onLineComplete = () => {
+      if (parentEl) parentEl.classList.remove("smNode--edgeGlowSource");
+      neighbors.forEach((nid) => {
+        const el = nodeElById(nid);
+        if (el) el.classList.add("smNode--edgeGlowTarget");
+      });
+      window.setTimeout(() => {
+        neighbors.forEach((nid) => {
+          const el = nodeElById(nid);
+          if (el) el.classList.remove("smNode--edgeGlowTarget");
+        });
+        startUnlockPhase();
+      }, TARGET_GLOW_MS);
+    };
 
-        window.setTimeout(() => {
-          pendingEdgeAnim.add(ek);
-          drawEdges();
-          const overlayEl = findOverlayLineByEdgeKey(ek);
+    const beginLineDraw = () => {
+      neighbors.forEach((nid) => {
+        pendingEdgeAnim.add(storymapEdgeKey(clickedId, nid));
+      });
+      drawEdges();
+    };
 
-          let linePhaseDone = false;
-          const finishLineAndUnlock = () => {
-            if (linePhaseDone) return;
-            linePhaseDone = true;
+    if (parentEl) parentEl.classList.add("smNode--edgeGlowSource");
 
-            let targetEl = nodeElById(nid);
-            if (!targetEl) {
-              return;
-            }
-            targetEl.classList.add("smNode--edgeGlowTarget");
-            let unlockStarted = false;
-            let glowFallbackTimer = null;
-            let onGlowEnd;
-            const startUnlock = () => {
-              if (unlockStarted) return;
-              unlockStarted = true;
-              if (glowFallbackTimer !== null) window.clearTimeout(glowFallbackTimer);
-              const el = nodeElById(nid);
-              if (!el) return;
-              el.removeEventListener("animationend", onGlowEnd);
-              el.classList.remove("smNode--edgeGlowTarget");
-              void el.offsetWidth;
-              waveActive += 1;
-              runUnlockAnim(el, clickedId, nid, ek, {
-                updateProgress: true,
-                onFinish: waveDone,
-                deferDomFinish: true,
-              });
-            };
-            onGlowEnd = (evt) => {
-              if (evt.animationName && evt.animationName !== "smNodeEdgeGlowTo") return;
-              startUnlock();
-            };
-            targetEl.addEventListener("animationend", onGlowEnd);
-            glowFallbackTimer = window.setTimeout(startUnlock, 200);
-          };
-
-          if (overlayEl) {
-            overlayEl.addEventListener(
-              "animationend",
-              (evt) => {
-                if (evt.animationName && evt.animationName !== "smEdgeOverlayFade") return;
-                finishLineAndUnlock();
-              },
-              { once: true }
-            );
-          }
-          window.setTimeout(() => finishLineAndUnlock(), edgeRevealMs + 160);
-        }, lineStartAfterGlowMs);
-      }, i * neighborStaggerMs);
-    });
+    window.setTimeout(() => {
+      beginLineDraw();
+      window.setTimeout(onLineComplete, EDGE_OVERLAY_MS);
+    }, LINE_DELAY_MS);
   };
 
   const syncPanel = () => {
@@ -2469,15 +2420,6 @@ function initCustomStorymapCanvas() {
     }
     if (vl && viewerVisited.has(node.id) && unlocked) div.classList.add("smNode--visited");
 
-    if (postUnlockBloomIds.has(node.id)) {
-      div.classList.add("smNode--postUnlock");
-      window.setTimeout(() => {
-        postUnlockBloomIds.delete(node.id);
-        const bloomEl = nodeElById(node.id);
-        if (bloomEl) bloomEl.classList.remove("smNode--postUnlock");
-      }, 1000);
-    }
-
     if (node.type === "image") {
       const img = document.createElement("img");
       img.src = getNodeImageSrc(node) || storymapPlaceholderSvg();
@@ -2538,10 +2480,9 @@ function initCustomStorymapCanvas() {
       renderCanvas();
       syncPanel();
       requestAnimationFrame(() => {
-        pulseNodeById(node.id);
         window.setTimeout(
           () => queueNeighborUnlockAnimations(node.id),
-          prefersReducedMotion() ? 0 : 550
+          prefersReducedMotion() ? 0 : 220
         );
       });
       return;

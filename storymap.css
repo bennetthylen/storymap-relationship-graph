@@ -134,15 +134,11 @@ body.layout--storymapPreview .storymapAdminPanel {
     animation: none;
     opacity: 0;
   }
-  .smNode--pulse {
-    animation: none;
-  }
-  .smNode--postUnlock {
-    animation: none !important;
-  }
   .smNode--edgeGlowSource,
   .smNode--edgeGlowTarget {
-    animation: none;
+    transition: none;
+    box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
+    filter: none;
   }
 }
 
@@ -164,49 +160,27 @@ body.layout--storymapPreview .storymapAdminPanel {
   user-select: none;
 }
 
-/* Choreographed edge travel: glow on source node (box 1) */
+/* Edge sequence (JS-driven): steady glow while class is present — no keyframe flicker */
 .smNode--edgeGlowSource {
   z-index: 10;
-  animation: smNodeEdgeGlowFrom 0.125s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+  transition:
+    box-shadow 0.12s cubic-bezier(0.45, 0, 0.55, 1),
+    filter 0.12s cubic-bezier(0.45, 0, 0.55, 1);
+  box-shadow:
+    0 0 0 3px rgba(143, 114, 255, 0.48),
+    0 14px 36px rgba(143, 114, 255, 0.24);
+  filter: drop-shadow(0 6px 22px rgba(143, 114, 255, 0.4));
 }
 
-@keyframes smNodeEdgeGlowFrom {
-  0% {
-    box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
-    filter: none;
-  }
-  100% {
-    box-shadow:
-      0 0 0 3px rgba(143, 114, 255, 0.52),
-      0 14px 36px rgba(143, 114, 255, 0.26);
-    filter: drop-shadow(0 6px 22px rgba(143, 114, 255, 0.42));
-  }
-}
-
-/* Glow on target (box 2) when the connection line completes */
 .smNode--edgeGlowTarget {
   z-index: 10;
-  animation: smNodeEdgeGlowTo 0.16s cubic-bezier(0.45, 0, 0.55, 1) forwards;
-}
-
-@keyframes smNodeEdgeGlowTo {
-  0% {
-    box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
-    filter: none;
-    transform: translateY(0) scale(1);
-  }
-  55% {
-    box-shadow:
-      0 0 0 4px rgba(143, 114, 255, 0.55),
-      0 16px 40px rgba(143, 114, 255, 0.28);
-    filter: drop-shadow(0 8px 26px rgba(143, 114, 255, 0.48));
-    transform: translateY(-2px) scale(1.035);
-  }
-  100% {
-    box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
-    filter: none;
-    transform: translateY(0) scale(1);
-  }
+  transition:
+    box-shadow 0.12s cubic-bezier(0.45, 0, 0.55, 1),
+    filter 0.12s cubic-bezier(0.45, 0, 0.55, 1);
+  box-shadow:
+    0 0 0 4px rgba(143, 114, 255, 0.5),
+    0 16px 40px rgba(143, 114, 255, 0.26);
+  filter: drop-shadow(0 8px 26px rgba(143, 114, 255, 0.44));
 }
 
 /* In-place unlock: inline styles drive a single ~300ms tween; keep class timing aligned */
@@ -222,14 +196,14 @@ body.layout--storymapPreview .storymapAdminPanel {
     box-shadow 0.32s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
-.smNode:hover:not(.smNode--locked):not(.smNode--unlocking):not(.smNode--postUnlock) {
+.smNode:hover:not(.smNode--locked):not(.smNode--unlocking) {
   transform: translateY(-3px) scale(1.04);
   box-shadow:
     0 14px 34px rgba(15, 20, 25, 0.14),
     0 0 0 1px rgba(143, 114, 255, 0.18);
 }
 
-.smNode:hover:not(.smNode--locked):not(.smNode--unlocking):not(.smNode--postUnlock).smNode--image {
+.smNode:hover:not(.smNode--locked):not(.smNode--unlocking).smNode--image {
   box-shadow:
     0 14px 34px rgba(15, 20, 25, 0.14),
     0 0 0 1px rgba(143, 114, 255, 0.2);
@@ -248,45 +222,6 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smNode--visited:not(.smNode--locked) {
   box-shadow: 0 0 0 2px rgba(143, 114, 255, 0.45), 0 10px 28px rgba(143, 114, 255, 0.18);
-}
-
-/* Brief bloom after unlock completes — hierarchy / reward */
-.smNode--postUnlock {
-  animation: smNodeUnlockSettle 1.15s cubic-bezier(0.45, 0, 0.55, 1) forwards;
-  z-index: 7;
-}
-
-@keyframes smNodeUnlockSettle {
-  0% {
-    box-shadow: 0 8px 22px rgba(15, 20, 25, 0.12);
-    transform: translateY(0) scale(1);
-    filter: none;
-  }
-  42% {
-    box-shadow:
-      0 0 0 4px rgba(143, 114, 255, 0.28),
-      0 16px 40px rgba(143, 114, 255, 0.22);
-    transform: translateY(-5px) scale(1.045);
-    filter: drop-shadow(0 6px 20px rgba(143, 114, 255, 0.35));
-  }
-  100% {
-    box-shadow: 0 10px 26px rgba(15, 20, 25, 0.13);
-    transform: translateY(0) scale(1);
-    filter: none;
-  }
-}
-
-.smNode--pulse {
-  animation: smNodePulseRing 0.88s cubic-bezier(0.45, 0, 0.55, 1);
-}
-
-@keyframes smNodePulseRing {
-  0% {
-    box-shadow: 0 0 0 0 rgba(143, 114, 255, 0.55);
-  }
-  100% {
-    box-shadow: 0 0 0 26px rgba(143, 114, 255, 0);
-  }
 }
 
 .smNode--text {
