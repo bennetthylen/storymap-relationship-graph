@@ -206,17 +206,17 @@ body.layout--storymapPreview .storymapAdminPanel {
   }
 }
 
-/* Unlock flight: compositor-friendly motion; soft outer glow suggests energy from parent */
+/* In-place unlock: inline styles drive a single ~300ms tween; keep class timing aligned */
 .smNode--unlocking {
   will-change: transform, opacity, filter;
   z-index: 8;
   pointer-events: none;
   filter: drop-shadow(0 4px 18px rgba(143, 114, 255, 0.32)) drop-shadow(0 2px 6px rgba(15, 20, 25, 0.12));
   transition:
-    transform 680ms cubic-bezier(0.45, 0, 0.55, 1),
-    opacity 680ms cubic-bezier(0.45, 0, 0.55, 1),
-    filter 800ms cubic-bezier(0.45, 0, 0.55, 1),
-    box-shadow 0.4s cubic-bezier(0.45, 0, 0.55, 1);
+    transform 300ms cubic-bezier(0.45, 0, 0.55, 1),
+    opacity 300ms cubic-bezier(0.45, 0, 0.55, 1),
+    filter 300ms cubic-bezier(0.45, 0, 0.55, 1),
+    box-shadow 0.32s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
 .smNode:hover:not(.smNode--locked):not(.smNode--unlocking):not(.smNode--postUnlock) {
@@ -306,12 +306,13 @@ body.layout--storymapPreview .storymapAdminPanel {
   display: block;
   padding: 0.85rem 1.25rem;
   border-radius: 0.75rem;
-  line-height: 1.42;
+  line-height: 1.45;
   letter-spacing: -0.01em;
   overflow-wrap: anywhere;
   word-break: normal;
   hyphens: auto;
   text-wrap: pretty;
+  white-space: normal;
   max-height: 10.5rem;
   overflow-y: auto;
   overflow-x: hidden;
@@ -483,8 +484,12 @@ body.layout--storymapPreview .storymapAdminPanel {
   font-size: 1.06rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.28;
+  line-height: 1.35;
   color: #111827;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  text-wrap: balance;
 }
 
 .smInfoBody {
@@ -498,7 +503,7 @@ body.layout--storymapPreview .storymapAdminPanel {
   word-break: normal;
   hyphens: auto;
   text-wrap: pretty;
-  white-space: pre-wrap;
+  white-space: pre-line;
 }
 
 .smInfoImage {

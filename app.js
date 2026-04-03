@@ -1174,6 +1174,67 @@ function canonicalStorymapId(id) {
   return String(id ?? "").trim();
 }
 
+const STORYMAP_ZW_RE = /[\u200b-\u200d\ufeff\u2060]/g;
+const STORYMAP_NBSP_RE = /\u00a0/g;
+
+/** Strip pasted HTML / rich text to plain text (no tags, no inherited styles). */
+function stripHtmlToPlainText(html) {
+  if (html == null) return "";
+  const s = String(html);
+  if (!s.includes("<")) return s;
+  try {
+    const doc = new DOMParser().parseFromString(s, "text/html");
+    return doc.body.textContent || "";
+  } catch {
+    return s.replace(/<[^>]+>/g, " ");
+  }
+}
+
+/** Single-line title/label: no awkward mid-sentence hard breaks, consistent spacing. */
+function normalizeStorymapTitleText(raw) {
+  let t = stripHtmlToPlainText(raw);
+  t = t.replace(STORYMAP_NBSP_RE, " ").replace(STORYMAP_ZW_RE, "");
+  t = t.replace(/\s+/g, " ").trim();
+  return t;
+}
+
+/**
+ * Within one pasted block: join accidental line wraps; keep list lines on their own rows.
+ */
+function joinSoftWrappedLinesInBlock(block) {
+  const lines = block
+    .split("\n")
+    .map((line) => line.replace(/[ \t]+/g, " ").trim())
+    .filter(Boolean);
+  if (lines.length <= 1) return lines[0] || "";
+  const merged = [];
+  let acc = lines[0];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    const listLine = /^\s*(\d+[\.\)]\s|[-*•]\s)/.test(line);
+    if (listLine && acc.trim()) {
+      merged.push(acc);
+      acc = line;
+    } else {
+      acc = `${acc.trimEnd()} ${line.trim()}`;
+    }
+  }
+  merged.push(acc);
+  return merged.join("\n");
+}
+
+/**
+ * Body/description: join soft line breaks from paste, keep real paragraph breaks.
+ * Removes hidden chars; uses \\n\\n between paragraphs; single \\n preserved for list items (pre-line CSS).
+ */
+function normalizeStorymapBodyText(raw) {
+  let t = stripHtmlToPlainText(raw);
+  t = t.replace(STORYMAP_NBSP_RE, " ").replace(STORYMAP_ZW_RE, "");
+  t = t.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const parts = t.split(/\n\s*\n+/);
+  return parts.map((block) => joinSoftWrappedLinesInBlock(block)).filter(Boolean).join("\n\n");
+}
+
 function normalizeStorymapCanvasNode(node, index) {
   const fallbackId = `n_${index + 1}`;
   const typeRaw = String(node?.type || "text").toLowerCase();
@@ -1183,8 +1244,9 @@ function normalizeStorymapCanvasNode(node, index) {
   const looksLikeInlineImage = contentRaw.startsWith("data:image/");
   const hasImagePayload = Boolean(imageSrc) || looksLikeInlineImage;
   const type = typeRaw === "tag" ? "tag" : typeRaw === "image" || hasImagePayload ? "image" : "text";
-  const label = String(node?.label || node?.title || node?.name || (type === "image" ? "" : contentRaw) || "").trim();
-  const text = String(node?.text || node?.notes || node?.description || "").trim();
+  const labelRaw = String(node?.label || node?.title || node?.name || (type === "image" ? "" : contentRaw) || "").trim();
+  const label = normalizeStorymapTitleText(labelRaw);
+  const text = normalizeStorymapBodyText(String(node?.text || node?.notes || node?.description || ""));
   const content = type === "image" ? contentRaw || imageSrc : label;
   const color = String(node?.color || "green").trim() || "green";
   return {
@@ -1226,7 +1288,7 @@ function normalizeStorymapCanvasState(payload, fallbackState) {
   const mappedEdges = edgesInput.map((edge) => ({
     source: remapStorymapEdgeEndpoint(edge?.source, nodeIds, idByLowercase),
     target: remapStorymapEdgeEndpoint(edge?.target, nodeIds, idByLowercase),
-    label: String(edge?.label || edge?.role || "").trim(),
+    label: normalizeStorymapTitleText(String(edge?.label || edge?.role || "")),
   }));
   const edges = dedupeStorymapEdges(
     mappedEdges.filter(
@@ -1285,7 +1347,7 @@ function dedupeStorymapEdges(edges) {
     out.push({
       source,
       target,
-      label: String(edge?.label || edge?.role || "").trim(),
+      label: normalizeStorymapTitleText(String(edge?.label || edge?.role || "")),
     });
   });
   return out;
@@ -1815,11 +1877,11 @@ function initCustomStorymapCanvas() {
   const infoCloseBtn = document.getElementById("smInfoClose");
   const getNodeLabel = (node) => {
     const explicit = String(node?.label || "").trim();
-    if (explicit) return explicit;
+    if (explicit) return normalizeStorymapTitleText(explicit);
     if (node?.type === "image") return "";
-    return String(node?.content || "").trim();
+    return normalizeStorymapTitleText(String(node?.content || "").trim());
   };
-  const getNodeText = (node) => String(node?.text || "").trim();
+  const getNodeText = (node) => normalizeStorymapBodyText(String(node?.text || ""));
   const getNodeImageSrc = (node) => String(node?.imageSrc || node?.content || "").trim();
 
   const updateWorldTransform = () => {
@@ -1955,42 +2017,41 @@ function initCustomStorymapCanvas() {
     }
 
     const runSteps = () => {
+      const cs = getComputedStyle(el);
+      const opParsed = parseFloat(cs.opacity);
+      const opStr = String(Number.isFinite(opParsed) ? opParsed : 0.52);
       el.classList.add("smNode--unlocking");
-      el.classList.remove("smNode--locked");
-      const w = el.offsetWidth || 48;
-      const h = el.offsetHeight || 48;
-      const imgEl = el.querySelector("img");
-      // Final slot: transform-only (GPU). Ease-out + slight overshoot on scale feels intentional.
-      const dx = parent.x - node.x - w / 2;
-      const dy = parent.y - node.y - h / 2;
-      const easePop = "cubic-bezier(0.45, 0, 0.55, 1)";
-      const easeOpacity = "cubic-bezier(0.45, 0, 0.55, 1)";
-      const easeColor = "cubic-bezier(0.45, 0, 0.55, 1)";
       el.style.transition = "none";
       el.style.left = `${node.x}px`;
       el.style.top = `${node.y}px`;
-      el.style.transform = `translate(${dx}px, ${dy}px) scale(0.12)`;
-      el.style.opacity = "0.2";
+      el.style.transform = "scale(0.94)";
+      el.style.opacity = opStr;
+      const imgEl = el.querySelector("img");
       if (imgEl) {
         imgEl.style.transition = "none";
         imgEl.style.filter = "grayscale(1) saturate(0.65)";
+        el.style.filter = "none";
       } else {
-        el.style.filter = "grayscale(1) saturate(0.7)";
+        el.style.filter = "grayscale(1) saturate(0.55)";
       }
+      el.classList.remove("smNode--locked");
       void el.offsetWidth;
-      const dur = prefersReducedMotion() ? "0.01ms" : "680ms";
-      const colorDur = prefersReducedMotion() ? "0.01ms" : "800ms";
+
+      const ease = "cubic-bezier(0.45, 0, 0.55, 1)";
+      const durMs = 300;
+      const dur = prefersReducedMotion() ? "0.01ms" : `${durMs}ms`;
+
       el.style.transition = [
-        `transform ${dur} ${easePop}`,
-        `opacity ${dur} ${easeOpacity}`,
-        imgEl ? "" : `filter ${colorDur} ${easeColor}`,
+        `transform ${dur} ${ease}`,
+        `opacity ${dur} ${ease}`,
+        imgEl ? "" : `filter ${dur} ${ease}`,
       ]
         .filter(Boolean)
         .join(", ");
       if (imgEl) {
-        imgEl.style.transition = `filter ${colorDur} ${easeColor}`;
+        imgEl.style.transition = `filter ${dur} ${ease}`;
       }
-      el.style.transform = `translate(0px, 0px) scale(1)`;
+      el.style.transform = "scale(1)";
       el.style.opacity = "1";
       if (imgEl) {
         imgEl.style.filter = "grayscale(0) saturate(1)";
@@ -2025,38 +2086,46 @@ function initCustomStorymapCanvas() {
         return;
       }
 
-      // Position finishes in ~450ms; color uses `colorDur` (~600ms). Finish when the
-      // filter transition ends so grayscale → color is not cut off by clearing inline styles.
       let done = false;
       let fallbackTimer = null;
-      const colorTarget = imgEl || el;
       const cleanup = () => {
         if (fallbackTimer) window.clearTimeout(fallbackTimer);
-        colorTarget.removeEventListener("transitionend", onColorEnd);
+        el.removeEventListener("transitionend", onElTrans);
+        if (imgEl) imgEl.removeEventListener("transitionend", onImgTrans);
       };
-      const onColorEnd = (evt) => {
+      const safeFinish = () => {
+        if (done) return;
+        done = true;
+        cleanup();
+        finish();
+      };
+
+      let remaining = imgEl ? 2 : 1;
+      const bump = () => {
+        remaining -= 1;
+        if (remaining <= 0) safeFinish();
+      };
+      const onElTrans = (evt) => {
+        if (evt.target !== el) return;
+        if (evt.propertyName !== "transform") return;
+        bump();
+      };
+      const onImgTrans = (evt) => {
+        if (!imgEl || evt.target !== imgEl) return;
         if (evt.propertyName !== "filter" && evt.propertyName !== "-webkit-filter") return;
-        if (done) return;
-        done = true;
-        cleanup();
-        finish();
+        bump();
       };
-      colorTarget.addEventListener("transitionend", onColorEnd);
-      fallbackTimer = window.setTimeout(() => {
-        if (done) return;
-        done = true;
-        cleanup();
-        finish();
-      }, 1750);
+      el.addEventListener("transitionend", onElTrans);
+      if (imgEl) imgEl.addEventListener("transitionend", onImgTrans);
+
+      fallbackTimer = window.setTimeout(safeFinish, durMs + 80);
     };
 
     if (prefersReducedMotion()) {
       runSteps();
       return;
     }
-    requestAnimationFrame(() => {
-      requestAnimationFrame(runSteps);
-    });
+    requestAnimationFrame(runSteps);
   };
 
   const queueNeighborUnlockAnimations = (clickedId) => {
@@ -2088,7 +2157,9 @@ function initCustomStorymapCanvas() {
     let waveActive = 0;
     const waveDone = () => {
       waveActive -= 1;
-      if (waveActive <= 0) renderCanvas();
+      if (waveActive <= 0) {
+        renderCanvas();
+      }
     };
 
     neighbors.forEach((nid, i) => {
@@ -2571,8 +2642,8 @@ function initCustomStorymapCanvas() {
     if (!isAdmin || !selectedId) return;
     const node = getNodeByIdLocal(selectedId);
     if (!node) return;
-    const nextLabel = labelInput ? labelInput.value.trim() : getNodeLabel(node);
-    const nextText = textInput ? textInput.value.trim() : getNodeText(node);
+    const nextLabel = normalizeStorymapTitleText(labelInput ? labelInput.value : getNodeLabel(node));
+    const nextText = normalizeStorymapBodyText(textInput ? textInput.value : getNodeText(node));
     node.label = nextLabel;
     node.text = nextText;
     if (node.type !== "image") node.content = nextLabel;
@@ -2584,12 +2655,12 @@ function initCustomStorymapCanvas() {
   on(createNodeBtn, "click", () => {
     if (!isAdmin) return;
     const type = String(createTypeInput?.value || "text");
-    const label = String(createLabelInput?.value || "").trim();
+    const label = normalizeStorymapTitleText(String(createLabelInput?.value || ""));
     if (!label) {
       alert("Node label is required.");
       return;
     }
-    const text = String(createTextInput?.value || "").trim();
+    const text = normalizeStorymapBodyText(String(createTextInput?.value || ""));
     const color = String(createColorInput?.value || "green");
     const connectTo = String(createConnectSelect?.value || "").trim();
     const id = `n_${uuid().slice(0, 8)}`;
@@ -2652,7 +2723,7 @@ function initCustomStorymapCanvas() {
     if (!parent) return;
     const label = prompt("New node label:");
     if (!label || !label.trim()) return;
-    const cleanLabel = label.trim();
+    const cleanLabel = normalizeStorymapTitleText(label.trim());
     const id = `n_${uuid().slice(0, 8)}`;
     canvas.nodes.push({
       id,
