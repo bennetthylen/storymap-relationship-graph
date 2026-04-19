@@ -2659,7 +2659,6 @@ function initCustomStorymapCanvas() {
 
   let viewerUnlocked = new Set();
   let viewerVisited = new Set();
-  if (isAdmin) mergeViewerProgress();
   const pendingEdgeAnim = new Set();
 
   const prefersReducedMotion = () =>
@@ -3708,21 +3707,55 @@ function initCustomStorymapCanvas() {
     }, 140);
   });
 
-  if (isAdmin) {
+  /**
+   * Public storymap and admin must use the same source of truth: `./published-storymap.json`
+   * on the deployed site. Admin previously preferred localStorage draft only, so the editor
+   * often disagreed with GitHub Pages until Publish was run. We load the published file first
+   * and mirror it into localStorage so edits stay aligned with what visitors see after publish.
+   */
+  const bootstrapAfterPublishedLoad = () => {
+    mergeViewerProgress();
+    selectedId = null;
     bootstrapStorymapUi();
+  };
+
+  if (isAdmin) {
+    setStatus("Loading published storymap…", { isLoading: true });
+    void loadPublishedStorymapFromRepo()
+      .then((remoteCanvas) => {
+        let replacedDraft = false;
+        try {
+          const raw = localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY);
+          if (raw) {
+            const prev = JSON.parse(raw);
+            if (storymapGraphSignature(prev) !== storymapGraphSignature(remoteCanvas)) replacedDraft = true;
+          }
+        } catch {
+          /* ignore */
+        }
+        canvas = remoteCanvas;
+        saveStorymapCanvasState(canvas);
+        setStatus(
+          replacedDraft
+            ? "Loaded published-storymap.json from this site (it replaced a different local draft). Publish to update GitHub."
+            : ""
+        );
+        bootstrapAfterPublishedLoad();
+      })
+      .catch((err) => {
+        console.warn("Admin: published storymap fetch failed; using embedded/saved draft.", err);
+        setStatus("");
+        bootstrapAfterPublishedLoad();
+      });
   } else {
     void loadPublishedStorymapFromRepo()
       .then((remoteCanvas) => {
         canvas = remoteCanvas;
-        mergeViewerProgress();
-        selectedId = null;
-        bootstrapStorymapUi();
+        bootstrapAfterPublishedLoad();
       })
       .catch((err) => {
         console.warn("Published storymap fetch fallback:", err);
-        mergeViewerProgress();
-        selectedId = null;
-        bootstrapStorymapUi();
+        bootstrapAfterPublishedLoad();
       });
   }
   window.storymapRefreshCanvasI18n = () => {
