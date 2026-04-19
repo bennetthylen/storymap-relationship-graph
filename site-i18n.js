@@ -139,7 +139,7 @@ var STORYMAP_EXTRA_I18N = {
     colorOrange: "Orange",
     heroTitle: "Doing Well, Don't Worry",
     heroSubtitle:
-      "A digital collaboration between students at Georgetown University's School of Foreign Service and The Women and Memory Forum.",
+      "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4788: Heritage and Development in the Arab World.",
     heroCta: "Experience \"Doing Well, Don't Worry\"",
     section1: "Women are always on the move.",
     section2:
