@@ -1187,780 +1187,160 @@ function storymapPlaceholderSvg() {
 }
 
 const PUBLISHED_STORYMAP_CANVAS = {
-  "entryNodeIds": [
-    "exh_root"
-  ],
   "nodes": [
     {
-      "id": "exh_root",
-      "type": "text",
-      "label": "Women are always on the move",
-      "text": "Exhibition storymap scaffold. Edit labels and descriptions in admin. Photos are not pulled from Google Drive automatically; add an image or URL per node in admin if you want pictures. Drive folders: Mobility wall, Relation Room, Work \u2014 plus overview PDFs.",
+      "id": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
+      "type": "image",
+      "label": "Women are Always on the Move",
+      "text": "WOMEN ENGAGE IN DIFFERENT TYPES of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people\u2019s lives. This exhibition introduces glimpses into the lives of 21 women \u2013 women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.\n\nThis exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
+      "imageSrc": "",
+      "content": "",
       "color": "white",
-      "x": 580,
-      "y": 460
+      "x": 58.576313316320764,
+      "y": 30.077950572841104,
+      "legacyType": "person"
     },
     {
-      "id": "exh_theme_movement",
+      "id": "n_3c68e6e6",
       "type": "text",
-      "label": "1. On movement",
-      "text": "",
-      "color": "teal",
-      "x": 457,
-      "y": 374
-    },
-    {
-      "id": "exh_theme_relation",
-      "type": "text",
-      "label": "2. On reassembling relations",
-      "text": "",
-      "color": "blue",
-      "x": 716,
-      "y": 523
-    },
-    {
-      "id": "exh_theme_work",
-      "type": "text",
-      "label": "3. On work",
-      "text": "",
-      "color": "orange",
-      "x": 517,
-      "y": 596
-    },
-    {
-      "id": "exh_leaf_01",
-      "type": "text",
-      "label": "1",
-      "text": "",
+      "label": "On Work",
+      "text": "WORK IS A COMPLEX EXPERIENCE that marks women\u2019s worlds. But what is work and how does it become a central part of a life project? What is recognized as work, what has to be rendered invisible to be able to fend for one\u2019s life, and how are our bodies and affects moulded with work rhythms, routines, tools and corporeal traces? The stories of the women presented here urge us to rethink the meanings, worlds and effects of work. Work traverses women\u2019s lives from early years to late moments of being; work experiences inhabit our worlds at home, in the fields, factories, banks, schools, workshops, gas stations, galleries, and movie screens. The women you are about to meet have worked hard all their lives in many different spaces and times. Their experiences encourage us to reflect on what lies in and outside of work, how work spills over other domains of being, and how work has exuded pride and shame, happiness and sadness, leaving unmistakable marks on our bodies and the worlds we inhabit.\n\nInstead of learning how to read and write, Rawya Mohammed (b. 1978) learned the craft of pottery already at age 12. Since then, her work has inspired many other women to take up pottery and her patterns have forever changed the face of pottery in Fayoum in Egypt. Kawkab Hifni Nassef (1905 - 1999) was the first woman to ever run a hospital in Egypt. Balsam Abou Zour\u2019s (b. 1982) village did not approve of her work as a painter, but after a visit from her teachers, her fate changed. When she opened her first art exhibition, her entire village attended in celebration.",
+      "imageSrc": "",
+      "content": "On Work",
       "color": "green",
-      "x": 281,
-      "y": 146
+      "x": -39.68462401795731,
+      "y": 368.76543209876536,
+      "legacyType": "text"
     },
     {
-      "id": "exh_leaf_02",
+      "id": "n_011e6d0c",
       "type": "text",
-      "label": "2",
-      "text": "",
+      "label": "On Mobility",
+      "text": "SOMETIMES WOMEN MOVE BY ACCIDENT, sometimes by choice, and sometimes by force. Many never stop moving despite the obstacles on the road, with possibilities and challenges always as a potential along the way. Their movements have shaped their lives and those of others, leaving traces on who and how they are.\n\nNadia Safwat (b. 1986) travelled with her family who settled in Denmark to work, ambivalently shrouding her relations to her family in Cairo. The Nakba forced Im Ibrahim (b.1927) to flee her hometown Jaffa when it was invaded by Israeli soldiers in 1948. While fleeing on foot, she carried her embroidered costumes as inseparable parts of her being that cannot be left behind. Hind Rostum(1931 -2011) became an actress at the age of 15. As a child, she travelled together with her father whose changing professions took them all over Egypt. Her work later would take her through many more places and relationships. Safeya Gamal (b.\n1934) was one of the Nubians who were forced to move when the Aswan High Dam was built. She felt as if this was their judgement day. Wedad Mitri (1927 - 2007) came into teaching by chance. Since beginning her career she has moved to many places, and inspired many of her students. Widad Al Orfali (b. 1929) opened the first private gallery in Iraq in the 1980s. When the war began in 2003, she was forced to leave her gallery and her paintings behind.",
+      "imageSrc": "",
+      "content": "On Mobility",
       "color": "green",
-      "x": 290,
-      "y": 198
+      "x": 256.46932376816835,
+      "y": -83.75197160228578,
+      "legacyType": "text"
     },
     {
-      "id": "exh_leaf_03",
-      "type": "text",
-      "label": "3",
-      "text": "",
+      "id": "n_4412adea",
+      "type": "image",
+      "label": "Wedad Mitri and Sedad Louka's Wedding Photo",
+      "text": "Cairo, Egypt. 1961.",
+      "imageSrc": "",
+      "content": "Wedad Mitri and Sedad Louka's Wedding Photo",
       "color": "green",
-      "x": 308,
-      "y": 247
+      "x": 418.65859620208744,
+      "y": -355.65481287254505,
+      "legacyType": "text"
     },
     {
-      "id": "exh_leaf_04",
+      "id": "n_5cd72ca5",
       "type": "text",
-      "label": "4",
-      "text": "",
+      "label": "On Re-Assembling Relations",
+      "text": "RELATIONSHIPS ARE REASSEMBLED along the roads of women\u2019s lives, connecting and disconnecting them with people and spaces in constantly evolving life projects. From friends, neighbours, mentors, to colleagues, wives, daughters, and role models, women reconstitute their worlds for better and for worse. But the most valuable relationships can come from somewhere completely unexpected \u2013 be it from your students, neighbours, friends or from other women you live with. The photographs and other memorable traces of relationships that we present here, reveal how people and objects along life journeys make who and how we are constantly in a process of becoming.\n\nThroughout her life and career as a teacher, Wedad Mitri (1927 -2007) became a mentor to different students, who expressed their love and appreciation through postcards that filled Wedad\u2019s suitcases on her travels.\n\nThe primacy of family, particularly her daughter, transformed Hind Rustom\u2019s (1931 -2011) world. She shielded her personal life from the public gaze, ultimately giving up her career as a celebrity actress to become the mother she dreamed of being.\n\nBy observing women at the mosque in Jerusalem, Im Ibrahim (b.1927) added new embroidery patterns to her repertoire that she developed in Jaffa prior to the Nakba. Her daughters-in-law became her trainees in whom she entrusted her cherished embroidery patterns.\n\nDuring many strenuous moments in her life, Aliaa Khairy (b. 1952) learned from her mother the centrality of being part of women\u2019s world of rotating credit associations or gam\u2019iyya. Her turn to cash the money always came at the start of the school year to meet the demands of her children\u2019s education.",
+      "imageSrc": "",
+      "content": "On Re-Assembling Relations",
       "color": "green",
-      "x": 334,
-      "y": 292
+      "x": -58.32005237560773,
+      "y": -107.4222889815571,
+      "legacyType": "text"
     },
     {
-      "id": "exh_leaf_05",
-      "type": "text",
-      "label": "5",
+      "id": "n_65932f6a",
+      "type": "image",
+      "label": "Kawkab's Certificate",
       "text": "",
+      "imageSrc": "",
+      "content": "Kawkab's Certificate",
       "color": "green",
-      "x": 368,
-      "y": 332
+      "x": 159.64832300488052,
+      "y": -84.24464450048788,
+      "legacyType": "image"
     },
     {
-      "id": "exh_leaf_06",
-      "type": "text",
-      "label": "6",
+      "id": "n_3101be93",
+      "type": "image",
+      "label": "Hind Rustum Advertisement",
       "text": "",
+      "imageSrc": "",
+      "content": "Hind Rustum Advertisement",
       "color": "green",
-      "x": 408,
-      "y": 366
+      "x": 471.46932376816846,
+      "y": -557.085304935619,
+      "legacyType": "image"
     },
     {
-      "id": "exh_leaf_07",
-      "type": "text",
-      "label": "7",
+      "id": "n_a9b1c62f",
+      "type": "image",
+      "label": "Wedad Mitri and her Students",
       "text": "",
+      "imageSrc": "",
+      "content": "Wedad Mitri and her Students",
       "color": "green",
-      "x": 453,
-      "y": 392
+      "x": 453.13599043483504,
+      "y": -507.0853049356192,
+      "legacyType": "image"
     },
     {
-      "id": "exh_leaf_08",
-      "type": "text",
-      "label": "8",
+      "id": "n_62058234",
+      "type": "image",
+      "label": "Passports",
       "text": "",
+      "imageSrc": "",
+      "content": "Passports",
       "color": "green",
-      "x": 502,
-      "y": 410
-    },
-    {
-      "id": "exh_leaf_09",
-      "type": "text",
-      "label": "9",
-      "text": "",
-      "color": "green",
-      "x": 554,
-      "y": 419
-    },
-    {
-      "id": "exh_leaf_10",
-      "type": "text",
-      "label": "10",
-      "text": "",
-      "color": "green",
-      "x": 606,
-      "y": 419
-    },
-    {
-      "id": "exh_leaf_11",
-      "type": "text",
-      "label": "11",
-      "text": "",
-      "color": "green",
-      "x": 658,
-      "y": 410
-    },
-    {
-      "id": "exh_leaf_12",
-      "type": "text",
-      "label": "12",
-      "text": "",
-      "color": "green",
-      "x": 707,
-      "y": 392
-    },
-    {
-      "id": "exh_leaf_13",
-      "type": "text",
-      "label": "13",
-      "text": "",
-      "color": "green",
-      "x": 752,
-      "y": 366
-    },
-    {
-      "id": "exh_leaf_14",
-      "type": "text",
-      "label": "14",
-      "text": "",
-      "color": "green",
-      "x": 792,
-      "y": 332
-    },
-    {
-      "id": "exh_leaf_15",
-      "type": "text",
-      "label": "15",
-      "text": "",
-      "color": "green",
-      "x": 826,
-      "y": 292
-    },
-    {
-      "id": "exh_leaf_16",
-      "type": "text",
-      "label": "16",
-      "text": "",
-      "color": "green",
-      "x": 852,
-      "y": 247
-    },
-    {
-      "id": "exh_leaf_17",
-      "type": "text",
-      "label": "17",
-      "text": "",
-      "color": "green",
-      "x": 870,
-      "y": 198
-    },
-    {
-      "id": "exh_leaf_18",
-      "type": "text",
-      "label": "18",
-      "text": "",
-      "color": "green",
-      "x": 879,
-      "y": 146
-    },
-    {
-      "id": "exh_leaf_19",
-      "type": "text",
-      "label": "19",
-      "text": "",
-      "color": "green",
-      "x": 1029,
-      "y": 307
-    },
-    {
-      "id": "exh_leaf_20",
-      "type": "text",
-      "label": "20",
-      "text": "",
-      "color": "green",
-      "x": 1047,
-      "y": 324
-    },
-    {
-      "id": "exh_leaf_21",
-      "type": "text",
-      "label": "21",
-      "text": "",
-      "color": "green",
-      "x": 1062,
-      "y": 343
-    },
-    {
-      "id": "exh_leaf_22",
-      "type": "text",
-      "label": "22",
-      "text": "",
-      "color": "green",
-      "x": 1076,
-      "y": 364
-    },
-    {
-      "id": "exh_leaf_23",
-      "type": "text",
-      "label": "23",
-      "text": "",
-      "color": "green",
-      "x": 1086,
-      "y": 387
-    },
-    {
-      "id": "exh_leaf_24",
-      "type": "text",
-      "label": "24",
-      "text": "",
-      "color": "green",
-      "x": 1094,
-      "y": 411
-    },
-    {
-      "id": "exh_leaf_25",
-      "type": "text",
-      "label": "25",
-      "text": "",
-      "color": "green",
-      "x": 1098,
-      "y": 435
-    },
-    {
-      "id": "exh_leaf_26",
-      "type": "text",
-      "label": "26",
-      "text": "",
-      "color": "green",
-      "x": 1100,
-      "y": 460
-    },
-    {
-      "id": "exh_leaf_27",
-      "type": "text",
-      "label": "27",
-      "text": "",
-      "color": "green",
-      "x": 1098,
-      "y": 485
-    },
-    {
-      "id": "exh_leaf_28",
-      "type": "text",
-      "label": "28",
-      "text": "",
-      "color": "green",
-      "x": 1094,
-      "y": 509
-    },
-    {
-      "id": "exh_leaf_29",
-      "type": "text",
-      "label": "29",
-      "text": "",
-      "color": "green",
-      "x": 1086,
-      "y": 533
-    },
-    {
-      "id": "exh_leaf_30",
-      "type": "text",
-      "label": "30",
-      "text": "",
-      "color": "green",
-      "x": 1076,
-      "y": 556
-    },
-    {
-      "id": "exh_leaf_31",
-      "type": "text",
-      "label": "31",
-      "text": "",
-      "color": "green",
-      "x": 1062,
-      "y": 577
-    },
-    {
-      "id": "exh_leaf_32",
-      "type": "text",
-      "label": "32",
-      "text": "",
-      "color": "green",
-      "x": 1047,
-      "y": 596
-    },
-    {
-      "id": "exh_leaf_33",
-      "type": "text",
-      "label": "33",
-      "text": "",
-      "color": "green",
-      "x": 1029,
-      "y": 613
-    },
-    {
-      "id": "exh_leaf_34",
-      "type": "text",
-      "label": "34",
-      "text": "",
-      "color": "green",
-      "x": 381,
-      "y": 667
-    },
-    {
-      "id": "exh_leaf_35",
-      "type": "text",
-      "label": "35",
-      "text": "",
-      "color": "green",
-      "x": 395,
-      "y": 641
-    },
-    {
-      "id": "exh_leaf_36",
-      "type": "text",
-      "label": "36",
-      "text": "",
-      "color": "green",
-      "x": 412,
-      "y": 618
-    },
-    {
-      "id": "exh_leaf_37",
-      "type": "text",
-      "label": "37",
-      "text": "",
-      "color": "green",
-      "x": 433,
-      "y": 597
-    },
-    {
-      "id": "exh_leaf_38",
-      "type": "text",
-      "label": "38",
-      "text": "",
-      "color": "green",
-      "x": 456,
-      "y": 579
-    },
-    {
-      "id": "exh_leaf_39",
-      "type": "text",
-      "label": "39",
-      "text": "",
-      "color": "green",
-      "x": 481,
-      "y": 564
-    },
-    {
-      "id": "exh_leaf_40",
-      "type": "text",
-      "label": "40",
-      "text": "",
-      "color": "green",
-      "x": 508,
-      "y": 552
-    },
-    {
-      "id": "exh_leaf_41",
-      "type": "text",
-      "label": "41",
-      "text": "",
-      "color": "green",
-      "x": 536,
-      "y": 544
-    },
-    {
-      "id": "exh_leaf_42",
-      "type": "text",
-      "label": "42",
-      "text": "",
-      "color": "green",
-      "x": 565,
-      "y": 540
-    },
-    {
-      "id": "exh_leaf_43",
-      "type": "text",
-      "label": "43",
-      "text": "",
-      "color": "green",
-      "x": 595,
-      "y": 540
-    },
-    {
-      "id": "exh_leaf_44",
-      "type": "text",
-      "label": "44",
-      "text": "",
-      "color": "green",
-      "x": 624,
-      "y": 544
-    },
-    {
-      "id": "exh_leaf_45",
-      "type": "text",
-      "label": "45",
-      "text": "",
-      "color": "green",
-      "x": 652,
-      "y": 552
-    },
-    {
-      "id": "exh_leaf_46",
-      "type": "text",
-      "label": "46",
-      "text": "",
-      "color": "green",
-      "x": 679,
-      "y": 564
-    },
-    {
-      "id": "exh_leaf_47",
-      "type": "text",
-      "label": "47",
-      "text": "",
-      "color": "green",
-      "x": 704,
-      "y": 579
-    },
-    {
-      "id": "exh_leaf_48",
-      "type": "text",
-      "label": "48",
-      "text": "",
-      "color": "green",
-      "x": 727,
-      "y": 597
-    },
-    {
-      "id": "exh_leaf_49",
-      "type": "text",
-      "label": "49",
-      "text": "",
-      "color": "green",
-      "x": 748,
-      "y": 618
-    },
-    {
-      "id": "exh_leaf_50",
-      "type": "text",
-      "label": "50",
-      "text": "",
-      "color": "green",
-      "x": 765,
-      "y": 641
-    },
-    {
-      "id": "exh_leaf_51",
-      "type": "text",
-      "label": "51",
-      "text": "",
-      "color": "green",
-      "x": 779,
-      "y": 667
+      "x": 326.4693237681683,
+      "y": -527.0853049356192,
+      "legacyType": "image"
     }
   ],
   "edges": [
     {
-      "source": "exh_root",
-      "target": "exh_theme_movement",
+      "source": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
+      "target": "n_3c68e6e6",
       "label": ""
     },
     {
-      "source": "exh_root",
-      "target": "exh_theme_relation",
+      "source": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
+      "target": "n_011e6d0c",
       "label": ""
     },
     {
-      "source": "exh_root",
-      "target": "exh_theme_work",
+      "source": "n_011e6d0c",
+      "target": "n_4412adea",
       "label": ""
     },
     {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_01",
+      "source": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
+      "target": "n_5cd72ca5",
       "label": ""
     },
     {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_02",
+      "source": "n_011e6d0c",
+      "target": "n_65932f6a",
       "label": ""
     },
     {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_03",
+      "source": "n_011e6d0c",
+      "target": "n_3101be93",
       "label": ""
     },
     {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_04",
+      "source": "n_011e6d0c",
+      "target": "n_a9b1c62f",
       "label": ""
     },
     {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_05",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_06",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_07",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_08",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_09",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_10",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_11",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_12",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_13",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_14",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_15",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_16",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_17",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_movement",
-      "target": "exh_leaf_18",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_19",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_20",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_21",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_22",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_23",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_24",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_25",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_26",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_27",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_28",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_29",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_30",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_31",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_32",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_relation",
-      "target": "exh_leaf_33",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_34",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_35",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_36",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_37",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_38",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_39",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_40",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_41",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_42",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_43",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_44",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_45",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_46",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_47",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_48",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_49",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_50",
-      "label": ""
-    },
-    {
-      "source": "exh_theme_work",
-      "target": "exh_leaf_51",
+      "source": "n_011e6d0c",
+      "target": "n_62058234",
       "label": ""
     }
   ]
 };
-const PUBLISHED_STORYMAP_RELEASE = "2026-04-19-exhibition";
+const PUBLISHED_STORYMAP_RELEASE = "2026-04-20-fallback-sync";
 
 function cloneStorymapCanvasState(state) {
   return JSON.parse(JSON.stringify(state));
