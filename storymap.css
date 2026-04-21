@@ -14,8 +14,8 @@
 }
 
 .storymapCanvasPanel {
-  background: #e8f0fe;
-  padding: 0.75rem;
+  background: linear-gradient(165deg, var(--wmf-pink-light, #f8ddeb) 0%, var(--wmf-cream, #f9f3eb) 45%, #fffefb 100%);
+  padding: 0.85rem;
   border-radius: 0;
   position: relative;
   overflow: hidden;
@@ -71,7 +71,9 @@ body.layout--storymapPreview .storymapAdminPanel {
   height: 100%;
   min-height: min(70vh, 760px);
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 16px;
+  border: 1px solid var(--wmf-sand, #f2e3b7);
+  box-shadow: inset 0 0 0 1px rgba(255, 254, 251, 0.65);
   cursor: grab;
 }
 
@@ -94,7 +96,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 .storymapEdges line {
-  stroke: #8f72ff;
+  stroke: var(--wmf-magenta, #ce2a58);
   stroke-width: 2.25;
   stroke-linecap: butt;
   stroke-linejoin: round;
@@ -109,7 +111,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 /* Solid overlay during unlock; fades away into dashed base line. */
 .storymapEdges line.storymapEdgeOverlay--fade {
   --sm-edge-overlay-dur: 0.98s;
-  stroke: #8f72ff;
+  stroke: var(--wmf-magenta, #ce2a58);
   stroke-width: 3.25;
   stroke-linecap: round;
   stroke-dasharray: none;
@@ -167,9 +169,9 @@ body.layout--storymapPreview .storymapAdminPanel {
     box-shadow 0.12s cubic-bezier(0.45, 0, 0.55, 1),
     filter 0.12s cubic-bezier(0.45, 0, 0.55, 1);
   box-shadow:
-    0 0 0 3px rgba(143, 114, 255, 0.48),
-    0 14px 36px rgba(143, 114, 255, 0.24);
-  filter: drop-shadow(0 6px 22px rgba(143, 114, 255, 0.4));
+    0 0 0 3px rgba(206, 42, 88, 0.42),
+    0 14px 36px rgba(206, 42, 88, 0.2);
+  filter: drop-shadow(0 6px 22px rgba(206, 42, 88, 0.35));
 }
 
 .smNode--edgeGlowTarget {
@@ -178,9 +180,9 @@ body.layout--storymapPreview .storymapAdminPanel {
     box-shadow 0.12s cubic-bezier(0.45, 0, 0.55, 1),
     filter 0.12s cubic-bezier(0.45, 0, 0.55, 1);
   box-shadow:
-    0 0 0 4px rgba(143, 114, 255, 0.5),
-    0 16px 40px rgba(143, 114, 255, 0.26);
-  filter: drop-shadow(0 8px 26px rgba(143, 114, 255, 0.44));
+    0 0 0 4px rgba(206, 42, 88, 0.46),
+    0 16px 40px rgba(206, 42, 88, 0.22);
+  filter: drop-shadow(0 8px 26px rgba(206, 42, 88, 0.38));
 }
 
 /* In-place unlock: inline styles drive a single ~300ms tween; keep class timing aligned */
@@ -188,7 +190,7 @@ body.layout--storymapPreview .storymapAdminPanel {
   will-change: transform, opacity, filter;
   z-index: 8;
   pointer-events: none;
-  filter: drop-shadow(0 4px 18px rgba(143, 114, 255, 0.32)) drop-shadow(0 2px 6px rgba(15, 20, 25, 0.12));
+  filter: drop-shadow(0 4px 18px rgba(206, 42, 88, 0.28)) drop-shadow(0 2px 6px rgba(15, 20, 25, 0.12));
   transition:
     transform 300ms cubic-bezier(0.45, 0, 0.55, 1),
     opacity 300ms cubic-bezier(0.45, 0, 0.55, 1),
@@ -200,13 +202,13 @@ body.layout--storymapPreview .storymapAdminPanel {
   transform: translateY(-3px) scale(1.04);
   box-shadow:
     0 14px 34px rgba(15, 20, 25, 0.14),
-    0 0 0 1px rgba(143, 114, 255, 0.18);
+    0 0 0 1px rgba(206, 42, 88, 0.2);
 }
 
 .smNode:hover:not(.smNode--locked):not(.smNode--unlocking).smNode--image {
   box-shadow:
     0 14px 34px rgba(15, 20, 25, 0.14),
-    0 0 0 1px rgba(143, 114, 255, 0.2);
+    0 0 0 1px rgba(206, 42, 88, 0.22);
 }
 
 .smNode--locked {
@@ -221,17 +223,17 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 .smNode--visited:not(.smNode--locked) {
-  box-shadow: 0 0 0 2px rgba(143, 114, 255, 0.45), 0 10px 28px rgba(143, 114, 255, 0.18);
+  box-shadow: 0 0 0 2px rgba(206, 42, 88, 0.4), 0 10px 28px rgba(206, 42, 88, 0.16);
 }
 
 .smNode--text {
-  background: #a8e6cf;
+  background: linear-gradient(135deg, #fff5f8, var(--wmf-pink-light, #f8ddeb));
   padding: 0;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
+  border-radius: 1rem;
+  box-shadow: 0 10px 26px rgba(42, 42, 44, 0.1);
   font-weight: 700;
   font-size: 1.05rem;
-  color: #111827;
+  color: var(--wmf-magenta, #ce2a58);
   white-space: normal;
   width: max-content;
   max-width: min(18rem, 92vw);
@@ -243,7 +245,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 .smNodeTextInner {
   display: block;
   padding: 0.85rem 1.25rem;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   line-height: 1.45;
   letter-spacing: -0.01em;
   overflow-wrap: anywhere;
@@ -315,7 +317,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 .smNode--tag {
-  background: #a5d8ff;
+  background: linear-gradient(145deg, var(--wmf-gold, #e4a317), #f0c24d);
   width: auto;
   min-width: 3.5rem;
   height: 3.5rem;
@@ -327,28 +329,28 @@ body.layout--storymapPreview .storymapAdminPanel {
   justify-content: center;
   font-weight: 700;
   font-size: 1.125rem;
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
+  color: #fffefb;
+  box-shadow: 0 10px 24px rgba(228, 163, 23, 0.28);
 }
 
 .smNode--selected {
-  box-shadow: 0 0 0 3px rgba(39, 84, 174, 0.3), 0 10px 24px rgba(15, 20, 25, 0.12);
+  box-shadow: 0 0 0 3px rgba(206, 42, 88, 0.35), 0 10px 24px rgba(15, 20, 25, 0.12);
 }
 
 .smColor--green {
-  background: #a8e6cf;
+  background: #c9f3de;
 }
 .smColor--teal {
-  background: #8be9d1;
+  background: #b8f0e6;
 }
 .smColor--blue {
-  background: #a5d8ff;
+  background: #d4ecff;
 }
 .smColor--white {
   background: #ffffff;
 }
 .smColor--orange {
-  background: #ffd89c;
+  background: #ffe8c2;
 }
 
 .storymapAdminPanel {
@@ -412,9 +414,9 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoClose {
   float: right;
-  border: 1px solid rgba(39, 84, 174, 0.25);
+  border: 1px solid rgba(206, 42, 88, 0.22);
   border-radius: 10px;
-  background: #fff;
+  background: #fffefb;
   color: #111827;
   cursor: pointer;
   width: 30px;
