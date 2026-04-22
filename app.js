@@ -2204,20 +2204,53 @@ function initCustomStorymapCanvas() {
       if (publishHelp) publishHelp.textContent = "Saved PAT cleared from this browser.";
     });
   }
+
+  /**
+   * World-space AABB for camera fitting: uses node x/y plus estimated body size
+   * (same rules as DOM layout). Fixed padding alone was too small once graphs spread out.
+   */
+  const estimateStorymapNodeFootprint = (node) => {
+    const x = Number(node.x) || 0;
+    const y = Number(node.y) || 0;
+    if (node.type === "image") {
+      let nw = 256;
+      let nh = 256;
+      const { w, h } = computeStorymapImageNodeSize(nw, nh);
+      const hasCaption = Boolean(getNodeLabel(node));
+      const extraCaption = hasCaption ? 48 : 0;
+      return { minX: x, minY: y, maxX: x + w, maxY: y + h + extraCaption };
+    }
+    if (node.type === "text") {
+      const baseLbl = getNodeLabel(node);
+      const mw = Math.min(290, Math.max(112, 88 + Math.min(220, baseLbl.length * 2.8)));
+      const body = String(node.text || "");
+      const approxLines = Math.max(1, Math.ceil(body.length / 38));
+      const hh = Math.min(240, Math.max(56, approxLines * 18 + 44));
+      return { minX: x, minY: y, maxX: x + Math.round(mw), maxY: y + Math.round(hh) };
+    }
+    const sz = 58;
+    return { minX: x, minY: y, maxX: x + sz, maxY: y + sz };
+  };
+
   const fitViewToNodes = () => {
     if (!canvas.nodes.length) return;
     const rect = viewport.getBoundingClientRect();
     const width = Math.max(1, rect.width);
     const height = Math.max(1, rect.height);
-    const xs = canvas.nodes.map((n) => Number(n.x) || 0);
-    const ys = canvas.nodes.map((n) => Number(n.y) || 0);
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
-    const minY = Math.min(...ys);
-    const maxY = Math.max(...ys);
-    // Padding accounts for variable node width/height (labels, image nodes) beyond top-left x/y.
-    const graphWidth = Math.max(120, maxX - minX + 320);
-    const graphHeight = Math.max(120, maxY - minY + 200);
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    canvas.nodes.forEach((n) => {
+      const b = estimateStorymapNodeFootprint(n);
+      minX = Math.min(minX, b.minX);
+      maxX = Math.max(maxX, b.maxX);
+      minY = Math.min(minY, b.minY);
+      maxY = Math.max(maxY, b.maxY);
+    });
+    const margin = 96;
+    const graphWidth = Math.max(160, maxX - minX + margin * 2);
+    const graphHeight = Math.max(160, maxY - minY + margin * 2);
     const rawFit = Math.min(width / graphWidth, height / graphHeight);
     // Allow zooming out enough for wide graphs on narrow screens (do not clamp to 0.6).
     const fittedScale = Math.min(1.4, Math.max(0.08, rawFit));
@@ -2665,6 +2698,48 @@ function initCustomStorymapCanvas() {
     });
   };
 
+  /** After layout, fit the camera to real DOM boxes (images, captions, wrapped text). */
+  const fitViewToRenderedNodes = () => {
+    if (!canvas.nodes.length) return;
+    const nodes = nodesLayer.querySelectorAll(".smNode");
+    if (!nodes.length) return;
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    nodes.forEach((el) => {
+      const r = nodeWorldRectFromEl(el);
+      minX = Math.min(minX, r.left);
+      maxX = Math.max(maxX, r.left + r.w);
+      minY = Math.min(minY, r.top);
+      maxY = Math.max(maxY, r.top + r.h);
+    });
+    if (!Number.isFinite(minX) || !Number.isFinite(maxX)) return;
+    const margin = 96;
+    const graphWidth = Math.max(160, maxX - minX + margin * 2);
+    const graphHeight = Math.max(160, maxY - minY + margin * 2);
+    const rect = viewport.getBoundingClientRect();
+    const width = Math.max(1, rect.width);
+    const height = Math.max(1, rect.height);
+    const rawFit = Math.min(width / graphWidth, height / graphHeight);
+    const fittedScale = Math.min(1.4, Math.max(0.08, rawFit));
+    const graphCenterX = (minX + maxX) / 2;
+    const graphCenterY = (minY + maxY) / 2;
+    view.scale = fittedScale;
+    view.panX = width / 2 - graphCenterX * fittedScale;
+    view.panY = height / 2 - graphCenterY * fittedScale;
+    updateWorldTransform();
+    drawEdges();
+  };
+
+  const scheduleFitViewToRenderedNodes = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        fitViewToRenderedNodes();
+      });
+    });
+  };
+
   const makeNodeEl = (node) => {
     const div = document.createElement("div");
     div.className = `smNode smNode--${node.type} smColor--${node.color || "green"}`;
@@ -2895,6 +2970,7 @@ function initCustomStorymapCanvas() {
     saveStorymapCanvasState(canvas);
     renderCanvas();
     syncPanel();
+    scheduleFitViewToRenderedNodes();
   });
 
   on(saveBtn, "click", () => {
@@ -3077,6 +3153,7 @@ function initCustomStorymapCanvas() {
       mergeViewerProgress();
       renderCanvas();
       syncPanel();
+      scheduleFitViewToRenderedNodes();
     });
   }
 
@@ -3085,6 +3162,7 @@ function initCustomStorymapCanvas() {
     updateWorldTransform();
     renderCanvas();
     syncPanel();
+    scheduleFitViewToRenderedNodes();
     if (isAdmin) syncCreateConnectOptions();
     setStatus("");
   };
@@ -3096,6 +3174,7 @@ function initCustomStorymapCanvas() {
       fitViewToNodes();
       updateWorldTransform();
       renderCanvas();
+      scheduleFitViewToRenderedNodes();
     }, 140);
   });
 
