@@ -85,13 +85,20 @@ body.layout--storymapPreview .storymapAdminPanel {
   position: absolute;
   inset: 0;
   transform-origin: 0 0;
+  /* min-width / min-height set in JS so the sheet (and SVG) cover distant nodes; avoids clipping edges. */
+  overflow: visible;
 }
 
 .storymapEdges {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  /* Root SVG defaults to hidden overflow — long edges past the viewport box were clipped. */
+  overflow: visible;
   pointer-events: none;
 }
 
@@ -146,7 +153,13 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .storymapNodes {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  overflow: visible;
 }
 
 .smNode {

@@ -2159,6 +2159,48 @@ function initCustomStorymapCanvas() {
     return { left, top, w, h, cx: (left + right) / 2, cy: (top + bottom) / 2 };
   };
 
+  /**
+   * Grow the world + edge SVG to cover every node in world px. Otherwise the SVG viewport
+   * stays viewport-sized and clips <line> coordinates past ~1400px — edges look "stubby".
+   */
+  const syncStorymapSheetExtent = () => {
+    const vr = Math.max(1, viewport.clientWidth || 0);
+    const vh = Math.max(1, viewport.clientHeight || 0);
+    const nodes = nodesLayer.querySelectorAll(".smNode");
+    if (!nodes.length) {
+      world.style.minWidth = "";
+      world.style.minHeight = "";
+      nodesLayer.style.minWidth = "";
+      nodesLayer.style.minHeight = "";
+      edgesSvg.style.width = "";
+      edgesSvg.style.height = "";
+      return;
+    }
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    nodes.forEach((el) => {
+      const r = nodeWorldRectFromEl(el);
+      minX = Math.min(minX, r.left);
+      minY = Math.min(minY, r.top);
+      maxX = Math.max(maxX, r.left + r.w);
+      maxY = Math.max(maxY, r.top + r.h);
+    });
+    if (!Number.isFinite(minX)) return;
+    const pad = 280;
+    const w = Math.max(vr, maxX - Math.min(0, minX) + pad);
+    const h = Math.max(vh, maxY - Math.min(0, minY) + pad);
+    const cw = Math.ceil(w);
+    const ch = Math.ceil(h);
+    world.style.minWidth = `${cw}px`;
+    world.style.minHeight = `${ch}px`;
+    nodesLayer.style.minWidth = `${cw}px`;
+    nodesLayer.style.minHeight = `${ch}px`;
+    edgesSvg.style.width = `${cw}px`;
+    edgesSvg.style.height = `${ch}px`;
+  };
+
   const getNodeByIdLocal = (id) => canvas.nodes.find((n) => n.id === id) || null;
   const readGithubToken = () => String(githubTokenInput?.value || "").trim();
   const storeGithubToken = (tokenValue) => {
@@ -2653,6 +2695,7 @@ function initCustomStorymapCanvas() {
     nodesLayer.querySelectorAll(".smNode").forEach((elNode) => {
       nodeEls.set(elNode.getAttribute("data-id"), elNode);
     });
+    syncStorymapSheetExtent();
     const worldRectById = new Map();
     const getWorldRect = (id, el) => {
       if (worldRectById.has(id)) return worldRectById.get(id);
@@ -2835,6 +2878,16 @@ function initCustomStorymapCanvas() {
 
   const renderCanvas = () => {
     nodesLayer.innerHTML = "";
+    if (!canvas.nodes.length) {
+      world.style.minWidth = "";
+      world.style.minHeight = "";
+      nodesLayer.style.minWidth = "";
+      nodesLayer.style.minHeight = "";
+      edgesSvg.style.width = "";
+      edgesSvg.style.height = "";
+      edgesSvg.querySelectorAll("line").forEach((ln) => ln.remove());
+      return;
+    }
     canvas.nodes.forEach((node) => {
       const nodeEl = makeNodeEl(node);
       nodeEl.addEventListener("click", (evt) => handleNodeClick(node, evt));
