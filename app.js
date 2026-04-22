@@ -2138,6 +2138,27 @@ function initCustomStorymapCanvas() {
     };
   };
 
+  /**
+   * Node box in world (storymap) coordinates — matches `node.x` / `node.y` space inside `#storymapWorld`.
+   * Uses getBoundingClientRect + screenToWorld so edges align even when offsetParent ≠ `#storymapNodes`.
+   */
+  const nodeWorldRectFromEl = (el) => {
+    const r = el.getBoundingClientRect();
+    const tl = screenToWorld(r.left, r.top);
+    const tr = screenToWorld(r.right, r.top);
+    const bl = screenToWorld(r.left, r.bottom);
+    const br = screenToWorld(r.right, r.bottom);
+    const xs = [tl.x, tr.x, bl.x, br.x];
+    const ys = [tl.y, tr.y, bl.y, br.y];
+    const left = Math.min(...xs);
+    const right = Math.max(...xs);
+    const top = Math.min(...ys);
+    const bottom = Math.max(...ys);
+    const w = Math.max(1, right - left);
+    const h = Math.max(1, bottom - top);
+    return { left, top, w, h, cx: (left + right) / 2, cy: (top + bottom) / 2 };
+  };
+
   const getNodeByIdLocal = (id) => canvas.nodes.find((n) => n.id === id) || null;
   const readGithubToken = () => String(githubTokenInput?.value || "").trim();
   const storeGithubToken = (tokenValue) => {
@@ -2599,6 +2620,13 @@ function initCustomStorymapCanvas() {
     nodesLayer.querySelectorAll(".smNode").forEach((elNode) => {
       nodeEls.set(elNode.getAttribute("data-id"), elNode);
     });
+    const worldRectById = new Map();
+    const getWorldRect = (id, el) => {
+      if (worldRectById.has(id)) return worldRectById.get(id);
+      const box = nodeWorldRectFromEl(el);
+      worldRectById.set(id, box);
+      return box;
+    };
     // Always draw every edge (dashed base lines). Unlock state still affects nodes; hiding
     // edges by unlock step made dense graphs look "missing" lines from hubs to many leaves.
     canvas.edges.forEach((edge) => {
@@ -2606,30 +2634,14 @@ function initCustomStorymapCanvas() {
       const source = nodeEls.get(edge.source);
       const target = nodeEls.get(edge.target);
       if (!source || !target) return;
-      const x1c = source.offsetLeft + source.offsetWidth / 2;
-      const y1c = source.offsetTop + source.offsetHeight / 2;
-      const x2c = target.offsetLeft + target.offsetWidth / 2;
-      const y2c = target.offsetTop + target.offsetHeight / 2;
-      const p1 = rayExitRectToward(
-        x1c,
-        y1c,
-        x2c,
-        y2c,
-        source.offsetLeft,
-        source.offsetTop,
-        source.offsetWidth,
-        source.offsetHeight
-      );
-      const p2 = rayExitRectToward(
-        x2c,
-        y2c,
-        x1c,
-        y1c,
-        target.offsetLeft,
-        target.offsetTop,
-        target.offsetWidth,
-        target.offsetHeight
-      );
+      const ra = getWorldRect(edge.source, source);
+      const rb = getWorldRect(edge.target, target);
+      const x1c = ra.cx;
+      const y1c = ra.cy;
+      const x2c = rb.cx;
+      const y2c = rb.cy;
+      const p1 = rayExitRectToward(x1c, y1c, x2c, y2c, ra.left, ra.top, ra.w, ra.h);
+      const p2 = rayExitRectToward(x2c, y2c, x1c, y1c, rb.left, rb.top, rb.w, rb.h);
       const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
       line.setAttribute("x1", String(p1.x));
       line.setAttribute("y1", String(p1.y));
