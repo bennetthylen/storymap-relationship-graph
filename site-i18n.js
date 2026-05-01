@@ -16,6 +16,8 @@ var STORYMAP_EXTRA_I18N = {
       "This page will hold practical details about the exhibition and the storymap. For now, it is a placeholder so navigation and layout can be finalized.",
     langMenuAria: "Choose language",
     siteBrand: "Doing Well, Don't Worry",
+    navBrandPrimary: "Doing Well, Don't Worry",
+    navBrandSecondary: "أنا بخير، اطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Contact us",
@@ -68,7 +70,6 @@ var STORYMAP_EXTRA_I18N = {
     ariaCloseNodeInfo: "Close node info",
     ariaDiscussionComposer: "Create discussion post",
     ariaDiscussionFeed: "Discussion posts",
-    ariaHistoryImages: "History images",
     detailPrefixDateRange: "Date range:",
     detailPrefixTags: "Tags:",
     detailPrefixAudio: "Audio:",
@@ -145,11 +146,8 @@ var STORYMAP_EXTRA_I18N = {
     heroSubtitle:
       "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
     heroCta: "experience the storymap",
-    section1: "Women are always on the move.",
-    section2:
-      "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",
-    section3:
-      "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
+    landingBody:
+      "Women are always on the move. Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people's lives. This exhibition introduces glimpses into the lives of 21 women \u2013 women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work. This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
     historyTitle: "Feminism in Egypt and Beyond",
     historyBody:
       "[EXAMPLE TEXT] The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
@@ -167,6 +165,8 @@ var STORYMAP_EXTRA_I18N = {
       "ستتضمن هذه الصفحة تفاصيل عملية عن المعرض والخريطة القصصية. وهي الآن صفحة مؤقتة لاستكمال التنقل والتصميم.",
     langMenuAria: "اختر اللغة",
     siteBrand: "أنا بخير، اطمئنوا",
+    navBrandPrimary: "أنا بخير، اطمئنوا",
+    navBrandSecondary: "Doing Well, Don't Worry",
     footerGeorgetownSfs: "جامعة جورجتاون — كلية الشؤون الخارجية",
     footerWmf: "المرأة والذاكرة",
     footerContact: "اتصل بنا",
@@ -219,7 +219,6 @@ var STORYMAP_EXTRA_I18N = {
     ariaCloseNodeInfo: "إغلاق معلومات العقدة",
     ariaDiscussionComposer: "إنشاء منشور نقاش",
     ariaDiscussionFeed: "منشورات النقاش",
-    ariaHistoryImages: "صور قسم التاريخ",
     detailPrefixDateRange: "النطاق الزمني:",
     detailPrefixTags: "الوسوم:",
     detailPrefixAudio: "صوتي:",
@@ -294,11 +293,8 @@ var STORYMAP_EXTRA_I18N = {
     heroSubtitle:
       "تعاون رقمي بين طلاب كلية الشؤون الخارجية في جامعة جورجتاون والمرأة والذاكرة.",
     heroCta: "استكشف خريطة القصة",
-    section1: "النساء دائمًا على حركة.",
-    section2:
-      "تمارس النساء أنواعًا مختلفة من العمل والتنقّل تُشكّل رحلاتهن في الحياة. يعملن في البيت، في الحقول، في الورش، في المدن الكبرى والبلدات الصغيرة أو في بلدان أخرى. يعبُر عملهن وتحركهن فضاءات متعددة، ويعيدان ترتيب علاقاتهن وهن يصبحن جزءًا من حياة كثيرين. يقدّم هذا المعرض لمحات من حياة 21 امرأة—طبيبات، خادمات، ممثلات، طالبات، محاسبات، صانعات أفلام، تطريزات، معلمات، فنانات، وأمّهات وبنات ومرشدات وصديقات. يعشن في مصر والأردن ولبنان والدنمارك، لكن حياتهن تدعونا للسفر عبر فضاءات وأزمنة وشعوب أكثر، ولإعادة التفكير في المعاني والافتراضات المعتادة عن النساء والتنقّل والعمل.",
-    section3:
-      "يعتمد هذا المعرض على مقابلات مع هؤلاء النساء المتنوعات. نحن مجموعة من الباحثين والأمناء والعاملين في المتاحف والشباب في هذه المهن، يجمعنا الشغف بسرد قصصهن ومشاركتها؛ قصص ملهمة يجب أن تُحفظ وتُذكر لأجيال قادمة. ندعوكم على رحلة عبر حياتهن لنرى كيف تحرّكن ولماذا. نسلّط الضوء على أثر هذه التحركات وأعمالهن على علاقاتهن بمن حولهن، ونستكشف أنواع عملهن المختلفة لنرى كيف يساهمن في حياتهن وفي أسرهن وأصدقائهن وزملائهن وفي المجتمع.",
+    landingBody:
+      "\u0627\u0644\u0646\u0633\u0627\u0621 \u062f\u0627\u0626\u0645\u064b\u0627 \u0639\u0644\u0649 \u062d\u0631\u0643\u0629. \u062a\u0645\u0627\u0631\u0633 \u0627\u0644\u0646\u0633\u0627\u0621 \u0623\u0646\u0648\u0627\u0639\u064b\u0627 \u0645\u062e\u062a\u0644\u0641\u0629 \u0645\u0646 \u0627\u0644\u0639\u0645\u0644 \u0648\u0627\u0644\u062a\u0646\u0642\u0651\u0644 \u062a\u064f\u0634\u0643\u0651\u0644 \u0631\u062d\u0644\u0627\u062a\u0647\u0646 \u0641\u064a \u0627\u0644\u062d\u064a\u0627\u0629. \u064a\u0639\u0645\u0644\u0646 \u0641\u064a \u0627\u0644\u0628\u064a\u062a\u060c \u0641\u064a \u0627\u0644\u062d\u0642\u0648\u0644\u060c \u0641\u064a \u0627\u0644\u0648\u0631\u0634\u060c \u0641\u064a \u0627\u0644\u0645\u062f\u0646 \u0627\u0644\u0643\u0628\u0631\u0649 \u0648\u0627\u0644\u0628\u0644\u062f\u0627\u062a \u0627\u0644\u0635\u063a\u064a\u0631\u0629 \u0623\u0648 \u0641\u064a \u0628\u0644\u062f\u0627\u0646 \u0623\u062e\u0631\u0649. \u064a\u0639\u0628\u064f\u0631 \u0639\u0645\u0644\u0647\u0646 \u0648\u062a\u062d\u0631\u0643\u0647\u0646 \u0641\u0636\u0627\u0621\u0627\u062a \u0645\u062a\u0639\u062f\u062f\u0629\u060c \u0648\u064a\u0639\u064a\u062f\u0627\u0646 \u062a\u0631\u062a\u064a\u0628 \u0639\u0644\u0627\u0642\u0627\u062a\u0647\u0646 \u0648\u0647\u0646 \u064a\u0635\u0628\u062d\u0646 \u062c\u0632\u0621\u064b\u0627 \u0645\u0646 \u062d\u064a\u0627\u0629 \u0643\u062b\u064a\u0631\u064a\u0646. \u064a\u0642\u062f\u0651\u0645 \u0647\u0630\u0627 \u0627\u0644\u0645\u0639\u0631\u0636 \u0644\u0645\u062d\u0627\u062a \u0645\u0646 \u062d\u064a\u0627\u0629 21 \u0627\u0645\u0631\u0623\u0629\u2014\u0637\u0628\u064a\u0628\u0627\u062a\u060c \u062e\u0627\u062f\u0645\u0627\u062a\u060c \u0645\u0645\u062b\u0644\u0627\u062a\u060c \u0637\u0627\u0644\u0628\u0627\u062a\u060c \u0645\u062d\u0627\u0633\u0628\u0627\u062a\u060c \u0635\u0627\u0646\u0639\u0627\u062a \u0623\u0641\u0644\u0627\u0645\u060c \u062a\u0637\u0631\u064a\u0632\u0627\u062a\u060c \u0645\u0639\u0644\u0645\u0627\u062a\u060c \u0641\u0646\u0627\u0646\u0627\u062a\u060c \u0648\u0623\u0645\u0651\u0647\u0627\u062a \u0648\u0628\u0646\u0627\u062a \u0648\u0645\u0631\u0634\u062f\u0627\u062a \u0648\u0635\u062f\u064a\u0642\u0627\u062a. \u064a\u0639\u0634\u0646 \u0641\u064a \u0645\u0635\u0631 \u0648\u0627\u0644\u0623\u0631\u062f\u0646 \u0648\u0644\u0628\u0646\u0627\u0646 \u0648\u0627\u0644\u062f\u0646\u0645\u0627\u0631\u0643\u060c \u0644\u0643\u0646 \u062d\u064a\u0627\u062a\u0647\u0646 \u062a\u062f\u0639\u0648\u0646\u0627 \u0644\u0644\u0633\u0641\u0631 \u0639\u0628\u0631 \u0641\u0636\u0627\u0621\u0627\u062a \u0648\u0623\u0632\u0645\u0646\u0629 \u0648\u0634\u0639\u0648\u0628 \u0623\u0643\u062b\u0631\u060c \u0648\u0644\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u062a\u0641\u0643\u064a\u0631 \u0641\u064a \u0627\u0644\u0645\u0639\u0627\u0646\u064a \u0648\u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u0627\u062a \u0627\u0644\u0645\u0639\u062a\u0627\u062f\u0629 \u0639\u0646 \u0627\u0644\u0646\u0633\u0627\u0621 \u0648\u0627\u0644\u062a\u0646\u0642\u0651\u0644 \u0648\u0627\u0644\u0639\u0645\u0644. \u064a\u0639\u062a\u0645\u062f \u0647\u0630\u0627 \u0627\u0644\u0645\u0639\u0631\u0636 \u0639\u0644\u0649 \u0645\u0642\u0627\u0628\u0644\u0627\u062a \u0645\u0639 \u0647\u0624\u0644\u0627\u0621 \u0627\u0644\u0646\u0633\u0627\u0621 \u0627\u0644\u0645\u062a\u0646\u0648\u0639\u0627\u062a. \u0646\u062d\u0646 \u0645\u062c\u0645\u0648\u0639\u0629 \u0645\u0646 \u0627\u0644\u0628\u0627\u062d\u062b\u064a\u0646 \u0648\u0627\u0644\u0623\u0645\u0646\u0627\u0621 \u0648\u0627\u0644\u0639\u0627\u0645\u0644\u064a\u0646 \u0641\u064a \u0627\u0644\u0645\u062a\u0627\u062d\u0641 \u0648\u0627\u0644\u0634\u0628\u0627\u0628 \u0641\u064a \u0647\u0630\u0647 \u0627\u0644\u0645\u0647\u0646\u060c \u064a\u062c\u0645\u0639\u0646\u0627 \u0627\u0644\u0634\u063a\u0641 \u0628\u0633\u0631\u062f \u0642\u0635\u0635\u0647\u0646 \u0648\u0645\u0634\u0627\u0631\u0643\u062a\u0647\u0627\u061b \u0642\u0635\u0635 \u0645\u0644\u0647\u0645\u0629 \u064a\u062c\u0628 \u0623\u0646 \u062a\u064f\u062d\u0641\u0638 \u0648\u062a\u064f\u0630\u0643\u0631 \u0644\u0623\u062c\u064a\u0627\u0644 \u0642\u0627\u062f\u0645\u0629. \u0646\u062f\u0639\u0648\u0643\u0645 \u0639\u0644\u0649 \u0631\u062d\u0644\u0629 \u0639\u0628\u0631 \u062d\u064a\u0627\u062a\u0647\u0646 \u0644\u0646\u0631\u0649 \u0643\u064a\u0641 \u062a\u062d\u0631\u0651\u0643\u0646 \u0648\u0644\u0645\u0627\u0630\u0627. \u0646\u0633\u0644\u0651\u0637 \u0627\u0644\u0636\u0648\u0621 \u0639\u0644\u0649 \u0623\u062b\u0631 \u0647\u0630\u0647 \u0627\u0644\u062a\u062d\u0631\u0643\u0627\u062a \u0648\u0623\u0639\u0645\u0627\u0644\u0647\u0646 \u0639\u0644\u0649 \u0639\u0644\u0627\u0642\u0627\u062a\u0647\u0646 \u0628\u0645\u0646 \u062d\u0648\u0644\u0647\u0646\u060c \u0648\u0646\u0633\u062a\u0643\u0634\u0641 \u0623\u0646\u0648\u0627\u0639 \u0639\u0645\u0644\u0647\u0646 \u0627\u0644\u0645\u062e\u062a\u0644\u0641\u0629 \u0644\u0646\u0631\u0649 \u0643\u064a\u0641 \u064a\u0633\u0627\u0647\u0645\u0646 \u0641\u064a \u062d\u064a\u0627\u062a\u0647\u0646 \u0648\u0641\u064a \u0623\u0633\u0631\u0647\u0646 \u0648\u0623\u0635\u062f\u0642\u0627\u0626\u0647\u0646 \u0648\u0632\u0645\u0644\u0627\u0626\u0647\u0646 \u0648\u0641\u064a \u0627\u0644\u0645\u062c\u062a\u0645\u0639.",
     historyTitle: "النسوية في مصر وما وراءها",
     historyBody:
       "[نص تجريبي] يُفهم الأرشيف أفضل عند وضعه في سياقه التاريخي. لذلك ستعكس بعض العقد تحولات تاريخية في مصر في القرنين العشرين والحادي والعشرين. وقعت أحداث مهمة في تطور الخطاب النسوي. بعد ثورة 1952 نمت السياسة النسوية مرتبطة بخطاب مناهض للاستعمار ورأسمالية كجزء من المشهد السياسي (إبراهيم 2017، 4-5). ومع ذلك واجه النشطاء صعوبة في التواصل مع الطبقة العاملة، وكان الخطاب «يُنشئ ديناميكية أبوية ومنفصلة» (إبراهيم 2017، 3). وسّعت الدولة فرص عمل و تعليم النساء بينما أُغلق المجال السياسي لهن (إبراهيم 2017، 6؛ غول 2025، 78-79، 101). مع تحولات الخطاب النسوي، وسّعت الدولة التعليم للفقراء فشكّل ذلك نسوية أكثر شمولاً للطبقة العاملة (إبراهيم 2017، 13). تدخلات الدولة صارت في توتر مع انفتاح السادات الاقتصادي. تركّز نشاط النساء على الواقع الاقتصادي والسياسي (إبراهيم 2017، 15) وصار «الغرب الحديث» هدفًا معياريًا للنسوية (إبراهيم 2017، 16). أعادت انتفاضة 2011 طرح هذه التوترات بزاوية تقاطعية (إبراهيم 2017، 20). حاتم (2011) توثّق نساء «صغيرات وكبيرات، محجبات وغير محجبات، فقيرات وغنيّات» في ميدان التحرير (36). وترجم ذلك إلى خطاب ينتقد النسوية الرسمية (حاتم 2011، 37). هذه التحولات لا تُقرأ فقط كسياق تاريخي بل تشكّل المادة الأرشيفية لـ«أنا بخير، اطمئنوا». سياسات ناصر التعليمية تُرسم أرشيف معلمة ريفية؛ انفتاح السادات يؤثر على مراسلات ميتري من السجن؛ وربيع العرب يصدى لتنوع التحالفات (حسن 2021؛ حاتم 2011، 36).",
@@ -316,6 +312,8 @@ var STORYMAP_EXTRA_I18N = {
       "Questa pagina conterrà dettagli pratici sulla mostra e sulla storymap. Per ora è un segnaposto per definire navigazione e impaginazione.",
     langMenuAria: "Scegli la lingua",
     siteBrand: "Doing Well, Don't Worry",
+    navBrandPrimary: "Doing Well, Don't Worry",
+    navBrandSecondary: "أنا بخير، اطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Contattaci",
@@ -368,7 +366,6 @@ var STORYMAP_EXTRA_I18N = {
     ariaCloseNodeInfo: "Chiudi info nodo",
     ariaDiscussionComposer: "Crea post di discussione",
     ariaDiscussionFeed: "Post di discussione",
-    ariaHistoryImages: "Immagini storiche",
     detailPrefixDateRange: "Intervallo di date:",
     detailPrefixTags: "Tag:",
     detailPrefixAudio: "Audio:",
@@ -443,11 +440,8 @@ var STORYMAP_EXTRA_I18N = {
     heroSubtitle:
       "Una collaborazione digitale tra studenti della School of Foreign Service di Georgetown e The Women and Memory Forum.",
     heroCta: "esplora la storymap",
-    section1: "Le donne sono sempre in movimento.",
-    section2:
-      "Le donne svolgono diversi tipi di lavoro e mobilità che informano i loro percorsi di vita. Lavorano in casa, nei campi, nelle botteghe, nelle grandi città, nei piccoli paesi o in altri paesi. Il loro lavoro e il loro movimento attraversano spazi diversi, riassemblando le relazioni mentre diventano parte della vita di molte altre persone. Questa mostra offre scorci sulla vita di 21 donne—mediche, domestiche, attrici, studentesse, contabili, cineaste, ricamatrici, insegnanti, artiste, e come madri, figlie, mentori e amiche. Vivono in Egitto, Giordania, Libano e Danimarca, eppure le loro vite ci invitano a viaggiare attraverso molti altri spazi, popoli e tempi, e a ripensare significati e presupposti su donne, mobilità e lavoro.",
-    section3:
-      "La mostra si basa su interviste con queste donne diverse. Siamo un gruppo di ricercatori, archivisti, professionisti museali e giovani in questi mestieri, accomunati dal raccontare e condividere le storie di queste donne, le cui vicende ispiratrici dovrebbero essere custodite e ricordate per le generazioni future. Vi invitiamo in un viaggio nelle loro vite per vedere come si sono mosse e perché. Illuminiamo l'effetto di questi movimenti e del loro lavoro sulle relazioni con chi le circonda e approfondiamo i diversi tipi di lavoro per vedere come contribuiscono non solo alle loro vite ma anche a famiglie, amici, colleghi e società.",
+    landingBody:
+      "Le donne sono sempre in movimento. Le donne svolgono diversi tipi di lavoro e mobilit\u00e0 che informano i loro percorsi di vita. Lavorano in casa, nei campi, nelle botteghe, nelle grandi citt\u00e0, nei piccoli paesi o in altri paesi. Il loro lavoro e il loro movimento attraversano spazi diversi, riassemblando le relazioni mentre diventano parte della vita di molte altre persone. Questa mostra offre scorci sulla vita di 21 donne\u2014mediche, domestiche, attrici, studentesse, contabili, cineaste, ricamatrici, insegnanti, artiste, e come madri, figlie, mentori e amiche. Vivono in Egitto, Giordania, Libano e Danimarca, eppure le loro vite ci invitano a viaggiare attraverso molti altri spazi, popoli e tempi, e a ripensare significati e presupposti su donne, mobilit\u00e0 e lavoro. La mostra si basa su interviste con queste donne diverse. Siamo un gruppo di ricercatori, archivisti, professionisti museali e giovani in questi mestieri, accomunati dal raccontare e condividere le storie di queste donne, le cui vicende ispiratrici dovrebbero essere custodite e ricordate per le generazioni future. Vi invitiamo in un viaggio nelle loro vite per vedere come si sono mosse e perch\u00e9. Illuminiamo l'effetto di questi movimenti e del loro lavoro sulle relazioni con chi le circonda e approfondiamo i diversi tipi di lavoro per vedere come contribuiscono non solo alle loro vite ma anche a famiglie, amici, colleghi e societ\u00e0.",
     historyTitle: "Femminismo in Egitto e oltre",
     historyBody:
       "[TESTO ESEMPIO] L'archivio si comprende meglio contestualizzato. Alcuni nodi rifletteranno trasformazioni storiche nell'Egitto del XX e XXI secolo. Dopo il 1952 il femminismo si legò a discorsi anti-coloniali e anti-capitalisti (Ibrahim 2017, 4-5); le attiviste faticarono a connettersi con la classe lavoratrice (Ibrahim 2017, 3). Lo Stato ampliò istruzione e lavoro delle donne mentre chiudeva spazio politico (Ibrahim 2017, 6; Gaul 2025). L'espansione dell'istruzione per i poveri plasmò un femminismo più inclusivo (Ibrahim 2017, 13); l'infitāḥ di Sadāt creò tensioni (Ibrahim 2017, 15-16). Nel 2011 il femminismo riemerse in chiave intersezionale (Ibrahim 2017, 20). Hatem (2011) documenta donne a Tahrir (36). Queste trasformazioni modellano il materiale archivistico di «Doing Well, Don't Worry» (Hassan 2021; Hatem 2011).",
@@ -465,6 +459,8 @@ var STORYMAP_EXTRA_I18N = {
       "Cette page présentera des informations pratiques sur l'exposition et la storymap. Pour l'instant, il s'agit d'un texte d'exemple pour valider la navigation et la mise en page.",
     langMenuAria: "Choisir la langue",
     siteBrand: "Doing Well, Don't Worry",
+    navBrandPrimary: "Doing Well, Don't Worry",
+    navBrandSecondary: "أنا بخير، اطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Nous contacter",
@@ -517,7 +513,6 @@ var STORYMAP_EXTRA_I18N = {
     ariaCloseNodeInfo: "Fermer les infos du nœud",
     ariaDiscussionComposer: "Créer un message de discussion",
     ariaDiscussionFeed: "Messages de discussion",
-    ariaHistoryImages: "Images historiques",
     detailPrefixDateRange: "Plage de dates :",
     detailPrefixTags: "Tags :",
     detailPrefixAudio: "Audio :",
@@ -592,11 +587,8 @@ var STORYMAP_EXTRA_I18N = {
     heroSubtitle:
       "Une collaboration numérique entre des étudiants de la School of Foreign Service de Georgetown et The Women and Memory Forum.",
     heroCta: "explorer la storymap",
-    section1: "Les femmes sont toujours en mouvement.",
-    section2:
-      "Les femmes exercent différents types de travail et de mobilité qui façonnent leurs parcours de vie. Elles travaillent à la maison, dans les champs, les ateliers, les grandes villes, les petites villes ou d'autres pays. Leur travail et leurs déplacements traversent des espaces variés, réassemblant leurs relations au fil qu'elles deviennent partie prenante d'autres vies. Cette exposition présente des aperçus sur la vie de 21 femmes — médecins, domestiques, actrices, étudiantes, comptables, cinéastes, brodeuses, enseignantes, artistes, et comme mères, filles, mentorées et amies. Elles vivent en Égypte, Jordanie, Liban et Danemark, mais leurs vies nous invitent à voyager à travers bien d'autres espaces, peuples et temps, et à repenser sens et présupposés sur les femmes, la mobilité et le travail.",
-    section3:
-      "Cette exposition s'appuie sur des entretiens avec ces femmes diverses. Nous sommes un groupe de chercheurs, archivistes, professionnels de musée et jeunes dans ces métiers, unis par l'envie de raconter et partager les histoires de ces femmes, dont les récits inspirants doivent être conservés pour les générations futures. Nous vous invitons à un voyage dans leurs vies pour voir comment elles se sont déplacées et pourquoi. Nous mettons en lumière l'effet de ces mouvements et de leur travail sur leurs relations avec leur entourage et explorons leurs types de travail pour voir comment elles contribuent à leurs propres vies ainsi qu'à leurs familles, amies, collègues et à la société.",
+    landingBody:
+      "Les femmes sont toujours en mouvement. Les femmes exercent diff\u00e9rents types de travail et de mobilit\u00e9 qui fa\u00e7onnent leurs parcours de vie. Elles travaillent \u00e0 la maison, dans les champs, les ateliers, les grandes villes, les petites villes ou d'autres pays. Leur travail et leurs d\u00e9placements traversent des espaces vari\u00e9s, r\u00e9assemblant leurs relations au fil qu'elles deviennent partie prenante d'autres vies. Cette exposition pr\u00e9sente des aper\u00e7us sur la vie de 21 femmes \u2014 m\u00e9decins, domestiques, actrices, \u00e9tudiantes, comptables, cin\u00e9astes, brodeuses, enseignantes, artistes, et comme m\u00e8res, filles, mentor\u00e9es et amies. Elles vivent en \u00c9gypte, Jordanie, Liban et Danemark, mais leurs vies nous invitent \u00e0 voyager \u00e0 travers bien d'autres espaces, peuples et temps, et \u00e0 repenser sens et pr\u00e9suppos\u00e9s sur les femmes, la mobilit\u00e9 et le travail. Cette exposition s'appuie sur des entretiens avec ces femmes diverses. Nous sommes un groupe de chercheurs, archivistes, professionnels de mus\u00e9e et jeunes dans ces m\u00e9tiers, unis par l'envie de raconter et partager les histoires de ces femmes, dont les r\u00e9cits inspirants doivent \u00eatre conserv\u00e9s pour les g\u00e9n\u00e9rations futures. Nous vous invitons \u00e0 un voyage dans leurs vies pour voir comment elles se sont d\u00e9plac\u00e9es et pourquoi. Nous mettons en lumi\u00e8re l'effet de ces mouvements et de leur travail sur leurs relations avec leur entourage et explorons leurs types de travail pour voir comment elles contribuent \u00e0 leurs propres vies ainsi qu'\u00e0 leurs familles, amies, coll\u00e8gues et \u00e0 la soci\u00e9t\u00e9.",
     historyTitle: "Féminisme en Égypte et au-delà",
     historyBody:
       "[TEXTE D'EXEMPLE] L'archive se comprend mieux contextualisée. Certains nœuds refléteront des transformations historiques en Égypte aux XXe et XXIe siècles. La politique féministe s'est développée après 1952 ; sous Nasser, le féminisme était lié aux discours anti-coloniaux et anti-capitalistes (Ibrahim 2017, 4-5). Les activistes peinaient à joindre la classe ouvrière (Ibrahim 2017, 3). L'État élargit l'éducation et le travail des femmes tout en fermant l'espace politique (Ibrahim 2017, 6 ; Gaul 2025). L'expansion de l'éducation pour les pauvres a façonné un féminisme plus inclusif (Ibrahim 2017, 13) ; l'infitāḥ de Sadate créa des tensions (Ibrahim 2017, 15-16) ; le printemps arabe 2011 a réactivé ces tensions (Ibrahim 2017, 20). Hatem (2011) documente des femmes à Tahrir (36). Ces transformations façonnent le matériau archivistique de « Doing Well, Don't Worry » (Hassan 2021 ; Hatem 2011).",
@@ -614,6 +606,8 @@ var STORYMAP_EXTRA_I18N = {
       "Esta página incluirá detalles prácticos sobre la exposición y el storymap. De momento es un texto de ejemplo para afinar la navegación y el diseño.",
     langMenuAria: "Elegir idioma",
     siteBrand: "Doing Well, Don't Worry",
+    navBrandPrimary: "Doing Well, Don't Worry",
+    navBrandSecondary: "أنا بخير، اطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Contáctanos",
@@ -666,7 +660,6 @@ var STORYMAP_EXTRA_I18N = {
     ariaCloseNodeInfo: "Cerrar información del nodo",
     ariaDiscussionComposer: "Crear publicación de debate",
     ariaDiscussionFeed: "Publicaciones de debate",
-    ariaHistoryImages: "Imágenes históricas",
     detailPrefixDateRange: "Rango de fechas:",
     detailPrefixTags: "Etiquetas:",
     detailPrefixAudio: "Audio:",
@@ -741,11 +734,8 @@ var STORYMAP_EXTRA_I18N = {
     heroSubtitle:
       "Una colaboración digital entre estudiantes de la School of Foreign Service de Georgetown y The Women and Memory Forum.",
     heroCta: "explorar el storymap",
-    section1: "Las mujeres siempre están en movimiento.",
-    section2:
-      "Las mujeres realizan distintos tipos de trabajo y movilidad que informan sus trayectorias de vida. Trabajan en casa, en el campo, en talleres, en grandes ciudades, pueblos pequeños u otros países. Su trabajo y su movimiento atraviesan espacios diversos, reensamblando sus relaciones al integrarse en muchas otras vidas. Esta exposición ofrece destellos de la vida de 21 mujeres — médicas, empleadas domésticas, actrices, estudiantes, contables, cineastas, bordadoras, profesoras, artistas, y como madres, hijas, mentoras y amigas. Viven en Egipto, Jordania, Líbano y Dinamarca, pero sus vidas nos invitan a viajar por más espacios, pueblos y tiempos, e inspirarnos a repensar significados y supuestos sobre mujeres, movilidad y trabajo.",
-    section3:
-      "La exposición se basa en entrevistas con estas mujeres diversas. Somos un grupo de investigadoras, archiveras, profesionales de museo y jóvenes en estas profesiones, unidas por contar y compartir las historias de estas mujeres, cuyos relatos inspiradores deben conservarse y recordarse para las generaciones venideras. Te invitamos a un viaje por sus vidas para ver cómo se han movido y por qué razones. Iluminamos el efecto de esos movimientos y su trabajo en sus relaciones con quienes las rodean y profundizamos en sus distintos tipos de trabajo para ver cómo contribuyen no solo a sus propias vidas sino también a familias, amigas, compañeras y a la sociedad.",
+    landingBody:
+      "Las mujeres siempre est\u00e1n en movimiento. Las mujeres realizan distintos tipos de trabajo y movilidad que informan sus trayectorias de vida. Trabajan en casa, en el campo, en talleres, en grandes ciudades, pueblos peque\u00f1os u otros pa\u00edses. Su trabajo y su movimiento atraviesan espacios diversos, reensamblando sus relaciones al integrarse en muchas otras vidas. Esta exposici\u00f3n ofrece destellos de la vida de 21 mujeres \u2014 m\u00e9dicas, empleadas dom\u00e9sticas, actrices, estudiantes, contables, cineastas, bordadoras, profesoras, artistas, y como madres, hijas, mentoras y amigas. Viven en Egipto, Jordania, L\u00edbano y Dinamarca, pero sus vidas nos invitan a viajar por m\u00e1s espacios, pueblos y tiempos, e inspirarnos a repensar significados y supuestos sobre mujeres, movilidad y trabajo. La exposici\u00f3n se basa en entrevistas con estas mujeres diversas. Somos un grupo de investigadoras, archiveras, profesionales de museo y j\u00f3venes en estas profesiones, unidas por contar y compartir las historias de estas mujeres, cuyos relatos inspiradores deben conservarse y recordarse para las generaciones venideras. Te invitamos a un viaje por sus vidas para ver c\u00f3mo se han movido y por qu\u00e9 razones. Iluminamos el efecto de esos movimientos y su trabajo en sus relaciones con quienes las rodean y profundizamos en sus distintos tipos de trabajo para ver c\u00f3mo contribuyen no solo a sus propias vidas sino tambi\u00e9n a familias, amigas, compa\u00f1eras y a la sociedad.",
     historyTitle: "Feminismo en Egipto y más allá",
     historyBody:
       "[TEXTO DE EJEMPLO] El archivo se entiende mejor contextualizado. Algunos nodos reflejarán transformaciones históricas en el Egipto de los siglos XX y XXI. La política feminista creció tras 1952; bajo Nasser, el feminismo se ligó a discursos anti-coloniales y anti-capitalistas (Ibrahim 2017, 4-5). Las activistas lucharon por conectar con la clase trabajadora (Ibrahim 2017, 3). El Estado amplió educación y trabajo de las mujeres mientras cerraba espacio político (Ibrahim 2017, 6; Gaul 2025). La expansión educativa para los pobres moldeó un feminismo más inclusivo (Ibrahim 2017, 13); la infitāḥ de Sadat generó tensiones (Ibrahim 2017, 15-16); la primavera árabe de 2011 reactivó estas tensiones (Ibrahim 2017, 20). Hatem (2011) documenta mujeres en Tahrir (36). Estas transformaciones dan forma al material archivístico de «Doing Well, Don't Worry» (Hassan 2021; Hatem 2011).",
@@ -763,6 +753,8 @@ var STORYMAP_EXTRA_I18N = {
       "Auf dieser Seite finden Sie später praktische Angaben zur Ausstellung und zum Storymap. Vorerst dient dieser Text als Platzhalter für Navigation und Layout.",
     langMenuAria: "Sprache wählen",
     siteBrand: "Doing Well, Don't Worry",
+    navBrandPrimary: "Doing Well, Don't Worry",
+    navBrandSecondary: "أنا بخير، اطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Kontakt",
@@ -815,7 +807,6 @@ var STORYMAP_EXTRA_I18N = {
     ariaCloseNodeInfo: "Knoteninfo schließen",
     ariaDiscussionComposer: "Diskussionsbeitrag erstellen",
     ariaDiscussionFeed: "Diskussionsbeiträge",
-    ariaHistoryImages: "Historische Bilder",
     detailPrefixDateRange: "Datumsbereich:",
     detailPrefixTags: "Tags:",
     detailPrefixAudio: "Audio:",
@@ -890,11 +881,8 @@ var STORYMAP_EXTRA_I18N = {
     heroSubtitle:
       "Eine digitale Zusammenarbeit zwischen Studierenden der Georgetown School of Foreign Service und The Women and Memory Forum.",
     heroCta: "storymap erkunden",
-    section1: "Frauen sind immer in Bewegung.",
-    section2:
-      "Frauen üben unterschiedliche Arbeit und Mobilität aus, die ihre Lebenswege prägen. Sie arbeiten zu Hause, auf dem Feld, in Werkstätten, in Großstädten, kleinen Orten oder anderen Ländern. Ihre Arbeit und ihre Bewegung durchqueren verschiedene Räume und stellen Beziehungen neu zusammen, während sie Teil vieler anderer Leben werden. Diese Ausstellung zeigt Einblicke in das Leben von 21 Frauen — Ärztinnen, Hausangestellte, Schauspielerinnen, Studierende, Buchhalterinnen, Filmemacherinnen, Stickerinnen, Lehrerinnen, Künstlerinnen, und als Mütter, Töchter, Mentorinnen und Freundinnen. Sie leben in Ägypten, Jordanien, dem Libanon und Dänemark, doch ihre Leben laden uns ein, viele weitere Räume, Völker und Zeiten zu bereisen und vertraute Bedeutungen und Annahmen über Frauen, Mobilität und Arbeit neu zu denken.",
-    section3:
-      "Die Ausstellung basiert auf Interviews mit diesen verschiedenen Frauen. Wir sind eine Gruppe von Forschenden, Archivarinnen, Museumsfachleuten und jungen Menschen in diesen Berufen, die alle die Geschichten dieser Frauen erzählen und teilen möchten — inspirierende Erzählungen, die für künftige Generationen bewahrt und erinnert werden sollten. Wir laden Sie auf eine Reise durch ihr Leben ein, um zu sehen, wie sie sich bewegt haben und aus welchen Gründen. Wir beleuchten die Wirkung dieser Bewegungen und ihrer Arbeit auf Beziehungen zu Menschen um sie herum und vertiefen ihre verschiedenen Arbeitsformen, um zu sehen, wie sie nicht nur ihr eigenes Leben, sondern auch Familien, Freundinnen, Kolleginnen und die Gesellschaft prägen.",
+    landingBody:
+      "Frauen sind immer in Bewegung. Frauen \u00fcben unterschiedliche Arbeit und Mobilit\u00e4t aus, die ihre Lebenswege pr\u00e4gen. Sie arbeiten zu Hause, auf dem Feld, in Werkst\u00e4tten, in Gro\u00dfst\u00e4dten, kleinen Orten oder anderen L\u00e4ndern. Ihre Arbeit und ihre Bewegung durchqueren verschiedene R\u00e4ume und stellen Beziehungen neu zusammen, w\u00e4hrend sie Teil vieler anderer Leben werden. Diese Ausstellung zeigt Einblicke in das Leben von 21 Frauen \u2014 \u00c4rztinnen, Hausangestellte, Schauspielerinnen, Studierende, Buchhalterinnen, Filmemacherinnen, Stickerinnen, Lehrerinnen, K\u00fcnstlerinnen, und als M\u00fctter, T\u00f6chter, Mentorinnen und Freundinnen. Sie leben in \u00c4gypten, Jordanien, dem Libanon und D\u00e4nemark, doch ihre Leben laden uns ein, viele weitere R\u00e4ume, V\u00f6lker und Zeiten zu bereisen und vertraute Bedeutungen und Annahmen \u00fcber Frauen, Mobilit\u00e4t und Arbeit neu zu denken. Die Ausstellung basiert auf Interviews mit diesen verschiedenen Frauen. Wir sind eine Gruppe von Forschenden, Archivarinnen, Museumsfachleuten und jungen Menschen in diesen Berufen, die alle die Geschichten dieser Frauen erz\u00e4hlen und teilen m\u00f6chten \u2014 inspirierende Erz\u00e4hlungen, die f\u00fcr k\u00fcnftige Generationen bewahrt und erinnert werden sollten. Wir laden Sie auf eine Reise durch ihr Leben ein, um zu sehen, wie sie sich bewegt haben und aus welchen Gr\u00fcnden. Wir beleuchten die Wirkung dieser Bewegungen und ihrer Arbeit auf Beziehungen zu Menschen um sie herum und vertiefen ihre verschiedenen Arbeitsformen, um zu sehen, wie sie nicht nur ihr eigenes Leben, sondern auch Familien, Freundinnen, Kolleginnen und die Gesellschaft pr\u00e4gen.",
     historyTitle: "Feminismus in Ägypten und darüber hinaus",
     historyBody:
       "[BEISPIELTEXT] Das Archiv lässt sich am besten kontextualisiert verstehen. Einige Knoten spiegeln historische Transformationen in Ägypten im 20. und 21. Jahrhundert. Feministische Politik wuchs nach 1952; unter Nasser war Feminismus an anti-koloniale und anti-kapitalistische Diskurse gebunden (Ibrahim 2017, 4-5). Aktivistinnen kämpften um Anschluss an die Arbeiterklasse (Ibrahim 2017, 3). Der Staat erweiterte Bildung und Arbeit der Frauen, schloss aber politischen Raum (Ibrahim 2017, 6; Gaul 2025). Bildungsexpansion für Arme prägte inklusiveren Feminismus (Ibrahim 2017, 13); Sadats Infitāḥ erzeugte Spannungen (Ibrahim 2017, 15-16); der Arabische Frühling 2011 reaktivierte diese (Ibrahim 2017, 20). Hatem (2011) dokumentiert Frauen auf dem Tahrir-Platz (36). Diese Transformationen formen das Archivmaterial von „Doing Well, Don't Worry“ (Hassan 2021; Hatem 2011).",
