@@ -1991,6 +1991,9 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sti
 }
 
 .stickyFooterLinks a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: inherit;
   text-decoration: none;
   font-size: calc(0.68rem + var(--header-bump));
