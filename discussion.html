@@ -13,14 +13,39 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-mode="discussion" id="top">
-    <nav class="siteNav" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
-      <a href="./index.html#home" class="siteNav__brand" data-i18n="siteBrand">Doing Well, Don't Worry</a>
-      <div class="siteNav__tabs">
-        <a href="./index.html#home" class="siteNav__tab" data-i18n="navHome">Home</a>
-        <a href="./storymap.html" class="siteNav__tab" data-i18n="navStorymap">StoryMap</a>
-        <a href="./history.html" class="siteNav__tab" data-i18n="navHistory">History</a>
-        <a href="./discussion.html" class="siteNav__tab siteNav__tab--active" data-i18n="navDiscussion">Discussion</a>
-        <div class="siteNav__lang">
+    <nav class="siteNav siteNav--archive" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
+      <a href="./index.html#home" class="siteNav__brandLink" data-i18n-aria-label="siteBrand" aria-label="Doing Well, Don't Worry">
+        <img
+          class="siteNav__logo"
+          src="./assets/wmf-logo.png"
+          alt="The Women and Memory Forum"
+          width="200"
+          height="72"
+        />
+      </a>
+      <div class="siteNav__primary">
+        <a href="./index.html#home" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="./storymap.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navStorymap">StoryMap</span>
+        </a>
+        <a href="./history.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navHistory">History</span>
+        </a>
+        <a href="./discussion.html" class="siteNav__tab siteNav__tab--active">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond">◆</span>]</span>
+          <span data-i18n="navDiscussion">Discussion</span>
+        </a>
+        <a href="./information.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navInformation">Information</span>
+        </a>
+      </div>
+      <div class="siteNav__lang">
           <button
             type="button"
             class="siteNav__langBtn"
@@ -71,7 +96,6 @@
               </button>
             </li>
           </ul>
-        </div>
       </div>
     </nav>
 

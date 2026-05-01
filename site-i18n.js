@@ -10,6 +10,10 @@ var STORYMAP_EXTRA_I18N = {
     navStorymap: "StoryMap",
     navHistory: "History",
     navDiscussion: "Discussion",
+    navInformation: "Information",
+    infoPageTitle: "Information",
+    infoPageLead:
+      "This page will hold practical details about the exhibition and the storymap. For now, it is a placeholder so navigation and layout can be finalized.",
     langMenuAria: "Choose language",
     siteBrand: "Doing Well, Don't Worry",
     footerGeorgetownSfs: "Georgetown SFS",
@@ -137,10 +141,10 @@ var STORYMAP_EXTRA_I18N = {
     colorBlue: "Blue",
     colorWhite: "White",
     colorOrange: "Orange",
-    heroTitle: "Doing Well, Don't Worry",
+    heroTitle: "doing well, don't worry",
     heroSubtitle:
-      "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4788: Heritage and Development in the Arab World.",
-    heroCta: "Experience \"Doing Well, Don't Worry\"",
+      "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
+    heroCta: "explore the storymap",
     section1: "Women are always on the move.",
     section2:
       "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",
@@ -157,6 +161,10 @@ var STORYMAP_EXTRA_I18N = {
     navStorymap: "خريطة القصة",
     navHistory: "التاريخ",
     navDiscussion: "النقاش",
+    navInformation: "معلومات",
+    infoPageTitle: "معلومات",
+    infoPageLead:
+      "ستتضمن هذه الصفحة تفاصيل عملية عن المعرض والخريطة القصصية. وهي الآن صفحة مؤقتة لاستكمال التنقل والتصميم.",
     langMenuAria: "اختر اللغة",
     siteBrand: "أنا بخير، اطمئنوا",
     footerGeorgetownSfs: "جامعة جورجتاون — كلية الشؤون الخارجية",
@@ -285,7 +293,7 @@ var STORYMAP_EXTRA_I18N = {
     heroTitle: "أنا بخير، اطمئنوا",
     heroSubtitle:
       "تعاون رقمي بين طلاب كلية الشؤون الخارجية في جامعة جورجتاون والمرأة والذاكرة.",
-    heroCta: "استكشف «أنا بخير، اطمئنوا»",
+    heroCta: "استكشف خريطة القصة",
     section1: "النساء دائمًا على حركة.",
     section2:
       "تمارس النساء أنواعًا مختلفة من العمل والتنقّل تُشكّل رحلاتهن في الحياة. يعملن في البيت، في الحقول، في الورش، في المدن الكبرى والبلدات الصغيرة أو في بلدان أخرى. يعبُر عملهن وتحركهن فضاءات متعددة، ويعيدان ترتيب علاقاتهن وهن يصبحن جزءًا من حياة كثيرين. يقدّم هذا المعرض لمحات من حياة 21 امرأة—طبيبات، خادمات، ممثلات، طالبات، محاسبات، صانعات أفلام، تطريزات، معلمات، فنانات، وأمّهات وبنات ومرشدات وصديقات. يعشن في مصر والأردن ولبنان والدنمارك، لكن حياتهن تدعونا للسفر عبر فضاءات وأزمنة وشعوب أكثر، ولإعادة التفكير في المعاني والافتراضات المعتادة عن النساء والتنقّل والعمل.",
@@ -302,6 +310,10 @@ var STORYMAP_EXTRA_I18N = {
     navStorymap: "StoryMap",
     navHistory: "Storia",
     navDiscussion: "Discussione",
+    navInformation: "Informazioni",
+    infoPageTitle: "Informazioni",
+    infoPageLead:
+      "Questa pagina conterrà dettagli pratici sulla mostra e sulla storymap. Per ora è un segnaposto per definire navigazione e impaginazione.",
     langMenuAria: "Scegli la lingua",
     siteBrand: "Doing Well, Don't Worry",
     footerGeorgetownSfs: "Georgetown SFS",
@@ -430,7 +442,7 @@ var STORYMAP_EXTRA_I18N = {
     heroTitle: "Doing Well, Don't Worry",
     heroSubtitle:
       "Una collaborazione digitale tra studenti della School of Foreign Service di Georgetown e The Women and Memory Forum.",
-    heroCta: "Vivi «Doing Well, Don't Worry»",
+    heroCta: "esplora la storymap",
     section1: "Le donne sono sempre in movimento.",
     section2:
       "Le donne svolgono diversi tipi di lavoro e mobilità che informano i loro percorsi di vita. Lavorano in casa, nei campi, nelle botteghe, nelle grandi città, nei piccoli paesi o in altri paesi. Il loro lavoro e il loro movimento attraversano spazi diversi, riassemblando le relazioni mentre diventano parte della vita di molte altre persone. Questa mostra offre scorci sulla vita di 21 donne—mediche, domestiche, attrici, studentesse, contabili, cineaste, ricamatrici, insegnanti, artiste, e come madri, figlie, mentori e amiche. Vivono in Egitto, Giordania, Libano e Danimarca, eppure le loro vite ci invitano a viaggiare attraverso molti altri spazi, popoli e tempi, e a ripensare significati e presupposti su donne, mobilità e lavoro.",
@@ -447,6 +459,10 @@ var STORYMAP_EXTRA_I18N = {
     navStorymap: "StoryMap",
     navHistory: "Histoire",
     navDiscussion: "Discussion",
+    navInformation: "Informations",
+    infoPageTitle: "Informations",
+    infoPageLead:
+      "Cette page présentera des informations pratiques sur l'exposition et la storymap. Pour l'instant, il s'agit d'un texte d'exemple pour valider la navigation et la mise en page.",
     langMenuAria: "Choisir la langue",
     siteBrand: "Doing Well, Don't Worry",
     footerGeorgetownSfs: "Georgetown SFS",
@@ -575,7 +591,7 @@ var STORYMAP_EXTRA_I18N = {
     heroTitle: "Doing Well, Don't Worry",
     heroSubtitle:
       "Une collaboration numérique entre des étudiants de la School of Foreign Service de Georgetown et The Women and Memory Forum.",
-    heroCta: "Découvrir « Doing Well, Don't Worry »",
+    heroCta: "explorer la storymap",
     section1: "Les femmes sont toujours en mouvement.",
     section2:
       "Les femmes exercent différents types de travail et de mobilité qui façonnent leurs parcours de vie. Elles travaillent à la maison, dans les champs, les ateliers, les grandes villes, les petites villes ou d'autres pays. Leur travail et leurs déplacements traversent des espaces variés, réassemblant leurs relations au fil qu'elles deviennent partie prenante d'autres vies. Cette exposition présente des aperçus sur la vie de 21 femmes — médecins, domestiques, actrices, étudiantes, comptables, cinéastes, brodeuses, enseignantes, artistes, et comme mères, filles, mentorées et amies. Elles vivent en Égypte, Jordanie, Liban et Danemark, mais leurs vies nous invitent à voyager à travers bien d'autres espaces, peuples et temps, et à repenser sens et présupposés sur les femmes, la mobilité et le travail.",
@@ -592,6 +608,10 @@ var STORYMAP_EXTRA_I18N = {
     navStorymap: "StoryMap",
     navHistory: "Historia",
     navDiscussion: "Debate",
+    navInformation: "Información",
+    infoPageTitle: "Información",
+    infoPageLead:
+      "Esta página incluirá detalles prácticos sobre la exposición y el storymap. De momento es un texto de ejemplo para afinar la navegación y el diseño.",
     langMenuAria: "Elegir idioma",
     siteBrand: "Doing Well, Don't Worry",
     footerGeorgetownSfs: "Georgetown SFS",
@@ -720,7 +740,7 @@ var STORYMAP_EXTRA_I18N = {
     heroTitle: "Doing Well, Don't Worry",
     heroSubtitle:
       "Una colaboración digital entre estudiantes de la School of Foreign Service de Georgetown y The Women and Memory Forum.",
-    heroCta: "Vive «Doing Well, Don't Worry»",
+    heroCta: "explorar el storymap",
     section1: "Las mujeres siempre están en movimiento.",
     section2:
       "Las mujeres realizan distintos tipos de trabajo y movilidad que informan sus trayectorias de vida. Trabajan en casa, en el campo, en talleres, en grandes ciudades, pueblos pequeños u otros países. Su trabajo y su movimiento atraviesan espacios diversos, reensamblando sus relaciones al integrarse en muchas otras vidas. Esta exposición ofrece destellos de la vida de 21 mujeres — médicas, empleadas domésticas, actrices, estudiantes, contables, cineastas, bordadoras, profesoras, artistas, y como madres, hijas, mentoras y amigas. Viven en Egipto, Jordania, Líbano y Dinamarca, pero sus vidas nos invitan a viajar por más espacios, pueblos y tiempos, e inspirarnos a repensar significados y supuestos sobre mujeres, movilidad y trabajo.",
@@ -737,6 +757,10 @@ var STORYMAP_EXTRA_I18N = {
     navStorymap: "StoryMap",
     navHistory: "Geschichte",
     navDiscussion: "Diskussion",
+    navInformation: "Informationen",
+    infoPageTitle: "Informationen",
+    infoPageLead:
+      "Auf dieser Seite finden Sie später praktische Angaben zur Ausstellung und zum Storymap. Vorerst dient dieser Text als Platzhalter für Navigation und Layout.",
     langMenuAria: "Sprache wählen",
     siteBrand: "Doing Well, Don't Worry",
     footerGeorgetownSfs: "Georgetown SFS",
@@ -865,7 +889,7 @@ var STORYMAP_EXTRA_I18N = {
     heroTitle: "Doing Well, Don't Worry",
     heroSubtitle:
       "Eine digitale Zusammenarbeit zwischen Studierenden der Georgetown School of Foreign Service und The Women and Memory Forum.",
-    heroCta: "Erlebe „Doing Well, Don't Worry“",
+    heroCta: "storymap erkunden",
     section1: "Frauen sind immer in Bewegung.",
     section2:
       "Frauen üben unterschiedliche Arbeit und Mobilität aus, die ihre Lebenswege prägen. Sie arbeiten zu Hause, auf dem Feld, in Werkstätten, in Großstädten, kleinen Orten oder anderen Ländern. Ihre Arbeit und ihre Bewegung durchqueren verschiedene Räume und stellen Beziehungen neu zusammen, während sie Teil vieler anderer Leben werden. Diese Ausstellung zeigt Einblicke in das Leben von 21 Frauen — Ärztinnen, Hausangestellte, Schauspielerinnen, Studierende, Buchhalterinnen, Filmemacherinnen, Stickerinnen, Lehrerinnen, Künstlerinnen, und als Mütter, Töchter, Mentorinnen und Freundinnen. Sie leben in Ägypten, Jordanien, dem Libanon und Dänemark, doch ihre Leben laden uns ein, viele weitere Räume, Völker und Zeiten zu bereisen und vertraute Bedeutungen und Annahmen über Frauen, Mobilität und Arbeit neu zu denken.",

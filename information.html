@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Information - Storymap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-mode="viewer" id="top" class="theme-archive">
+    <nav class="siteNav siteNav--archive" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
+      <a href="./index.html#home" class="siteNav__brandLink" data-i18n-aria-label="siteBrand" aria-label="Doing Well, Don't Worry">
+        <img
+          class="siteNav__logo"
+          src="./assets/wmf-logo.png"
+          alt="The Women and Memory Forum"
+          width="200"
+          height="72"
+        />
+      </a>
+      <div class="siteNav__primary">
+        <a href="./index.html#home" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="./storymap.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navStorymap">StoryMap</span>
+        </a>
+        <a href="./history.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navHistory">History</span>
+        </a>
+        <a href="./discussion.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navDiscussion">Discussion</span>
+        </a>
+        <a href="./information.html" class="siteNav__tab siteNav__tab--active">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond">◆</span>]</span>
+          <span data-i18n="navInformation">Information</span>
+        </a>
+      </div>
+      <div class="siteNav__lang">
+        <button
+          type="button"
+          class="siteNav__langBtn"
+          id="langMenuBtn"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-controls="langMenuList"
+          data-i18n-aria-label="langButtonAria"
+          aria-label="Languages"
+        >
+          <span id="langCurrentLabel">EN</span>
+        </button>
+        <ul
+          id="langMenuList"
+          class="siteNav__langMenu"
+          role="listbox"
+          data-i18n-aria-label="langMenuAria"
+          aria-label="Choose language"
+        >
+          <li role="none">
+            <button type="button" class="siteNav__langOption" role="option" data-lang="en" aria-selected="true">
+              English
+            </button>
+          </li>
+          <li role="none">
+            <button type="button" class="siteNav__langOption" role="option" data-lang="ar" aria-selected="false">
+              العربية الفصحى
+            </button>
+          </li>
+          <li role="none">
+            <button type="button" class="siteNav__langOption" role="option" data-lang="it" aria-selected="false">
+              Italiano
+            </button>
+          </li>
+          <li role="none">
+            <button type="button" class="siteNav__langOption" role="option" data-lang="fr" aria-selected="false">
+              Français
+            </button>
+          </li>
+          <li role="none">
+            <button type="button" class="siteNav__langOption" role="option" data-lang="es" aria-selected="false">
+              Español
+            </button>
+          </li>
+          <li role="none">
+            <button type="button" class="siteNav__langOption" role="option" data-lang="de" aria-selected="false">
+              Deutsch
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="jsStatus" class="jsStatus jsStatus--hidden"></div>
+
+    <main class="infoPage infoPage--editorial">
+      <h1 data-i18n="infoPageTitle">Information</h1>
+      <p class="infoPage__lead" data-i18n="infoPageLead">
+        This page will hold practical details about the exhibition and the storymap. For now, it is a placeholder so navigation and layout can be finalized.
+      </p>
+      <p class="infoPage__body">
+        Example text: credits, visiting hours, accessibility, citation guidelines, and contact paths can live here in the same calm, archival tone as the rest of the site. Replace this paragraph when you are ready with real copy.
+      </p>
+    </main>
+
+    <div class="stickyFooterLinks">
+      <a href="https://sfs.georgetown.edu/" target="_blank" rel="noopener noreferrer" data-i18n="footerGeorgetownSfs"
+        >Georgetown SFS</a
+      >
+      <a href="https://wmf.org.eg/en/" target="_blank" rel="noopener noreferrer" data-i18n="footerWmf"
+        >The Women and Memory Forum</a
+      >
+      <a href="mailto:tbh36@georgetown.edu" data-i18n="footerContact">Contact us</a>
+      <button id="btnLogin" class="footerLoginBtn" type="button" data-i18n="footerLogin">Login</button>
+    </div>
+
+    <div id="loginModal" class="loginModal" aria-hidden="true">
+      <div class="loginModal__backdrop"></div>
+      <div class="loginModal__panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <h2 id="loginTitle" class="loginModal__title" data-i18n="loginModalTitle">Admin login</h2>
+        <p class="muted small" data-i18n="loginModalHint">Enter password to unlock admin mode.</p>
+        <div class="field">
+          <label for="adminPassword" data-i18n="loginPasswordLabel">Password</label>
+          <input id="adminPassword" type="password" autocomplete="current-password" />
+        </div>
+        <p id="loginError" class="loginModal__error" aria-live="polite"></p>
+        <div class="actions actions--row">
+          <button id="btnCancelLogin" class="btn btn--secondary" type="button" data-i18n="loginCancel">Cancel</button>
+          <button id="btnSubmitLogin" class="btn" type="button" data-i18n="loginUnlock">Unlock</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./site-i18n.js"></script>
+    <script src="./app.js?v=20260422sheet"></script>
+  </body>
+</html>

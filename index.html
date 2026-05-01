@@ -12,15 +12,40 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-mode="viewer" id="top">
-    <nav class="siteNav" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
-      <a href="./index.html#home" class="siteNav__brand" data-i18n="siteBrand">Doing Well, Don't Worry</a>
-      <div class="siteNav__tabs">
-        <a href="./index.html#home" class="siteNav__tab siteNav__tab--active" data-i18n="navHome">Home</a>
-        <a href="./storymap.html" class="siteNav__tab" data-i18n="navStorymap">StoryMap</a>
-        <a href="./history.html" class="siteNav__tab" data-i18n="navHistory">History</a>
-        <a href="./discussion.html" class="siteNav__tab" data-i18n="navDiscussion">Discussion</a>
-        <div class="siteNav__lang">
+  <body data-mode="viewer" id="top" class="theme-archive">
+    <nav class="siteNav siteNav--archive" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
+      <a href="./index.html#home" class="siteNav__brandLink" data-i18n-aria-label="siteBrand" aria-label="Doing Well, Don't Worry">
+        <img
+          class="siteNav__logo"
+          src="./assets/wmf-logo.png"
+          alt="The Women and Memory Forum"
+          width="200"
+          height="72"
+        />
+      </a>
+      <div class="siteNav__primary">
+        <a href="./index.html#home" class="siteNav__tab siteNav__tab--active">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond">◆</span>]</span>
+          <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="./storymap.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navStorymap">StoryMap</span>
+        </a>
+        <a href="./history.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navHistory">History</span>
+        </a>
+        <a href="./discussion.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navDiscussion">Discussion</span>
+        </a>
+        <a href="./information.html" class="siteNav__tab">
+          <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
+          <span data-i18n="navInformation">Information</span>
+        </a>
+      </div>
+      <div class="siteNav__lang">
           <button
             type="button"
             class="siteNav__langBtn"
@@ -71,7 +96,6 @@
               </button>
             </li>
           </ul>
-        </div>
       </div>
     </nav>
 
@@ -80,36 +104,44 @@
       <div class="jsStatus jsStatus--error" data-i18n="statusJsRequired">JavaScript is required to run this app.</div>
     </noscript>
 
-    <section class="hero" id="home">
+    <section class="hero hero--archive" id="home">
       <div class="hero__bg" aria-hidden="true"></div>
-      <h1 id="heroTitle" data-content-key="heroTitle" class="hero__title">Doing Well, Don't Worry</h1>
+      <h1 id="heroTitle" data-content-key="heroTitle" class="hero__title">doing well, don't worry</h1>
       <p id="heroSubtitle" data-content-key="heroSubtitle">
         A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.
       </p>
-      <a class="heroCta" href="./storymap.html" data-content-key="heroCta">Experience "Doing Well, Don't Worry"</a>
+      <a class="heroCta heroCta--underline" href="./storymap.html" data-content-key="heroCta">explore the storymap</a>
     </section>
 
-    <section class="scrollSection reveal">
+    <section class="scrollSection reveal scrollSection--editorial scrollSection--toneRose scrollSection--alignStart">
         <p data-content-key="section1">
           Women are always on the move.
         </p>
     </section>
 
-    <section class="scrollSection reveal">
+    <section class="scrollSection reveal scrollSection--editorial scrollSection--toneMint scrollSection--alignEnd">
         <p data-content-key="section2">
           Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.
         </p>
     </section>
 
-    <section class="scrollSection reveal">
+    <section class="scrollSection reveal scrollSection--editorial scrollSection--toneSand scrollSection--alignStart">
         <p data-content-key="section3">
           This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.
         </p>
     </section>
 
-    <section class="scrollSection reveal">
-      <a class="heroCta" href="./history.html" data-i18n="engageHistoryCta">Engage with History</a>
+    <section class="scrollSection reveal scrollSection--editorial scrollSection--toneBlush scrollSection--alignEnd">
+      <a class="heroCta heroCta--underline" href="./history.html" data-i18n="engageHistoryCta">Engage with History</a>
     </section>
+
+    <div class="landingThumbStrip" aria-hidden="true">
+      <div class="landingThumbStrip__item"></div>
+      <div class="landingThumbStrip__item"></div>
+      <div class="landingThumbStrip__item"></div>
+      <div class="landingThumbStrip__item"></div>
+      <div class="landingThumbStrip__item"></div>
+    </div>
 
     <div class="homePageBuffer" aria-hidden="true"></div>
 
