@@ -38,10 +38,11 @@
   --storymap-ink: #3d100c;
   --discussion-bg: #d6d6d2;
   --discussion-ink: #3d100c;
-  /* Home only: dark dusty blue + warm light type (slightly deepened so the mark pops) */
-  --home-bg: #2f4555;
-  --home-ink: #f3ebe2;
-  --home-muted: rgba(243, 235, 226, 0.9);
+  /* Home only: dark terracotta / burnt sienna field + high-contrast warm light type */
+  /* Base ref ~#854937; home uses a deeper shade for a solid, legible field. */
+  --home-bg: #4a281e;
+  --home-ink: #faf6f0;
+  --home-muted: rgba(255, 250, 244, 0.88);
   --archive-muted: #5c403b;
   /* Hero headline (CCAS-style dense sans) */
   --archive-hero-ink: #421c14;
@@ -95,9 +96,9 @@ html:has(body[data-mode="discussion"]) {
   background: var(--discussion-bg);
 }
 
-/* Arabic: layout stays LTR; body uses Arabic-capable font for glyph shaping. */
+/* Arabic UI (Kufam: contemporary geometric Arabic sans; pairs with Inter like archival identity work e.g. EDA). */
 body.lang-ar {
-  font-family: "Cairo", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family: "Kufam", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
 
 /* Arabic: RTL text inside controls; layout/grid stays LTR — no mirroring of panels. */
@@ -303,9 +304,9 @@ body.lang-ar #jsStatus {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: 4px 12px;
-  row-gap: 6px;
-  padding: 4px clamp(10px, 2.5vw, 18px);
+  gap: 8px 14px;
+  row-gap: 10px;
+  padding: 10px clamp(12px, 2.8vw, 22px);
   background: transparent;
   border-bottom: none;
   backdrop-filter: none;
@@ -353,10 +354,10 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sit
 .siteNav__brandLink {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(8px, 1.1vw, 14px);
   flex: 0 1 auto;
   min-width: 0;
-  max-width: min(52vw, 22rem);
+  max-width: min(50vw, 26rem);
   text-decoration: none;
   line-height: 1.05;
   color: inherit;
@@ -373,23 +374,23 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sit
 .siteNav__brandPrimary {
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   font-weight: 800;
-  font-size: clamp(0.72rem, 1.2vw, 0.9rem);
+  font-size: clamp(0.8rem, 1.5vw, 1.05rem);
   letter-spacing: -0.02em;
   line-height: 1.12;
   color: inherit;
 }
 
 .siteNav__brandSecondary {
-  font-family: "Inter", "Noto Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Kufam", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
-  font-size: clamp(0.58rem, 0.95vw, 0.72rem);
+  font-size: clamp(0.65rem, 1.08vw, 0.88rem);
   line-height: 1.15;
   opacity: 0.92;
   color: inherit;
 }
 
 .siteNav__logo {
-  height: 34px;
+  height: clamp(36px, 4.2vw, 52px);
   width: auto;
   display: block;
   flex-shrink: 0;
@@ -551,8 +552,8 @@ body.theme-archive .siteNav__langMenu {
   padding-right: clamp(18px, 5vw, 48px);
 }
 
-.theme-archive .hero--archive .hero__title,
-.theme-archive .hero--archive.hero h1 {
+.theme-archive .hero--archive .hero__title:not(.hero__title--bilingual),
+.theme-archive .hero--archive.hero h1:not(.hero__title--bilingual) {
   max-width: min(92vw, 40rem);
   margin-left: auto;
   margin-right: auto;
@@ -571,8 +572,8 @@ body.theme-archive .siteNav__langMenu {
   animation: heroEnter 0.78s var(--ease-out-back) 0.06s forwards;
 }
 
-.theme-archive .hero--archive .hero__title::after,
-.theme-archive .hero--archive.hero h1::after {
+.theme-archive .hero--archive .hero__title:not(.hero__title--bilingual)::after,
+.theme-archive .hero--archive.hero h1:not(.hero__title--bilingual)::after {
   display: none;
 }
 
@@ -633,36 +634,73 @@ body.theme-archive .siteNav__langMenu {
 
 body.theme-archive.page-home .hero--archive {
   min-height: 0;
-  padding-top: clamp(28px, 7vh, 64px);
-  padding-bottom: clamp(12px, 3vh, 24px);
+  padding-top: clamp(56px, 14vh, 140px);
+  padding-bottom: clamp(36px, 7vh, 72px);
 }
 
-body.theme-archive.page-home .hero--archive .hero__title,
-body.theme-archive.page-home .hero--archive.hero h1 {
-  max-width: min(96vw, 1400px);
+body.theme-archive.page-home .hero--archive .hero__title.hero__title--bilingual {
+  max-width: min(96vw, 1500px);
   width: 100%;
-  padding-inline: clamp(8px, 2vw, 20px);
+  padding-inline: clamp(8px, 2vw, 24px);
   box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(0.5rem, 1.8vw, 1.15rem);
+  text-align: center;
+  font-weight: unset;
+  font-size: unset;
+  line-height: normal;
+  letter-spacing: normal;
   white-space: normal;
-  font-size: clamp(2rem, 8.5vw, 5.25rem);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: heroEnter 0.78s var(--ease-out-back) 0.06s forwards;
+}
+
+body.theme-archive.page-home .hero--archive .hero__titleLine--en {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.85rem, 15vw, 9.25rem);
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
   color: var(--home-ink);
 }
 
+body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
+  font-family: "Kufam", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.35rem, 12vw, 8.35rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1.12;
+  color: var(--home-ink);
+  opacity: 0.96;
+  text-align: center;
+}
+
 @media (max-width: 540px) {
-  body.theme-archive.page-home .hero--archive .hero__title,
-  body.theme-archive.page-home .hero--archive.hero h1 {
-    font-size: clamp(1.45rem, 7.5vw, 2.35rem);
+  body.theme-archive.page-home .hero--archive .hero__titleLine--en {
+    font-size: clamp(1.65rem, 9.5vw, 3.2rem);
+  }
+
+  body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
+    font-size: clamp(1.45rem, 8.2vw, 2.85rem);
   }
 }
 
 body.theme-archive.page-home .hero--archive p {
   text-align: center;
   max-width: 38rem;
-  margin-top: clamp(1.15rem, 3.5vw, 2rem);
+  margin-top: clamp(1.75rem, 4.5vw, 3rem);
   color: var(--home-muted);
   font-weight: 600;
+}
+
+body.theme-archive.page-home .hero--archive .hero__actions {
+  margin-top: clamp(2rem, 5.5vw, 3.75rem);
 }
 
 body.theme-archive.page-home .heroLink {
@@ -676,7 +714,7 @@ body.theme-archive.page-home section.landingCopy {
 body.theme-archive.page-home .scrollSection--editorial.landingCopy > p {
   max-width: 42rem;
   margin: 0 auto;
-  padding: clamp(18px, 4vw, 36px) clamp(18px, 4vw, 28px) clamp(64px, 12vh, 112px);
+  padding: clamp(32px, 5.5vw, 52px) clamp(18px, 4vw, 28px) clamp(64px, 12vh, 112px);
   line-height: 1.65;
   font-size: clamp(0.98rem, 1.35vw, 1.12rem);
   font-weight: 600;
@@ -796,7 +834,7 @@ body.theme-archive.page-home .scrollSection--editorial.landingCopy > p {
   margin-inline-start: min(6vw, 3rem);
 }
 
-/* Home landing: dark dusty blue, seamless with nav */
+/* Home landing: dark terracotta field, seamless with nav */
 body.theme-archive.page-home {
   background: var(--home-bg);
   color: var(--home-ink);
@@ -804,13 +842,13 @@ body.theme-archive.page-home {
 
 body.theme-archive.page-home .jsStatus {
   background: var(--home-bg);
-  border-color: rgba(243, 235, 226, 0.22);
+  border-color: rgba(250, 246, 240, 0.22);
   color: var(--home-ink);
 }
 
 body.theme-archive.page-home .siteNav__langMenu {
   background: var(--home-bg);
-  border-color: rgba(243, 235, 226, 0.22);
+  border-color: rgba(250, 246, 240, 0.22);
 }
 
 body.theme-archive.page-home .siteNav--archive .siteNav__primary .siteNav__tab {
@@ -825,13 +863,13 @@ body.theme-archive.page-home .siteNav--archive .siteNav__primary .siteNav__tab--
 body.theme-archive.page-home .siteNav--archive .siteNav__langBtn {
   background: rgba(255, 255, 255, 0.12);
   color: var(--home-ink);
-  border-color: rgba(243, 235, 226, 0.35);
+  border-color: rgba(250, 246, 240, 0.35);
 }
 
 body.theme-archive.page-home .siteNav--archive .siteNav__langBtn:hover,
 body.theme-archive.page-home .siteNav--archive .siteNav__langBtn:focus {
-  border-color: rgba(243, 235, 226, 0.55);
-  box-shadow: 0 0 0 2px rgba(243, 235, 226, 0.1);
+  border-color: rgba(250, 246, 240, 0.55);
+  box-shadow: 0 0 0 2px rgba(250, 246, 240, 0.12);
   color: var(--home-ink);
   transform: none;
 }
@@ -2036,7 +2074,7 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sti
 }
 
 body.theme-archive.page-home .homePageBuffer {
-  height: 72px;
+  height: 104px;
 }
 
 .historyPage {
@@ -2273,7 +2311,7 @@ body.theme-archive.page-home .homePageBuffer {
   }
 
   .siteNav--archive .siteNav__brandLink {
-    max-width: min(100%, 20rem);
+    max-width: min(100%, 24rem);
     flex: 1 1 12rem;
   }
 
@@ -2302,6 +2340,7 @@ body.theme-archive.page-home .homePageBuffer {
 
   .hero__title,
   .hero h1,
+  .hero__titleLine,
   .hero p,
   .heroCta,
   .heroCta--underline,
