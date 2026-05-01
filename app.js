@@ -193,7 +193,8 @@ const GITHUB_REPO_NAME = "storymap-relationship-graph";
 const GITHUB_REPO_BRANCH = "main";
 
 const DEFAULT_CONTENT = {
-  heroTitle: "Doing well, don't worry.",
+  heroTitleEn: "Doing Well, Don't Worry.",
+  heroTitleAr: "أنا بخير، اطمئنوا",
   heroSubtitle:
     "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
   heroCta: "experience the storymap",
@@ -803,6 +804,15 @@ function applyTextDirToNode(node) {
     node.removeAttribute("dir");
     return;
   }
+  const langAttr = node.getAttribute && node.getAttribute("lang");
+  if (langAttr === "ar") {
+    node.setAttribute("dir", "rtl");
+    return;
+  }
+  if (langAttr === "en") {
+    node.setAttribute("dir", "ltr");
+    return;
+  }
   if (currentLang === "ar") node.setAttribute("dir", "rtl");
   else node.removeAttribute("dir");
 }
@@ -930,6 +940,7 @@ const el = {
   btnLogoutAdmin: document.getElementById("btnLogoutAdmin"),
   citationList: document.getElementById("citationList"),
   cfgHeroTitle: document.getElementById("cfgHeroTitle"),
+  cfgHeroTitleAr: document.getElementById("cfgHeroTitleAr"),
   cfgHeroSubtitle: document.getElementById("cfgHeroSubtitle"),
   cfgHeroCta: document.getElementById("cfgHeroCta"),
   cfgHistoryTitle: document.getElementById("cfgHistoryTitle"),
@@ -972,6 +983,9 @@ function loadContentConfig() {
     if (!raw) return { ...DEFAULT_CONTENT };
     const parsed = JSON.parse(raw);
     const merged = { ...DEFAULT_CONTENT, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+    if (parsed && typeof parsed === "object" && typeof parsed.heroTitle === "string" && parsed.heroTitle.trim() !== "") {
+      merged.heroTitleEn = parsed.heroTitle;
+    }
     // Migrate older single-word title to the current heading.
     if (String(merged.historyTitle || "").trim() === "History") {
       merged.historyTitle = DEFAULT_CONTENT.historyTitle;
@@ -4882,7 +4896,8 @@ function initNavScrollClass() {
 function initContentEditorPanel() {
   if (!el.btnSaveContentConfig) return;
   const cfg = loadContentConfig();
-  if (el.cfgHeroTitle) el.cfgHeroTitle.value = cfg.heroTitle || "";
+  if (el.cfgHeroTitle) el.cfgHeroTitle.value = cfg.heroTitleEn ?? cfg.heroTitle ?? "";
+  if (el.cfgHeroTitleAr) el.cfgHeroTitleAr.value = cfg.heroTitleAr ?? "";
   if (el.cfgHeroSubtitle) el.cfgHeroSubtitle.value = cfg.heroSubtitle || "";
   if (el.cfgHeroCta) el.cfgHeroCta.value = cfg.heroCta || "";
   if (el.cfgHistoryTitle) el.cfgHistoryTitle.value = cfg.historyTitle || "";
@@ -4891,7 +4906,8 @@ function initContentEditorPanel() {
   on(el.btnSaveContentConfig, "click", () => {
     const nextCfg = {
       ...cfg,
-      heroTitle: el.cfgHeroTitle ? el.cfgHeroTitle.value.trim() : cfg.heroTitle,
+      heroTitleEn: el.cfgHeroTitle ? el.cfgHeroTitle.value.trim() : cfg.heroTitleEn,
+      heroTitleAr: el.cfgHeroTitleAr ? el.cfgHeroTitleAr.value.trim() : cfg.heroTitleAr,
       heroSubtitle: el.cfgHeroSubtitle ? el.cfgHeroSubtitle.value.trim() : cfg.heroSubtitle,
       heroCta: el.cfgHeroCta ? el.cfgHeroCta.value.trim() : cfg.heroCta,
       historyTitle: el.cfgHistoryTitle ? el.cfgHistoryTitle.value.trim() : cfg.historyTitle,

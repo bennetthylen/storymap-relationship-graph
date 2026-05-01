@@ -7,8 +7,8 @@
   --wmf-black: #2a2a2c;
   --wmf-ink: #3a3a32;
   --wmf-cream: #f9f3eb;
-  --wmf-gold: #e4a317;
-  --wmf-gold-rgb: 228, 163, 23;
+  --wmf-gold: #f0c26a;
+  --wmf-gold-rgb: 240, 194, 106;
   --wmf-sand: #f2e3b7;
   --wmf-mint: #d4f5e8;
   --wmf-sky: #cfefff;
@@ -636,58 +636,89 @@ body.theme-archive.page-home .hero--archive {
   min-height: 0;
   padding-top: clamp(56px, 14vh, 140px);
   padding-bottom: clamp(36px, 7vh, 72px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 body.theme-archive.page-home .hero--archive .hero__title.hero__title--bilingual {
+  width: fit-content;
   max-width: min(96vw, 1500px);
-  width: 100%;
   padding-inline: clamp(8px, 2vw, 24px);
   box-sizing: border-box;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: clamp(0.5rem, 1.8vw, 1.15rem);
-  text-align: center;
-  font-weight: unset;
-  font-size: unset;
-  line-height: normal;
-  letter-spacing: normal;
-  white-space: normal;
   position: relative;
   z-index: 1;
   opacity: 0;
   animation: heroEnter 0.78s var(--ease-out-back) 0.06s forwards;
 }
 
+/* Overlapping EN + AR: Syne (bold playful Latin) + Changa (heavy geometric Arabic). EN solid behind; AR knockout fill + stroke. */
+body.theme-archive.page-home .hero--archive .hero__titleStack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: min(92vw, 1480px);
+  isolation: isolate;
+}
+
+body.theme-archive.page-home .hero--archive .hero__titleLine--en,
+body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
+  display: block;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
 body.theme-archive.page-home .hero--archive .hero__titleLine--en {
-  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(2.85rem, 15vw, 9.25rem);
-  font-weight: 900;
-  letter-spacing: -0.045em;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2rem, 11vw, 7.25rem);
+  font-weight: 800;
+  letter-spacing: -0.058em;
   line-height: 1.02;
   color: var(--home-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
-  font-family: "Kufam", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(2.35rem, 12vw, 8.35rem);
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  line-height: 1.12;
-  color: var(--home-ink);
-  opacity: 0.96;
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-3.25rem, -8.5vw, -1.6rem);
+  width: max-content;
+  max-width: 100%;
   text-align: center;
+  font-family: "Changa", "Kufam", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2rem, 11vw, 7.25rem);
+  font-weight: 800;
+  letter-spacing: 0.015em;
+  line-height: 1.02;
+  /* Fill matches page so glyphs carve through the English; stroke defines edges */
+  color: var(--home-bg);
+  -webkit-text-fill-color: var(--home-bg);
+  -webkit-text-stroke: clamp(1.25px, 0.16vw, 3px) var(--home-ink);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 1px var(--home-bg),
+    0 0 12px rgba(74, 40, 30, 0.45),
+    0 4px 20px rgba(0, 0, 0, 0.18);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media (max-width: 540px) {
-  body.theme-archive.page-home .hero--archive .hero__titleLine--en {
-    font-size: clamp(1.65rem, 9.5vw, 3.2rem);
+  body.theme-archive.page-home .hero--archive .hero__titleLine--en,
+  body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
+    font-size: clamp(1.25rem, 7.2vw, 2.65rem);
   }
 
   body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
-    font-size: clamp(1.45rem, 8.2vw, 2.85rem);
+    margin-top: clamp(-2rem, -6vw, -1rem);
+    -webkit-text-stroke: clamp(0.8px, 0.2vw, 1.5px) var(--home-ink);
   }
 }
 
@@ -1252,8 +1283,8 @@ body.theme-archive.page-home .hero.hero--archive {
   }
 }
 
-.hero__title,
-.hero h1 {
+.hero__title:not(.hero__title--bilingual),
+.hero h1:not(.hero__title--bilingual) {
   margin: 0 0 12px;
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: calc(clamp(2.8rem, 8vw, 4.5rem) + var(--header-bump));
@@ -1269,8 +1300,8 @@ body.theme-archive.page-home .hero.hero--archive {
   animation: heroEnter 0.78s var(--ease-out-back) 0.06s forwards;
 }
 
-.hero__title::after,
-.hero h1::after {
+.hero__title:not(.hero__title--bilingual)::after,
+.hero h1:not(.hero__title--bilingual)::after {
   content: "";
   display: block;
   width: min(120px, 28vw);
