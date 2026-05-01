@@ -639,16 +639,17 @@ body.theme-archive .siteNav__langMenu {
   opacity: 0.82;
 }
 
-/* Home hero: fills first screen below nav so landing copy sits below the fold */
+/* Home hero: below-fold landing; top-align grid so headline + links fit in view */
 body.theme-archive.page-home .hero.hero--archive {
   /* Fallback then svh: subtract approximate sticky nav band */
   min-height: calc(100vh - 5.5rem);
   min-height: calc(100svh - clamp(52px, 11vmin, 96px));
   min-width: 0;
   max-width: 100%;
+  align-content: start;
   /* Extra top/bottom room so Syne ascenders/descenders aren’t clipped by overflow */
-  padding-top: clamp(88px, 18vh, 200px);
-  padding-bottom: clamp(64px, 14vh, 140px);
+  padding-top: clamp(72px, 14vh, 160px);
+  padding-bottom: clamp(48px, 10vh, 100px);
   overflow-x: clip;
   overflow-y: visible;
   background: var(--home-bg);
@@ -751,16 +752,16 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
 
 body.theme-archive.page-home .hero--archive p {
   box-sizing: border-box;
-  /* ~3 lines: narrowed column; avoid balance so wrapping isn’t forced into 2 lines */
-  max-width: min(38ch, 92vw);
+  /* ~3 lines for the collaboration blurb (narrower than a 2-line strip) */
+  max-width: min(16rem, 88vw);
   width: 100%;
-  margin-top: clamp(1.75rem, 4.5vw, 3rem);
+  margin-top: clamp(1.25rem, 3.2vw, 2.25rem);
   margin-left: auto;
   margin-right: auto;
-  padding: clamp(0.5rem, 1.5vw, 0.75rem) 0;
+  padding: 0 clamp(0.5rem, 2vw, 1rem);
   text-align: center;
-  text-wrap: pretty;
-  line-height: 1.52;
+  text-wrap: balance;
+  line-height: 1.5;
   font-size: clamp(0.92rem, 1.85vw, 1.06rem);
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -768,7 +769,7 @@ body.theme-archive.page-home .hero--archive p {
 }
 
 body.theme-archive.page-home .hero--archive .hero__actions {
-  margin-top: clamp(2rem, 5.5vw, 3.75rem);
+  margin-top: clamp(1.35rem, 3.8vw, 2.5rem);
 }
 
 body.theme-archive.page-home .heroLink {
