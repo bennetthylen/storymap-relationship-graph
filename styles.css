@@ -38,15 +38,14 @@
   --storymap-ink: #3d100c;
   --discussion-bg: #d6d6d2;
   --discussion-ink: #3d100c;
-  /* Home only: burgundy field + cream UI type; hero EN uses dark brown for contrast */
-  --home-bg: #911f3d;
+  /* Home only: deeper burgundy field + cream UI; hero EN line uses dusty blue (see --landing-dusty-blue) */
+  --home-bg: #5c1528;
   --home-ink: #faf6f0;
-  --home-muted: rgba(255, 250, 244, 0.88);
-  --home-hero-en: #2a0f08;
+  --home-muted: rgba(255, 250, 244, 0.9);
   --home-hero-title-max: 56rem;
-  /* Single-line headlines: low vw cap keeps full line on screen without horizontal scroll */
-  --home-hero-title-fs: clamp(0.55rem, min(5.85vw, 7.5vh), 4.35rem);
-  --home-hero-title-fs-sm: clamp(0.5rem, min(5.15vw, 6.5vh), 2.65rem);
+  /* Single-line headlines: vw kept moderate; vh drives “taller” scale without stretching width as much */
+  --home-hero-title-fs: clamp(0.75rem, min(6vw, 13vh), 5.75rem);
+  --home-hero-title-fs-sm: clamp(0.65rem, min(5.4vw, 11vh), 3.5rem);
   --archive-muted: #5c403b;
   /* Hero headline (CCAS-style dense sans) */
   --archive-hero-ink: #421c14;
@@ -58,6 +57,10 @@
   --archive-band-sky: color-mix(in srgb, var(--wmf-sky) 38%, var(--archive-bg));
   --archive-band-sand: color-mix(in srgb, var(--wmf-sand) 36%, var(--archive-bg));
   --archive-band-blush: color-mix(in srgb, var(--wmf-pink-soft) 48%, var(--archive-bg));
+  /* Home landing frames + hero English headline (shared dusty blue) */
+  --landing-dusty-blue: #9db3c4;
+  --landing-dusty-rim: color-mix(in srgb, var(--landing-dusty-blue) 70%, #ffffff 30%);
+  --home-hero-en: var(--landing-dusty-blue);
   /* Heading scale bump (~1–2pt) */
   --header-bump: 3px;
 }
@@ -636,13 +639,15 @@ body.theme-archive .siteNav__langMenu {
   opacity: 0.82;
 }
 
-/* Home hero: overlapping bilingual title (Syne + Noto Nastaliq Urdu); min-width:0 avoids grid overflow scroll */
+/* Home hero: fills first screen below nav so landing copy sits below the fold */
 body.theme-archive.page-home .hero.hero--archive {
-  min-height: 0;
+  /* Fallback then svh: subtract approximate sticky nav band */
+  min-height: calc(100vh - 5.5rem);
+  min-height: calc(100svh - clamp(52px, 11vmin, 96px));
   min-width: 0;
   max-width: 100%;
-  padding-top: clamp(56px, 14vh, 140px);
-  padding-bottom: clamp(36px, 7vh, 72px);
+  padding-top: clamp(64px, 16vh, 160px);
+  padding-bottom: clamp(52px, 11vh, 120px);
   overflow-x: hidden;
   background: var(--home-bg);
 }
@@ -673,6 +678,7 @@ body.theme-archive.page-home .hero--archive .hero__titleStack {
   min-width: 0;
   max-width: min(100%, var(--home-hero-title-max));
   margin-inline: auto;
+  padding-block: 0.15em 0.35em;
   isolation: isolate;
 }
 
@@ -683,7 +689,7 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   max-width: 100%;
   font-size: var(--home-hero-title-fs);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.12;
   text-align: center;
   white-space: nowrap;
   -webkit-font-smoothing: antialiased;
@@ -695,15 +701,19 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--en {
   z-index: 1;
   font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.058em;
+  line-height: 1.22;
+  padding-bottom: 0.14em;
   color: var(--home-hero-en);
 }
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   position: relative;
   z-index: 2;
-  margin-top: clamp(-3rem, -8vw, -1.5rem);
+  /* Less negative = Arabic sits lower, covers less of the English line */
+  margin-top: clamp(-1.35rem, -3.5vw, -0.45rem);
   font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
+  line-height: 1.2;
   letter-spacing: 0;
   color: var(--home-bg);
   -webkit-text-fill-color: var(--home-bg);
@@ -722,7 +732,7 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   }
 
   body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
-    margin-top: clamp(-2rem, -6vw, -1rem);
+    margin-top: clamp(-0.85rem, -2.75vw, -0.2rem);
     -webkit-text-stroke: clamp(1.2px, 0.35vw, 2px) #fff;
   }
 }
@@ -747,16 +757,89 @@ body.theme-archive.page-home section.landingCopy {
   background: var(--home-bg);
 }
 
-body.theme-archive.page-home .scrollSection--editorial.landingCopy > p {
-  max-width: 42rem;
-  margin: 0 auto;
-  padding: clamp(32px, 5.5vw, 52px) clamp(18px, 4vw, 28px) clamp(64px, 12vh, 112px);
+/* Narrative column flanked by archival stills; main column first in DOM for screen readers */
+body.theme-archive.page-home .landingBand {
+  width: 100%;
+  max-width: min(1320px, 100%);
+  margin-inline: auto;
+  padding: clamp(28px, 5vw, 52px) clamp(14px, 4vw, 28px) clamp(56px, 12vh, 112px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, min(42rem, 100%)) minmax(0, 1fr);
+  grid-template-areas: "railL main railR";
+  gap: clamp(14px, 2.5vw, 32px);
+  align-items: start;
+}
+
+body.theme-archive.page-home .landingBand__main {
+  grid-area: main;
+  min-width: 0;
+}
+
+body.theme-archive.page-home .landingBand__rail {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 20px);
+  min-width: 0;
+}
+
+body.theme-archive.page-home .landingBand__rail--left {
+  grid-area: railL;
+}
+
+body.theme-archive.page-home .landingBand__rail--right {
+  grid-area: railR;
+}
+
+body.theme-archive.page-home .landingFigure {
+  margin: 0;
+  border: 3px solid var(--landing-dusty-blue);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px var(--landing-dusty-rim),
+    0 14px 36px rgba(15, 24, 36, 0.22);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--landing-dusty-blue) 14%, rgba(0, 0, 0, 0.06));
+}
+
+body.theme-archive.page-home .landingFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+body.theme-archive.page-home .landingCopy .landingBand__main p {
+  max-width: none;
+  margin: 0;
+  padding: clamp(8px, 1.5vw, 16px) 0;
   line-height: 1.65;
   font-size: clamp(0.98rem, 1.35vw, 1.12rem);
   font-weight: 600;
   color: var(--home-muted);
   text-align: left;
   border: none;
+}
+
+@media (max-width: 960px) {
+  body.theme-archive.page-home .landingBand {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "main"
+      "railL"
+      "railR";
+    gap: clamp(18px, 4vw, 28px);
+  }
+
+  body.theme-archive.page-home .landingBand__rail {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  body.theme-archive.page-home .landingFigure {
+    flex: 1 1 min(200px, 44vw);
+    max-width: min(240px, 48vw);
+  }
 }
 
 .heroCta--underline {
@@ -1173,6 +1256,12 @@ body[data-mode="discussion"] .card:hover {
 /* Default .hero gradient lives above; archive landing heroes must match body (see .hero--archive earlier). */
 .theme-archive .hero.hero--archive {
   background: var(--archive-bg);
+}
+
+/* Home: base .hero sets overflow:hidden — allow vertical paint so Syne descenders / Nastaliq aren’t clipped */
+body.theme-archive.page-home .hero.hero--archive {
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .heroNodes {
