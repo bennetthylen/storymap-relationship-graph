@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -45,6 +45,7 @@
           <span data-i18n="navInformation">Information</span>
         </a>
       </div>
+      <div class="siteNav__end">
       <div class="siteNav__lang">
           <button
             type="button"
@@ -97,6 +98,17 @@
             </li>
           </ul>
       </div>
+      <a href="./index.html#home" class="siteNav__crestLink" aria-label="Georgetown University">
+        <img
+          class="siteNav__crestLogo"
+          src="./assets/logo-primary-vertical.svg"
+          alt=""
+          width="110"
+          height="116"
+          decoding="async"
+        />
+      </a>
+      </div>
     </nav>
 
     <div id="jsStatus" class="jsStatus jsStatus--loading" data-i18n="statusLoadingStorymap">Loading storymap…</div>
@@ -110,7 +122,10 @@
       <p id="heroSubtitle" data-content-key="heroSubtitle">
         A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.
       </p>
-      <a class="heroCta heroCta--underline" href="./storymap.html" data-content-key="heroCta">explore the storymap</a>
+      <div class="hero__actions">
+        <a class="heroLink" href="./storymap.html" data-content-key="heroCta">experience the storymap</a>
+        <a class="heroLink" href="./history.html" data-i18n="engageHistoryCta">engage with history</a>
+      </div>
     </section>
 
     <section class="scrollSection reveal scrollSection--editorial scrollSection--toneRose scrollSection--alignStart">
@@ -129,10 +144,6 @@
         <p data-content-key="section3">
           This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.
         </p>
-    </section>
-
-    <section class="scrollSection reveal scrollSection--editorial scrollSection--toneBlush scrollSection--alignEnd">
-      <a class="heroCta heroCta--underline" href="./history.html" data-i18n="engageHistoryCta">Engage with History</a>
     </section>
 
     <div class="landingThumbStrip" aria-hidden="true">

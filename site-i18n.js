@@ -39,7 +39,7 @@ var STORYMAP_EXTRA_I18N = {
     statusDiscussionSaveFail: "Could not save post. Check storage or Supabase settings.",
     statusReplyEmpty: "Reply text cannot be empty.",
     statusReplySaveFail: "Could not save reply. Check storage or Supabase settings.",
-    engageHistoryCta: "Engage with History",
+    engageHistoryCta: "engage with history",
     historySectionImages: "Images",
     historyImagesHint: "Add visual material here as you curate this section.",
     historySlot1: "Image slot 1",
@@ -144,7 +144,7 @@ var STORYMAP_EXTRA_I18N = {
     heroTitle: "doing well, don't worry",
     heroSubtitle:
       "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
-    heroCta: "explore the storymap",
+    heroCta: "experience the storymap",
     section1: "Women are always on the move.",
     section2:
       "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people’s lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",

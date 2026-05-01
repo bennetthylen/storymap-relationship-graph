@@ -22,6 +22,10 @@
   min-height: 100%;
 }
 
+body.theme-storymap .storymapCanvasPanel {
+  background: var(--storymap-bg);
+}
+
 .smPreviewToggle {
   position: absolute;
   left: 14px;
@@ -522,4 +526,9 @@ body.layout--storymapPreview .storymapAdminPanel {
   .storymapCanvasPanel {
     min-height: 62vh;
   }
+}
+
+body.theme-storymap .storymapViewport {
+  border-color: rgba(61, 16, 12, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(61, 16, 12, 0.05);
 }
