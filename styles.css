@@ -38,14 +38,14 @@
   --storymap-ink: #3d100c;
   --discussion-bg: #d6d6d2;
   --discussion-ink: #3d100c;
-  /* Home only: deeper burgundy field + cream UI; hero EN uses saturated sky blue */
+  /* Home only: deeper burgundy field + cream UI; hero EN uses dusty blue (see --landing-dusty-blue) */
   --home-bg: #5c1528;
   --home-ink: #faf6f0;
   --home-muted: rgba(255, 250, 244, 0.9);
-  --home-hero-title-max: 56rem;
-  /* Single-line headlines: vw kept moderate; vh drives “taller” scale without stretching width as much */
-  --home-hero-title-fs: clamp(0.75rem, min(6vw, 13vh), 5.75rem);
-  --home-hero-title-fs-sm: clamp(0.65rem, min(5.4vw, 11vh), 3.5rem);
+  --home-hero-title-max: 50rem;
+  /* Slightly pulled in from full-bleed; vh still drives height */
+  --home-hero-title-fs: clamp(0.7rem, min(5.2vw, 12vh), 5.1rem);
+  --home-hero-title-fs-sm: clamp(0.6rem, min(4.9vw, 10.5vh), 3.25rem);
   --archive-muted: #5c403b;
   /* Hero headline (CCAS-style dense sans) */
   --archive-hero-ink: #421c14;
@@ -57,11 +57,10 @@
   --archive-band-sky: color-mix(in srgb, var(--wmf-sky) 38%, var(--archive-bg));
   --archive-band-sand: color-mix(in srgb, var(--wmf-sand) 36%, var(--archive-bg));
   --archive-band-blush: color-mix(in srgb, var(--wmf-pink-soft) 48%, var(--archive-bg));
-  /* Home landing frames (dusty); hero EN uses brighter blue below */
+  /* Home landing frames; hero English matches same dusty blue */
   --landing-dusty-blue: #9db3c4;
   --landing-dusty-rim: color-mix(in srgb, var(--landing-dusty-blue) 70%, #ffffff 30%);
-  /* Saturated sky blue — pops on burgundy; not shared with frame borders */
-  --home-hero-en: #42b4f0;
+  --home-hero-en: var(--landing-dusty-blue);
   /* Heading scale bump (~1–2pt) */
   --header-bump: 3px;
 }
@@ -662,7 +661,7 @@ body.theme-archive.page-home .hero--archive .hero__title.hero__title--bilingual 
   min-width: 0;
   width: 100%;
   max-width: min(100%, var(--home-hero-title-max));
-  padding-inline: clamp(12px, 4vw, 28px);
+  padding-inline: clamp(18px, 5.5vw, 44px);
   margin-inline: auto;
   position: relative;
   z-index: 1;
@@ -711,7 +710,6 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--en {
   line-height: 1.22;
   padding-bottom: 0.14em;
   color: var(--home-hero-en);
-  text-shadow: 0 0 24px rgba(66, 180, 240, 0.33);
 }
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
