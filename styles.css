@@ -38,7 +38,7 @@
   --storymap-ink: #3d100c;
   --discussion-bg: #d6d6d2;
   --discussion-ink: #3d100c;
-  /* Home only: deeper burgundy field + cream UI; hero EN line uses dusty blue (see --landing-dusty-blue) */
+  /* Home only: deeper burgundy field + cream UI; hero EN uses saturated sky blue */
   --home-bg: #5c1528;
   --home-ink: #faf6f0;
   --home-muted: rgba(255, 250, 244, 0.9);
@@ -57,10 +57,11 @@
   --archive-band-sky: color-mix(in srgb, var(--wmf-sky) 38%, var(--archive-bg));
   --archive-band-sand: color-mix(in srgb, var(--wmf-sand) 36%, var(--archive-bg));
   --archive-band-blush: color-mix(in srgb, var(--wmf-pink-soft) 48%, var(--archive-bg));
-  /* Home landing frames + hero English headline (shared dusty blue) */
+  /* Home landing frames (dusty); hero EN uses brighter blue below */
   --landing-dusty-blue: #9db3c4;
   --landing-dusty-rim: color-mix(in srgb, var(--landing-dusty-blue) 70%, #ffffff 30%);
-  --home-hero-en: var(--landing-dusty-blue);
+  /* Saturated sky blue — pops on burgundy; not shared with frame borders */
+  --home-hero-en: #42b4f0;
   /* Heading scale bump (~1–2pt) */
   --header-bump: 3px;
 }
@@ -665,6 +666,7 @@ body.theme-archive.page-home .hero--archive .hero__title.hero__title--bilingual 
   margin-inline: auto;
   position: relative;
   z-index: 1;
+  text-align: center;
   opacity: 0;
   animation: heroEnter 0.78s var(--ease-out-back) 0.06s forwards;
 }
@@ -684,7 +686,10 @@ body.theme-archive.page-home .hero--archive .hero__titleStack {
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--en,
 body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   min-width: 0;
   max-width: 100%;
   font-size: var(--home-hero-title-fs);
@@ -692,6 +697,8 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   line-height: 1.12;
   text-align: center;
   white-space: nowrap;
+  direction: ltr;
+  unicode-bidi: isolate;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -704,11 +711,13 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--en {
   line-height: 1.22;
   padding-bottom: 0.14em;
   color: var(--home-hero-en);
+  text-shadow: 0 0 24px rgba(66, 180, 240, 0.33);
 }
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   position: relative;
   z-index: 2;
+  direction: rtl;
   /* Less negative = Arabic sits lower, covers less of the English line */
   margin-top: clamp(-1.35rem, -3.5vw, -0.45rem);
   font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -793,7 +802,7 @@ body.theme-archive.page-home .landingBand__rail--right {
 body.theme-archive.page-home .landingFigure {
   margin: 0;
   border: 3px solid var(--landing-dusty-blue);
-  border-radius: 8px;
+  border-radius: 2px;
   box-shadow:
     0 0 0 1px var(--landing-dusty-rim),
     0 14px 36px rgba(15, 24, 36, 0.22);
