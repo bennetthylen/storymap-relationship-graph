@@ -1163,6 +1163,17 @@ function updateDiscussionBackendNotice() {
   applyTextDirToNode(node);
 }
 
+function splitHeroTitleAr(value) {
+  const arabicComma = "\u060c";
+  let i = value.indexOf(arabicComma);
+  if (i === -1) i = value.indexOf(",");
+  if (i === -1) return { lead: value.trim(), tail: "" };
+  return {
+    lead: value.slice(0, i + 1).trimEnd(),
+    tail: value.slice(i + 1).trimStart(),
+  };
+}
+
 function applyContentConfigToPage() {
   const cfg = loadContentConfig();
   document.querySelectorAll("[data-content-key]").forEach((node) => {
@@ -1181,6 +1192,19 @@ function applyContentConfigToPage() {
       else value = defVal;
     }
     if (typeof value !== "string") return;
+    if (key === "heroTitleAr") {
+      const leadEl = node.querySelector(".hero__titleArLead");
+      const tailEl = node.querySelector(".hero__titleArTail");
+      if (leadEl && tailEl) {
+        const { lead, tail } = splitHeroTitleAr(value);
+        leadEl.textContent = lead;
+        tailEl.textContent = tail;
+        applyTextDirToNode(node);
+        applyTextDirToNode(leadEl);
+        applyTextDirToNode(tailEl);
+        return;
+      }
+    }
     node.textContent = value;
     applyTextDirToNode(node);
   });
