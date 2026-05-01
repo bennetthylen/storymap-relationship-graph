@@ -38,11 +38,14 @@
   --storymap-ink: #3d100c;
   --discussion-bg: #d6d6d2;
   --discussion-ink: #3d100c;
-  /* Home only: dark terracotta / burnt sienna field + high-contrast warm light type */
-  /* Base ref ~#854937; home uses a deeper shade for a solid, legible field. */
-  --home-bg: #4a281e;
+  /* Home only: saturated orange field + cream UI type; hero EN uses dark brown for contrast */
+  --home-bg: #ea580c;
   --home-ink: #faf6f0;
   --home-muted: rgba(255, 250, 244, 0.88);
+  --home-hero-en: #2a0f08;
+  --home-hero-title-max: 56rem;
+  --home-hero-title-fs: clamp(1.35rem, min(5.2vw, 9vh), 4.75rem);
+  --home-hero-title-fs-sm: clamp(1.2rem, min(6.5vw, 8vh), 2.85rem);
   --archive-muted: #5c403b;
   /* Hero headline (CCAS-style dense sans) */
   --archive-hero-ink: #421c14;
@@ -632,93 +635,93 @@ body.theme-archive .siteNav__langMenu {
   opacity: 0.82;
 }
 
-body.theme-archive.page-home .hero--archive {
+/* Home hero: overlapping bilingual title (Syne + Changa); min-width:0 avoids grid overflow scroll */
+body.theme-archive.page-home .hero.hero--archive {
   min-height: 0;
+  min-width: 0;
+  max-width: 100%;
   padding-top: clamp(56px, 14vh, 140px);
   padding-bottom: clamp(36px, 7vh, 72px);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  background: var(--home-bg);
+}
+
+body.theme-archive.page-home .hero.hero--archive > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 body.theme-archive.page-home .hero--archive .hero__title.hero__title--bilingual {
-  width: fit-content;
-  max-width: min(96vw, 1500px);
-  padding-inline: clamp(8px, 2vw, 24px);
-  box-sizing: border-box;
-  margin-left: auto;
-  margin-right: auto;
+  min-width: 0;
+  width: 100%;
+  max-width: min(100%, var(--home-hero-title-max));
+  padding-inline: clamp(12px, 4vw, 28px);
+  margin-inline: auto;
   position: relative;
   z-index: 1;
   opacity: 0;
   animation: heroEnter 0.78s var(--ease-out-back) 0.06s forwards;
 }
 
-/* Overlapping EN + AR: Syne (bold playful Latin) + Changa (heavy geometric Arabic). EN solid behind; AR knockout fill + stroke. */
 body.theme-archive.page-home .hero--archive .hero__titleStack {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: fit-content;
-  max-width: min(92vw, 1480px);
+  width: 100%;
+  min-width: 0;
+  max-width: min(100%, var(--home-hero-title-max));
+  margin-inline: auto;
   isolation: isolate;
 }
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--en,
 body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   display: block;
-  white-space: nowrap;
-  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  font-size: var(--home-hero-title-fs);
+  font-weight: 800;
+  line-height: 1.05;
+  text-align: center;
+  text-wrap: balance;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--en {
   position: relative;
   z-index: 1;
-  text-align: center;
   font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(2rem, 11vw, 7.25rem);
-  font-weight: 800;
   letter-spacing: -0.058em;
-  line-height: 1.02;
-  color: var(--home-ink);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: var(--home-hero-en);
 }
 
 body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   position: relative;
   z-index: 2;
   margin-top: clamp(-3.25rem, -8.5vw, -1.6rem);
-  width: max-content;
-  max-width: 100%;
-  text-align: center;
   font-family: "Changa", "Kufam", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(2rem, 11vw, 7.25rem);
-  font-weight: 800;
   letter-spacing: 0.015em;
-  line-height: 1.02;
-  /* Fill matches page so glyphs carve through the English; stroke defines edges */
   color: var(--home-bg);
   -webkit-text-fill-color: var(--home-bg);
-  -webkit-text-stroke: clamp(1.25px, 0.16vw, 3px) var(--home-ink);
+  -webkit-text-stroke: clamp(1.75px, 0.22vw, 3.75px) #fff;
   paint-order: stroke fill;
   text-shadow:
     0 0 1px var(--home-bg),
-    0 0 12px rgba(74, 40, 30, 0.45),
-    0 4px 20px rgba(0, 0, 0, 0.18);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    0 0 14px rgba(42, 15, 8, 0.35),
+    0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 540px) {
   body.theme-archive.page-home .hero--archive .hero__titleLine--en,
   body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
-    font-size: clamp(1.25rem, 7.2vw, 2.65rem);
+    font-size: var(--home-hero-title-fs-sm);
   }
 
   body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
     margin-top: clamp(-2rem, -6vw, -1rem);
-    -webkit-text-stroke: clamp(0.8px, 0.2vw, 1.5px) var(--home-ink);
+    -webkit-text-stroke: clamp(1.2px, 0.35vw, 2px) #fff;
   }
 }
 
@@ -865,7 +868,7 @@ body.theme-archive.page-home .scrollSection--editorial.landingCopy > p {
   margin-inline-start: min(6vw, 3rem);
 }
 
-/* Home landing: dark terracotta field, seamless with nav */
+/* Home landing: orange field, seamless with nav */
 body.theme-archive.page-home {
   background: var(--home-bg);
   color: var(--home-ink);
@@ -1168,10 +1171,6 @@ body[data-mode="discussion"] .card:hover {
 /* Default .hero gradient lives above; archive landing heroes must match body (see .hero--archive earlier). */
 .theme-archive .hero.hero--archive {
   background: var(--archive-bg);
-}
-
-body.theme-archive.page-home .hero.hero--archive {
-  background: var(--home-bg);
 }
 
 .heroNodes {
