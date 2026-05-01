@@ -646,9 +646,11 @@ body.theme-archive.page-home .hero.hero--archive {
   min-height: calc(100svh - clamp(52px, 11vmin, 96px));
   min-width: 0;
   max-width: 100%;
-  padding-top: clamp(64px, 16vh, 160px);
-  padding-bottom: clamp(52px, 11vh, 120px);
-  overflow-x: hidden;
+  /* Extra top/bottom room so Syne ascenders/descenders aren’t clipped by overflow */
+  padding-top: clamp(88px, 18vh, 200px);
+  padding-bottom: clamp(64px, 14vh, 140px);
+  overflow-x: clip;
+  overflow-y: visible;
   background: var(--home-bg);
 }
 
@@ -666,6 +668,7 @@ body.theme-archive.page-home .hero--archive .hero__title.hero__title--bilingual 
   position: relative;
   z-index: 1;
   text-align: center;
+  overflow: visible;
   opacity: 0;
   animation: heroEnter 0.78s var(--ease-out-back) 0.06s forwards;
 }
@@ -679,7 +682,8 @@ body.theme-archive.page-home .hero--archive .hero__titleStack {
   min-width: 0;
   max-width: min(100%, var(--home-hero-title-max));
   margin-inline: auto;
-  padding-block: 0.15em 0.55em;
+  padding-block: 0.35em 0.65em;
+  overflow: visible;
   isolation: isolate;
 }
 
@@ -707,8 +711,9 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--en {
   z-index: 1;
   font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.058em;
-  line-height: 1.28;
-  padding-bottom: 0.28em;
+  line-height: 1.35;
+  padding-bottom: 0.38em;
+  padding-top: 0.06em;
   color: var(--home-hero-en);
 }
 
@@ -716,21 +721,12 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   position: relative;
   z-index: 2;
   direction: rtl;
-  flex-direction: column;
-  gap: 0;
-  white-space: normal;
-  align-items: center;
-  /* Less negative = Arabic sits lower, covers less of the English line */
-  margin-top: clamp(-1.35rem, -3.5vw, -0.45rem);
+  /* Single line; stronger overlap than before */
+  margin-top: clamp(-2.15rem, -5.5vw, -0.65rem);
   font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.2;
   letter-spacing: 0;
-}
-
-body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArLead,
-body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArTail {
-  white-space: nowrap;
   color: var(--home-bg);
   -webkit-text-fill-color: var(--home-bg);
   -webkit-text-stroke: clamp(1.75px, 0.22vw, 3.75px) #fff;
@@ -741,15 +737,6 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArT
     0 4px 18px rgba(0, 0, 0, 0.22);
 }
 
-/* Lead clause nudged up to kiss the English line; tail stays visually lower */
-body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArLead {
-  transform: translateY(clamp(-0.55rem, -1.35vw, -0.15rem));
-}
-
-body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArTail {
-  margin-top: clamp(0.08rem, 0.45vw, 0.28rem);
-}
-
 @media (max-width: 540px) {
   body.theme-archive.page-home .hero--archive .hero__titleLine--en,
   body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
@@ -757,16 +744,8 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArT
   }
 
   body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
-    margin-top: clamp(-0.85rem, -2.75vw, -0.2rem);
-  }
-
-  body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArLead,
-  body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArTail {
+    margin-top: clamp(-1.35rem, -4vw, -0.35rem);
     -webkit-text-stroke: clamp(1.2px, 0.35vw, 2px) #fff;
-  }
-
-  body.theme-archive.page-home .hero--archive .hero__titleLine--ar .hero__titleArLead {
-    transform: translateY(clamp(-0.42rem, -1.1vw, -0.1rem));
   }
 }
 
@@ -1337,12 +1316,6 @@ body[data-mode="discussion"] .card:hover {
 /* Default .hero gradient lives above; archive landing heroes must match body (see .hero--archive earlier). */
 .theme-archive .hero.hero--archive {
   background: var(--archive-bg);
-}
-
-/* Home: base .hero sets overflow:hidden — allow vertical paint so Syne descenders / Nastaliq aren’t clipped */
-body.theme-archive.page-home .hero.hero--archive {
-  overflow-x: hidden;
-  overflow-y: visible;
 }
 
 .heroNodes {
