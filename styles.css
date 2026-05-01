@@ -751,22 +751,20 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
 
 body.theme-archive.page-home .hero--archive p {
   box-sizing: border-box;
-  max-width: min(23rem, 88vw);
+  /* ~3 lines: narrowed column; avoid balance so wrapping isn’t forced into 2 lines */
+  max-width: min(38ch, 92vw);
   width: 100%;
   margin-top: clamp(1.75rem, 4.5vw, 3rem);
   margin-left: auto;
   margin-right: auto;
-  padding: clamp(1.35rem, 3.2vw, 2rem) clamp(1.2rem, 2.8vw, 1.75rem);
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) 0;
   text-align: center;
-  text-wrap: balance;
+  text-wrap: pretty;
   line-height: 1.52;
   font-size: clamp(0.92rem, 1.85vw, 1.06rem);
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--home-muted);
-  border: 1px solid rgba(250, 246, 240, 0.16);
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.07);
 }
 
 body.theme-archive.page-home .hero--archive .hero__actions {
