@@ -38,8 +38,8 @@
   --storymap-ink: #3d100c;
   --discussion-bg: #d6d6d2;
   --discussion-ink: #3d100c;
-  /* Home only: dark dusty blue + warm light type */
-  --home-bg: #384d5c;
+  /* Home only: dark dusty blue + warm light type (slightly deepened so the mark pops) */
+  --home-bg: #2f4555;
   --home-ink: #f3ebe2;
   --home-muted: rgba(243, 235, 226, 0.9);
   --archive-muted: #5c403b;
@@ -318,6 +318,38 @@ body.lang-ar #jsStatus {
   box-shadow: none;
 }
 
+/* Same solid fill as the page behind it so scrolling copy never shows through the bar. */
+body.theme-archive:not(.page-home) .siteNav--archive,
+body.theme-archive:not(.page-home) .siteNav--archive.siteNav--scrolled {
+  background: var(--archive-bg);
+}
+
+body.theme-archive.page-home .siteNav--archive,
+body.theme-archive.page-home .siteNav--archive.siteNav--scrolled {
+  background: var(--home-bg);
+}
+
+body.theme-storymap .siteNav--archive,
+body.theme-storymap .siteNav--archive.siteNav--scrolled {
+  background: var(--storymap-bg);
+  backdrop-filter: none;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+body[data-mode="discussion"] .siteNav--archive,
+body[data-mode="discussion"] .siteNav--archive.siteNav--scrolled {
+  background: var(--discussion-bg);
+  backdrop-filter: none;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .siteNav--archive,
+body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .siteNav--archive.siteNav--scrolled {
+  background: var(--wmf-cream);
+}
+
 .siteNav__brandLink {
   display: flex;
   align-items: center;
@@ -357,7 +389,7 @@ body.lang-ar #jsStatus {
 }
 
 .siteNav__logo {
-  height: 28px;
+  height: 34px;
   width: auto;
   display: block;
   flex-shrink: 0;
@@ -519,11 +551,6 @@ body.theme-archive .siteNav__langMenu {
   padding-right: clamp(18px, 5vw, 48px);
 }
 
-.theme-archive .hero--archive .hero__bg {
-  background: transparent;
-  opacity: 1;
-}
-
 .theme-archive .hero--archive .hero__title,
 .theme-archive .hero--archive.hero h1 {
   max-width: min(92vw, 40rem);
@@ -612,21 +639,21 @@ body.theme-archive.page-home .hero--archive {
 
 body.theme-archive.page-home .hero--archive .hero__title,
 body.theme-archive.page-home .hero--archive.hero h1 {
-  max-width: none;
+  max-width: min(96vw, 1400px);
   width: 100%;
-  padding-inline: clamp(10px, 3vw, 24px);
+  padding-inline: clamp(8px, 2vw, 20px);
   box-sizing: border-box;
-  white-space: nowrap;
-  font-size: clamp(1.55rem, 4.9vw, 3.55rem);
-  letter-spacing: -0.045em;
+  white-space: normal;
+  font-size: clamp(2rem, 8.5vw, 5.25rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
   color: var(--home-ink);
 }
 
 @media (max-width: 540px) {
   body.theme-archive.page-home .hero--archive .hero__title,
   body.theme-archive.page-home .hero--archive.hero h1 {
-    white-space: normal;
-    font-size: clamp(1.3rem, 6.8vw, 2.1rem);
+    font-size: clamp(1.45rem, 7.5vw, 2.35rem);
   }
 }
 
@@ -863,13 +890,6 @@ body.theme-storymap .siteNav--archive .siteNav__langBtn:focus {
   transform: none;
 }
 
-body.theme-storymap .siteNav--archive.siteNav--scrolled {
-  background: var(--storymap-bg);
-  backdrop-filter: none;
-  border-bottom: none;
-  box-shadow: none;
-}
-
 /* Discussion: solid gray viewport + brown type */
 body[data-mode="discussion"] {
   background: var(--discussion-bg);
@@ -913,13 +933,6 @@ body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn {
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn:hover,
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn:focus {
   transform: none;
-}
-
-body[data-mode="discussion"] .siteNav--archive.siteNav--scrolled {
-  background: var(--discussion-bg);
-  backdrop-filter: none;
-  border-bottom: none;
-  box-shadow: none;
 }
 
 body[data-mode="discussion"] .discussionComposer {
@@ -1083,6 +1096,15 @@ body[data-mode="discussion"] .card:hover {
   position: relative;
 }
 
+/* Default .hero gradient lives above; archive landing heroes must match body (see .hero--archive earlier). */
+.theme-archive .hero.hero--archive {
+  background: var(--archive-bg);
+}
+
+body.theme-archive.page-home .hero.hero--archive {
+  background: var(--home-bg);
+}
+
 .heroNodes {
   position: absolute;
   inset: 0;
@@ -1172,6 +1194,13 @@ body[data-mode="discussion"] .card:hover {
     radial-gradient(circle at 82% 12%, rgba(var(--wmf-gold-rgb), 0.2) 0, transparent 40%),
     radial-gradient(circle at 52% 88%, rgba(212, 245, 232, 0.55) 0, transparent 48%);
   transform: translateY(var(--hero-parallax, 0px));
+}
+
+/* Kill decorative hero__bg layers on archive/home so they cannot override via cascade order. */
+.theme-archive .hero.hero--archive .hero__bg {
+  background: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @keyframes heroEnter {
@@ -1939,6 +1968,26 @@ textarea {
   border-top: none;
   backdrop-filter: none;
   box-shadow: none;
+}
+
+body.theme-archive:not(.page-home) .stickyFooterLinks {
+  background: var(--archive-bg);
+}
+
+body.theme-archive.page-home .stickyFooterLinks {
+  background: var(--home-bg);
+}
+
+body.theme-storymap .stickyFooterLinks {
+  background: var(--storymap-bg);
+}
+
+body[data-mode="discussion"] .stickyFooterLinks {
+  background: var(--discussion-bg);
+}
+
+body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .stickyFooterLinks {
+  background: var(--wmf-cream);
 }
 
 .stickyFooterLinks a {

@@ -142,7 +142,7 @@ var STORYMAP_EXTRA_I18N = {
     colorBlue: "Blue",
     colorWhite: "White",
     colorOrange: "Orange",
-    heroTitle: "doing well, don't worry",
+    heroTitle: "Doing well, don't worry.",
     heroSubtitle:
       "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
     heroCta: "experience the storymap",

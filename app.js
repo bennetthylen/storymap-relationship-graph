@@ -193,7 +193,7 @@ const GITHUB_REPO_NAME = "storymap-relationship-graph";
 const GITHUB_REPO_BRANCH = "main";
 
 const DEFAULT_CONTENT = {
-  heroTitle: "doing well, don't worry",
+  heroTitle: "Doing well, don't worry.",
   heroSubtitle:
     "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
   heroCta: "experience the storymap",
