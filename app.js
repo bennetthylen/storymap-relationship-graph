@@ -2390,6 +2390,8 @@ function initCustomStorymapCanvas() {
       const ease = "cubic-bezier(0.45, 0, 0.55, 1)";
       const durMs = 300;
       const dur = prefersReducedMotion() ? "0.01ms" : `${durMs}ms`;
+      const filterDurMs = prefersReducedMotion() ? 0 : 900;
+      const filterDur = prefersReducedMotion() ? "0.01ms" : `${filterDurMs}ms`;
 
       el.style.transition = [
         `transform ${dur} ${ease}`,
@@ -2398,11 +2400,14 @@ function initCustomStorymapCanvas() {
       ]
         .filter(Boolean)
         .join(", ");
-      el.style.transform = "scale(1)";
-      el.style.opacity = "1";
-      if (!imgEl) {
+      if (imgEl) {
+        imgEl.style.transition = `filter ${filterDur} ${ease}`;
+        imgEl.style.filter = "none";
+      } else {
         el.style.filter = "none";
       }
+      el.style.transform = "scale(1)";
+      el.style.opacity = "1";
 
       const structuralFinish = () => {
         pendingEdgeAnim.delete(edgeKey);
@@ -2437,6 +2442,7 @@ function initCustomStorymapCanvas() {
       const cleanup = () => {
         if (fallbackTimer) window.clearTimeout(fallbackTimer);
         el.removeEventListener("transitionend", onElTrans);
+        if (imgEl) imgEl.removeEventListener("transitionend", onImgTrans);
       };
       const safeFinish = () => {
         if (done) return;
@@ -2449,7 +2455,7 @@ function initCustomStorymapCanvas() {
         }
       };
 
-      let remaining = 1;
+      let remaining = imgEl ? 2 : 1;
       const bump = () => {
         remaining -= 1;
         if (remaining <= 0) safeFinish();
@@ -2459,9 +2465,15 @@ function initCustomStorymapCanvas() {
         if (evt.propertyName !== "transform") return;
         bump();
       };
+      const onImgTrans = (evt) => {
+        if (!imgEl || evt.target !== imgEl) return;
+        if (evt.propertyName !== "filter" && evt.propertyName !== "-webkit-filter") return;
+        bump();
+      };
       el.addEventListener("transitionend", onElTrans);
+      if (imgEl) imgEl.addEventListener("transitionend", onImgTrans);
 
-      fallbackTimer = window.setTimeout(safeFinish, durMs + 80);
+      fallbackTimer = window.setTimeout(safeFinish, Math.max(durMs, filterDurMs) + 100);
     };
 
     if (prefersReducedMotion()) {
