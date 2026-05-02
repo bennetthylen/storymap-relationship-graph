@@ -874,38 +874,6 @@ body.lang-ar .subpageHero--discussion .subpageHero__kicker {
   color: color-mix(in srgb, var(--discussion-blue-soft) 92%, #fff);
 }
 
-/* Discussion / Information: single-line tab title (not the main exhibit headline) */
-.subpageHero--tabTitle {
-  padding-bottom: clamp(16px, 3vw, 28px);
-}
-
-.subpageHero__title--tab {
-  margin: 0;
-  max-width: min(100%, 52rem);
-  margin-inline: auto;
-  font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
-  font-weight: 800;
-  font-size: clamp(1.15rem, min(3.2vw, 4.2vh), 2.05rem);
-  line-height: 1.25;
-  letter-spacing: -0.04em;
-  text-wrap: balance;
-}
-
-.subpageHero--archive.subpageHero--tabTitle .subpageHero__title--tab {
-  color: var(--home-hero-en);
-  text-shadow: 0 2px 18px rgba(66, 28, 20, 0.12);
-}
-
-.subpageHero--discussion.subpageHero--tabTitle .subpageHero__title--tab {
-  color: #fdf6f2;
-  text-shadow: 0 2px 20px rgba(45, 28, 18, 0.4);
-}
-
-body.lang-ar .subpageHero__title--tab {
-  font-family: "Kufam", "Noto Sans Arabic", "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: 0.02em;
-}
-
 .discussionComposer__intro {
   margin: 0 auto 1rem;
   max-width: 40rem;
