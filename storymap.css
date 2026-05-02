@@ -139,16 +139,7 @@ body.layout--storymapPreview .storymapAdminPanel {
   opacity: 0.5;
 }
 
-.storymapEdges line.storymapEdge--structural {
-  stroke: var(--sm-arch-line);
-  stroke-width: 0.4;
-  opacity: 1;
-}
-
-.storymapEdges line.storymapEdge--hint {
-  opacity: 0.35;
-}
-
+/* Default line = structural (aged paper). Modifiers: fromCenter, hubSpoke. */
 /* Unlock pulse: terra accent, then fades to reveal the classified base line. */
 .storymapEdges line.storymapEdgeOverlay--fade {
   --sm-edge-overlay-dur: 0.98s;

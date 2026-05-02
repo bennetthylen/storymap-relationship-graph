@@ -2146,23 +2146,8 @@ function initCustomStorymapCanvas() {
 
   const getCanvasArabicLabel = (node) => {
     if (typeof STORYMAP_CANVAS_NODE_I18N === "undefined") return "";
-    const fromLabel = String(node?.label || "").trim();
-    const key = fromLabel || String(node?.content || "").trim();
-    const pack = STORYMAP_CANVAS_NODE_I18N.ar && STORYMAP_CANVAS_NODE_I18N.ar[key];
-    return pack && pack.label ? pack.label : "";
-  };
-
-  const classifyStorymapEdgeKind = (sourceId, targetId) => {
-    const central = getEffectiveCentralIdSet();
-    const byId = (id) => canvas.nodes.find((n) => n.id === id);
-    const s = byId(sourceId);
-    const t = byId(targetId);
-    if (!s || !t) return "structural";
-    const sC = central.has(sourceId);
-    const tC = central.has(targetId);
-    if (sC && !tC) return "fromCenter";
-    if (s.type === "text" && !central.has(sourceId) && t.type === "image") return "hubSpoke";
-    return "structural";
+    const pack = STORYMAP_CANVAS_NODE_I18N.ar?.[storymapCanvasLabelKey(node)];
+    return pack?.label || "";
   };
 
   const updateWorldTransform = () => {
@@ -2297,9 +2282,7 @@ function initCustomStorymapCanvas() {
       let nw = 256;
       let nh = 256;
       const { w, h } = computeStorymapImageNodeSize(nw, nh);
-      const hasCaption = Boolean(getNodeLabel(node) || getCanvasArabicLabel(node));
-      const extraCaption = hasCaption ? 88 : 0;
-      return { minX: x, minY: y, maxX: x + w, maxY: y + h + extraCaption };
+      return { minX: x, minY: y, maxX: x + w, maxY: y + h + 88 };
     }
     if (node.type === "text") {
       const baseLbl = getNodeLabel(node);
@@ -2724,6 +2707,15 @@ function initCustomStorymapCanvas() {
       nodeEls.set(elNode.getAttribute("data-id"), elNode);
     });
     syncStorymapSheetExtent();
+    const centralIds = getEffectiveCentralIdSet();
+    const edgeKind = (sId, tId) => {
+      const s = getNodeByIdLocal(sId);
+      const t = getNodeByIdLocal(tId);
+      if (!s || !t) return "structural";
+      if (centralIds.has(sId) && !centralIds.has(tId)) return "fromCenter";
+      if (s.type === "text" && !centralIds.has(sId) && t.type === "image") return "hubSpoke";
+      return "structural";
+    };
     const worldRectById = new Map();
     const getWorldRect = (id, el) => {
       if (worldRectById.has(id)) return worldRectById.get(id);
@@ -2731,8 +2723,7 @@ function initCustomStorymapCanvas() {
       worldRectById.set(id, box);
       return box;
     };
-    // Always draw every edge (dashed base lines). Unlock state still affects nodes; hiding
-    // edges by unlock step made dense graphs look "missing" lines from hubs to many leaves.
+    // Draw every edge (static strokes); unlock overlay is an extra line segment during animation.
     canvas.edges.forEach((edge) => {
       const ek = storymapEdgeKey(edge.source, edge.target);
       const source = nodeEls.get(edge.source);
@@ -2752,10 +2743,11 @@ function initCustomStorymapCanvas() {
       line.setAttribute("x2", String(p2.x));
       line.setAttribute("y2", String(p2.y));
       line.setAttribute("data-sm-edge-key", ek);
-      line.classList.add(`storymapEdge--${classifyStorymapEdgeKind(edge.source, edge.target)}`);
+      const kind = edgeKind(edge.source, edge.target);
+      if (kind !== "structural") line.classList.add(`storymapEdge--${kind}`);
       edgesSvg.appendChild(line);
 
-      // Solid overlay that fades away, revealing dashed base line underneath.
+      // Terra overlay fades out, leaving the classified base line.
       if (pendingEdgeAnim.has(ek)) {
         const overlay = document.createElementNS("http://www.w3.org/2000/svg", "line");
         overlay.setAttribute("x1", String(p1.x));
@@ -2812,7 +2804,7 @@ function initCustomStorymapCanvas() {
     });
   };
 
-  const makeNodeEl = (node) => {
+  const makeNodeEl = (node, imageOrdById) => {
     const div = document.createElement("div");
     div.className =
       node.type === "text"
@@ -2861,8 +2853,7 @@ function initCustomStorymapCanvas() {
       const baseTitle = getNodeLabel(node);
       const titleDisplay = getStorymapCanvasDisplayLabel(node, baseTitle);
       const arLine = getCanvasArabicLabel(node);
-      const imageOrd =
-        canvas.nodes.filter((n) => n.type === "image").findIndex((n) => n.id === node.id) + 1;
+      const imageOrd = imageOrdById.get(node.id) || 0;
       const cap = document.createElement("div");
       cap.className = "smNodeImageCaption";
       const fig = document.createElement("span");
@@ -2992,8 +2983,16 @@ function initCustomStorymapCanvas() {
       edgesSvg.querySelectorAll("line").forEach((ln) => ln.remove());
       return;
     }
+    const imageOrdById = new Map();
+    let imgOrd = 0;
+    for (const n of canvas.nodes) {
+      if (n.type === "image") {
+        imgOrd += 1;
+        imageOrdById.set(n.id, imgOrd);
+      }
+    }
     canvas.nodes.forEach((node) => {
-      const nodeEl = makeNodeEl(node);
+      const nodeEl = makeNodeEl(node, imageOrdById);
       nodeEl.addEventListener("click", (evt) => handleNodeClick(node, evt));
       nodeEl.addEventListener("mousedown", (evt) => {
         if (!isAdmin || previewAsUser || evt.button !== 0) return;
