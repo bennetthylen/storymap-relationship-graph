@@ -2105,8 +2105,6 @@ function initCustomStorymapCanvas() {
   let panDraft = null;
   let nodeDragDraft = null;
   let previewAsUser = false;
-  /** One-shot: initial visitor camera (1.8× on central) after first rendered fit. */
-  let storymapInitialViewerCameraDone = false;
   /** Real viewer progress vs admin preview (separate localStorage keys). */
   const progressStorageKey = () =>
     isAdmin && previewAsUser ? STORYMAP_PROGRESS_PREVIEW_KEY : STORYMAP_PROGRESS_KEY;
@@ -2948,45 +2946,9 @@ function initCustomStorymapCanvas() {
 
   const fitViewToRenderedNodes = (opts = {}) => {
     const initialViewer = Boolean(opts.initialViewer);
-    if (initialViewer && !isViewerLike()) {
-      storymapInitialViewerCameraDone = true;
-    }
     if (!canvas.nodes.length) return;
     const nodes = nodesLayer.querySelectorAll(".smNode");
     if (!nodes.length) return;
-
-    if (initialViewer && isViewerLike() && !storymapInitialViewerCameraDone) {
-      const rect = viewport.getBoundingClientRect();
-      const width = Math.max(1, rect.width);
-      const height = Math.max(1, rect.height);
-      const ids = [...getEffectiveCentralIdSet()];
-      let cx;
-      let cy;
-      if (ids.length) {
-        const rawId = ids[0];
-        const esc =
-          typeof CSS !== "undefined" && CSS.escape
-            ? CSS.escape(String(rawId))
-            : String(rawId).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-        const el = nodesLayer.querySelector(`[data-id="${esc}"]`);
-        if (el) {
-          const box = nodeWorldRectFromEl(el);
-          cx = box.cx;
-          cy = box.cy;
-        }
-      }
-      if (Number.isFinite(cx) && Number.isFinite(cy)) {
-        storymapInitialViewerCameraDone = true;
-        view.scale = 1.8;
-        view.panX = width / 2 - cx * view.scale;
-        view.panY = height / 2 - cy * view.scale;
-        updateWorldTransform();
-        drawEdges();
-        maybeShowStorymapNavHint();
-        return;
-      }
-      storymapInitialViewerCameraDone = true;
-    }
 
     let minX = Infinity;
     let maxX = -Infinity;
@@ -3529,7 +3491,6 @@ function initCustomStorymapCanvas() {
     on(previewToggle, "change", () => {
       previewAsUser = previewToggle.checked;
       document.body.classList.toggle("layout--storymapPreview", previewAsUser);
-      if (previewAsUser) storymapInitialViewerCameraDone = false;
       mergeViewerProgress();
       renderCanvas();
       syncPanel();

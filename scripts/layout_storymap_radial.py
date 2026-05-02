@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Radial layout for published-storymap.json: each node's children sit on evenly spaced
-rings around their parent (mother). Central intro → three hubs on a lower arc; each hub's
-images on full circles (multiple rings when crowded).
+Radial layout for published-storymap.json: children on rotated rings around each parent.
+Central intro → three hubs on separated bearings (not stacked on one downward spine); each hub’s
+images fill circles with staggered angles and generous radii to reduce overlap.
 
 Run from repo root: python3 scripts/layout_storymap_radial.py
 """
@@ -17,18 +17,23 @@ ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "published-storymap.json"
 
 CENTRAL = "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092"
-# Left arc → center bottom → right arc (matches On Work | On Mobility | On Reassembling Relations)
 HUB_ORDER = ["n_5cd72ca5", "n_011e6d0c", "n_ea58683f"]
+# Work lower-left 120°, Mobility bottom 90°, Relations lower-right 60° — spreads stems from central.
+HUB_THETA = {
+    "n_5cd72ca5": 2 * math.pi / 3,
+    "n_011e6d0c": math.pi / 2,
+    "n_ea58683f": math.pi / 3,
+}
 
-R_HUB_ORBIT = 1080.0
-# Polar angle from +x axis (math convention); pi/2 is downward on screen (y increases).
-HUB_ANGLES = [3 * math.pi / 4, math.pi / 2, math.pi / 4]
+R_HUB_ORBIT = 1180.0
 
-R_CHILD_FIRST = 520.0
-R_CHILD_STEP = 560.0
-PER_RING = 10
+R_CHILD_FIRST = 760.0
+R_CHILD_STEP = 820.0
+PER_RING = 7
 
-R_CHAIN_LEAF = 340.0
+R_CHAIN_FIRST = 480.0
+CHAIN_STEP = 520.0
+CHAIN_PER_RING = 10
 
 
 def collect_children(edges: list) -> dict[str, list[str]]:
@@ -52,6 +57,7 @@ def radial_place(
     r0: float,
     ring_step: float,
     per_ring: int,
+    phase: float = 0.0,
 ) -> None:
     if not child_ids:
         return
@@ -62,8 +68,9 @@ def radial_place(
         batch = child_ids[i : i + per_ring]
         m = len(batch)
         r = r0 + ring * ring_step
+        twist = ring * (math.pi / max(7, m))
         for j, nid in enumerate(batch):
-            theta = 2 * math.pi * j / m
+            theta = 2 * math.pi * (j + 0.5) / m + phase + twist
             out[nid] = (cx + r * math.cos(theta), cy + r * math.sin(theta))
         i += per_ring
         ring += 1
@@ -81,14 +88,16 @@ def main() -> None:
 
     pos[CENTRAL] = (0.0, 0.0)
 
-    for hid, theta in zip(HUB_ORDER, HUB_ANGLES):
+    for hid in HUB_ORDER:
+        theta = HUB_THETA[hid]
         pos[hid] = (
             R_HUB_ORBIT * math.cos(theta),
             R_HUB_ORBIT * math.sin(theta),
         )
 
-    for hid in HUB_ORDER:
+    for hi, hid in enumerate(HUB_ORDER):
         kids = [c for c in children.get(hid, []) if c in ids]
+        hub_phase = hi * (2 * math.pi / 11)
         radial_place(
             pos[hid][0],
             pos[hid][1],
@@ -97,29 +106,30 @@ def main() -> None:
             R_CHILD_FIRST,
             R_CHILD_STEP,
             PER_RING,
+            phase=hub_phase,
         )
 
-    # Chains (e.g. Gam3aya image → Gam3aya text): propagate outward until every targeted node has xy.
     for _ in range(128):
         progressed = False
         for pid in list(pos.keys()):
             pending = [c for c in children.get(pid, []) if c in ids and c not in pos]
             if not pending:
                 continue
+            pid_phase = (sum(ord(c) for c in pid) % 360) / 360.0 * 2 * math.pi * 0.35
             radial_place(
                 pos[pid][0],
                 pos[pid][1],
                 pending,
                 pos,
-                R_CHAIN_LEAF,
-                400.0,
-                12,
+                R_CHAIN_FIRST,
+                CHAIN_STEP,
+                CHAIN_PER_RING,
+                phase=pid_phase,
             )
             progressed = True
         if not progressed:
             break
 
-    # Anything still missing: grid fallback (should not happen)
     ix = 0
     for n in nodes:
         nid = n["id"]

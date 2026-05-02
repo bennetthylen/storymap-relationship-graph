@@ -738,7 +738,7 @@ body.theme-storymap.storymapWelcomeOpen {
   line-height: 1.35;
   letter-spacing: -0.058em;
   color: var(--archive-ink);
-  padding-bottom: 0.28em;
+  padding-bottom: 0.12em;
   padding-top: 0.06em;
   -webkit-font-smoothing: antialiased;
 }
@@ -746,7 +746,7 @@ body.theme-storymap.storymapWelcomeOpen {
 .storymapWelcome__titleAr {
   position: relative;
   z-index: 2;
-  margin-top: clamp(-1.35rem, -4vw, -0.45rem);
+  margin-top: clamp(-2.15rem, -5.5vw, -0.65rem);
   direction: rtl;
   font-family:
     "Noto Nastaliq Urdu",
@@ -808,7 +808,7 @@ body.theme-storymap.storymapWelcomeOpen {
 
 @media (max-width: 540px) {
   .storymapWelcome__titleAr {
-    margin-top: clamp(-1rem, -3.5vw, -0.25rem);
+    margin-top: clamp(-1.35rem, -4vw, -0.35rem);
     -webkit-text-stroke: clamp(1px, 0.32vw, 2px) var(--archive-ink);
   }
 }
