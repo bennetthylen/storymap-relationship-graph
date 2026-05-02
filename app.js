@@ -21,6 +21,8 @@ const STORYMAP_CANVAS_RELEASE_KEY = "storymapCanvasPublishedReleaseV1";
 const STORYMAP_PROGRESS_KEY = "storymapProgressV1";
 /** Admin-only “Preview as user” progress so testing unlock state does not overwrite the real viewer key. */
 const STORYMAP_PROGRESS_PREVIEW_KEY = "storymapProgressPreviewV1";
+/** First-visit navigation hint on the storymap canvas ("scroll to zoom…"). */
+const STORYMAP_NAV_HINT_KEY = "storymapNavHintSeenV1";
 /** Persists across browser restarts so you reuse one PAT; clear with "Forget PAT". */
 const GITHUB_TOKEN_STORAGE_KEY = "storymapGithubPublishTokenV1";
 
@@ -38,6 +40,7 @@ const STORYMAP_STORAGE_KEYS = {
   canvasRelease: STORYMAP_CANVAS_RELEASE_KEY,
   progress: STORYMAP_PROGRESS_KEY,
   progressPreview: STORYMAP_PROGRESS_PREVIEW_KEY,
+  navHint: STORYMAP_NAV_HINT_KEY,
   githubToken: GITHUB_TOKEN_STORAGE_KEY,
 };
 
@@ -1997,7 +2000,7 @@ function computeStorymapImageNodeSize(nw, nh) {
     dw = Math.round(dw * shrink);
     dh = Math.round(dh * shrink);
   }
-  return { w: dw, h: dh };
+  return { w: dw * 2, h: dh * 2 };
 }
 
 function initCustomStorymapCanvas() {
@@ -2026,6 +2029,8 @@ function initCustomStorymapCanvas() {
   let panDraft = null;
   let nodeDragDraft = null;
   let previewAsUser = false;
+  /** One-shot: initial visitor camera (1.8× on central) after first rendered fit. */
+  let storymapInitialViewerCameraDone = false;
   /** Real viewer progress vs admin preview (separate localStorage keys). */
   const progressStorageKey = () =>
     isAdmin && previewAsUser ? STORYMAP_PROGRESS_PREVIEW_KEY : STORYMAP_PROGRESS_KEY;
@@ -2317,10 +2322,15 @@ function initCustomStorymapCanvas() {
       const baseLbl = getNodeLabel(node);
       const centralSet = getEffectiveCentralIdSet();
       if (centralSet.has(node.id)) {
-        return { minX: x, minY: y, maxX: x + 220, maxY: y + 200 };
+        return { minX: x, minY: y, maxX: x + 220 * 1.5, maxY: y + 200 * 1.5 };
       }
       const mw = Math.min(360, Math.max(120, 40 + Math.min(300, baseLbl.length * 6)));
-      return { minX: x, minY: y, maxX: x + Math.round(mw), maxY: y + 64 };
+      return {
+        minX: x,
+        minY: y,
+        maxX: x + Math.round(mw * 1.5),
+        maxY: y + Math.round(64 * 1.5),
+      };
     }
     const sz = 58;
     return { minX: x, minY: y, maxX: x + sz, maxY: y + sz };
@@ -2403,7 +2413,9 @@ function initCustomStorymapCanvas() {
       el.style.transition = "none";
       el.style.left = `${node.x}px`;
       el.style.top = `${node.y}px`;
-      el.style.transform = "scale(0.94)";
+      const stampScale =
+        el.classList.contains("smNode--central") || el.classList.contains("smNode--hub") ? 1.5 : 1;
+      el.style.transform = `scale(${0.94 * stampScale})`;
       el.style.opacity = opStr;
       const imgEl = el.querySelector("img");
       if (imgEl) {
@@ -2435,7 +2447,7 @@ function initCustomStorymapCanvas() {
       } else {
         el.style.filter = "none";
       }
-      el.style.transform = "scale(1)";
+      el.style.transform = `scale(${stampScale})`;
       el.style.opacity = "1";
 
       const structuralFinish = () => {
@@ -2804,10 +2816,102 @@ function initCustomStorymapCanvas() {
   };
 
   /** After layout, fit the camera to real DOM boxes (images, captions, wrapped text). */
-  const fitViewToRenderedNodes = () => {
+  const maybeShowStorymapNavHint = () => {
+    if (!isViewerLike()) return;
+    let alreadySeen = false;
+    try {
+      alreadySeen = Boolean(localStorage.getItem(STORYMAP_NAV_HINT_KEY));
+    } catch {
+      return;
+    }
+    if (alreadySeen) return;
+    if (viewport.querySelector(".storymapNavHint")) return;
+
+    const overlay = document.createElement("div");
+    overlay.className = "storymapNavHint";
+    overlay.setAttribute("role", "status");
+    overlay.textContent = "scroll to zoom · drag to pan · click to explore";
+    viewport.appendChild(overlay);
+
+    let dismissed = false;
+    let fadeTimer = null;
+    const off = () => {
+      if (fadeTimer) {
+        window.clearTimeout(fadeTimer);
+        fadeTimer = null;
+      }
+      document.removeEventListener("wheel", onInteract, wheelOpts);
+      document.removeEventListener("mousedown", onInteract, captureOpts);
+      document.removeEventListener("touchstart", onInteract, touchOpts);
+    };
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      off();
+      try {
+        localStorage.setItem(STORYMAP_NAV_HINT_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+      overlay.classList.remove("storymapNavHint--visible");
+      window.setTimeout(() => overlay.remove(), prefersReducedMotion() ? 0 : 420);
+    };
+    const onInteract = () => dismiss();
+    const captureOpts = { capture: true };
+    const wheelOpts = { capture: true, passive: true };
+    const touchOpts = { capture: true, passive: true };
+    document.addEventListener("wheel", onInteract, wheelOpts);
+    document.addEventListener("mousedown", onInteract, captureOpts);
+    document.addEventListener("touchstart", onInteract, touchOpts);
+    fadeTimer = window.setTimeout(dismiss, 2500);
+
+    requestAnimationFrame(() => {
+      overlay.classList.add("storymapNavHint--visible");
+    });
+  };
+
+  const fitViewToRenderedNodes = (opts = {}) => {
+    const initialViewer = Boolean(opts.initialViewer);
+    if (initialViewer && !isViewerLike()) {
+      storymapInitialViewerCameraDone = true;
+    }
     if (!canvas.nodes.length) return;
     const nodes = nodesLayer.querySelectorAll(".smNode");
     if (!nodes.length) return;
+
+    if (initialViewer && isViewerLike() && !storymapInitialViewerCameraDone) {
+      const rect = viewport.getBoundingClientRect();
+      const width = Math.max(1, rect.width);
+      const height = Math.max(1, rect.height);
+      const ids = [...getEffectiveCentralIdSet()];
+      let cx;
+      let cy;
+      if (ids.length) {
+        const rawId = ids[0];
+        const esc =
+          typeof CSS !== "undefined" && CSS.escape
+            ? CSS.escape(String(rawId))
+            : String(rawId).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+        const el = nodesLayer.querySelector(`[data-id="${esc}"]`);
+        if (el) {
+          const box = nodeWorldRectFromEl(el);
+          cx = box.cx;
+          cy = box.cy;
+        }
+      }
+      if (Number.isFinite(cx) && Number.isFinite(cy)) {
+        storymapInitialViewerCameraDone = true;
+        view.scale = 1.8;
+        view.panX = width / 2 - cx * view.scale;
+        view.panY = height / 2 - cy * view.scale;
+        updateWorldTransform();
+        drawEdges();
+        maybeShowStorymapNavHint();
+        return;
+      }
+      storymapInitialViewerCameraDone = true;
+    }
+
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
@@ -2835,12 +2939,13 @@ function initCustomStorymapCanvas() {
     view.panY = height / 2 - graphCenterY * fittedScale;
     updateWorldTransform();
     drawEdges();
+    if (initialViewer && isViewerLike()) maybeShowStorymapNavHint();
   };
 
-  const scheduleFitViewToRenderedNodes = () => {
+  const scheduleFitViewToRenderedNodes = (opts) => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        fitViewToRenderedNodes();
+        fitViewToRenderedNodes(opts || {});
       });
     });
   };
@@ -2880,7 +2985,7 @@ function initCustomStorymapCanvas() {
         div.style.height = "";
         img.style.width = "100%";
         img.style.height = `${h}px`;
-        img.style.objectFit = "cover";
+        img.style.objectFit = "contain";
         img.style.display = "block";
         div.style.aspectRatio = "auto";
         requestAnimationFrame(drawEdges);
@@ -3348,10 +3453,11 @@ function initCustomStorymapCanvas() {
     on(previewToggle, "change", () => {
       previewAsUser = previewToggle.checked;
       document.body.classList.toggle("layout--storymapPreview", previewAsUser);
+      if (previewAsUser) storymapInitialViewerCameraDone = false;
       mergeViewerProgress();
       renderCanvas();
       syncPanel();
-      scheduleFitViewToRenderedNodes();
+      scheduleFitViewToRenderedNodes({ initialViewer: previewAsUser });
     });
   }
 
@@ -3360,7 +3466,7 @@ function initCustomStorymapCanvas() {
     updateWorldTransform();
     renderCanvas();
     syncPanel();
-    scheduleFitViewToRenderedNodes();
+    scheduleFitViewToRenderedNodes({ initialViewer: true });
     if (isAdmin) syncCreateConnectOptions();
     setStatus("");
   };
