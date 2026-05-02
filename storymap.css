@@ -5,6 +5,14 @@
   --sm-arch-paper: #f5f0e8;
   --sm-arch-terra: #c4562a;
   --sm-arch-line: #c8bfb0;
+  /* Unified Arabic on canvas + readable scale (matches Amiri across nodes). */
+  --sm-ar-base: clamp(1rem, 2.35vw, 1.28rem);
+  --sm-ar-line-height: 1.42;
+  --sm-central-en: clamp(0.88rem, 1.65vw, 1.06rem);
+  --sm-hub-latin: clamp(11px, 1.35vw, 14px);
+  --sm-cap-fig: clamp(8px, 1.05vw, 11px);
+  --sm-cap-en: clamp(10px, 1.2vw, 13px);
+  --sm-shadda: clamp(2.5rem, 5.5vw, 3.25rem);
 }
 
 .storymapLayout {
@@ -48,7 +56,7 @@ body.theme-storymap .storymapCanvasPanel {
   border: 0.5px solid var(--sm-arch-ink);
   background: var(--sm-arch-paper);
   box-shadow: none;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -120,7 +128,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .storymapEdges line {
   stroke: var(--sm-arch-line);
-  stroke-width: 0.4;
+  stroke-width: 0.55;
   stroke-linecap: butt;
   stroke-linejoin: miter;
   stroke-dasharray: none;
@@ -129,13 +137,13 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .storymapEdges line.storymapEdge--fromCenter {
   stroke: var(--sm-arch-terra);
-  stroke-width: 0.6;
+  stroke-width: 0.75;
   opacity: 1;
 }
 
 .storymapEdges line.storymapEdge--hubSpoke {
   stroke: var(--sm-arch-ink);
-  stroke-width: 0.4;
+  stroke-width: 0.55;
   opacity: 0.5;
 }
 
@@ -144,7 +152,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 .storymapEdges line.storymapEdgeOverlay--fade {
   --sm-edge-overlay-dur: 0.98s;
   stroke: var(--sm-arch-terra);
-  stroke-width: 0.8;
+  stroke-width: 1;
   stroke-linecap: butt;
   stroke-dasharray: none;
   opacity: 1;
@@ -246,7 +254,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 /* —— Central colophon —— */
 .smNode--text.smNode--central {
   width: max-content;
-  max-width: min(16rem, 88vw);
+  max-width: min(19rem, 92vw);
 }
 
 .smNodeCentralPlate {
@@ -258,57 +266,60 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smNodeCentralPlate__frame {
   border: 0.5px solid var(--sm-arch-paper);
-  padding: 0.55rem 0.65rem;
+  padding: 0.65rem 0.78rem;
   box-sizing: border-box;
   text-align: center;
 }
 
-.smNodeCentralAr {
+.smNodeCentralAr,
+.smNodeHubAr,
+.smNodeImageCaption__ar {
   font-family: "Amiri", serif;
   font-weight: 400;
-  font-size: clamp(0.85rem, 1.6vw, 1rem);
-  line-height: 1.35;
+  font-size: var(--sm-ar-base);
+  line-height: var(--sm-ar-line-height);
+  letter-spacing: 0;
+  font-synthesis: none;
+}
+
+.smNodeCentralAr {
   color: var(--sm-arch-paper);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
 }
 
 .smNodeCentralEn {
   font-family: "Amiri", serif;
   font-weight: 400;
-  font-size: clamp(0.72rem, 1.35vw, 0.88rem);
-  line-height: 1.35;
+  font-size: var(--sm-central-en);
+  line-height: var(--sm-ar-line-height);
   letter-spacing: 0.02em;
   color: var(--sm-arch-paper);
 }
 
 .smNodeCentralShadda {
   font-family: "Amiri", serif;
-  font-size: 40px;
+  font-size: var(--sm-shadda);
   line-height: 1;
   color: var(--sm-arch-paper);
   text-align: center;
-  margin-top: 0.35rem;
+  margin-top: 0.42rem;
   opacity: 0.92;
 }
 
 /* —— Hub stamps —— */
 .smNode--text.smNode--hub {
   width: max-content;
-  max-width: min(22rem, 92vw);
+  max-width: min(24rem, 94vw);
 }
 
 .smNodeHub {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.2rem;
+  gap: 0.28rem;
 }
 
 .smNodeHubAr {
-  font-family: "Amiri", serif;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 1.25;
   color: var(--sm-arch-terra);
   text-align: right;
 }
@@ -317,8 +328,8 @@ body.layout--storymapPreview .storymapAdminPanel {
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  min-height: 28px;
-  height: 28px;
+  min-height: 36px;
+  height: 36px;
   background: var(--sm-arch-ink);
   border-radius: 0;
   position: relative;
@@ -326,8 +337,8 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 .smNodeHubTick {
-  flex: 0 0 3px;
-  width: 3px;
+  flex: 0 0 4px;
+  width: 4px;
   align-self: stretch;
   background: var(--sm-arch-terra);
 }
@@ -336,7 +347,7 @@ body.layout--storymapPreview .storymapAdminPanel {
   flex: 1 1 auto;
   display: flex;
   align-items: center;
-  padding: 0 0.65rem 0 0.45rem;
+  padding: 0 0.72rem 0 0.5rem;
   font-family:
     system-ui,
     -apple-system,
@@ -344,7 +355,7 @@ body.layout--storymapPreview .storymapAdminPanel {
     "Segoe UI",
     sans-serif;
   font-weight: 700;
-  font-size: 9px;
+  font-size: var(--sm-hub-latin);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--sm-arch-paper);
@@ -358,8 +369,8 @@ body.layout--storymapPreview .storymapAdminPanel {
   border-radius: 0;
   box-shadow: none;
   width: auto;
-  min-width: 92px;
-  min-height: 72px;
+  min-width: 104px;
+  min-height: 82px;
   aspect-ratio: auto;
   position: relative;
   overflow: visible;
@@ -383,12 +394,12 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 .smNodeImageCaption {
-  margin-top: 0.35rem;
-  padding: 0.35rem 0.4rem 0.42rem;
+  margin-top: 0.42rem;
+  padding: 0.45rem 0.5rem 0.52rem;
   background: var(--sm-arch-paper);
   display: flex;
   flex-direction: column;
-  gap: 0.18rem;
+  gap: 0.22rem;
   align-items: stretch;
 }
 
@@ -399,7 +410,7 @@ body.layout--storymapPreview .storymapAdminPanel {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  font-size: 7px;
+  font-size: var(--sm-cap-fig);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -410,17 +421,13 @@ body.layout--storymapPreview .storymapAdminPanel {
 .smNodeImageCaption__en {
   font-family: "Amiri", serif;
   font-weight: 400;
-  font-size: 8px;
-  line-height: 1.35;
+  font-size: var(--sm-cap-en);
+  line-height: var(--sm-ar-line-height);
   color: var(--sm-arch-ink);
   text-transform: lowercase;
 }
 
 .smNodeImageCaption__ar {
-  font-family: "Amiri", serif;
-  font-weight: 400;
-  font-size: 9px;
-  line-height: 1.35;
   color: var(--sm-arch-terra);
   text-align: right;
 }
@@ -530,7 +537,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoTitle {
   margin: 0 0 10px;
-  font-size: 1.06rem;
+  font-size: 1.15rem;
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -550,7 +557,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoBody {
   margin: 0;
-  font-size: 0.94rem;
+  font-size: 1.02rem;
   font-weight: 400;
   color: var(--sm-arch-ink);
   line-height: 1.68;

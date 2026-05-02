@@ -1980,8 +1980,8 @@ function rayExitRectToward(ax, ay, bx, by, left, top, w, h) {
 function computeStorymapImageNodeSize(nw, nh) {
   const iw = Math.max(1, Number(nw) || 1);
   const ih = Math.max(1, Number(nh) || 1);
-  const maxSide = 232;
-  const minShort = 92;
+  const maxSide = 280;
+  const minShort = 108;
   const scale = Math.min(1, maxSide / Math.max(iw, ih));
   let dw = Math.round(iw * scale);
   let dh = Math.round(ih * scale);
@@ -2282,7 +2282,7 @@ function initCustomStorymapCanvas() {
       let nw = 256;
       let nh = 256;
       const { w, h } = computeStorymapImageNodeSize(nw, nh);
-      return { minX: x, minY: y, maxX: x + w, maxY: y + h + 88 };
+      return { minX: x, minY: y, maxX: x + w, maxY: y + h + 102 };
     }
     if (node.type === "text") {
       const baseLbl = getNodeLabel(node);
@@ -2851,7 +2851,6 @@ function initCustomStorymapCanvas() {
       div.appendChild(img);
       if (img.complete && img.naturalWidth) applyImageBoxSize();
       const baseTitle = getNodeLabel(node);
-      const titleDisplay = getStorymapCanvasDisplayLabel(node, baseTitle);
       const arLine = getCanvasArabicLabel(node);
       const imageOrd = imageOrdById.get(node.id) || 0;
       const cap = document.createElement("div");
@@ -2860,11 +2859,12 @@ function initCustomStorymapCanvas() {
       fig.className = "smNodeImageCaption__fig";
       fig.textContent = `fig. ${String(imageOrd).padStart(2, "0")} /`;
       cap.appendChild(fig);
-      if (titleDisplay || baseTitle) {
+      if (baseTitle) {
         const en = document.createElement("span");
         en.className = "smNodeImageCaption__en";
         en.setAttribute("lang", "en");
-        en.textContent = titleDisplay || baseTitle;
+        en.setAttribute("dir", "ltr");
+        en.textContent = baseTitle;
         cap.appendChild(en);
       }
       if (arLine) {
@@ -2881,7 +2881,6 @@ function initCustomStorymapCanvas() {
       const isCentral = centralSet.has(node.id);
       const baseLbl = getNodeLabel(node);
       const arabic = getCanvasArabicLabel(node);
-      const latinDisplay = getStorymapCanvasDisplayLabel(node, baseLbl);
 
       if (isCentral) {
         div.classList.add("smNode--central");
@@ -2929,7 +2928,9 @@ function initCustomStorymapCanvas() {
         tick.setAttribute("aria-hidden", "true");
         const lat = document.createElement("span");
         lat.className = "smNodeHubLatin";
-        lat.textContent = latinDisplay;
+        lat.setAttribute("lang", "en");
+        lat.setAttribute("dir", "ltr");
+        lat.textContent = baseLbl;
         row.appendChild(tick);
         row.appendChild(lat);
         wrap.appendChild(row);
