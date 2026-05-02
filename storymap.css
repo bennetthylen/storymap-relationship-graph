@@ -276,6 +276,13 @@ body.layout--storymapPreview .storymapAdminPanel {
   -webkit-overflow-scrolling: touch;
 }
 
+.storymapNodes :lang(ar) {
+  font-family: "Noto Sans Arabic", "Kufam", system-ui, -apple-system, sans-serif;
+  letter-spacing: 0;
+  font-synthesis: none;
+  unicode-bidi: isolate;
+}
+
 .smNode--image {
   background: #fff;
   padding: 0.4rem;
