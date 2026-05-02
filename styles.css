@@ -1102,13 +1102,13 @@ body.theme-archive.page-home .landingFigure {
   margin: 0;
   display: flex;
   min-width: 0;
-  border: 7px solid var(--landing-dusty-blue);
+  border: 7px solid #382e7d;
   border-radius: 2px;
   box-shadow:
-    0 0 0 2px var(--landing-dusty-rim),
+    0 0 0 2px color-mix(in srgb, #382e7d 62%, #ffffff 38%),
     0 16px 38px rgba(15, 24, 36, 0.25);
   overflow: hidden;
-  background: color-mix(in srgb, var(--landing-dusty-blue) 14%, rgba(0, 0, 0, 0.06));
+  background: color-mix(in srgb, #382e7d 16%, rgba(0, 0, 0, 0.06));
 }
 
 body.theme-archive.page-home .landingFigure img {
@@ -1204,9 +1204,9 @@ body.theme-archive.page-home .homeLetterBox {
   max-width: min(1180px, 100%);
   margin-inline: auto;
   padding: clamp(24px, 5vw, 52px);
-  background: #bb7158;
+  background: #b55385;
   color: #fff8ef;
-  border: 2px solid color-mix(in srgb, #fff8ef 42%, transparent);
+  border: 3px solid #382e7d;
   border-radius: 3px;
   box-shadow: 0 22px 54px rgba(19, 7, 10, 0.28);
 }
