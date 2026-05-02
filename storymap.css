@@ -676,3 +676,145 @@ body.theme-storymap .storymapViewport {
   border-color: color-mix(in srgb, var(--sm-arch-ink) 22%, transparent);
   box-shadow: none;
 }
+
+/* —— First-visit welcome (blue field / brown type; title stack echoes home hero) —— */
+body.theme-storymap.storymapWelcomeOpen {
+  overflow: hidden;
+}
+
+.storymapWelcome {
+  --storymap-welcome-bg: var(--landing-dusty-blue);
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 5vw, 48px);
+  box-sizing: border-box;
+  background: var(--storymap-welcome-bg);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: opacity 0.28s ease;
+}
+
+.storymapWelcome[hidden] {
+  display: none !important;
+}
+
+.storymapWelcome.storymapWelcome--exiting {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.storymapWelcome__inner {
+  width: 100%;
+  max-width: min(38rem, 100%);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.storymapWelcome__titleStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-inline: auto;
+  padding-block: 0.35em 0.55em;
+  isolation: isolate;
+}
+
+.storymapWelcome__titleEn {
+  position: relative;
+  z-index: 1;
+  font-family:
+    "Syne",
+    "Inter",
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  font-size: clamp(2rem, min(6.5vw, 12vh), 3.75rem);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.058em;
+  color: var(--archive-ink);
+  padding-bottom: 0.28em;
+  padding-top: 0.06em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.storymapWelcome__titleAr {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-1.35rem, -4vw, -0.45rem);
+  direction: rtl;
+  font-family:
+    "Noto Nastaliq Urdu",
+    "Noto Sans Arabic",
+    "Kufam",
+    "Inter",
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  font-size: clamp(1.5rem, min(5vw, 10vh), 2.85rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--storymap-welcome-bg);
+  -webkit-text-fill-color: var(--storymap-welcome-bg);
+  -webkit-text-stroke: clamp(1.25px, 0.18vw, 2.75px) var(--archive-ink);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 1px var(--storymap-welcome-bg),
+    0 2px 12px rgba(0, 0, 0, 0.18);
+}
+
+.storymapWelcome__body {
+  margin: clamp(1rem, 3vw, 1.5rem) 0 0;
+  text-align: left;
+  font-family:
+    "Inter",
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  font-size: clamp(1.02rem, 2.2vw, 1.14rem);
+  font-weight: 600;
+  line-height: 1.72;
+  letter-spacing: 0.01em;
+  color: var(--archive-ink);
+  text-wrap: pretty;
+}
+
+.storymapWelcome__cta {
+  margin-top: clamp(1.35rem, 3.8vw, 2.25rem);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2.4vw, 1.3rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--archive-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.storymapWelcome__cta:hover {
+  opacity: 0.82;
+}
+
+@media (max-width: 540px) {
+  .storymapWelcome__titleAr {
+    margin-top: clamp(-1rem, -3.5vw, -0.25rem);
+    -webkit-text-stroke: clamp(1px, 0.32vw, 2px) var(--archive-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storymapWelcome {
+    transition: none;
+  }
+}

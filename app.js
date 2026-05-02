@@ -23,6 +23,8 @@ const STORYMAP_PROGRESS_KEY = "storymapProgressV1";
 const STORYMAP_PROGRESS_PREVIEW_KEY = "storymapProgressPreviewV1";
 /** First-visit navigation hint on the storymap canvas ("scroll to zoom…"). */
 const STORYMAP_NAV_HINT_KEY = "storymapNavHintSeenV1";
+/** One-time storymap intro screen ("Storymap" / enter the archive) on storymap.html. */
+const STORYMAP_WELCOME_SEEN_KEY = "storymapWelcomeSeenV1";
 /** Persists across browser restarts so you reuse one PAT; clear with "Forget PAT". */
 const GITHUB_TOKEN_STORAGE_KEY = "storymapGithubPublishTokenV1";
 
@@ -52,6 +54,7 @@ const STORYMAP_STORAGE_KEYS = {
   progress: STORYMAP_PROGRESS_KEY,
   progressPreview: STORYMAP_PROGRESS_PREVIEW_KEY,
   navHint: STORYMAP_NAV_HINT_KEY,
+  welcome: STORYMAP_WELCOME_SEEN_KEY,
   githubToken: GITHUB_TOKEN_STORAGE_KEY,
 };
 
@@ -59,6 +62,7 @@ function storymapClearableStorageKeys() {
   return [
     STORYMAP_PROGRESS_KEY,
     STORYMAP_PROGRESS_PREVIEW_KEY,
+    STORYMAP_WELCOME_SEEN_KEY,
     STORYMAP_CANVAS_PUBLIC_KEY,
     STORYMAP_CANVAS_ADMIN_KEY,
     STORYMAP_CANVAS_RELEASE_KEY,
@@ -106,6 +110,67 @@ function storymapDumpLocalStorage() {
   if (typeof console !== "undefined" && console.table) console.table(rows);
   else if (typeof console !== "undefined" && console.log) console.log(rows);
   return rows;
+}
+
+/** Full-screen first-visit intro on storymap.html (see STORYMAP_WELCOME_SEEN_KEY). */
+function initStorymapWelcomeOverlay() {
+  if (!IS_STORYMAP_PAGE || typeof document === "undefined") return;
+  const root = document.getElementById("storymapWelcome");
+  const btn = document.getElementById("storymapWelcomeDismiss");
+  if (!root || !btn) return;
+
+  let seen = false;
+  try {
+    seen = Boolean(localStorage.getItem(STORYMAP_WELCOME_SEEN_KEY));
+  } catch {
+    seen = false;
+  }
+  if (seen) return;
+
+  const reduced =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  root.hidden = false;
+  root.setAttribute("aria-hidden", "false");
+  document.body.classList.add("storymapWelcomeOpen");
+
+  requestAnimationFrame(() => {
+    try {
+      btn.focus();
+    } catch {
+      /* ignore */
+    }
+  });
+
+  let gone = false;
+  const dismiss = () => {
+    if (gone) return;
+    gone = true;
+    try {
+      localStorage.setItem(STORYMAP_WELCOME_SEEN_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    root.classList.add("storymapWelcome--exiting");
+    const finish = () => {
+      root.hidden = true;
+      root.setAttribute("aria-hidden", "true");
+      root.classList.remove("storymapWelcome--exiting");
+      document.body.classList.remove("storymapWelcomeOpen");
+      document.removeEventListener("keydown", onKey);
+      btn.removeEventListener("click", dismiss);
+    };
+    window.setTimeout(finish, reduced ? 0 : 280);
+  };
+
+  const onKey = (evt) => {
+    if (evt.key === "Escape") dismiss();
+  };
+  document.addEventListener("keydown", onKey);
+
+  btn.addEventListener("click", dismiss);
 }
 
 function applyStorymapUrlStorageHints() {
@@ -5299,6 +5364,7 @@ window.addEventListener("error", (evt) => {
     installStorymapHardRefreshArming();
     applyStorymapHardRefreshReset();
     applyStorymapUrlStorageHints();
+    initStorymapWelcomeOverlay();
     syncCanvasToPublishedRelease();
     initScrollReveals();
     initHeroParallax();
