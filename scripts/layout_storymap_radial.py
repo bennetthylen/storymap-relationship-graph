@@ -50,6 +50,13 @@ def collect_children(edges: list) -> dict[str, list[str]]:
     return dict(ch)
 
 
+def outward_base_angle(cx: float, cy: float) -> float:
+    """Angle from world origin toward (cx, cy); rotate child rings so mass radiates away from the central node."""
+    if abs(cx) < 1e-9 and abs(cy) < 1e-9:
+        return 0.0
+    return math.atan2(cy, cx)
+
+
 def radial_place(
     cx: float,
     cy: float,
@@ -62,6 +69,7 @@ def radial_place(
 ) -> None:
     if not child_ids:
         return
+    base_phi = outward_base_angle(cx, cy)
     n = len(child_ids)
     ring = 0
     i = 0
@@ -71,7 +79,7 @@ def radial_place(
         r = r0 + ring * ring_step
         twist = ring * (math.pi / max(7, m))
         for j, nid in enumerate(batch):
-            theta = 2 * math.pi * (j + 0.5) / m + phase + twist
+            theta = base_phi + 2 * math.pi * (j + 0.5) / m + phase + twist
             out[nid] = (cx + r * math.cos(theta), cy + r * math.sin(theta))
         i += per_ring
         ring += 1
