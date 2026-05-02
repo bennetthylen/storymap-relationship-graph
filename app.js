@@ -10,7 +10,8 @@ const LANG_BUTTON_CODES = { en: "EN", ar: "AR", it: "IT", fr: "FR", es: "ES", de
 
 const BODY_MODE = document.body?.dataset?.mode;
 const MODE = BODY_MODE === "admin" || BODY_MODE === "history" ? BODY_MODE : "viewer";
-const IS_STORYMAP_PAGE = /(^|\/)storymap\.html$/i.test(window.location.pathname || "");
+/** True on `/storymap.html` including GitHub Pages project URLs (`/repo/storymap.html`). */
+const IS_STORYMAP_PAGE = /\/storymap\.html$/i.test(window.location.pathname || "");
 const ADMIN_UNLOCK_KEY = "storymapAdminUnlockedV1";
 const ADMIN_PASSWORD = "beebo";
 const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
@@ -119,13 +120,21 @@ function initStorymapWelcomeOverlay() {
   const btn = document.getElementById("storymapWelcomeDismiss");
   if (!root || !btn) return;
 
+  let forceShow = false;
+  try {
+    const q = new URLSearchParams(window.location.search);
+    forceShow = q.has("showStorymapWelcome") || q.has("welcome");
+  } catch {
+    forceShow = false;
+  }
+
   let seen = false;
   try {
     seen = Boolean(localStorage.getItem(STORYMAP_WELCOME_SEEN_KEY));
   } catch {
     seen = false;
   }
-  if (seen) return;
+  if (seen && !forceShow) return;
 
   const reduced =
     typeof window !== "undefined" &&
