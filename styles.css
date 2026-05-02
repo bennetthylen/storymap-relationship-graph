@@ -1105,7 +1105,7 @@ body.theme-archive.page-home .landingFigure {
   border: 7px solid #382e7d;
   border-radius: 2px;
   box-shadow:
-    0 0 0 2px color-mix(in srgb, #382e7d 62%, #ffffff 38%),
+    0 0 0 2px #382e7d,
     0 16px 38px rgba(15, 24, 36, 0.25);
   overflow: hidden;
   background: color-mix(in srgb, #382e7d 16%, rgba(0, 0, 0, 0.06));
@@ -1214,10 +1214,12 @@ body.theme-archive.page-home .homeLetterBox {
 body.theme-archive.page-home .homeLetterBox__intro {
   max-width: min(58rem, 100%);
   margin: 0 auto clamp(26px, 4vw, 42px);
-  color: #fff8ef;
-  font-size: clamp(1rem, 1.8vw, 1.22rem);
-  font-weight: 750;
-  line-height: 1.55;
+  font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
+  color: #fff;
+  font-size: clamp(0.92rem, 1.32vw, 1.06rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.4;
   text-align: center;
   text-wrap: balance;
 }
