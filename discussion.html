@@ -108,18 +108,10 @@
 
     <div id="jsStatus" class="jsStatus jsStatus--hidden"></div>
 
-    <header class="subpageHero subpageHero--archive subpageHero--discussion" aria-labelledby="subpageExhibitTitle">
-      <h1 id="subpageExhibitTitle" class="subpageHero__title">
-        <span class="hero__titleStack">
-          <span class="subpageHero__line subpageHero__line--en" lang="en" data-i18n="siteExhibitTitleEn"
-            >Feminism in Egypt and Beyond</span
-          >
-          <span class="subpageHero__line subpageHero__line--ar" lang="ar" dir="rtl" data-i18n="siteExhibitTitleAr"
-            >النسوية في مصر وخارجها</span
-          >
-        </span>
+    <header class="subpageHero subpageHero--discussion subpageHero--tabTitle" aria-labelledby="subpageExhibitTitle">
+      <h1 id="subpageExhibitTitle" class="subpageHero__title subpageHero__title--tab">
+        <span data-i18n="subpageDiscussionHero">Discussion - مناقشة</span>
       </h1>
-      <p class="subpageHero__kicker" data-i18n="subpageSectionDiscussion">discussion</p>
     </header>
 
     <main class="discussionPage">
@@ -128,8 +120,9 @@
         data-i18n-aria-label="ariaDiscussionComposer"
         aria-label="Create discussion post"
       >
-        <h2 data-i18n="discussionBoardTitle">Discussion board</h2>
-        <p class="muted" data-i18n="discussionIntro">Share reflections, add context, and reply to others.</p>
+        <p class="muted discussionComposer__intro" data-i18n="discussionIntro">
+          Share reflections, add context, and reply to others.
+        </p>
         <p id="discussionBackendNote" class="muted small discussionBackendNote" hidden></p>
         <div class="field">
           <label for="discussionTitle" data-i18n="discussionTitleLabel">Title</label>

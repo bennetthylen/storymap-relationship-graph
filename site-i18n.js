@@ -17,6 +17,8 @@ var STORYMAP_EXTRA_I18N = {
     subpageSectionHistory: "History",
     subpageSectionDiscussion: "discussion",
     subpageSectionInformation: "information",
+    subpageDiscussionHero: "Discussion - مناقشة",
+    subpageInformationHero: "Information - معلومات",
     infoPageBlock1Html:
       "<p class=\"infoPage__lead\"><strong class=\"infoPage__exhibitTitle\">&ldquo;Doing Well, Don&rsquo;t Worry&rdquo;: Short Tales of Women&rsquo;s Work and Mobility</strong> was originally <a href=\"https://wmf.org.eg/en/events/women-and-memory-forums-exhibition-doing-well-dont-worry-short-tales-of-womens-work-and-mobility/\" class=\"infoPage__link\" target=\"_blank\" rel=\"noopener noreferrer\">exhibited</a> at the American University in Cairo in May 2017. It was powered by international collaboration with the Women and Memory Forum (EG), Women&rsquo;s Museum in Denmark (DK), Danish-Egyptian Dialogue Institute (EG/DK), Anthropology Unit and the Cynthia Nelson Institute from the American University in Cairo (EG), the Tiraz Centre (JO) and the Knowledge Workshop (LE).</p>",
     infoPageBlock2Html:
@@ -179,6 +181,8 @@ var STORYMAP_EXTRA_I18N = {
     subpageSectionHistory: "التاريخ",
     subpageSectionDiscussion: "مناقشة",
     subpageSectionInformation: "معلومات",
+    subpageDiscussionHero: "مناقشة - Discussion",
+    subpageInformationHero: "معلومات - Information",
     infoPageLead:
       "ستتضمن هذه الصفحة تفاصيل عملية عن المعرض والخريطة القصصية. وهي الآن صفحة مؤقتة لاستكمال التنقل والتصميم.",
     langMenuAria: "اختر اللغة",
@@ -333,6 +337,8 @@ var STORYMAP_EXTRA_I18N = {
     subpageSectionHistory: "Storia",
     subpageSectionDiscussion: "discussione",
     subpageSectionInformation: "informazioni",
+    subpageDiscussionHero: "Discussione - مناقشة",
+    subpageInformationHero: "Informazioni - معلومات",
     infoPageLead:
       "Questa pagina conterrà dettagli pratici sulla mostra e sulla storymap. Per ora è un segnaposto per definire navigazione e impaginazione.",
     langMenuAria: "Scegli la lingua",
@@ -487,6 +493,8 @@ var STORYMAP_EXTRA_I18N = {
     subpageSectionHistory: "Histoire",
     subpageSectionDiscussion: "discussion",
     subpageSectionInformation: "informations",
+    subpageDiscussionHero: "Discussion - مناقشة",
+    subpageInformationHero: "Informations - معلومات",
     infoPageLead:
       "Cette page présentera des informations pratiques sur l'exposition et la storymap. Pour l'instant, il s'agit d'un texte d'exemple pour valider la navigation et la mise en page.",
     langMenuAria: "Choisir la langue",
@@ -641,6 +649,8 @@ var STORYMAP_EXTRA_I18N = {
     subpageSectionHistory: "Historia",
     subpageSectionDiscussion: "discusión",
     subpageSectionInformation: "información",
+    subpageDiscussionHero: "Debate - مناقشة",
+    subpageInformationHero: "Información - معلومات",
     infoPageLead:
       "Esta página incluirá detalles prácticos sobre la exposición y el storymap. De momento es un texto de ejemplo para afinar la navegación y el diseño.",
     langMenuAria: "Elegir idioma",
@@ -795,6 +805,8 @@ var STORYMAP_EXTRA_I18N = {
     subpageSectionHistory: "Geschichte",
     subpageSectionDiscussion: "Diskussion",
     subpageSectionInformation: "Information",
+    subpageDiscussionHero: "Diskussion - مناقشة",
+    subpageInformationHero: "Informationen - معلومات",
     infoPageLead:
       "Auf dieser Seite finden Sie später praktische Angaben zur Ausstellung und zum Storymap. Vorerst dient dieser Text als Platzhalter für Navigation und Layout.",
     langMenuAria: "Sprache wählen",
