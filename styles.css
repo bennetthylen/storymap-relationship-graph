@@ -728,7 +728,6 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   position: relative;
   z-index: 2;
   direction: rtl;
-  /* Single line; stronger overlap than before */
   margin-top: clamp(-2.15rem, -5.5vw, -0.65rem);
   font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
@@ -1195,192 +1194,308 @@ body.theme-archive.page-home .landingBand__media--right {
   }
 }
 
+/* Transition band: maroon → masthead maroon */
+body.theme-archive.page-home .homeLetterTransition {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  height: 80px;
+  background: linear-gradient(to bottom, var(--home-bg), #6b1228);
+}
+
 body.theme-archive.page-home .homeLetterSection {
-  background: var(--home-bg);
-  padding: clamp(32px, 7vw, 76px) clamp(18px, 5vw, 56px) clamp(56px, 10vw, 112px);
+  position: relative;
+  isolation: isolate;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  box-sizing: border-box;
+  background: #c9988f;
+  padding: 0 0 clamp(72px, 13vw, 140px);
   overflow-x: clip;
 }
 
-/* Mid-century broadsheet / archive label — full-bleed band above letter body */
-body.theme-archive.page-home .homeLetterCaption {
-  position: relative;
-  width: 100vw;
-  max-width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  box-sizing: border-box;
-  margin-bottom: clamp(22px, 4vw, 40px);
+/* Grain — entire broadsheet (5%) */
+body.theme-archive.page-home .homeLetterSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  mix-blend-mode: multiply;
 }
 
-body.theme-archive.page-home .homeLetterCaption__rule {
-  height: 0;
-  border: 0;
-  border-top: 1px solid #c4562a;
+body.theme-archive.page-home .homeLetterSection > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Masthead: Arabic headline + English footnote — EDA broadsheet */
+body.theme-archive.page-home .homeLetterCaption {
+  width: 100%;
   margin: 0;
   padding: 0;
-  width: 100%;
+  box-sizing: border-box;
 }
 
 body.theme-archive.page-home .homeLetterCaption__band {
-  background: #1a1a18;
-  padding-block: clamp(14px, 2.2vw, 22px);
-  padding-inline: clamp(14px, 3.5vw, 36px);
+  width: 100%;
+  background: #6b1228;
+  box-sizing: border-box;
 }
 
 body.theme-archive.page-home .homeLetterCaption__inner {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: clamp(10px, 2vw, 22px);
+  flex-direction: column;
+  gap: clamp(16px, 2.5vw, 28px);
+  width: 100%;
   max-width: min(1180px, 100%);
   margin-inline: auto;
+  box-sizing: border-box;
+  padding: clamp(22px, 3.8vw, 42px) clamp(16px, 3.5vw, 44px) clamp(20px, 3.2vw, 36px);
 }
 
-body.theme-archive.page-home .homeLetterCaption__device {
-  flex-shrink: 0;
-  font-family: "Amiri", "Noto Nastaliq Urdu", serif;
-  color: #c4562a;
-  line-height: 1;
-  user-select: none;
-}
-
-body.theme-archive.page-home .homeLetterCaption__device--shadda {
-  font-size: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 0.5em;
-}
-
-body.theme-archive.page-home .homeLetterCaption__device--tatweel {
-  display: inline-block;
-  font-size: 22px;
-  width: 1ch;
-  flex-shrink: 0;
-  transform: scaleX(14);
-  transform-origin: center;
-  align-self: center;
-}
-
-body.theme-archive.page-home .homeLetterCaption__col {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-}
-
-body.theme-archive.page-home .homeLetterCaption__col--en {
-  justify-content: flex-start;
-}
-
-body.theme-archive.page-home .homeLetterCaption__col--ar {
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  gap: clamp(8px, 1.5vw, 18px);
-}
-
-body.theme-archive.page-home .homeLetterCaption__divider {
-  flex: 0 0 1px;
-  width: 1px;
-  align-self: stretch;
-  min-height: 3.5em;
-  background: #c4562a;
-  transform: scaleX(0.5);
-  transform-origin: center;
-}
-
-body.theme-archive.page-home .homeLetterCaption__text {
+body.theme-archive.page-home .homeLetterCaption__nameStack {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(5.8rem, 13vw, 8rem);
   margin: 0;
-  font-family: "Amiri", "Noto Nastaliq Urdu", Georgia, serif;
-  line-height: 1.55;
+  padding-block: clamp(0.6rem, 1.6vw, 1rem) clamp(0.25rem, 1vw, 0.55rem);
+  overflow: visible;
 }
 
-body.theme-archive.page-home .homeLetterCaption__text--en {
-  font-size: 13px;
+body.theme-archive.page-home .homeLetterCaption__nameEn,
+body.theme-archive.page-home .homeLetterCaption__nameAr {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  line-height: 1.12;
+}
+
+body.theme-archive.page-home .homeLetterCaption__nameEn {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.35rem, 6.2vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.058em;
+  color: #f5f0e8;
+}
+
+body.theme-archive.page-home .homeLetterCaption__nameAr {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  top: clamp(1.9rem, 4vw, 3.35rem);
+  justify-content: center;
+  direction: rtl;
+  font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.65rem, 6.8vw, 72px);
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #c4562a;
+  -webkit-text-fill-color: #c4562a;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(0, 0, 0, 0.2);
+}
+
+body.theme-archive.page-home .homeLetterCaption__midRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: clamp(20px, 4.5vw, 48px);
+  margin-top: clamp(4px, 0.8vw, 10px);
+}
+
+body.theme-archive.page-home .homeLetterCaption__dateStamp {
+  flex-shrink: 0;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.88rem, 1.45vw, 1.05rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #f5f0e8;
+  white-space: nowrap;
+}
+
+body.theme-archive.page-home .homeLetterCaption__headline {
+  margin: 0;
+  padding: 0;
+  font-family: "Amiri", "Noto Nastaliq Urdu", Georgia, serif;
+  font-size: clamp(1.35rem, 3.25vw, 2.05rem);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: #f5f0e8;
+  text-align: right;
+}
+
+body.theme-archive.page-home .homeLetterCaption__lede {
+  margin: clamp(8px, 1.4vw, 16px) 0 0;
+  padding: 0;
+  max-width: min(52rem, 100%);
+  font-family: "Amiri", "Noto Nastaliq Urdu", Georgia, serif;
+  font-size: clamp(1.12rem, 1.95vw, 1.45rem);
   font-style: italic;
   font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
   color: #f5f0e8;
-  letter-spacing: 0.06em;
-  text-align: left;
 }
 
-body.theme-archive.page-home .homeLetterCaption__text--ar {
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  color: #c4562a;
-  text-align: right;
-  flex: 1 1 auto;
-  min-width: 0;
+body.theme-archive.page-home .homeLetterCaption__seam {
+  width: 100%;
+  height: 6px;
+  margin: 0;
+  padding: 0;
+  background: #c4562a;
 }
 
-@media (max-width: 640px) {
-  body.theme-archive.page-home .homeLetterCaption__inner {
-    flex-direction: column;
-    align-items: stretch;
-    gap: clamp(14px, 3vw, 20px);
+@media (max-width: 520px) {
+  body.theme-archive.page-home .homeLetterCaption__midRow {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: clamp(10px, 2vw, 16px);
   }
 
-  body.theme-archive.page-home .homeLetterCaption__divider {
-    width: 100%;
-    height: 1px;
-    min-height: 0;
-    flex: 0 0 auto;
-    align-self: stretch;
-    transform: none;
+  body.theme-archive.page-home .homeLetterCaption__dateStamp {
+    align-self: flex-start;
+    font-size: 10px;
+    letter-spacing: 0.18em;
   }
 
-  body.theme-archive.page-home .homeLetterCaption__col--ar {
-    justify-content: space-between;
+  body.theme-archive.page-home .homeLetterCaption__nameStack {
+    min-height: clamp(5rem, 22vw, 6.4rem);
+  }
+
+  body.theme-archive.page-home .homeLetterCaption__nameEn {
+    font-size: clamp(1.9rem, 11vw, 2.7rem);
+  }
+
+  body.theme-archive.page-home .homeLetterCaption__nameAr {
+    top: clamp(1.8rem, 9vw, 2.75rem);
+    font-size: clamp(2.3rem, 12vw, 3.1rem);
   }
 }
 
+/* Letter body: no card — paper is the section; ruled lines on pink only */
 body.theme-archive.page-home .homeLetterBox {
-  max-width: min(1180px, 100%);
-  margin-inline: auto;
-  padding: clamp(24px, 5vw, 52px);
-  background: #b55385;
-  color: #fff8ef;
-  border: 3px solid #382e7d;
-  border-radius: 3px;
-  box-shadow: 0 22px 54px rgba(19, 7, 10, 0.28);
+  position: relative;
+  z-index: 1;
+  max-width: none;
+  margin: clamp(28px, 5vw, 56px) 0 0;
+  padding: clamp(36px, 6vw, 72px) clamp(20px, 4.5vw, 48px);
+  background: transparent;
+  color: #2a1a14;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.theme-archive.page-home .homeLetterBox::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 55px,
+    #8c3a1e 55px,
+    #8c3a1e 56px
+  );
+}
+
+body.theme-archive.page-home .homeLetterBox > * {
+  position: relative;
+  z-index: 1;
 }
 
 body.theme-archive.page-home .homeLetterBox__columns {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(28px, 5vw, 70px);
-  align-items: start;
+  gap: clamp(24px, 5vw, 44px) clamp(20px, 4vw, 48px);
+  align-items: stretch;
+  max-width: min(1180px, 100%);
+  margin-inline: auto;
 }
 
 body.theme-archive.page-home .homeLetterBox__letter {
   min-width: 0;
-  color: #fff8ef;
-}
-
-body.theme-archive.page-home .homeLetterBox__letter p {
-  margin: 0 0 1em;
-  color: inherit;
-  line-height: 1.72;
-  font-size: clamp(0.96rem, 1.35vw, 1.08rem);
-  font-weight: 600;
+  color: #2a1a14;
+  font-family: "Amiri", "Noto Nastaliq Urdu", Georgia, serif;
+  padding-block: clamp(10px, 2vw, 20px);
+  padding-inline: clamp(18px, 3.5vw, 36px);
 }
 
 body.theme-archive.page-home .homeLetterBox__letter--en {
   text-align: left;
   margin-bottom: 0;
+  box-shadow:
+    inset 0.5px 0 0 rgba(140, 58, 30, 0.3),
+    inset -1px 0 0 #c4562a;
 }
 
 body.theme-archive.page-home .homeLetterBox__letter--ar {
   text-align: right;
-  font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Amiri", "Noto Nastaliq Urdu", Georgia, serif;
+  box-shadow: inset -0.5px 0 0 rgba(140, 58, 30, 0.3);
+}
+
+body.theme-archive.page-home .homeLetterBox__letter p {
+  margin: 0 0 clamp(1.05em, 2.8vw, 1.35em);
+  color: inherit;
+  line-height: 2;
+  font-size: clamp(0.98rem, 1.28vw, 1.12rem);
+  font-weight: 700;
+}
+
+body.theme-archive.page-home .homeLetterBox__letter--en > p:first-of-type,
+body.theme-archive.page-home .homeLetterBox__letter--ar > p:first-of-type {
+  color: #8c3a1e;
+  font-family: "Amiri", "Noto Nastaliq Urdu", Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 700;
 }
 
 body.theme-archive.page-home .homeLetterBox__letter--ar p {
   line-height: 2;
-  font-size: clamp(1.03rem, 1.55vw, 1.26rem);
-  font-weight: 500;
+  font-size: clamp(1.02rem, 1.38vw, 1.18rem);
+  font-weight: 700;
+}
+
+body.theme-archive.page-home .homeLetterBox__colophon {
+  margin: clamp(32px, 5.5vw, 52px) auto 0;
+  margin-bottom: 0;
+  padding: clamp(8px, 1.5vw, 14px) clamp(16px, 4vw, 32px) 0;
+  max-width: min(1180px, 100%);
+  text-align: center;
+  font-family: "Amiri", "Noto Nastaliq Urdu", Georgia, serif;
+  font-size: clamp(1.1rem, 2.1vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #c4562a;
+  letter-spacing: 0.45em;
+}
+
+body.theme-archive.page-home .homeLetterBox__colophon__glyphs {
+  display: inline-block;
 }
 
 @media (max-width: 860px) {
@@ -1388,8 +1503,19 @@ body.theme-archive.page-home .homeLetterBox__letter--ar p {
     grid-template-columns: 1fr;
   }
 
+  body.theme-archive.page-home .homeLetterBox__letter--en {
+    box-shadow:
+      inset 0.5px 0 0 rgba(140, 58, 30, 0.3),
+      inset -0.5px 0 0 rgba(140, 58, 30, 0.3),
+      inset 0 -1px 0 #c4562a;
+  }
+
+  body.theme-archive.page-home .homeLetterBox__letter--ar {
+    box-shadow: inset 0.5px 0 0 rgba(140, 58, 30, 0.3), inset -0.5px 0 0 rgba(140, 58, 30, 0.3);
+  }
+
   body.theme-archive.page-home .homeLetterBox {
-    padding-inline: clamp(18px, 5vw, 30px);
+    padding-inline: clamp(14px, 4vw, 28px);
   }
 }
 
