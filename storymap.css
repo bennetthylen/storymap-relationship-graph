@@ -1,20 +1,3 @@
-/* Storymap canvas — archival catalog palette (flat, typographic; see brief in repo history). */
-:root {
-  --sm-arch-bg: #cdd5d3;
-  --sm-arch-ink: #1a1a18;
-  --sm-arch-paper: #f5f0e8;
-  --sm-arch-terra: #c4562a;
-  --sm-arch-line: #c8bfb0;
-  /* Unified Arabic on canvas + readable scale (matches Amiri across nodes). */
-  --sm-ar-base: clamp(1rem, 2.35vw, 1.28rem);
-  --sm-ar-line-height: 1.42;
-  --sm-central-en: clamp(0.88rem, 1.65vw, 1.06rem);
-  --sm-hub-latin: clamp(11px, 1.35vw, 14px);
-  --sm-cap-fig: clamp(8px, 1.05vw, 11px);
-  --sm-cap-en: clamp(10px, 1.2vw, 13px);
-  --sm-shadda: clamp(2.5rem, 5.5vw, 3.25rem);
-}
-
 .storymapLayout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -31,7 +14,7 @@
 }
 
 .storymapCanvasPanel {
-  background: var(--sm-arch-bg);
+  background: linear-gradient(165deg, var(--wmf-pink-light, #f8ddeb) 0%, var(--wmf-cream, #f9f3eb) 45%, #fffefb 100%);
   padding: 0.85rem;
   border-radius: 0;
   position: relative;
@@ -40,7 +23,7 @@
 }
 
 body.theme-storymap .storymapCanvasPanel {
-  background: var(--sm-arch-bg);
+  background: var(--storymap-bg);
 }
 
 .smPreviewToggle {
@@ -52,15 +35,12 @@ body.theme-storymap .storymapCanvasPanel {
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border-radius: 0;
-  border: 0.5px solid var(--sm-arch-ink);
-  background: var(--sm-arch-paper);
-  box-shadow: none;
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sm-arch-ink);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 24px rgba(15, 20, 25, 0.12);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111827;
   cursor: pointer;
   user-select: none;
 }
@@ -95,9 +75,9 @@ body.layout--storymapPreview .storymapAdminPanel {
   height: 100%;
   min-height: min(70vh, 760px);
   overflow: hidden;
-  border-radius: 0;
-  border: 0.5px solid color-mix(in srgb, var(--sm-arch-ink) 18%, transparent);
-  box-shadow: none;
+  border-radius: 16px;
+  border: 1px solid var(--wmf-sand, #f2e3b7);
+  box-shadow: inset 0 0 0 1px rgba(255, 254, 251, 0.65);
   cursor: grab;
 }
 
@@ -127,33 +107,24 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 .storymapEdges line {
-  stroke: var(--sm-arch-line);
-  stroke-width: 0.55;
+  stroke: var(--wmf-magenta, #ce2a58);
+  stroke-width: 2.25;
   stroke-linecap: butt;
-  stroke-linejoin: miter;
-  stroke-dasharray: none;
-  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+  stroke-dasharray: 6 6;
+  stroke-dashoffset: 0;
 }
 
-.storymapEdges line.storymapEdge--fromCenter {
-  stroke: var(--sm-arch-terra);
-  stroke-width: 0.75;
-  opacity: 1;
+.storymapEdges line.storymapEdge--hint {
+  opacity: 0.28;
 }
 
-.storymapEdges line.storymapEdge--hubSpoke {
-  stroke: var(--sm-arch-ink);
-  stroke-width: 0.55;
-  opacity: 0.5;
-}
-
-/* Default line = structural (aged paper). Modifiers: fromCenter, hubSpoke. */
-/* Unlock pulse: terra accent, then fades to reveal the classified base line. */
+/* Solid overlay during unlock; fades away into dashed base line. */
 .storymapEdges line.storymapEdgeOverlay--fade {
   --sm-edge-overlay-dur: 0.98s;
-  stroke: var(--sm-arch-terra);
-  stroke-width: 1;
-  stroke-linecap: butt;
+  stroke: var(--wmf-magenta, #ce2a58);
+  stroke-width: 3.25;
+  stroke-linecap: round;
   stroke-dasharray: none;
   opacity: 1;
   animation: smEdgeOverlayFade var(--sm-edge-overlay-dur) cubic-bezier(0.45, 0, 0.55, 1) forwards;
@@ -179,7 +150,7 @@ body.layout--storymapPreview .storymapAdminPanel {
   .smNode--edgeGlowSource,
   .smNode--edgeGlowTarget {
     transition: none;
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--sm-arch-terra) 45%, transparent);
+    box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
     filter: none;
   }
 }
@@ -202,276 +173,207 @@ body.layout--storymapPreview .storymapAdminPanel {
     transform 0.4s cubic-bezier(0.45, 0, 0.55, 1),
     left 560ms cubic-bezier(0.45, 0, 0.55, 1),
     top 560ms cubic-bezier(0.45, 0, 0.55, 1),
-    opacity 0.56s cubic-bezier(0.45, 0, 0.55, 1);
+    opacity 0.56s cubic-bezier(0.45, 0, 0.55, 1),
+    box-shadow 0.4s cubic-bezier(0.45, 0, 0.55, 1),
+    filter 0.44s cubic-bezier(0.45, 0, 0.55, 1);
   user-select: none;
 }
 
+/* Edge sequence (JS-driven): steady glow while class is present — no keyframe flicker */
 .smNode--edgeGlowSource {
   z-index: 10;
-  transition: box-shadow 0.12s ease;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--sm-arch-terra) 55%, transparent);
-  filter: none;
+  transition:
+    box-shadow 0.12s cubic-bezier(0.45, 0, 0.55, 1),
+    filter 0.12s cubic-bezier(0.45, 0, 0.55, 1);
+  box-shadow:
+    0 0 0 3px rgba(206, 42, 88, 0.42),
+    0 14px 36px rgba(206, 42, 88, 0.2);
+  filter: drop-shadow(0 6px 22px rgba(206, 42, 88, 0.35));
 }
 
 .smNode--edgeGlowTarget {
   z-index: 10;
-  transition: box-shadow 0.12s ease;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--sm-arch-terra) 65%, transparent);
-  filter: none;
+  transition:
+    box-shadow 0.12s cubic-bezier(0.45, 0, 0.55, 1),
+    filter 0.12s cubic-bezier(0.45, 0, 0.55, 1);
+  box-shadow:
+    0 0 0 4px rgba(206, 42, 88, 0.46),
+    0 16px 40px rgba(206, 42, 88, 0.22);
+  filter: drop-shadow(0 8px 26px rgba(206, 42, 88, 0.38));
 }
 
+/* In-place unlock: inline styles drive a single ~300ms tween; keep class timing aligned */
 .smNode--unlocking {
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
   z-index: 8;
   pointer-events: none;
-  filter: none;
+  filter: drop-shadow(0 4px 18px rgba(206, 42, 88, 0.28)) drop-shadow(0 2px 6px rgba(15, 20, 25, 0.12));
   transition:
     transform 300ms cubic-bezier(0.45, 0, 0.55, 1),
     opacity 300ms cubic-bezier(0.45, 0, 0.55, 1),
+    filter 300ms cubic-bezier(0.45, 0, 0.55, 1),
     box-shadow 0.32s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
 .smNode:hover:not(.smNode--locked):not(.smNode--unlocking) {
-  transform: none;
-  box-shadow: none;
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 14px 34px rgba(15, 20, 25, 0.14),
+    0 0 0 1px rgba(206, 42, 88, 0.2);
+}
+
+.smNode:hover:not(.smNode--locked):not(.smNode--unlocking).smNode--image {
+  box-shadow:
+    0 14px 34px rgba(15, 20, 25, 0.14),
+    0 0 0 1px rgba(206, 42, 88, 0.22);
 }
 
 .smNode--locked {
-  opacity: 0.45;
-  filter: grayscale(1);
+  opacity: 0.52;
+  filter: grayscale(1) saturate(0.55);
   cursor: default;
 }
 
 .smNode--locked.smNode--image {
-  filter: grayscale(1);
+  filter: none;
   isolation: isolate;
 }
 
 .smNode--visited:not(.smNode--locked) {
-  box-shadow: 0 0 0 1px var(--sm-arch-terra);
+  box-shadow: 0 0 0 2px rgba(206, 42, 88, 0.4), 0 10px 28px rgba(206, 42, 88, 0.16);
 }
 
-/* —— Central colophon —— */
-.smNode--text.smNode--central {
-  width: max-content;
-  max-width: min(19rem, 92vw);
-}
-
-.smNodeCentralPlate {
-  background: var(--sm-arch-terra);
-  padding: 2px;
-  border: 0.5px solid var(--sm-arch-paper);
-  box-sizing: border-box;
-}
-
-.smNodeCentralPlate__frame {
-  border: 0.5px solid var(--sm-arch-paper);
-  padding: 0.65rem 0.78rem;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.smNodeCentralAr,
-.smNodeHubAr,
-.smNodeImageCaption__ar {
-  font-family: "Amiri", serif;
-  font-weight: 400;
-  font-size: var(--sm-ar-base);
-  line-height: var(--sm-ar-line-height);
-  letter-spacing: 0;
-  font-synthesis: none;
-}
-
-.smNodeCentralAr {
-  color: var(--sm-arch-paper);
-  margin-bottom: 0.4rem;
-}
-
-.smNodeCentralEn {
-  font-family: "Amiri", serif;
-  font-weight: 400;
-  font-size: var(--sm-central-en);
-  line-height: var(--sm-ar-line-height);
-  letter-spacing: 0.02em;
-  color: var(--sm-arch-paper);
-}
-
-.smNodeCentralShadda {
-  font-family: "Amiri", serif;
-  font-size: var(--sm-shadda);
-  line-height: 1;
-  color: var(--sm-arch-paper);
-  text-align: center;
-  margin-top: 0.42rem;
-  opacity: 0.92;
-}
-
-/* —— Hub stamps —— */
-.smNode--text.smNode--hub {
-  width: max-content;
-  max-width: min(24rem, 94vw);
-}
-
-.smNodeHub {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.28rem;
-}
-
-.smNodeHubAr {
-  color: var(--sm-arch-terra);
-  text-align: right;
-}
-
-.smNodeHubRow {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  min-height: 36px;
-  height: 36px;
-  background: var(--sm-arch-ink);
-  border-radius: 0;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.smNodeHubTick {
-  flex: 0 0 4px;
-  width: 4px;
-  align-self: stretch;
-  background: var(--sm-arch-terra);
-}
-
-.smNodeHubLatin {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  padding: 0 0.72rem 0 0.5rem;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  font-weight: 700;
-  font-size: var(--sm-hub-latin);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--sm-arch-paper);
-  white-space: nowrap;
-}
-
-/* —— Image catalog cards —— */
-.smNode--image {
-  background: transparent;
+.smNode--text {
+  background: linear-gradient(135deg, #fff5f8, var(--wmf-pink-light, #f8ddeb));
   padding: 0;
-  border-radius: 0;
-  box-shadow: none;
+  border-radius: 1rem;
+  box-shadow: 0 10px 26px rgba(42, 42, 44, 0.1);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--wmf-magenta, #ce2a58);
+  white-space: normal;
+  width: max-content;
+  max-width: min(18rem, 92vw);
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.smNodeTextInner {
+  display: block;
+  padding: 0.85rem 1.25rem;
+  border-radius: 1rem;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+  text-wrap: pretty;
+  white-space: normal;
+  max-height: 10.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.smNode--image {
+  background: #fff;
+  padding: 0.4rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 24px rgba(15, 20, 25, 0.12);
   width: auto;
-  min-width: 104px;
-  min-height: 82px;
+  min-width: 92px;
+  min-height: 72px;
   aspect-ratio: auto;
   position: relative;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  overflow: hidden;
 }
 
 .smNode--image img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
-  border-radius: 0;
+  border-radius: 0.5rem;
   display: block;
-  transition: filter 0.9s cubic-bezier(0.45, 0, 0.55, 1);
+  transition: filter 0.6s ease;
   filter: none;
 }
 
 .smNode--image.smNode--locked img {
-  filter: grayscale(1) saturate(0.92);
+  filter: grayscale(1) saturate(0.65) !important;
 }
 
-.smNode--image.smNode--unlocking img {
+/* Do not clear img filter until unlock animation finishes (must exclude --unlocking). */
+.smNode--image:not(.smNode--locked):not(.smNode--unlocking) img {
+  filter: none !important;
+}
+
+.smNode--unlocking img {
   will-change: filter;
 }
 
-.smNodeImageCaption {
-  margin-top: 0.42rem;
-  padding: 0.45rem 0.5rem 0.52rem;
-  background: var(--sm-arch-paper);
-  display: flex;
-  flex-direction: column;
-  gap: 0.22rem;
-  align-items: stretch;
-}
-
-.smNodeImageCaption__fig {
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  font-size: var(--sm-cap-fig);
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--sm-arch-ink);
-  opacity: 0.4;
-}
-
-.smNodeImageCaption__en {
-  font-family: "Amiri", serif;
-  font-weight: 400;
-  font-size: var(--sm-cap-en);
-  line-height: var(--sm-ar-line-height);
-  color: var(--sm-arch-ink);
-  text-transform: lowercase;
-}
-
-.smNodeImageCaption__ar {
-  color: var(--sm-arch-terra);
-  text-align: right;
+.smNodeImageTitle {
+  position: absolute;
+  left: 0.55rem;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  padding: 0.28rem 0.45rem;
+  border-radius: 0.35rem;
+  background: rgba(17, 24, 39, 0.75);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.68rem;
+  line-height: 1.25;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  max-height: 3.6em;
+  pointer-events: none;
 }
 
 .smNode--tag {
-  background: var(--sm-arch-paper);
+  background: linear-gradient(145deg, var(--wmf-gold, #e4a317), #f0c24d);
   width: auto;
   min-width: 3.5rem;
   height: 3.5rem;
   min-height: 3.5rem;
   padding: 0 0.55rem;
-  border-radius: 0;
-  border: 0.5px solid var(--sm-arch-ink);
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 1.125rem;
-  color: var(--sm-arch-ink);
-  box-shadow: none;
+  color: #fffefb;
+  box-shadow: 0 10px 24px rgba(228, 163, 23, 0.28);
 }
 
 .smNode--selected {
-  box-shadow: 0 0 0 1px var(--sm-arch-terra);
+  box-shadow: 0 0 0 3px rgba(206, 42, 88, 0.35), 0 10px 24px rgba(15, 20, 25, 0.12);
 }
 
-.smNode--image.smColor--green,
-.smNode--image.smColor--teal,
-.smNode--image.smColor--blue,
-.smNode--image.smColor--white,
-.smNode--image.smColor--orange {
-  /* Editor color chips do not affect archival skin. */
-  background: transparent;
+.smColor--green {
+  background: #c9f3de;
+}
+.smColor--teal {
+  background: #b8f0e6;
+}
+.smColor--blue {
+  background: #d4ecff;
+}
+.smColor--white {
+  background: #ffffff;
+}
+.smColor--orange {
+  background: #ffe8c2;
 }
 
 .storymapAdminPanel {
   display: none;
-  background: var(--sm-arch-paper);
-  border-radius: 0;
-  border: 0.5px solid color-mix(in srgb, var(--sm-arch-ink) 22%, transparent);
+  background: #ffffff;
+  border-radius: 16px;
   padding: 14px;
   overflow: auto;
 }
@@ -490,10 +392,9 @@ body.layout--storymapPreview .storymapAdminPanel {
   max-width: min(720px, calc(100vw - 24px));
   max-height: none;
   overflow: auto;
-  background: var(--sm-arch-paper);
-  border-radius: 0;
-  border: 0.5px solid color-mix(in srgb, var(--sm-arch-ink) 28%, transparent);
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 14px;
+  box-shadow: 0 20px 44px rgba(15, 20, 25, 0.2);
   padding: 12px 12px 14px;
   display: none;
   z-index: 55;
@@ -530,10 +431,10 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoClose {
   float: right;
-  border: 0.5px solid color-mix(in srgb, var(--sm-arch-ink) 35%, transparent);
-  border-radius: 0;
-  background: var(--sm-arch-bg);
-  color: var(--sm-arch-ink);
+  border: 1px solid rgba(206, 42, 88, 0.22);
+  border-radius: 10px;
+  background: #fffefb;
+  color: #111827;
   cursor: pointer;
   width: 30px;
   height: 30px;
@@ -541,18 +442,11 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoTitle {
   margin: 0 0 10px;
-  font-size: 1.15rem;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-size: 1.06rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1.35;
-  color: var(--sm-arch-ink);
+  color: #111827;
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: normal;
@@ -561,11 +455,11 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoBody {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: 0.94rem;
   font-weight: 400;
-  color: var(--sm-arch-ink);
+  color: #374151;
   line-height: 1.68;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   overflow-wrap: anywhere;
   word-break: normal;
   hyphens: auto;
@@ -584,10 +478,10 @@ body.layout--storymapPreview .storymapAdminPanel {
   );
   object-fit: contain;
   object-position: center;
-  border-radius: 0;
+  border-radius: 10px;
   margin: 0;
   opacity: 0;
-  transform: none;
+  transform: scale(0.96);
   transition:
     opacity 0.4s cubic-bezier(0.45, 0, 0.55, 1),
     transform 0.4s cubic-bezier(0.45, 0, 0.55, 1);
@@ -595,7 +489,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoImage.smInfoImage--enter {
   opacity: 1;
-  transform: none;
+  transform: scale(1);
 }
 
 @media (max-width: 540px) {
@@ -635,6 +529,6 @@ body.layout--storymapPreview .storymapAdminPanel {
 }
 
 body.theme-storymap .storymapViewport {
-  border-color: color-mix(in srgb, var(--sm-arch-ink) 22%, transparent);
-  box-shadow: none;
+  border-color: rgba(61, 16, 12, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(61, 16, 12, 0.05);
 }
