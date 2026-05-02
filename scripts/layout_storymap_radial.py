@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 import math
-from collections import defaultdict
+from collections import defaultdict, deque
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,15 +26,15 @@ HUB_THETA = {
     "n_ea58683f": 4 * math.pi / 3,
 }
 
-R_HUB_ORBIT = 1180.0
+R_HUB_ORBIT = 1280.0
 
-R_CHILD_FIRST = 760.0
-R_CHILD_STEP = 820.0
-PER_RING = 7
+R_CHILD_FIRST = 920.0
+R_CHILD_STEP = 960.0
+PER_RING = 6
 
-R_CHAIN_FIRST = 480.0
-CHAIN_STEP = 520.0
-CHAIN_PER_RING = 10
+R_CHAIN_FIRST = 620.0
+CHAIN_STEP = 700.0
+CHAIN_PER_RING = 8
 
 
 def collect_children(edges: list) -> dict[str, list[str]]:
@@ -48,6 +48,26 @@ def collect_children(edges: list) -> dict[str, list[str]]:
     for k in ch:
         ch[k] = sorted(set(ch[k]))
     return dict(ch)
+
+
+def bfs_depth_from_roots(
+    children: dict[str, list[str]], root_ids: list[str], ids: set[str]
+) -> dict[str, int]:
+    """Shortest hop count from any root along directed edges (parent → child)."""
+    depth: dict[str, int] = {}
+    q: deque[tuple[str, int]] = deque()
+    for r in root_ids:
+        if r in ids:
+            q.append((r, 0))
+    while q:
+        nid, d = q.popleft()
+        if nid in depth:
+            continue
+        depth[nid] = d
+        for c in children.get(nid, []):
+            if c in ids and c not in depth:
+                q.append((c, d + 1))
+    return depth
 
 
 def outward_base_angle(cx: float, cy: float) -> float:
@@ -118,12 +138,18 @@ def main() -> None:
             phase=hub_phase,
         )
 
-    for _ in range(128):
+    depth = bfs_depth_from_roots(children, [CENTRAL], ids)
+
+    for _ in range(256):
         progressed = False
-        for pid in list(pos.keys()):
+        parents_with_pending = []
+        for pid in pos:
             pending = [c for c in children.get(pid, []) if c in ids and c not in pos]
-            if not pending:
-                continue
+            if pending:
+                parents_with_pending.append((depth.get(pid, 9999), pid, pending))
+        # Expand shallow subtrees first so deep chains don’t get squeezed into one wedge.
+        parents_with_pending.sort(key=lambda t: (t[0], t[1]))
+        for _, pid, pending in parents_with_pending:
             pid_phase = (sum(ord(c) for c in pid) % 360) / 360.0 * 2 * math.pi * 0.35
             radial_place(
                 pos[pid][0],
