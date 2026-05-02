@@ -227,7 +227,8 @@ function applyStorymapUrlStorageHints() {
 /**
  * Hard refresh (Ctrl/Cmd+Shift+R, Ctrl+F5) cannot be detected after the fact in JS.
  * We arm sessionStorage on those shortcuts; the next load clears viewer progress so the storymap
- * UI resets. A normal refresh (F5 / Cmd+R) does not arm, so progress persists.
+ * UI resets, and the welcome intro can show again (same as a fresh visit for that screen).
+ * A normal refresh (F5 / Cmd+R) does not arm, so progress and welcome-dismiss persist.
  * (Reload from the browser menu without the shortcut is still a "normal" refresh for this purpose.)
  */
 const STORYMAP_HARD_RELOAD_NEXT_KEY = "storymapHardReloadNext";
@@ -239,8 +240,12 @@ function applyStorymapHardRefreshReset() {
     sessionStorage.removeItem(STORYMAP_HARD_RELOAD_NEXT_KEY);
     localStorage.removeItem(STORYMAP_PROGRESS_KEY);
     localStorage.removeItem(STORYMAP_PROGRESS_PREVIEW_KEY);
+    localStorage.removeItem(STORYMAP_WELCOME_SEEN_KEY);
+    localStorage.removeItem("storymapWelcomeSeenV1");
     if (typeof console !== "undefined" && console.info) {
-      console.info("[storymap] Viewer progress cleared after hard-refresh shortcut (see STORYMAP_HARD_RELOAD_NEXT_KEY).");
+      console.info(
+        "[storymap] Viewer progress + welcome intro cleared after hard-refresh shortcut (see STORYMAP_HARD_RELOAD_NEXT_KEY)."
+      );
     }
   } catch {
     /* ignore */
