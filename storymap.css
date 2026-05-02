@@ -57,7 +57,7 @@ body.theme-storymap .storymapCanvasPanel {
   background: var(--sm-arch-paper);
   box-shadow: none;
   font-size: 0.92rem;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sm-arch-ink);
@@ -122,7 +122,7 @@ body.layout--storymapPreview .storymapAdminPanel {
     "Segoe UI",
     sans-serif;
   font-size: 0.62rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-align: center;
@@ -310,7 +310,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 .smNodeHubAr,
 .smNodeImageCaption__ar {
   font-family: "Amiri", serif;
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--sm-ar-base);
   line-height: var(--sm-ar-line-height);
   letter-spacing: 0;
@@ -324,7 +324,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smNodeCentralEn {
   font-family: "Amiri", serif;
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--sm-central-en);
   line-height: var(--sm-ar-line-height);
   letter-spacing: 0.02em;
@@ -333,6 +333,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smNodeCentralShadda {
   font-family: "Amiri", serif;
+  font-weight: 700;
   font-size: var(--sm-shadda);
   line-height: 1;
   color: var(--sm-arch-paper);
@@ -391,7 +392,7 @@ body.layout--storymapPreview .storymapAdminPanel {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  font-weight: 700;
+  font-weight: 800;
   font-size: var(--sm-hub-latin);
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -452,7 +453,7 @@ body.layout--storymapPreview .storymapAdminPanel {
     "Segoe UI",
     sans-serif;
   font-size: var(--sm-cap-fig);
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--sm-arch-ink);
@@ -461,7 +462,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smNodeImageCaption__en {
   font-family: "Amiri", serif;
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--sm-cap-en);
   line-height: var(--sm-ar-line-height);
   color: var(--sm-arch-ink);
@@ -485,7 +486,7 @@ body.layout--storymapPreview .storymapAdminPanel {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 1.125rem;
   color: var(--sm-arch-ink);
   box-shadow: none;
@@ -579,7 +580,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 .smInfoTitle {
   margin: 0 0 10px;
   font-size: 1.15rem;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-family:
@@ -599,7 +600,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 .smInfoBody {
   margin: 0;
   font-size: 1.02rem;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--sm-arch-ink);
   line-height: 1.68;
   letter-spacing: 0.02em;
