@@ -10,8 +10,6 @@ const LANG_BUTTON_CODES = { en: "EN", ar: "AR", it: "IT", fr: "FR", es: "ES", de
 
 const BODY_MODE = document.body?.dataset?.mode;
 const MODE = BODY_MODE === "admin" || BODY_MODE === "history" ? BODY_MODE : "viewer";
-/** True on `/storymap.html` including GitHub Pages project URLs (`/repo/storymap.html`). */
-const IS_STORYMAP_PAGE = /\/storymap\.html$/i.test(window.location.pathname || "");
 const ADMIN_UNLOCK_KEY = "storymapAdminUnlockedV1";
 const ADMIN_PASSWORD = "beebo";
 const CONTENT_STORAGE_KEY = "storymapExhibitionContentV1";
@@ -24,8 +22,8 @@ const STORYMAP_PROGRESS_KEY = "storymapProgressV1";
 const STORYMAP_PROGRESS_PREVIEW_KEY = "storymapProgressPreviewV1";
 /** First-visit navigation hint on the storymap canvas ("scroll to zoom…"). */
 const STORYMAP_NAV_HINT_KEY = "storymapNavHintSeenV1";
-/** One-time storymap intro screen ("Storymap" / enter the archive) on storymap.html. */
-const STORYMAP_WELCOME_SEEN_KEY = "storymapWelcomeSeenV1";
+/** One-time storymap intro. Key bumped so visitors get a first screen after URL/detection fixes. */
+const STORYMAP_WELCOME_SEEN_KEY = "storymapWelcomeSeenV2";
 /** Persists across browser restarts so you reuse one PAT; clear with "Forget PAT". */
 const GITHUB_TOKEN_STORAGE_KEY = "storymapGithubPublishTokenV1";
 
@@ -63,6 +61,7 @@ function storymapClearableStorageKeys() {
   return [
     STORYMAP_PROGRESS_KEY,
     STORYMAP_PROGRESS_PREVIEW_KEY,
+    "storymapWelcomeSeenV1",
     STORYMAP_WELCOME_SEEN_KEY,
     STORYMAP_CANVAS_PUBLIC_KEY,
     STORYMAP_CANVAS_ADMIN_KEY,
@@ -113,9 +112,9 @@ function storymapDumpLocalStorage() {
   return rows;
 }
 
-/** Full-screen first-visit intro on storymap.html (see STORYMAP_WELCOME_SEEN_KEY). */
+/** Full-screen first-visit intro when `#storymapWelcome` exists (DOM is the page gate, not URL shape). */
 function initStorymapWelcomeOverlay() {
-  if (!IS_STORYMAP_PAGE || typeof document === "undefined") return;
+  if (typeof document === "undefined") return;
   const root = document.getElementById("storymapWelcome");
   const btn = document.getElementById("storymapWelcomeDismiss");
   if (!root || !btn) return;
