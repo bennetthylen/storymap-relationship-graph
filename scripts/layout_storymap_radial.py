@@ -18,12 +18,11 @@ PATH = ROOT / "published-storymap.json"
 
 CENTRAL = "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092"
 HUB_ORDER = ["n_5cd72ca5", "n_011e6d0c", "n_ea58683f"]
-# 120° apart on a full circle (0°, 120°, 240°): not all in the lower ~60–120° sector, so edges radiate
-# in every direction from the center instead of reading as one vertical “waterfall.”
+# Equilateral on the orbit, rotated 30° so no two hubs share the same x (0°,120°,240° put two hubs at x=-R/2 — reads as a vertical column).
 HUB_THETA = {
-    "n_5cd72ca5": 0.0,
-    "n_011e6d0c": 2 * math.pi / 3,
-    "n_ea58683f": 4 * math.pi / 3,
+    "n_5cd72ca5": math.pi / 6,
+    "n_011e6d0c": 5 * math.pi / 6,
+    "n_ea58683f": 3 * math.pi / 2,
 }
 
 R_HUB_ORBIT = 1280.0
