@@ -35,6 +35,11 @@ R_CHAIN_FIRST = 620.0
 CHAIN_STEP = 700.0
 CHAIN_PER_RING = 8
 
+# Place children on an arc centered on the ray from the archive root (0,0) through the parent —
+# not a full 360° ring. A full circle wraps half the children back toward the center, which reads as
+# long vertical spines in screen space (+y is down). Use a wide outward-facing arc instead.
+CHILD_ARC_SPAN = math.pi  # Semicircle facing away from the archive root through each parent (balloon tree).
+
 
 def collect_children(edges: list) -> dict[str, list[str]]:
     ch: dict[str, list[str]] = defaultdict(list)
@@ -85,6 +90,7 @@ def radial_place(
     ring_step: float,
     per_ring: int,
     phase: float = 0.0,
+    arc_span: float = CHILD_ARC_SPAN,
 ) -> None:
     if not child_ids:
         return
@@ -97,8 +103,10 @@ def radial_place(
         m = len(batch)
         r = r0 + ring * ring_step
         twist = ring * (math.pi / max(7, m))
+        half = arc_span / 2
         for j, nid in enumerate(batch):
-            theta = base_phi + 2 * math.pi * (j + 0.5) / m + phase + twist
+            t = -half + arc_span * (j + 0.5) / m
+            theta = base_phi + t + phase + twist
             out[nid] = (cx + r * math.cos(theta), cy + r * math.sin(theta))
         i += per_ring
         ring += 1
