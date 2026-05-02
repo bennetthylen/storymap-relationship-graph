@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Kufam:wght@400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Syne:wght@600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;1,400&family=Inter:wght@400;500;600;700;800;900&family=Kufam:wght@400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Syne:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -234,11 +234,32 @@
     </section>
 
     <section class="homeLetterSection" aria-labelledby="homeLetterTitle">
+      <header class="homeLetterCaption" id="homeLetterTitle">
+        <div class="homeLetterCaption__rule" aria-hidden="true"></div>
+        <div class="homeLetterCaption__band">
+          <div class="homeLetterCaption__inner">
+            <span class="homeLetterCaption__device homeLetterCaption__device--shadda" aria-hidden="true">&#x25cc;&#x0651;</span>
+            <div class="homeLetterCaption__col homeLetterCaption__col--en" lang="en">
+              <p class="homeLetterCaption__text homeLetterCaption__text--en">
+                A letter from Shahinda Mekled to her daughter Reem —<br />
+                Egypt, 1978. Written from prison.<br />
+                Signed: &lsquo;Doing Well, Don&rsquo;t Worry.&rsquo;
+              </p>
+            </div>
+            <div class="homeLetterCaption__divider" aria-hidden="true"></div>
+            <div class="homeLetterCaption__col homeLetterCaption__col--ar" lang="ar">
+              <p class="homeLetterCaption__text homeLetterCaption__text--ar" dir="rtl">
+                رسالة من شاهندة مقلد إلى ابنتها ريم<br />
+                مصر، ١٩٧٨ — كُتبت من السجن<br />
+                وقّعتها: «بخير، لا تقلقي»
+              </p>
+              <span class="homeLetterCaption__device homeLetterCaption__device--tatweel" aria-hidden="true">ـ</span>
+            </div>
+          </div>
+        </div>
+        <div class="homeLetterCaption__rule" aria-hidden="true"></div>
+      </header>
       <div class="homeLetterBox">
-        <h2 id="homeLetterTitle" class="homeLetterBox__intro">
-          This is the letter from Shahinda Mekled to Reem Saadi (Egypt, 1978), while she was imprisoned for her
-          politics. She finished with the phrase, &quot;Doing Well, Don't Worry,&quot; next to her signature.
-        </h2>
         <div class="homeLetterBox__columns">
           <article class="homeLetterBox__letter homeLetterBox__letter--en" lang="en">
             <p>My dear daughter Reem,</p>
