@@ -1212,16 +1212,17 @@ body.theme-archive.page-home .homeLetterBox {
 }
 
 body.theme-archive.page-home .homeLetterBox__intro {
-  max-width: min(58rem, 100%);
-  margin: 0 auto clamp(26px, 4vw, 42px);
+  max-width: min(46rem, 100%);
+  margin: 0 auto clamp(22px, 3.5vw, 36px);
   font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
   color: #fff;
-  font-size: clamp(0.92rem, 1.32vw, 1.06rem);
+  font-size: clamp(0.95rem, 1.38vw, 1.1rem);
   font-weight: 800;
-  letter-spacing: -0.045em;
-  line-height: 1.4;
+  letter-spacing: -0.04em;
+  line-height: 1.42;
   text-align: center;
   text-wrap: balance;
+  text-rendering: geometricPrecision;
 }
 
 body.theme-archive.page-home .homeLetterBox__columns {
