@@ -29,9 +29,10 @@ const GITHUB_TOKEN_STORAGE_KEY = "storymapGithubPublishTokenV1";
 /**
  * Map published node `label` / `content` strings to canonical keys in
  * `STORYMAP_CANVAS_NODE_I18N` / `i18n/canvas-labels.json` when wording drifted on disk.
+ * Uses `normalizeStorymapTitleText` so NBSP/ZW/invisible chars match stitched bundle keys.
  */
 function normalizeStorymapCanvasI18nLabelKey(raw) {
-  const s = String(raw ?? "").trim();
+  const s = normalizeStorymapTitleText(String(raw ?? ""));
   if (s === "On Reassembling Relations") return "On Re-Assembling Relations";
   return s;
 }
@@ -2832,7 +2833,7 @@ function initCustomStorymapCanvas() {
     try {
       alreadySeen = Boolean(localStorage.getItem(STORYMAP_NAV_HINT_KEY));
     } catch {
-      return;
+      alreadySeen = false;
     }
     if (alreadySeen) return;
     if (viewport.querySelector(".storymapNavHint")) return;
