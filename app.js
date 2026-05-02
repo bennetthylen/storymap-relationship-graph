@@ -2184,6 +2184,35 @@ function initCustomStorymapCanvas() {
   };
 
   /**
+   * Edge endpoints only: for image nodes, use the `<img>` box — not the caption below it.
+   * Otherwise edge centers shift down vs. layouts where the thumbnail filled the node box.
+   */
+  const nodeEdgeAnchorRectFromEl = (el) => {
+    if (el.classList?.contains("smNode--image")) {
+      const img = el.querySelector(":scope > img");
+      if (img) {
+        const r = img.getBoundingClientRect();
+        if (r.width > 0 && r.height > 0) {
+          const tl = screenToWorld(r.left, r.top);
+          const tr = screenToWorld(r.right, r.top);
+          const bl = screenToWorld(r.left, r.bottom);
+          const br = screenToWorld(r.right, r.bottom);
+          const xs = [tl.x, tr.x, bl.x, br.x];
+          const ys = [tl.y, tr.y, bl.y, br.y];
+          const left = Math.min(...xs);
+          const right = Math.max(...xs);
+          const top = Math.min(...ys);
+          const bottom = Math.max(...ys);
+          const w = Math.max(1, right - left);
+          const h = Math.max(1, bottom - top);
+          return { left, top, w, h, cx: (left + right) / 2, cy: (top + bottom) / 2 };
+        }
+      }
+    }
+    return nodeWorldRectFromEl(el);
+  };
+
+  /**
    * Grow the world + edge SVG to cover every node in world px. Otherwise the SVG viewport
    * stays viewport-sized and clips <line> coordinates past ~1400px — edges look "stubby".
    */
@@ -2731,7 +2760,7 @@ function initCustomStorymapCanvas() {
     const worldRectById = new Map();
     const getWorldRect = (id, el) => {
       if (worldRectById.has(id)) return worldRectById.get(id);
-      const box = nodeWorldRectFromEl(el);
+      const box = nodeEdgeAnchorRectFromEl(el);
       worldRectById.set(id, box);
       return box;
     };
