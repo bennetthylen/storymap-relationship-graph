@@ -27,6 +27,16 @@ const STORYMAP_NAV_HINT_KEY = "storymapNavHintSeenV1";
 const GITHUB_TOKEN_STORAGE_KEY = "storymapGithubPublishTokenV1";
 
 /**
+ * Map published node `label` / `content` strings to canonical keys in
+ * `STORYMAP_CANVAS_NODE_I18N` / `i18n/canvas-labels.json` when wording drifted on disk.
+ */
+function normalizeStorymapCanvasI18nLabelKey(raw) {
+  const s = String(raw ?? "").trim();
+  if (s === "On Reassembling Relations") return "On Re-Assembling Relations";
+  return s;
+}
+
+/**
  * All localStorage keys used by this app (same origin = shared across pages; never synced across browsers).
  * Use `storymapDumpLocalStorage()` in the console to inspect sizes and parse JSON values.
  */
@@ -2120,8 +2130,8 @@ function initCustomStorymapCanvas() {
 
   const storymapCanvasLabelKey = (node) => {
     const fromLabel = String(node?.label || "").trim();
-    if (fromLabel) return fromLabel;
-    return String(node?.content || "").trim();
+    const raw = fromLabel || String(node?.content || "").trim();
+    return normalizeStorymapCanvasI18nLabelKey(raw);
   };
   const getStorymapCanvasI18nPack = (node) => {
     if (typeof STORYMAP_CANVAS_NODE_I18N === "undefined" || currentLang === "en") return null;
