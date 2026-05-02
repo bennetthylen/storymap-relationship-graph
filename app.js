@@ -286,10 +286,17 @@ const GITHUB_REPO_BRANCH = "main";
 
 const DEFAULT_CONTENT = {
   heroTitleEn: "Doing Well, Don't Worry.",
-  heroTitleAr: "أنا بخير، اطمئنوا",
+  heroTitleAr: "أنا بخير، أطمئنوا",
   heroSubtitle:
     "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
   heroCta: "experience the storymap",
+  landingSubheading: "Women are always on the move",
+  landingSubheadingEn: "Women are always on the move",
+  landingSubheadingAr: "النساء دائمًا في حركة",
+  landingBodyPart1:
+    "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people's lives. This exhibition introduces glimpses into the lives of 21 women \u2013 women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",
+  landingBodyPart2:
+    "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
   landingBody:
       "Women are always on the move. Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people's lives. This exhibition introduces glimpses into the lives of 21 women \u2013 women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work. This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
   historyTitle: "Feminism in Egypt and Beyond",
@@ -788,7 +795,7 @@ Object.values(TRANSLATIONS).forEach((bundle) => {
 });
 
 Object.assign(TRANSLATIONS.ar, {
-  exhibitionTitle: "أنا بخير، اطمئنوا: أرشيف نسوي علائقي",
+  exhibitionTitle: "أنا بخير، أطمئنوا: أرشيف نسوي علائقي",
   exhibitionSubtitle:
     "تعيد «المرأة والذاكرة» قراءة أرشيف وداد متري بوصفه إرشادًا نسويًا عابرًا للأجيال والطبقات.",
   citationsTitle: "مراجع وفق أسلوب شيكاغو",
@@ -2724,265 +2731,104 @@ function storymapLayoutRuntimeProbe(state) {
   };
 }
 
-/** Mirrors `scripts/layout_storymap_radial.py` — overwrites every node x/y after load so positions always apply. */
-const STORYMAP_RADIAL_CENTRAL = "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092";
-const STORYMAP_RADIAL_HUB_ORDER = ["n_5cd72ca5", "n_011e6d0c", "n_ea58683f"];
-/** −π/2 + k·2π/3 with Mobility at top (largest subtree → least mass dragged toward +y). */
-const STORYMAP_RADIAL_HUB_THETA = {
+const STORYMAP_CENTRAL_ID = "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092";
+const STORYMAP_HUB_IDS = new Set(["n_5cd72ca5", "n_011e6d0c", "n_ea58683f"]);
+const STORYMAP_HUB_ANGLES = {
   n_011e6d0c: -Math.PI / 2,
   n_5cd72ca5: -Math.PI / 2 + (2 * Math.PI) / 3,
   n_ea58683f: -Math.PI / 2 + (4 * Math.PI) / 3,
 };
-const STORYMAP_RADIAL_ORBIT = 920;
-/** Keep thumbnails close to their hub / parent; tune with scripts/layout_storymap_radial.py */
-const STORYMAP_RADIAL_CHILD_FIRST = 540;
-const STORYMAP_RADIAL_CHILD_STEP = 640;
-const STORYMAP_RADIAL_PER_RING = 6;
-const STORYMAP_RADIAL_CHAIN_FIRST = 400;
-const STORYMAP_RADIAL_CHAIN_STEP = 480;
-const STORYMAP_RADIAL_CHAIN_PER_RING = 8;
-/** Child arc width — ⅔π avoids wrapping thumbnails back toward +y (screen-down) “spines”. */
-const STORYMAP_RADIAL_ARC_SPAN = (2 * Math.PI) / 3;
+const STORYMAP_HUB_ORBIT = 600;
+const STORYMAP_CHILD_ARC_RADIUS_INNER = 420;
+const STORYMAP_CHILD_ARC_RADIUS_OUTER = 620;
+const STORYMAP_CHILD_ARC_SPAN = (160 * Math.PI) / 180;
+const STORYMAP_CHILD_PER_RING = 8;
 
-function applyStorymapRadialLayoutClient(canvasState) {
-  if (!canvasState?.nodes?.length || !canvasState?.edges?.length) return;
+function layoutNodes(canvasState) {
+  if (!canvasState?.nodes?.length) return;
   const ids = new Set(canvasState.nodes.map((n) => n.id));
-  if (!ids.has(STORYMAP_RADIAL_CENTRAL)) return;
-  for (const h of STORYMAP_RADIAL_HUB_ORDER) {
-    if (!ids.has(h)) return;
-  }
+  if (!ids.has(STORYMAP_CENTRAL_ID)) return;
 
-  const hubSet = new Set(STORYMAP_RADIAL_HUB_ORDER);
-  const edges = canvasState.edges;
-  const parentMap = {};
-  for (const e of edges) {
-    if (e.source && e.target) parentMap[e.target] = e.source;
-  }
   const children = {};
-  for (const e of edges) {
-    const s = e.source;
-    const t = e.target;
-    if (!s || !t || s === t) continue;
-    if (!children[s]) children[s] = [];
-    children[s].push(t);
-  }
-  for (const k of Object.keys(children)) {
-    children[k] = [...new Set(children[k])].sort();
-  }
-
-  const radialPlace = (cx, cy, childIds, pos, r0, ringStep, perRing, phase, arcSpan = STORYMAP_RADIAL_ARC_SPAN) => {
-    if (!childIds.length) return;
-    const hubDist = Math.hypot(cx, cy);
-    const basePhi = hubDist < 1e-9 ? 0 : Math.atan2(cy, cx);
-    const n = childIds.length;
-    let ring = 0;
-    let i = 0;
-    while (i < n) {
-      const batch = childIds.slice(i, i + perRing);
-      const m = batch.length;
-      const rmag = r0 + ring * ringStep;
-      const twist = ring * (Math.PI / Math.max(7, m));
-      const half = arcSpan / 2;
-      for (let j = 0; j < batch.length; j++) {
-        const nid = batch[j];
-        const t = -half + arcSpan * (j + 0.5) / m;
-        const theta = basePhi + t + phase + twist;
-        const rWorld = hubDist + rmag;
-        pos[nid] = { x: rWorld * Math.cos(theta), y: rWorld * Math.sin(theta) };
-      }
-      i += perRing;
-      ring += 1;
+  canvasState.edges.forEach((e) => {
+    if (e.source && e.target) {
+      (children[e.source] || (children[e.source] = [])).push(e.target);
     }
-  };
+  });
 
-  const bfsDepthFromRoots = (rootIds) => {
-    const depth = {};
-    const q = [];
-    for (const r of rootIds) {
-      if (ids.has(r)) q.push([r, 0]);
-    }
-    while (q.length) {
-      const [nid, d] = q.shift();
-      if (nid in depth) continue;
-      depth[nid] = d;
-      for (const c of children[nid] || []) {
-        if (ids.has(c) && !(c in depth)) q.push([c, d + 1]);
-      }
-    }
-    return depth;
-  };
-
-  const themeHubFor = (nid) => {
-    let x = nid;
-    const seen = new Set();
-    while (x && x !== STORYMAP_RADIAL_CENTRAL) {
-      if (hubSet.has(x)) return x;
-      if (seen.has(x)) return null;
-      seen.add(x);
-      x = parentMap[x];
-    }
-    return null;
-  };
-
-  const relaxOverlapSubset = (pos, anchorIds, keys, iterations = 220, minDist = 620) => {
-    const movable = keys.filter((k) => !anchorIds.has(k));
-    for (let it = 0; it < iterations; it++) {
-      let moved = false;
-      for (let i = 0; i < movable.length; i++) {
-        for (let j = i + 1; j < movable.length; j++) {
-          const a = movable[i];
-          const b = movable[j];
-          let ax = pos[a].x;
-          let ay = pos[a].y;
-          let bx = pos[b].x;
-          let by = pos[b].y;
-          const dx = bx - ax;
-          const dy = by - ay;
-          const dist = Math.hypot(dx, dy);
-          if (dist >= minDist || dist < 1e-6) continue;
-          const push = (minDist - dist) / 2 + 4;
-          const ux = dx / dist;
-          const uy = dy / dist;
-          pos[a] = { x: ax - ux * push, y: ay - uy * push };
-          pos[b] = { x: bx + ux * push, y: by + uy * push };
-          moved = true;
-        }
-      }
-      if (!moved) break;
-    }
-  };
-
-  const relaxCrossPartition = (pos, anchorIds, hubPartitions, iterations = 140, minDist = 520) => {
-    const hubList = STORYMAP_RADIAL_HUB_ORDER.filter((h) => hubPartitions[h]?.length);
-    for (let it = 0; it < iterations; it++) {
-      let moved = false;
-      for (let ii = 0; ii < hubList.length; ii++) {
-        for (let jj = ii + 1; jj < hubList.length; jj++) {
-          const ha = hubList[ii];
-          const hb = hubList[jj];
-          for (const a of hubPartitions[ha]) {
-            if (anchorIds.has(a)) continue;
-            for (const b of hubPartitions[hb]) {
-              if (anchorIds.has(b)) continue;
-              let ax = pos[a].x;
-              let ay = pos[a].y;
-              let bx = pos[b].x;
-              let by = pos[b].y;
-              const dx = bx - ax;
-              const dy = by - ay;
-              const dist = Math.hypot(dx, dy);
-              if (dist >= minDist || dist < 1e-6) continue;
-              const push = (minDist - dist) / 2 + 3;
-              const ux = dx / dist;
-              const uy = dy / dist;
-              pos[a] = { x: ax - ux * push, y: ay - uy * push };
-              pos[b] = { x: bx + ux * push, y: by + uy * push };
-              moved = true;
-            }
-          }
-        }
-      }
-      if (!moved) break;
-    }
-  };
-
-  /** @type {Record<string, { x: number; y: number }>} */
   const pos = {};
-  pos[STORYMAP_RADIAL_CENTRAL] = { x: 0, y: 0 };
+  pos[STORYMAP_CENTRAL_ID] = { x: 0, y: 0 };
 
-  for (const hid of STORYMAP_RADIAL_HUB_ORDER) {
-    const theta = STORYMAP_RADIAL_HUB_THETA[hid];
+  for (const hid of STORYMAP_HUB_IDS) {
+    const theta = STORYMAP_HUB_ANGLES[hid];
+    if (theta == null) continue;
     pos[hid] = {
-      x: STORYMAP_RADIAL_ORBIT * Math.cos(theta),
-      y: STORYMAP_RADIAL_ORBIT * Math.sin(theta),
+      x: STORYMAP_HUB_ORBIT * Math.cos(theta),
+      y: STORYMAP_HUB_ORBIT * Math.sin(theta),
     };
   }
 
-  STORYMAP_RADIAL_HUB_ORDER.forEach((hid, hi) => {
+  for (const hid of STORYMAP_HUB_IDS) {
     const kids = (children[hid] || []).filter((c) => ids.has(c));
-    const hubPhase = hi * ((2 * Math.PI) / 11);
-    radialPlace(
-      pos[hid].x,
-      pos[hid].y,
-      kids,
-      pos,
-      STORYMAP_RADIAL_CHILD_FIRST,
-      STORYMAP_RADIAL_CHILD_STEP,
-      STORYMAP_RADIAL_PER_RING,
-      hubPhase
-    );
+    if (!kids.length) continue;
+    const hub = pos[hid];
+    const bearing = Math.atan2(hub.y, hub.x);
+    const halfSpan = STORYMAP_CHILD_ARC_SPAN / 2;
+    const useTwo = kids.length > STORYMAP_CHILD_PER_RING;
+    const innerKids = useTwo ? kids.slice(0, STORYMAP_CHILD_PER_RING) : kids;
+    const outerKids = useTwo ? kids.slice(STORYMAP_CHILD_PER_RING) : [];
+
+    const placeArc = (list, radius) => {
+      const n = list.length;
+      for (let i = 0; i < n; i++) {
+        const t = n === 1 ? 0 : -halfSpan + STORYMAP_CHILD_ARC_SPAN * (i / (n - 1));
+        const angle = bearing + t;
+        pos[list[i]] = {
+          x: hub.x + radius * Math.cos(angle),
+          y: hub.y + radius * Math.sin(angle),
+        };
+      }
+    };
+    placeArc(innerKids, STORYMAP_CHILD_ARC_RADIUS_INNER);
+    if (outerKids.length) placeArc(outerKids, STORYMAP_CHILD_ARC_RADIUS_OUTER);
+
+    for (const kid of kids) {
+      const grandkids = (children[kid] || []).filter((c) => ids.has(c) && !pos[c]);
+      if (!grandkids.length) continue;
+      const kp = pos[kid];
+      const kb = Math.atan2(kp.y - hub.y, kp.x - hub.x);
+      const gSpan = Math.min(Math.PI / 3, grandkids.length * 0.3);
+      const gHalf = gSpan / 2;
+      for (let i = 0; i < grandkids.length; i++) {
+        const t = grandkids.length === 1 ? 0 : -gHalf + gSpan * (i / (grandkids.length - 1));
+        const angle = kb + t;
+        pos[grandkids[i]] = {
+          x: kp.x + 280 * Math.cos(angle),
+          y: kp.y + 280 * Math.sin(angle),
+        };
+      }
+    }
+  }
+
+  // Shift all positions into positive space so DOM left/top values are never negative.
+  const allPos = Object.values(pos);
+  const minX = Math.min(...allPos.map((p) => p.x));
+  const minY = Math.min(...allPos.map((p) => p.y));
+  const pad = 300;
+  const offsetX = -minX + pad;
+  const offsetY = -minY + pad;
+
+  let fallbackIdx = 0;
+  canvasState.nodes.forEach((n) => {
+    if (pos[n.id]) {
+      n.x = Math.round(pos[n.id].x + offsetX);
+      n.y = Math.round(pos[n.id].y + offsetY);
+    } else {
+      n.x = Math.round(offsetX + 1400 + (fallbackIdx % 5) * 200);
+      n.y = Math.round(offsetY + (fallbackIdx / 5) * 200);
+      fallbackIdx++;
+    }
   });
-
-  const depth = bfsDepthFromRoots([STORYMAP_RADIAL_CENTRAL]);
-
-  for (let round = 0; round < 256; round++) {
-    let progressed = false;
-    const pendingParents = [];
-    for (const pid of Object.keys(pos)) {
-      const pending = (children[pid] || []).filter((c) => ids.has(c) && !(c in pos));
-      if (pending.length) pendingParents.push([depth[pid] ?? 9999, pid, pending]);
-    }
-    pendingParents.sort((a, b) => a[0] - b[0] || String(a[1]).localeCompare(String(b[1])));
-    for (const [, pid, pend] of pendingParents) {
-      const pidPhase = ((Array.from(pid).reduce((s, ch) => s + ch.charCodeAt(0), 0) % 360) / 360) * 2 * Math.PI * 0.35;
-      radialPlace(
-        pos[pid].x,
-        pos[pid].y,
-        pend,
-        pos,
-        STORYMAP_RADIAL_CHAIN_FIRST,
-        STORYMAP_RADIAL_CHAIN_STEP,
-        STORYMAP_RADIAL_CHAIN_PER_RING,
-        pidPhase
-      );
-      progressed = true;
-    }
-    if (!progressed) break;
-  }
-
-  const anchor = new Set([STORYMAP_RADIAL_CENTRAL, ...STORYMAP_RADIAL_HUB_ORDER]);
-  /** @type {Record<string, string[]>} */
-  const partitionsTyped = {};
-  for (const hid of STORYMAP_RADIAL_HUB_ORDER) partitionsTyped[hid] = [];
-  for (const nid of ids) {
-    if (anchor.has(nid)) continue;
-    const th = themeHubFor(nid);
-    if (th && partitionsTyped[th]) partitionsTyped[th].push(nid);
-  }
-  for (const hid of STORYMAP_RADIAL_HUB_ORDER) {
-    relaxOverlapSubset(pos, anchor, partitionsTyped[hid] || [], 160, 460);
-  }
-  relaxCrossPartition(pos, anchor, partitionsTyped, 120, 360);
-
-  let ix = 0;
-  for (const n of canvasState.nodes) {
-    if (!pos[n.id]) {
-      pos[n.id] = {
-        x: 2600 + (ix % 6) * 120,
-        y: 800 + Math.floor(ix / 6) * 120,
-      };
-      ix += 1;
-    }
-  }
-
-  for (const n of canvasState.nodes) {
-    const p = pos[n.id];
-    if (p) {
-      n.x = Math.round(p.x * 1e6) / 1e6;
-      n.y = Math.round(p.y * 1e6) / 1e6;
-    }
-  }
-
-  // #region agent log
-  const leaf = canvasState.nodes.find((x) => x.id === "n_4412adea");
-  const hubMob = canvasState.nodes.find((x) => x.id === "n_011e6d0c");
-  debugSessionLog("H14", "applyStorymapRadialLayoutClient", "positions_written", {
-    spreadVariant: "v7-mobility-top-vertex",
-    nodeCount: canvasState.nodes.length,
-    mobilityHubXY: hubMob ? { x: hubMob.x, y: hubMob.y } : null,
-    sampleMobilityLeaf: leaf ? { x: leaf.x, y: leaf.y } : null,
-  });
-  // #endregion
 }
 
 async function loadPublishedStorymapFromRepo() {
@@ -3000,7 +2846,7 @@ async function loadPublishedStorymapFromRepo() {
   });
   // #endregion
   const out = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
-  applyStorymapRadialLayoutClient(out);
+  layoutNodes(out);
   // #region agent log
   const probe = storymapLayoutRuntimeProbe(out);
   debugSessionLog("H10", "loadPublishedStorymapFromRepo", "layout_probe_after_fetch", probe);
@@ -3012,30 +2858,6 @@ async function loadPublishedStorymapFromRepo() {
     fetchOk: response.ok,
   });
   return out;
-}
-
-/**
- * Point where a ray from (ax,ay) toward (bx,by) exits the axis-aligned rect [left,top]+(w,h).
- * Used so edge dashes start/end at node bounds instead of vanishing under nodes.
- */
-function rayExitRectToward(ax, ay, bx, by, left, top, w, h) {
-  const dx = bx - ax;
-  const dy = by - ay;
-  const len = Math.hypot(dx, dy) || 1e-9;
-  const ux = dx / len;
-  const uy = dy / len;
-  const right = left + w;
-  const bottom = top + h;
-  let tMin = Infinity;
-  const tryT = (t) => {
-    if (t > 1e-6 && Number.isFinite(t)) tMin = Math.min(tMin, t);
-  };
-  if (ux > 1e-8) tryT((right - ax) / ux);
-  if (ux < -1e-8) tryT((left - ax) / ux);
-  if (uy > 1e-8) tryT((bottom - ay) / uy);
-  if (uy < -1e-8) tryT((top - ay) / uy);
-  if (!Number.isFinite(tMin) || tMin <= 0) return { x: ax, y: ay };
-  return { x: ax + ux * tMin, y: ay + uy * tMin };
 }
 
 /** Proportional on-canvas size for an image node from natural dimensions (chic, bounded). */
@@ -3063,6 +2885,9 @@ function computeStorymapImageNodeSize(nw, nh) {
 }
 
 function initCustomStorymapCanvas() {
+  // Skip if the standalone storymap-canvas.js renderer is loaded (viewer mode).
+  if (window.__storymapCanvasStandalone) { setStatus(""); return true; }
+
   const viewport = document.getElementById("storymapViewport");
   const world = document.getElementById("storymapWorld");
   const nodesLayer = document.getElementById("storymapNodes");
@@ -3109,7 +2934,8 @@ function initCustomStorymapCanvas() {
     const key = progressStorageKey();
     const entryNodeIds = getStorymapEntryNodeIds(canvas);
     const progress = loadStorymapViewerProgressForCanvas(canvas, key);
-    viewerUnlocked = pruneIdsToCanvas(new Set([...entryNodeIds, ...progress.unlocked]));
+    const alwaysUnlocked = [STORYMAP_CENTRAL_ID, ...STORYMAP_HUB_IDS];
+    viewerUnlocked = pruneIdsToCanvas(new Set([...alwaysUnlocked, ...entryNodeIds, ...progress.unlocked]));
     viewerVisited = pruneIdsToCanvas(new Set(progress.visited));
     if (progress.hadGraphSigMismatch) {
       saveStorymapViewerProgress([...viewerUnlocked], [...viewerVisited], storymapGraphSignature(canvas), key);
@@ -3230,105 +3056,6 @@ function initCustomStorymapCanvas() {
     };
   };
 
-  /**
-   * Axis-aligned rect from a DOMRect in world (storymap) coordinates — matches `node.x` / `node.y`
-   * inside `#storymapWorld`. Uses getBoundingClientRect + screenToWorld when passed `el.getBoundingClientRect()`.
-   */
-  const worldRectFromClientRect = (r) => {
-    const tl = screenToWorld(r.left, r.top);
-    const tr = screenToWorld(r.right, r.top);
-    const bl = screenToWorld(r.left, r.bottom);
-    const br = screenToWorld(r.right, r.bottom);
-    const xs = [tl.x, tr.x, bl.x, br.x];
-    const ys = [tl.y, tr.y, bl.y, br.y];
-    const left = Math.min(...xs);
-    const right = Math.max(...xs);
-    const top = Math.min(...ys);
-    const bottom = Math.max(...ys);
-    const w = Math.max(1, right - left);
-    const h = Math.max(1, bottom - top);
-    return { left, top, w, h, cx: (left + right) / 2, cy: (top + bottom) / 2 };
-  };
-
-  /** Node box in world coordinates (full `.smNode` element). */
-  const nodeWorldRectFromEl = (el) => worldRectFromClientRect(el.getBoundingClientRect());
-
-  /**
-   * Edge endpoints only: for image nodes, use the `<img>` box — not the caption below it.
-   * Otherwise edge centers shift down vs. layouts where the thumbnail filled the node box.
-   */
-  const nodeEdgeAnchorRectFromEl = (el) => {
-    if (el.classList?.contains("smNode--image")) {
-      const img = el.querySelector(":scope > img");
-      if (img) {
-        const r = img.getBoundingClientRect();
-        if (r.width > 0 && r.height > 0) return worldRectFromClientRect(r);
-      }
-    }
-    return nodeWorldRectFromEl(el);
-  };
-
-  /** Union of all `.smNode` boxes in world coordinates, or `null` if none. */
-  const measureStorymapNodeBounds = () => {
-    const nodes = nodesLayer.querySelectorAll(".smNode");
-    if (!nodes.length) return null;
-    let minX = Infinity;
-    let minY = Infinity;
-    let maxX = -Infinity;
-    let maxY = -Infinity;
-    nodes.forEach((el) => {
-      const r = nodeWorldRectFromEl(el);
-      minX = Math.min(minX, r.left);
-      minY = Math.min(minY, r.top);
-      maxX = Math.max(maxX, r.left + r.w);
-      maxY = Math.max(maxY, r.top + r.h);
-    });
-    if (!Number.isFinite(minX)) return null;
-    return { minX, minY, maxX, maxY };
-  };
-
-  /**
-   * Grow the world + edge SVG to cover bounds in world px. Otherwise the SVG viewport
-   * stays viewport-sized and clips <line> coordinates past ~1400px — edges look "stubby".
-   */
-  const applyStorymapSheetExtentBounds = (minX, minY, maxX, maxY) => {
-    const vr = Math.max(1, viewport.clientWidth || 0);
-    const vh = Math.max(1, viewport.clientHeight || 0);
-    if (!Number.isFinite(minX) || !Number.isFinite(maxX)) {
-      world.style.minWidth = "";
-      world.style.minHeight = "";
-      nodesLayer.style.minWidth = "";
-      nodesLayer.style.minHeight = "";
-      edgesSvg.style.width = "";
-      edgesSvg.style.height = "";
-      return;
-    }
-    const pad = 280;
-    const w = Math.max(vr, maxX - Math.min(0, minX) + pad);
-    const h = Math.max(vh, maxY - Math.min(0, minY) + pad);
-    const cw = Math.ceil(w);
-    const ch = Math.ceil(h);
-    world.style.minWidth = `${cw}px`;
-    world.style.minHeight = `${ch}px`;
-    nodesLayer.style.minWidth = `${cw}px`;
-    nodesLayer.style.minHeight = `${ch}px`;
-    edgesSvg.style.width = `${cw}px`;
-    edgesSvg.style.height = `${ch}px`;
-  };
-
-  const syncStorymapSheetExtent = () => {
-    const b = measureStorymapNodeBounds();
-    if (!b) {
-      world.style.minWidth = "";
-      world.style.minHeight = "";
-      nodesLayer.style.minWidth = "";
-      nodesLayer.style.minHeight = "";
-      edgesSvg.style.width = "";
-      edgesSvg.style.height = "";
-      return;
-    }
-    applyStorymapSheetExtentBounds(b.minX, b.minY, b.maxX, b.maxY);
-  };
 
   const getNodeByIdLocal = (id) => canvas.nodes.find((n) => n.id === id) || null;
   const readGithubToken = () => String(githubTokenInput?.value || "").trim();
@@ -3375,66 +3102,6 @@ function initCustomStorymapCanvas() {
       if (publishHelp) publishHelp.textContent = "Saved PAT cleared from this browser.";
     });
   }
-
-  /**
-   * World-space AABB for camera fitting: uses node x/y plus estimated body size
-   * (same rules as DOM layout). Fixed padding alone was too small once graphs spread out.
-   */
-  const estimateStorymapNodeFootprint = (node) => {
-    const x = Number(node.x) || 0;
-    const y = Number(node.y) || 0;
-    if (node.type === "image") {
-      let nw = 256;
-      let nh = 256;
-      const { w, h } = computeStorymapImageNodeSize(nw, nh);
-      return { minX: x, minY: y, maxX: x + w, maxY: y + h + 102 };
-    }
-    if (node.type === "text") {
-      const baseLbl = getNodeLabel(node);
-      const centralSet = getEffectiveCentralIdSet();
-      if (centralSet.has(node.id)) {
-        return { minX: x, minY: y, maxX: x + 220 * 1.5, maxY: y + 200 * 1.5 };
-      }
-      const mw = Math.min(360, Math.max(120, 40 + Math.min(300, baseLbl.length * 6)));
-      return {
-        minX: x,
-        minY: y,
-        maxX: x + Math.round(mw * 1.5),
-        maxY: y + Math.round(64 * 1.5),
-      };
-    }
-    const sz = 58;
-    return { minX: x, minY: y, maxX: x + sz, maxY: y + sz };
-  };
-
-  const fitViewToNodes = () => {
-    if (!canvas.nodes.length) return;
-    const rect = viewport.getBoundingClientRect();
-    const width = Math.max(1, rect.width);
-    const height = Math.max(1, rect.height);
-    let minX = Infinity;
-    let maxX = -Infinity;
-    let minY = Infinity;
-    let maxY = -Infinity;
-    canvas.nodes.forEach((n) => {
-      const b = estimateStorymapNodeFootprint(n);
-      minX = Math.min(minX, b.minX);
-      maxX = Math.max(maxX, b.maxX);
-      minY = Math.min(minY, b.minY);
-      maxY = Math.max(maxY, b.maxY);
-    });
-    const margin = 96;
-    const graphWidth = Math.max(160, maxX - minX + margin * 2);
-    const graphHeight = Math.max(160, maxY - minY + margin * 2);
-    const rawFit = Math.min(width / graphWidth, height / graphHeight);
-    // Allow zooming out enough for wide graphs on narrow screens (do not clamp to 0.6).
-    const fittedScale = Math.min(1.4, Math.max(0.08, rawFit));
-    const graphCenterX = (minX + maxX) / 2;
-    const graphCenterY = (minY + maxY) / 2;
-    view.scale = fittedScale;
-    view.panX = width / 2 - graphCenterX * fittedScale;
-    view.panY = height / 2 - graphCenterY * fittedScale;
-  };
 
   const syncCreateConnectOptions = () => {
     if (!createConnectSelect || !isAdmin) return;
@@ -3826,176 +3493,79 @@ function initCustomStorymapCanvas() {
 
   const drawEdges = () => {
     edgesSvg.querySelectorAll("line").forEach((ln) => ln.remove());
-    const nodeEls = new Map();
-    nodesLayer.querySelectorAll(".smNode").forEach((elNode) => {
-      nodeEls.set(elNode.getAttribute("data-id"), elNode);
-    });
     const centralIds = getEffectiveCentralIdSet();
+    const nodeById = new Map(canvas.nodes.map((n) => [n.id, n]));
     const edgeKind = (sId, tId) => {
-      const s = getNodeByIdLocal(sId);
-      const t = getNodeByIdLocal(tId);
+      const s = nodeById.get(sId);
+      const t = nodeById.get(tId);
       if (!s || !t) return "structural";
       if (centralIds.has(sId) && !centralIds.has(tId)) return "fromCenter";
       if (s.type === "text" && !centralIds.has(sId) && t.type === "image") return "hubSpoke";
       return "structural";
     };
-    const worldRectById = new Map();
-    const getWorldRect = (id, el) => {
-      if (worldRectById.has(id)) return worldRectById.get(id);
-      const box = nodeEdgeAnchorRectFromEl(el);
-      worldRectById.set(id, box);
-      return box;
-    };
-    const RELATIONS_HUB_DEBUG_ID = "n_ea58683f";
-    const exitSideTowardPoint = (p, left, top, w, h) => {
-      const eps = 4;
-      const right = left + w;
-      const bottom = top + h;
-      if (Math.abs(p.x - left) < eps) return "left";
-      if (Math.abs(p.x - right) < eps) return "right";
-      if (Math.abs(p.y - top) < eps) return "top";
-      if (Math.abs(p.y - bottom) < eps) return "bottom";
-      return "other";
-    };
 
-    const segments = [];
+    let maxX = 0, maxY = 0;
+    canvas.nodes.forEach((n) => {
+      if (n.x > maxX) maxX = n.x;
+      if (n.y > maxY) maxY = n.y;
+    });
+    const sheetW = maxX + 600;
+    const sheetH = maxY + 600;
+    world.style.minWidth = `${sheetW}px`;
+    world.style.minHeight = `${sheetH}px`;
+    nodesLayer.style.minWidth = `${sheetW}px`;
+    nodesLayer.style.minHeight = `${sheetH}px`;
+    edgesSvg.setAttribute("width", String(sheetW));
+    edgesSvg.setAttribute("height", String(sheetH));
+    edgesSvg.setAttribute("viewBox", `0 0 ${sheetW} ${sheetH}`);
+    edgesSvg.style.width = `${sheetW}px`;
+    edgesSvg.style.height = `${sheetH}px`;
+
     canvas.edges.forEach((edge) => {
+      const s = nodeById.get(edge.source);
+      const t = nodeById.get(edge.target);
+      if (!s || !t) return;
+
+      const tIsChild = isChildNode(t);
+      const tHub = tIsChild ? getHubForChild(t.id) : null;
+      if (tIsChild && tHub !== expandedHubId) return;
+
+      const sPos = getNodeDisplayPos(s);
+      const tPos = getNodeDisplayPos(t);
+      const dx = tPos.x - sPos.x;
+      const dy = tPos.y - sPos.y;
+      const dist = Math.hypot(dx, dy) || 1;
+      const ux = dx / dist;
+      const uy = dy / dist;
+      const inset = 80;
+      const x1 = sPos.x + ux * inset;
+      const y1 = sPos.y + uy * inset;
+      const x2 = tPos.x - ux * inset;
+      const y2 = tPos.y - uy * inset;
+
       const ek = storymapEdgeKey(edge.source, edge.target);
-      const source = nodeEls.get(edge.source);
-      const target = nodeEls.get(edge.target);
-      if (!source || !target) return;
-      const ra = getWorldRect(edge.source, source);
-      const rb = getWorldRect(edge.target, target);
-      let x1c = ra.cx;
-      const y1c = ra.cy;
-      const x2c = rb.cx;
-      const y2c = rb.cy;
-      const kindPre = edgeKind(edge.source, edge.target);
-      if (kindPre === "hubSpoke" && source.classList.contains("smNode--hub")) {
-        const dx = x2c - ra.cx;
-        const lateral = Math.min(ra.w * 0.42, Math.max(-ra.w * 0.42, dx * 0.3));
-        x1c = ra.cx + lateral;
-      }
-      const p1 = rayExitRectToward(x1c, y1c, x2c, y2c, ra.left, ra.top, ra.w, ra.h);
-      const p2 = rayExitRectToward(x2c, y2c, x1c, y1c, rb.left, rb.top, rb.w, rb.h);
-      segments.push({ edge, ek, source, target, ra, rb, p1, p2, kindPre });
-    });
-
-    const nb = measureStorymapNodeBounds();
-    let unionMinX = nb?.minX ?? Infinity;
-    let unionMinY = nb?.minY ?? Infinity;
-    let unionMaxX = nb?.maxX ?? -Infinity;
-    let unionMaxY = nb?.maxY ?? -Infinity;
-    segments.forEach((s) => {
-      unionMinX = Math.min(unionMinX, s.p1.x, s.p2.x);
-      unionMaxX = Math.max(unionMaxX, s.p1.x, s.p2.x);
-      unionMinY = Math.min(unionMinY, s.p1.y, s.p2.y);
-      unionMaxY = Math.max(unionMaxY, s.p1.y, s.p2.y);
-    });
-    if (Number.isFinite(unionMinX)) {
-      applyStorymapSheetExtentBounds(unionMinX, unionMinY, unionMaxX, unionMaxY);
-    } else {
-      syncStorymapSheetExtent();
-    }
-
-    // Draw every edge (static strokes); unlock overlay is an extra line segment during animation.
-    // #region agent log
-    let relationsHubSpokeLogs = 0;
-    let edgeMinX = Infinity;
-    let edgeMaxX = -Infinity;
-    let edgeMinY = Infinity;
-    let edgeMaxY = -Infinity;
-    const bumpXY = (x, y) => {
-      edgeMinX = Math.min(edgeMinX, x);
-      edgeMaxX = Math.max(edgeMaxX, x);
-      edgeMinY = Math.min(edgeMinY, y);
-      edgeMaxY = Math.max(edgeMaxY, y);
-    };
-    // #endregion
-    segments.forEach((s) => {
-      const { edge, ek, source, target, ra, rb, p1, p2 } = s;
-      // #region agent log
-      bumpXY(p1.x, p1.y);
-      bumpXY(p2.x, p2.y);
-      if (edge.source === RELATIONS_HUB_DEBUG_ID && relationsHubSpokeLogs < 8) {
-        const fullWrap = nodeWorldRectFromEl(source);
-        const hubInnerEl = source.querySelector(":scope > .smNodeHub");
-        const innerWrap = hubInnerEl
-          ? worldRectFromClientRect(hubInnerEl.getBoundingClientRect())
-          : null;
-        debugSessionLog("H17", "drawEdges", "relations_hub_spoke", {
-          targetId: edge.target,
-          fullCy: fullWrap.cy,
-          fullH: fullWrap.h,
-          anchorCyUsed: ra.cy,
-          anchorHUsed: ra.h,
-          innerCy: innerWrap?.cy ?? null,
-          innerH: innerWrap?.h ?? null,
-          deltaCyInnerVsFull: innerWrap ? innerWrap.cy - fullWrap.cy : null,
-          exitSide: exitSideTowardPoint(p1, ra.left, ra.top, ra.w, ra.h),
-          p1y: p1.y,
-          runId: "post-fix-extent-hubfan",
-        });
-        relationsHubSpokeLogs += 1;
-      }
-      // #endregion
       const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", String(p1.x));
-      line.setAttribute("y1", String(p1.y));
-      line.setAttribute("x2", String(p2.x));
-      line.setAttribute("y2", String(p2.y));
+      line.setAttribute("x1", String(x1));
+      line.setAttribute("y1", String(y1));
+      line.setAttribute("x2", String(x2));
+      line.setAttribute("y2", String(y2));
       line.setAttribute("data-sm-edge-key", ek);
       const kind = edgeKind(edge.source, edge.target);
       if (kind !== "structural") line.classList.add(`storymapEdge--${kind}`);
       edgesSvg.appendChild(line);
 
-      // Terra overlay fades out, leaving the classified base line.
       if (pendingEdgeAnim.has(ek)) {
         const overlay = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        overlay.setAttribute("x1", String(p1.x));
-        overlay.setAttribute("y1", String(p1.y));
-        overlay.setAttribute("x2", String(p2.x));
-        overlay.setAttribute("y2", String(p2.y));
+        overlay.setAttribute("x1", String(x1));
+        overlay.setAttribute("y1", String(y1));
+        overlay.setAttribute("x2", String(x2));
+        overlay.setAttribute("y2", String(y2));
         overlay.setAttribute("data-sm-edge-key", ek);
         overlay.setAttribute("data-sm-edge-overlay", "1");
         overlay.classList.add("storymapEdgeOverlay--fade");
         edgesSvg.appendChild(overlay);
       }
     });
-    // #region agent log
-    const sw = edgesSvg.style.width || "";
-    const sh = edgesSvg.style.height || "";
-    const cw = Number.parseFloat(sw) || edgesSvg.clientWidth || 0;
-    const ch = Number.parseFloat(sh) || edgesSvg.clientHeight || 0;
-    const tol = 8;
-    debugSessionLog("H18", "drawEdges", "svg_extent_vs_coords", {
-      svgStyleW: sw,
-      svgStyleH: sh,
-      svgParsedW: cw,
-      svgParsedH: ch,
-      unionMinX: Number.isFinite(unionMinX) ? unionMinX : null,
-      unionMaxX: Number.isFinite(unionMaxX) ? unionMaxX : null,
-      unionMinY: Number.isFinite(unionMinY) ? unionMinY : null,
-      unionMaxY: Number.isFinite(unionMaxY) ? unionMaxY : null,
-      edgeMinX: Number.isFinite(edgeMinX) ? edgeMinX : null,
-      edgeMaxX: Number.isFinite(edgeMaxX) ? edgeMaxX : null,
-      edgeMinY: Number.isFinite(edgeMinY) ? edgeMinY : null,
-      edgeMaxY: Number.isFinite(edgeMaxY) ? edgeMaxY : null,
-      coordsOutsideUnion:
-        Number.isFinite(edgeMinX) &&
-        Number.isFinite(unionMinX) &&
-        Number.isFinite(unionMaxX) &&
-        Number.isFinite(edgeMaxX)
-          ? edgeMinX < unionMinX - tol ||
-            edgeMaxX > unionMaxX + tol ||
-            edgeMinY < unionMinY - tol ||
-            edgeMaxY > unionMaxY + tol
-          : null,
-      legacyCompare0Cw:
-        Number.isFinite(edgeMinX) && cw > 0 ? edgeMinX < 0 || edgeMaxX > cw : null,
-      runId: "post-fix-extent-hubfan",
-    });
-    // #endregion
   };
 
   /** After layout, fit the camera to real DOM boxes (images, captions, wrapped text). */
@@ -4053,102 +3623,40 @@ function initCustomStorymapCanvas() {
     });
   };
 
-  /** First image node in `canvas.nodes` order — matches caption “fig. 01”. */
-  const getFirstStorymapImageNodeId = () => {
-    for (const n of canvas.nodes) {
-      if (n.type === "image") return n.id;
-    }
-    return null;
-  };
-
-  /** Keep world-space rect fully inside viewport at fixed scale (best-effort if rect is larger than view). */
-  const clampInitialPanAxis = (pan, worldMin, worldMax, vDim, scale, margin) => {
-    const L = margin - worldMin * scale;
-    const U = vDim - margin - worldMax * scale;
-    if (L <= U) return Math.min(U, Math.max(L, pan));
-    return (L + U) / 2;
-  };
-
-  /** After default fit scale is applied, pan only so fig. 01 is centered (same scale). */
-  const applyInitialViewerPanToFigure01 = () => {
-    const figureId = getFirstStorymapImageNodeId();
-    if (!figureId) return;
-    const el = nodeElById(figureId);
-    if (!el) return;
-    const r = nodeWorldRectFromEl(el);
-    const vr = viewport.getBoundingClientRect();
-    const vw = Math.max(1, vr.width);
-    const vh = Math.max(1, vr.height);
-    const s = view.scale;
-    const m = 10;
-    let panX = vw / 2 - r.cx * s;
-    let panY = vh / 2 - r.cy * s;
-    panX = clampInitialPanAxis(panX, r.left, r.left + r.w, vw, s, m);
-    panY = clampInitialPanAxis(panY, r.top, r.top + r.h, vh, s, m);
-    view.panX = panX;
-    view.panY = panY;
-    updateWorldTransform();
-    drawEdges();
-  };
-
-  const fitViewToRenderedNodes = (opts = {}) => {
-    const initialViewer = Boolean(opts.initialViewer);
+  const fitView = (opts = {}) => {
     if (!canvas.nodes.length) return;
-    const nodes = nodesLayer.querySelectorAll(".smNode");
-    if (!nodes.length) return;
-
-    let minX = Infinity;
-    let maxX = -Infinity;
-    let minY = Infinity;
-    let maxY = -Infinity;
-    nodes.forEach((el) => {
-      const r = nodeWorldRectFromEl(el);
-      minX = Math.min(minX, r.left);
-      maxX = Math.max(maxX, r.left + r.w);
-      minY = Math.min(minY, r.top);
-      maxY = Math.max(maxY, r.top + r.h);
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    canvas.nodes.forEach((n) => {
+      const pos = getNodeDisplayPos(n);
+      const nx = Number(pos.x) || 0;
+      const ny = Number(pos.y) || 0;
+      if (nx < minX) minX = nx;
+      if (ny < minY) minY = ny;
+      if (nx > maxX) maxX = nx;
+      if (ny > maxY) maxY = ny;
     });
-    if (!Number.isFinite(minX) || !Number.isFinite(maxX)) return;
-    const margin = 96;
-    const graphWidth = Math.max(160, maxX - minX + margin * 2);
-    const graphHeight = Math.max(160, maxY - minY + margin * 2);
+    const margin = 300;
+    const graphW = Math.max(400, maxX - minX + margin * 2);
+    const graphH = Math.max(400, maxY - minY + margin * 2);
+    const graphCX = (minX + maxX) / 2;
+    const graphCY = (minY + maxY) / 2;
     const rect = viewport.getBoundingClientRect();
-    const width = Math.max(1, rect.width);
-    const height = Math.max(1, rect.height);
-    const rawFit = Math.min(width / graphWidth, height / graphHeight);
-    const fittedScale = Math.min(1.4, Math.max(0.08, rawFit));
-    const graphCenterX = (minX + maxX) / 2;
-    const graphCenterY = (minY + maxY) / 2;
-    view.scale = fittedScale;
-    view.panX = width / 2 - graphCenterX * fittedScale;
-    view.panY = height / 2 - graphCenterY * fittedScale;
+    const vw = Math.max(1, rect.width);
+    const vh = Math.max(1, rect.height);
+    const rawFit = Math.min(vw / graphW, vh / graphH);
+    view.scale = Math.min(1.0, Math.max(0.08, rawFit));
+    view.panX = vw / 2 - graphCX * view.scale;
+    view.panY = vh / 2 - graphCY * view.scale;
     updateWorldTransform();
     drawEdges();
-    if (initialViewer && isViewerLike() && !skipIntroFigurePan) {
-      applyInitialViewerPanToFigure01();
-      const fid = getFirstStorymapImageNodeId();
-      if (fid) {
-        const fel = nodeElById(fid);
-        const img = fel && fel.querySelector ? fel.querySelector(":scope > img") : null;
-        if (img && !img.complete) {
-          img.addEventListener(
-            "load",
-            () => {
-              applyInitialViewerPanToFigure01();
-            },
-            { once: true }
-          );
-        }
-      }
+    if (opts.initialViewer && isViewerLike()) {
       maybeShowStorymapNavHint();
     }
   };
 
-  const scheduleFitViewToRenderedNodes = (opts) => {
+  const scheduleFitView = (opts) => {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        fitViewToRenderedNodes(opts || {});
-      });
+      requestAnimationFrame(() => fitView(opts || {}));
     });
   };
 
@@ -4160,14 +3668,24 @@ function initCustomStorymapCanvas() {
         : `smNode smNode--${node.type} smColor--${node.color || "green"}`;
     if (selectedId === node.id) div.classList.add("smNode--selected");
     div.dataset.id = node.id;
-    div.style.left = `${node.x}px`;
-    div.style.top = `${node.y}px`;
+    const displayPos = getNodeDisplayPos(node);
+    div.style.left = `${displayPos.x}px`;
+    div.style.top = `${displayPos.y}px`;
+    const child = isChildNode(node);
+    const hubId = child ? getHubForChild(node.id) : null;
+    const visible = !child || hubId === expandedHubId;
+    if (!visible) {
+      div.style.opacity = "0";
+      div.style.pointerEvents = "none";
+    }
+    if (STORYMAP_HUB_IDS.has(node.id) && node.id === expandedHubId) {
+      div.classList.add("smNode--hubActive");
+    }
 
     const vl = isViewerLike();
     const unlocked = viewerUnlocked.has(node.id);
     if (vl && !unlocked) {
       div.classList.add("smNode--locked");
-      div.title = "Locked — click a highlighted node you’ve already opened to unlock the next steps.";
     }
     if (vl && viewerVisited.has(node.id) && unlocked) div.classList.add("smNode--visited");
 
@@ -4292,6 +3810,72 @@ function initCustomStorymapCanvas() {
     return div;
   };
 
+  let expandedHubId = null;
+
+  const parentOfNode = new Map();
+  const buildParentMap = () => {
+    parentOfNode.clear();
+    canvas.edges.forEach((e) => {
+      if (e.source && e.target) parentOfNode.set(e.target, e.source);
+    });
+  };
+
+  const getHubForChild = (nid) => {
+    let cur = nid;
+    const seen = new Set();
+    while (cur) {
+      if (seen.has(cur)) return null;
+      seen.add(cur);
+      if (STORYMAP_HUB_IDS.has(cur)) return cur;
+      cur = parentOfNode.get(cur);
+    }
+    return null;
+  };
+
+  const isChildNode = (node) => {
+    if (STORYMAP_HUB_IDS.has(node.id)) return false;
+    if (node.id === STORYMAP_CENTRAL_ID) return false;
+    return !!getHubForChild(node.id);
+  };
+
+  const getNodeDisplayPos = (node) => {
+    if (!isChildNode(node)) return { x: node.x, y: node.y };
+    const hubId = getHubForChild(node.id);
+    if (hubId === expandedHubId) return { x: node.x, y: node.y };
+    const hub = canvas.nodes.find((n) => n.id === hubId);
+    if (!hub) return { x: node.x, y: node.y };
+    return { x: hub.x, y: hub.y };
+  };
+
+  const animateNodePositions = () => {
+    nodesLayer.querySelectorAll(".smNode").forEach((el) => {
+      const nid = el.dataset.id;
+      const node = canvas.nodes.find((n) => n.id === nid);
+      if (!node) return;
+      const pos = getNodeDisplayPos(node);
+      const child = isChildNode(node);
+      const hubId = child ? getHubForChild(node.id) : null;
+      const visible = !child || hubId === expandedHubId;
+
+      el.style.transition = prefersReducedMotion()
+        ? "none"
+        : "left 0.45s cubic-bezier(0.4,0,0.2,1), top 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease";
+      el.style.left = `${pos.x}px`;
+      el.style.top = `${pos.y}px`;
+      el.style.opacity = visible ? "" : "0";
+      el.style.pointerEvents = visible ? "" : "none";
+
+      if (STORYMAP_HUB_IDS.has(nid)) {
+        if (nid === expandedHubId) {
+          el.classList.add("smNode--hubActive");
+        } else {
+          el.classList.remove("smNode--hubActive");
+        }
+      }
+    });
+    requestAnimationFrame(drawEdges);
+  };
+
   const handleNodeClick = (node, evt) => {
     evt.stopPropagation();
     if (isViewerLike()) {
@@ -4302,10 +3886,13 @@ function initCustomStorymapCanvas() {
         );
         return;
       }
+      if (STORYMAP_HUB_IDS.has(node.id)) {
+        expandedHubId = expandedHubId === node.id ? null : node.id;
+        animateNodePositions();
+      }
       selectedId = node.id;
       viewerVisited.add(node.id);
       saveViewerState();
-      renderCanvas();
       syncPanel();
       requestAnimationFrame(() => {
         window.setTimeout(
@@ -4353,6 +3940,7 @@ function initCustomStorymapCanvas() {
     });
     requestAnimationFrame(drawEdges);
   };
+
 
   viewport.addEventListener("mousedown", (evt) => {
     if (evt.button !== 0) return;
@@ -4470,12 +4058,12 @@ function initCustomStorymapCanvas() {
     canvas = normalizeStorymapCanvasState(defaultStorymapAdminCanvasState(), defaultStorymapAdminCanvasState());
     selectedId = null;
     mergeViewerProgress();
-    fitViewToNodes();
-    updateWorldTransform();
+    layoutNodes(canvas);
+    buildParentMap();
     saveStorymapCanvasState(canvas);
     renderCanvas();
     syncPanel();
-    scheduleFitViewToRenderedNodes();
+    scheduleFitView();
   });
 
   on(saveBtn, "click", () => {
@@ -4663,16 +4251,16 @@ function initCustomStorymapCanvas() {
       mergeViewerProgress();
       renderCanvas();
       syncPanel();
-      scheduleFitViewToRenderedNodes({ initialViewer: previewAsUser });
+      scheduleFitView({ initialViewer: previewAsUser });
     });
   }
 
   const bootstrapStorymapUi = () => {
-    fitViewToNodes();
-    updateWorldTransform();
+    layoutNodes(canvas);
+    buildParentMap();
     renderCanvas();
     syncPanel();
-    scheduleFitViewToRenderedNodes({ initialViewer: true });
+    scheduleFitView({ initialViewer: true });
     if (isAdmin) syncCreateConnectOptions();
     setStatus("");
   };
@@ -4681,10 +4269,8 @@ function initCustomStorymapCanvas() {
   window.addEventListener("resize", () => {
     window.clearTimeout(storymapResizeFitTimer);
     storymapResizeFitTimer = window.setTimeout(() => {
-      fitViewToNodes();
-      updateWorldTransform();
       renderCanvas();
-      scheduleFitViewToRenderedNodes();
+      scheduleFitView();
     }, 140);
   });
 

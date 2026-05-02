@@ -284,6 +284,11 @@ body.layout--storymapPreview .storymapAdminPanel {
   box-shadow: 0 0 0 1px var(--sm-arch-terra);
 }
 
+.smNode--hubActive {
+  box-shadow: 0 0 12px 2px var(--sm-arch-terra, #c2714f);
+  z-index: 4;
+}
+
 /* —— Central colophon —— */
 .smNode--text.smNode--central {
   width: max-content;

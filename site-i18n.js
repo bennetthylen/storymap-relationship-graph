@@ -32,7 +32,7 @@ var STORYMAP_EXTRA_I18N = {
     langMenuAria: "Choose language",
     siteBrand: "Doing Well, Don't Worry",
     navBrandPrimary: "Doing Well, Don't Worry",
-    navBrandSecondary: "أنا بخير، اطمئنوا",
+    navBrandSecondary: "أنا بخير، أطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Contact us",
@@ -159,10 +159,17 @@ var STORYMAP_EXTRA_I18N = {
     colorWhite: "White",
     colorOrange: "Orange",
     heroTitleEn: "Doing Well, Don't Worry.",
-    heroTitleAr: "أنا بخير، اطمئنوا",
+    heroTitleAr: "أنا بخير، أطمئنوا",
     heroSubtitle:
       "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
     heroCta: "experience the storymap",
+    landingSubheading: "Women are always on the move",
+    landingSubheadingEn: "Women are always on the move",
+    landingSubheadingAr: "النساء دائمًا في حركة",
+    landingBodyPart1:
+      "Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people's lives. This exhibition introduces glimpses into the lives of 21 women – women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work.",
+    landingBodyPart2:
+      "This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
     landingBody:
       "Women are always on the move. Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people's lives. This exhibition introduces glimpses into the lives of 21 women \u2013 women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work. This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
     historyTitle: "Feminism in Egypt and Beyond",
@@ -190,8 +197,8 @@ var STORYMAP_EXTRA_I18N = {
     infoPageLead:
       "ستتضمن هذه الصفحة تفاصيل عملية عن المعرض والخريطة القصصية. وهي الآن صفحة مؤقتة لاستكمال التنقل والتصميم.",
     langMenuAria: "اختر اللغة",
-    siteBrand: "أنا بخير، اطمئنوا",
-    navBrandPrimary: "أنا بخير، اطمئنوا",
+    siteBrand: "أنا بخير، أطمئنوا",
+    navBrandPrimary: "أنا بخير، أطمئنوا",
     navBrandSecondary: "Doing Well, Don't Worry",
     footerGeorgetownSfs: "جامعة جورجتاون — كلية الشؤون الخارجية",
     footerWmf: "المرأة والذاكرة",
@@ -317,7 +324,7 @@ var STORYMAP_EXTRA_I18N = {
     colorWhite: "أبيض",
     colorOrange: "برتقالي",
     heroTitleEn: "Doing Well, Don't Worry.",
-    heroTitleAr: "أنا بخير، اطمئنوا",
+    heroTitleAr: "أنا بخير، أطمئنوا",
     heroSubtitle:
       "تعاون رقمي بين طلاب كلية الشؤون الخارجية في جامعة جورجتاون والمرأة والذاكرة.",
     heroCta: "استكشف خريطة القصة",
@@ -325,7 +332,7 @@ var STORYMAP_EXTRA_I18N = {
       "\u0627\u0644\u0646\u0633\u0627\u0621 \u062f\u0627\u0626\u0645\u064b\u0627 \u0639\u0644\u0649 \u062d\u0631\u0643\u0629. \u062a\u0645\u0627\u0631\u0633 \u0627\u0644\u0646\u0633\u0627\u0621 \u0623\u0646\u0648\u0627\u0639\u064b\u0627 \u0645\u062e\u062a\u0644\u0641\u0629 \u0645\u0646 \u0627\u0644\u0639\u0645\u0644 \u0648\u0627\u0644\u062a\u0646\u0642\u0651\u0644 \u062a\u064f\u0634\u0643\u0651\u0644 \u0631\u062d\u0644\u0627\u062a\u0647\u0646 \u0641\u064a \u0627\u0644\u062d\u064a\u0627\u0629. \u064a\u0639\u0645\u0644\u0646 \u0641\u064a \u0627\u0644\u0628\u064a\u062a\u060c \u0641\u064a \u0627\u0644\u062d\u0642\u0648\u0644\u060c \u0641\u064a \u0627\u0644\u0648\u0631\u0634\u060c \u0641\u064a \u0627\u0644\u0645\u062f\u0646 \u0627\u0644\u0643\u0628\u0631\u0649 \u0648\u0627\u0644\u0628\u0644\u062f\u0627\u062a \u0627\u0644\u0635\u063a\u064a\u0631\u0629 \u0623\u0648 \u0641\u064a \u0628\u0644\u062f\u0627\u0646 \u0623\u062e\u0631\u0649. \u064a\u0639\u0628\u064f\u0631 \u0639\u0645\u0644\u0647\u0646 \u0648\u062a\u062d\u0631\u0643\u0647\u0646 \u0641\u0636\u0627\u0621\u0627\u062a \u0645\u062a\u0639\u062f\u062f\u0629\u060c \u0648\u064a\u0639\u064a\u062f\u0627\u0646 \u062a\u0631\u062a\u064a\u0628 \u0639\u0644\u0627\u0642\u0627\u062a\u0647\u0646 \u0648\u0647\u0646 \u064a\u0635\u0628\u062d\u0646 \u062c\u0632\u0621\u064b\u0627 \u0645\u0646 \u062d\u064a\u0627\u0629 \u0643\u062b\u064a\u0631\u064a\u0646. \u064a\u0642\u062f\u0651\u0645 \u0647\u0630\u0627 \u0627\u0644\u0645\u0639\u0631\u0636 \u0644\u0645\u062d\u0627\u062a \u0645\u0646 \u062d\u064a\u0627\u0629 21 \u0627\u0645\u0631\u0623\u0629\u2014\u0637\u0628\u064a\u0628\u0627\u062a\u060c \u062e\u0627\u062f\u0645\u0627\u062a\u060c \u0645\u0645\u062b\u0644\u0627\u062a\u060c \u0637\u0627\u0644\u0628\u0627\u062a\u060c \u0645\u062d\u0627\u0633\u0628\u0627\u062a\u060c \u0635\u0627\u0646\u0639\u0627\u062a \u0623\u0641\u0644\u0627\u0645\u060c \u062a\u0637\u0631\u064a\u0632\u0627\u062a\u060c \u0645\u0639\u0644\u0645\u0627\u062a\u060c \u0641\u0646\u0627\u0646\u0627\u062a\u060c \u0648\u0623\u0645\u0651\u0647\u0627\u062a \u0648\u0628\u0646\u0627\u062a \u0648\u0645\u0631\u0634\u062f\u0627\u062a \u0648\u0635\u062f\u064a\u0642\u0627\u062a. \u064a\u0639\u0634\u0646 \u0641\u064a \u0645\u0635\u0631 \u0648\u0627\u0644\u0623\u0631\u062f\u0646 \u0648\u0644\u0628\u0646\u0627\u0646 \u0648\u0627\u0644\u062f\u0646\u0645\u0627\u0631\u0643\u060c \u0644\u0643\u0646 \u062d\u064a\u0627\u062a\u0647\u0646 \u062a\u062f\u0639\u0648\u0646\u0627 \u0644\u0644\u0633\u0641\u0631 \u0639\u0628\u0631 \u0641\u0636\u0627\u0621\u0627\u062a \u0648\u0623\u0632\u0645\u0646\u0629 \u0648\u0634\u0639\u0648\u0628 \u0623\u0643\u062b\u0631\u060c \u0648\u0644\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u062a\u0641\u0643\u064a\u0631 \u0641\u064a \u0627\u0644\u0645\u0639\u0627\u0646\u064a \u0648\u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u0627\u062a \u0627\u0644\u0645\u0639\u062a\u0627\u062f\u0629 \u0639\u0646 \u0627\u0644\u0646\u0633\u0627\u0621 \u0648\u0627\u0644\u062a\u0646\u0642\u0651\u0644 \u0648\u0627\u0644\u0639\u0645\u0644. \u064a\u0639\u062a\u0645\u062f \u0647\u0630\u0627 \u0627\u0644\u0645\u0639\u0631\u0636 \u0639\u0644\u0649 \u0645\u0642\u0627\u0628\u0644\u0627\u062a \u0645\u0639 \u0647\u0624\u0644\u0627\u0621 \u0627\u0644\u0646\u0633\u0627\u0621 \u0627\u0644\u0645\u062a\u0646\u0648\u0639\u0627\u062a. \u0646\u062d\u0646 \u0645\u062c\u0645\u0648\u0639\u0629 \u0645\u0646 \u0627\u0644\u0628\u0627\u062d\u062b\u064a\u0646 \u0648\u0627\u0644\u0623\u0645\u0646\u0627\u0621 \u0648\u0627\u0644\u0639\u0627\u0645\u0644\u064a\u0646 \u0641\u064a \u0627\u0644\u0645\u062a\u0627\u062d\u0641 \u0648\u0627\u0644\u0634\u0628\u0627\u0628 \u0641\u064a \u0647\u0630\u0647 \u0627\u0644\u0645\u0647\u0646\u060c \u064a\u062c\u0645\u0639\u0646\u0627 \u0627\u0644\u0634\u063a\u0641 \u0628\u0633\u0631\u062f \u0642\u0635\u0635\u0647\u0646 \u0648\u0645\u0634\u0627\u0631\u0643\u062a\u0647\u0627\u061b \u0642\u0635\u0635 \u0645\u0644\u0647\u0645\u0629 \u064a\u062c\u0628 \u0623\u0646 \u062a\u064f\u062d\u0641\u0638 \u0648\u062a\u064f\u0630\u0643\u0631 \u0644\u0623\u062c\u064a\u0627\u0644 \u0642\u0627\u062f\u0645\u0629. \u0646\u062f\u0639\u0648\u0643\u0645 \u0639\u0644\u0649 \u0631\u062d\u0644\u0629 \u0639\u0628\u0631 \u062d\u064a\u0627\u062a\u0647\u0646 \u0644\u0646\u0631\u0649 \u0643\u064a\u0641 \u062a\u062d\u0631\u0651\u0643\u0646 \u0648\u0644\u0645\u0627\u0630\u0627. \u0646\u0633\u0644\u0651\u0637 \u0627\u0644\u0636\u0648\u0621 \u0639\u0644\u0649 \u0623\u062b\u0631 \u0647\u0630\u0647 \u0627\u0644\u062a\u062d\u0631\u0643\u0627\u062a \u0648\u0623\u0639\u0645\u0627\u0644\u0647\u0646 \u0639\u0644\u0649 \u0639\u0644\u0627\u0642\u0627\u062a\u0647\u0646 \u0628\u0645\u0646 \u062d\u0648\u0644\u0647\u0646\u060c \u0648\u0646\u0633\u062a\u0643\u0634\u0641 \u0623\u0646\u0648\u0627\u0639 \u0639\u0645\u0644\u0647\u0646 \u0627\u0644\u0645\u062e\u062a\u0644\u0641\u0629 \u0644\u0646\u0631\u0649 \u0643\u064a\u0641 \u064a\u0633\u0627\u0647\u0645\u0646 \u0641\u064a \u062d\u064a\u0627\u062a\u0647\u0646 \u0648\u0641\u064a \u0623\u0633\u0631\u0647\u0646 \u0648\u0623\u0635\u062f\u0642\u0627\u0626\u0647\u0646 \u0648\u0632\u0645\u0644\u0627\u0626\u0647\u0646 \u0648\u0641\u064a \u0627\u0644\u0645\u062c\u062a\u0645\u0639.",
     historyTitle: "النسوية في مصر وخارجها",
     historyBody:
-      "[نص تجريبي] يُفهم الأرشيف أفضل عند وضعه في سياقه التاريخي. لذلك ستعكس بعض العقد تحولات تاريخية في مصر في القرنين العشرين والحادي والعشرين. وقعت أحداث مهمة في تطور الخطاب النسوي. بعد ثورة 1952 نمت السياسة النسوية مرتبطة بخطاب مناهض للاستعمار ورأسمالية كجزء من المشهد السياسي (إبراهيم 2017، 4-5). ومع ذلك واجه النشطاء صعوبة في التواصل مع الطبقة العاملة، وكان الخطاب «يُنشئ ديناميكية أبوية ومنفصلة» (إبراهيم 2017، 3). وسّعت الدولة فرص عمل و تعليم النساء بينما أُغلق المجال السياسي لهن (إبراهيم 2017، 6؛ غول 2025، 78-79، 101). مع تحولات الخطاب النسوي، وسّعت الدولة التعليم للفقراء فشكّل ذلك نسوية أكثر شمولاً للطبقة العاملة (إبراهيم 2017، 13). تدخلات الدولة صارت في توتر مع انفتاح السادات الاقتصادي. تركّز نشاط النساء على الواقع الاقتصادي والسياسي (إبراهيم 2017، 15) وصار «الغرب الحديث» هدفًا معياريًا للنسوية (إبراهيم 2017، 16). أعادت انتفاضة 2011 طرح هذه التوترات بزاوية تقاطعية (إبراهيم 2017، 20). حاتم (2011) توثّق نساء «صغيرات وكبيرات، محجبات وغير محجبات، فقيرات وغنيّات» في ميدان التحرير (36). وترجم ذلك إلى خطاب ينتقد النسوية الرسمية (حاتم 2011، 37). هذه التحولات لا تُقرأ فقط كسياق تاريخي بل تشكّل المادة الأرشيفية لـ«أنا بخير، اطمئنوا». سياسات ناصر التعليمية تُرسم أرشيف معلمة ريفية؛ انفتاح السادات يؤثر على مراسلات ميتري من السجن؛ وربيع العرب يصدى لتنوع التحالفات (حسن 2021؛ حاتم 2011، 36).",
+      "[نص تجريبي] يُفهم الأرشيف أفضل عند وضعه في سياقه التاريخي. لذلك ستعكس بعض العقد تحولات تاريخية في مصر في القرنين العشرين والحادي والعشرين. وقعت أحداث مهمة في تطور الخطاب النسوي. بعد ثورة 1952 نمت السياسة النسوية مرتبطة بخطاب مناهض للاستعمار ورأسمالية كجزء من المشهد السياسي (إبراهيم 2017، 4-5). ومع ذلك واجه النشطاء صعوبة في التواصل مع الطبقة العاملة، وكان الخطاب «يُنشئ ديناميكية أبوية ومنفصلة» (إبراهيم 2017، 3). وسّعت الدولة فرص عمل و تعليم النساء بينما أُغلق المجال السياسي لهن (إبراهيم 2017، 6؛ غول 2025، 78-79، 101). مع تحولات الخطاب النسوي، وسّعت الدولة التعليم للفقراء فشكّل ذلك نسوية أكثر شمولاً للطبقة العاملة (إبراهيم 2017، 13). تدخلات الدولة صارت في توتر مع انفتاح السادات الاقتصادي. تركّز نشاط النساء على الواقع الاقتصادي والسياسي (إبراهيم 2017، 15) وصار «الغرب الحديث» هدفًا معياريًا للنسوية (إبراهيم 2017، 16). أعادت انتفاضة 2011 طرح هذه التوترات بزاوية تقاطعية (إبراهيم 2017، 20). حاتم (2011) توثّق نساء «صغيرات وكبيرات، محجبات وغير محجبات، فقيرات وغنيّات» في ميدان التحرير (36). وترجم ذلك إلى خطاب ينتقد النسوية الرسمية (حاتم 2011، 37). هذه التحولات لا تُقرأ فقط كسياق تاريخي بل تشكّل المادة الأرشيفية لـ«أنا بخير، أطمئنوا». سياسات ناصر التعليمية تُرسم أرشيف معلمة ريفية؛ انفتاح السادات يؤثر على مراسلات ميتري من السجن؛ وربيع العرب يصدى لتنوع التحالفات (حسن 2021؛ حاتم 2011، 36).",
   },
   it: {
     navAriaPrimary: "Navigazione principale",
@@ -350,7 +357,7 @@ var STORYMAP_EXTRA_I18N = {
     langMenuAria: "Scegli la lingua",
     siteBrand: "Doing Well, Don't Worry",
     navBrandPrimary: "Doing Well, Don't Worry",
-    navBrandSecondary: "أنا بخير، اطمئنوا",
+    navBrandSecondary: "أنا بخير، أطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Contattaci",
@@ -475,7 +482,7 @@ var STORYMAP_EXTRA_I18N = {
     colorWhite: "Bianco",
     colorOrange: "Arancione",
     heroTitleEn: "Doing Well, Don't Worry.",
-    heroTitleAr: "أنا بخير، اطمئنوا",
+    heroTitleAr: "أنا بخير، أطمئنوا",
     heroSubtitle:
       "Una collaborazione digitale tra studenti della School of Foreign Service di Georgetown e The Women and Memory Forum.",
     heroCta: "esplora la storymap",
@@ -508,7 +515,7 @@ var STORYMAP_EXTRA_I18N = {
     langMenuAria: "Choisir la langue",
     siteBrand: "Doing Well, Don't Worry",
     navBrandPrimary: "Doing Well, Don't Worry",
-    navBrandSecondary: "أنا بخير، اطمئنوا",
+    navBrandSecondary: "أنا بخير، أطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Nous contacter",
@@ -633,7 +640,7 @@ var STORYMAP_EXTRA_I18N = {
     colorWhite: "Blanc",
     colorOrange: "Orange",
     heroTitleEn: "Doing Well, Don't Worry.",
-    heroTitleAr: "أنا بخير، اطمئنوا",
+    heroTitleAr: "أنا بخير، أطمئنوا",
     heroSubtitle:
       "Une collaboration numérique entre des étudiants de la School of Foreign Service de Georgetown et The Women and Memory Forum.",
     heroCta: "explorer la storymap",
@@ -666,7 +673,7 @@ var STORYMAP_EXTRA_I18N = {
     langMenuAria: "Elegir idioma",
     siteBrand: "Doing Well, Don't Worry",
     navBrandPrimary: "Doing Well, Don't Worry",
-    navBrandSecondary: "أنا بخير، اطمئنوا",
+    navBrandSecondary: "أنا بخير، أطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Contáctanos",
@@ -791,7 +798,7 @@ var STORYMAP_EXTRA_I18N = {
     colorWhite: "Blanco",
     colorOrange: "Naranja",
     heroTitleEn: "Doing Well, Don't Worry.",
-    heroTitleAr: "أنا بخير، اطمئنوا",
+    heroTitleAr: "أنا بخير، أطمئنوا",
     heroSubtitle:
       "Una colaboración digital entre estudiantes de la School of Foreign Service de Georgetown y The Women and Memory Forum.",
     heroCta: "explorar el storymap",
@@ -824,7 +831,7 @@ var STORYMAP_EXTRA_I18N = {
     langMenuAria: "Sprache wählen",
     siteBrand: "Doing Well, Don't Worry",
     navBrandPrimary: "Doing Well, Don't Worry",
-    navBrandSecondary: "أنا بخير، اطمئنوا",
+    navBrandSecondary: "أنا بخير، أطمئنوا",
     footerGeorgetownSfs: "Georgetown SFS",
     footerWmf: "The Women and Memory Forum",
     footerContact: "Kontakt",
@@ -949,7 +956,7 @@ var STORYMAP_EXTRA_I18N = {
     colorWhite: "Weiß",
     colorOrange: "Orange",
     heroTitleEn: "Doing Well, Don't Worry.",
-    heroTitleAr: "أنا بخير، اطمئنوا",
+    heroTitleAr: "أنا بخير، أطمئنوا",
     heroSubtitle:
       "Eine digitale Zusammenarbeit zwischen Studierenden der Georgetown School of Foreign Service und The Women and Memory Forum.",
     heroCta: "storymap erkunden",
