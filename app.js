@@ -2794,24 +2794,6 @@ function initCustomStorymapCanvas() {
     });
   };
 
-  /** Arabic + presentation forms: correct shaping needs lang/rtl + an Arabic font (see storymap.css). */
-  const ARABIC_SCRIPT_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-  const applyCanvasTextElLangDir = (el, text) => {
-    if (!el) return;
-    const s = String(text ?? "");
-    if (ARABIC_SCRIPT_RE.test(s)) {
-      el.setAttribute("lang", "ar");
-      el.setAttribute("dir", "rtl");
-      return;
-    }
-    if (isViewerLike() && currentLang !== "en") {
-      el.setAttribute("lang", currentLang);
-    } else {
-      el.setAttribute("lang", "en");
-    }
-    el.setAttribute("dir", "ltr");
-  };
-
   const makeNodeEl = (node) => {
     const div = document.createElement("div");
     div.className = `smNode smNode--${node.type} smColor--${node.color || "green"}`;
@@ -2857,24 +2839,22 @@ function initCustomStorymapCanvas() {
         const caption = document.createElement("span");
         caption.className = "smNodeImageTitle";
         caption.textContent = title;
-        applyCanvasTextElLangDir(caption, title);
+        applyTextDirToNode(caption);
         div.appendChild(caption);
       }
     } else if (node.type === "text") {
       const inner = document.createElement("span");
       inner.className = "smNodeTextInner";
       const baseLbl = getNodeLabel(node);
-      const displayLbl = getStorymapCanvasDisplayLabel(node, baseLbl);
-      inner.textContent = displayLbl;
-      applyCanvasTextElLangDir(inner, displayLbl);
+      inner.textContent = getStorymapCanvasDisplayLabel(node, baseLbl);
+      applyTextDirToNode(inner);
       div.appendChild(inner);
       const mw = Math.min(290, Math.max(112, 88 + Math.min(220, baseLbl.length * 2.8)));
       div.style.maxWidth = `${Math.round(mw)}px`;
     } else {
       const baseLbl = getNodeLabel(node);
-      const displayLbl = getStorymapCanvasDisplayLabel(node, baseLbl);
-      div.textContent = displayLbl;
-      applyCanvasTextElLangDir(div, displayLbl);
+      div.textContent = getStorymapCanvasDisplayLabel(node, baseLbl);
+      applyTextDirToNode(div);
     }
     return div;
   };
