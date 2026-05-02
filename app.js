@@ -2137,6 +2137,34 @@ function initCustomStorymapCanvas() {
     return baseText;
   };
 
+  const getEffectiveCentralIdSet = () => {
+    const roots = getStorymapCentralRootIds(canvas);
+    if (roots.length) return new Set(roots);
+    const entry = getStorymapEntryNodeIds(canvas);
+    return entry.length ? new Set([entry[0]]) : new Set();
+  };
+
+  const getCanvasArabicLabel = (node) => {
+    if (typeof STORYMAP_CANVAS_NODE_I18N === "undefined") return "";
+    const fromLabel = String(node?.label || "").trim();
+    const key = fromLabel || String(node?.content || "").trim();
+    const pack = STORYMAP_CANVAS_NODE_I18N.ar && STORYMAP_CANVAS_NODE_I18N.ar[key];
+    return pack && pack.label ? pack.label : "";
+  };
+
+  const classifyStorymapEdgeKind = (sourceId, targetId) => {
+    const central = getEffectiveCentralIdSet();
+    const byId = (id) => canvas.nodes.find((n) => n.id === id);
+    const s = byId(sourceId);
+    const t = byId(targetId);
+    if (!s || !t) return "structural";
+    const sC = central.has(sourceId);
+    const tC = central.has(targetId);
+    if (sC && !tC) return "fromCenter";
+    if (s.type === "text" && !central.has(sourceId) && t.type === "image") return "hubSpoke";
+    return "structural";
+  };
+
   const updateWorldTransform = () => {
     world.style.transform = `translate(${view.panX}px, ${view.panY}px) scale(${view.scale})`;
   };
@@ -2269,17 +2297,18 @@ function initCustomStorymapCanvas() {
       let nw = 256;
       let nh = 256;
       const { w, h } = computeStorymapImageNodeSize(nw, nh);
-      const hasCaption = Boolean(getNodeLabel(node));
-      const extraCaption = hasCaption ? 48 : 0;
+      const hasCaption = Boolean(getNodeLabel(node) || getCanvasArabicLabel(node));
+      const extraCaption = hasCaption ? 88 : 0;
       return { minX: x, minY: y, maxX: x + w, maxY: y + h + extraCaption };
     }
     if (node.type === "text") {
       const baseLbl = getNodeLabel(node);
-      const mw = Math.min(290, Math.max(112, 88 + Math.min(220, baseLbl.length * 2.8)));
-      const body = String(node.text || "");
-      const approxLines = Math.max(1, Math.ceil(body.length / 38));
-      const hh = Math.min(240, Math.max(56, approxLines * 18 + 44));
-      return { minX: x, minY: y, maxX: x + Math.round(mw), maxY: y + Math.round(hh) };
+      const centralSet = getEffectiveCentralIdSet();
+      if (centralSet.has(node.id)) {
+        return { minX: x, minY: y, maxX: x + 220, maxY: y + 200 };
+      }
+      const mw = Math.min(360, Math.max(120, 40 + Math.min(300, baseLbl.length * 6)));
+      return { minX: x, minY: y, maxX: x + Math.round(mw), maxY: y + 64 };
     }
     const sz = 58;
     return { minX: x, minY: y, maxX: x + sz, maxY: y + sz };
@@ -2367,7 +2396,7 @@ function initCustomStorymapCanvas() {
       const imgEl = el.querySelector("img");
       if (imgEl) {
         imgEl.style.transition = "none";
-        imgEl.style.filter = "grayscale(1) saturate(0.65)";
+        imgEl.style.filter = "grayscale(1)";
         el.style.filter = "none";
       } else {
         el.style.filter = "grayscale(1) saturate(0.55)";
@@ -2386,14 +2415,9 @@ function initCustomStorymapCanvas() {
       ]
         .filter(Boolean)
         .join(", ");
-      if (imgEl) {
-        imgEl.style.transition = `filter ${dur} ${ease}`;
-      }
       el.style.transform = "scale(1)";
       el.style.opacity = "1";
-      if (imgEl) {
-        imgEl.style.filter = "grayscale(0) saturate(1)";
-      } else {
+      if (!imgEl) {
         el.style.filter = "none";
       }
 
@@ -2430,7 +2454,6 @@ function initCustomStorymapCanvas() {
       const cleanup = () => {
         if (fallbackTimer) window.clearTimeout(fallbackTimer);
         el.removeEventListener("transitionend", onElTrans);
-        if (imgEl) imgEl.removeEventListener("transitionend", onImgTrans);
       };
       const safeFinish = () => {
         if (done) return;
@@ -2443,7 +2466,7 @@ function initCustomStorymapCanvas() {
         }
       };
 
-      let remaining = imgEl ? 2 : 1;
+      let remaining = 1;
       const bump = () => {
         remaining -= 1;
         if (remaining <= 0) safeFinish();
@@ -2453,13 +2476,7 @@ function initCustomStorymapCanvas() {
         if (evt.propertyName !== "transform") return;
         bump();
       };
-      const onImgTrans = (evt) => {
-        if (!imgEl || evt.target !== imgEl) return;
-        if (evt.propertyName !== "filter" && evt.propertyName !== "-webkit-filter") return;
-        bump();
-      };
       el.addEventListener("transitionend", onElTrans);
-      if (imgEl) imgEl.addEventListener("transitionend", onImgTrans);
 
       fallbackTimer = window.setTimeout(safeFinish, durMs + 80);
     };
@@ -2735,6 +2752,7 @@ function initCustomStorymapCanvas() {
       line.setAttribute("x2", String(p2.x));
       line.setAttribute("y2", String(p2.y));
       line.setAttribute("data-sm-edge-key", ek);
+      line.classList.add(`storymapEdge--${classifyStorymapEdgeKind(edge.source, edge.target)}`);
       edgesSvg.appendChild(line);
 
       // Solid overlay that fades away, revealing dashed base line underneath.
@@ -2796,7 +2814,10 @@ function initCustomStorymapCanvas() {
 
   const makeNodeEl = (node) => {
     const div = document.createElement("div");
-    div.className = `smNode smNode--${node.type} smColor--${node.color || "green"}`;
+    div.className =
+      node.type === "text"
+        ? `smNode smNode--${node.type}`
+        : `smNode smNode--${node.type} smColor--${node.color || "green"}`;
     if (selectedId === node.id) div.classList.add("smNode--selected");
     div.dataset.id = node.id;
     div.style.left = `${node.x}px`;
@@ -2823,7 +2844,11 @@ function initCustomStorymapCanvas() {
         }
         const { w, h } = computeStorymapImageNodeSize(nw, nh);
         div.style.width = `${w}px`;
-        div.style.height = `${h}px`;
+        div.style.height = "";
+        img.style.width = "100%";
+        img.style.height = `${h}px`;
+        img.style.objectFit = "cover";
+        img.style.display = "block";
         div.style.aspectRatio = "auto";
         requestAnimationFrame(drawEdges);
       };
@@ -2834,23 +2859,91 @@ function initCustomStorymapCanvas() {
       div.appendChild(img);
       if (img.complete && img.naturalWidth) applyImageBoxSize();
       const baseTitle = getNodeLabel(node);
-      const title = getStorymapCanvasDisplayLabel(node, baseTitle);
-      if (title) {
-        const caption = document.createElement("span");
-        caption.className = "smNodeImageTitle";
-        caption.textContent = title;
-        applyTextDirToNode(caption);
-        div.appendChild(caption);
+      const titleDisplay = getStorymapCanvasDisplayLabel(node, baseTitle);
+      const arLine = getCanvasArabicLabel(node);
+      const imageOrd =
+        canvas.nodes.filter((n) => n.type === "image").findIndex((n) => n.id === node.id) + 1;
+      const cap = document.createElement("div");
+      cap.className = "smNodeImageCaption";
+      const fig = document.createElement("span");
+      fig.className = "smNodeImageCaption__fig";
+      fig.textContent = `fig. ${String(imageOrd).padStart(2, "0")} /`;
+      cap.appendChild(fig);
+      if (titleDisplay || baseTitle) {
+        const en = document.createElement("span");
+        en.className = "smNodeImageCaption__en";
+        en.setAttribute("lang", "en");
+        en.textContent = titleDisplay || baseTitle;
+        cap.appendChild(en);
       }
+      if (arLine) {
+        const ar = document.createElement("div");
+        ar.className = "smNodeImageCaption__ar";
+        ar.setAttribute("lang", "ar");
+        ar.setAttribute("dir", "rtl");
+        ar.textContent = arLine;
+        cap.appendChild(ar);
+      }
+      div.appendChild(cap);
     } else if (node.type === "text") {
-      const inner = document.createElement("span");
-      inner.className = "smNodeTextInner";
+      const centralSet = getEffectiveCentralIdSet();
+      const isCentral = centralSet.has(node.id);
       const baseLbl = getNodeLabel(node);
-      inner.textContent = getStorymapCanvasDisplayLabel(node, baseLbl);
-      applyTextDirToNode(inner);
-      div.appendChild(inner);
-      const mw = Math.min(290, Math.max(112, 88 + Math.min(220, baseLbl.length * 2.8)));
-      div.style.maxWidth = `${Math.round(mw)}px`;
+      const arabic = getCanvasArabicLabel(node);
+      const latinDisplay = getStorymapCanvasDisplayLabel(node, baseLbl);
+
+      if (isCentral) {
+        div.classList.add("smNode--central");
+        const plate = document.createElement("div");
+        plate.className = "smNodeCentralPlate";
+        const frame = document.createElement("div");
+        frame.className = "smNodeCentralPlate__frame";
+        if (arabic) {
+          const ar = document.createElement("div");
+          ar.className = "smNodeCentralAr";
+          ar.setAttribute("lang", "ar");
+          ar.setAttribute("dir", "rtl");
+          ar.textContent = arabic;
+          frame.appendChild(ar);
+        }
+        const en = document.createElement("div");
+        en.className = "smNodeCentralEn";
+        en.setAttribute("lang", "en");
+        en.setAttribute("dir", "ltr");
+        en.textContent = baseLbl;
+        frame.appendChild(en);
+        plate.appendChild(frame);
+        div.appendChild(plate);
+        const mark = document.createElement("div");
+        mark.className = "smNodeCentralShadda";
+        mark.setAttribute("aria-hidden", "true");
+        mark.textContent = "\u0640\u0651";
+        div.appendChild(mark);
+      } else {
+        div.classList.add("smNode--hub");
+        const wrap = document.createElement("div");
+        wrap.className = "smNodeHub";
+        if (arabic) {
+          const ar = document.createElement("div");
+          ar.className = "smNodeHubAr";
+          ar.setAttribute("lang", "ar");
+          ar.setAttribute("dir", "rtl");
+          ar.textContent = arabic;
+          wrap.appendChild(ar);
+        }
+        const row = document.createElement("div");
+        row.className = "smNodeHubRow";
+        const tick = document.createElement("span");
+        tick.className = "smNodeHubTick";
+        tick.setAttribute("aria-hidden", "true");
+        const lat = document.createElement("span");
+        lat.className = "smNodeHubLatin";
+        lat.textContent = latinDisplay;
+        row.appendChild(tick);
+        row.appendChild(lat);
+        wrap.appendChild(row);
+        div.appendChild(wrap);
+      }
     } else {
       const baseLbl = getNodeLabel(node);
       div.textContent = getStorymapCanvasDisplayLabel(node, baseLbl);

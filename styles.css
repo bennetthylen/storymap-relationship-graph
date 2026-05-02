@@ -34,8 +34,8 @@
   --archive-bg: #e6e2d1;
   --archive-ink: #3c1b16;
   /* Storymap + discussion (solid viewport themes) */
-  --storymap-bg: #c2d1d1;
-  --storymap-ink: #3d100c;
+  --storymap-bg: #cdd5d3;
+  --storymap-ink: #1a1a18;
   --discussion-bg: #d6d6d2;
   --discussion-ink: #3d100c;
   /* Home only: deeper burgundy field + cream UI; hero EN uses dusty blue (see --landing-dusty-blue) */
