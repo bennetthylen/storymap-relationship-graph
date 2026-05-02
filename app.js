@@ -3626,6 +3626,9 @@ function initCustomStorymapCanvas() {
     void loadPublishedStorymapFromRepo()
       .then((remoteCanvas) => {
         canvas = remoteCanvas;
+        // Keep public localStorage in sync with the file the site just served (same as admin path).
+        // Otherwise the next `loadStorymapCanvasState()` still has old x/y from a previous visit or PAT publish.
+        saveStorymapCanvasState(canvas);
         bootstrapAfterPublishedLoad();
       })
       .catch((err) => {
