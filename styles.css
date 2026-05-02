@@ -36,8 +36,14 @@
   /* Storymap + discussion (solid viewport themes) */
   --storymap-bg: #cdd5d3;
   --storymap-ink: #1a1a18;
-  --discussion-bg: #d6d6d2;
-  --discussion-ink: #3d100c;
+  /* Discussion tab: terracotta field; accents via --discussion-brown / --discussion-blue */
+  --discussion-bg: #c4735c;
+  --discussion-bg-soft: #dba892;
+  --discussion-surface: #f5e8e2;
+  --discussion-ink: #3d2918;
+  --discussion-brown: #5c3d2e;
+  --discussion-blue: #2c5282;
+  --discussion-blue-soft: #4a6fa5;
   /* Home only: deeper burgundy field + cream UI; hero EN uses dusty blue (see --landing-dusty-blue) */
   --home-bg: #5c1528;
   --home-ink: #faf6f0;
@@ -750,6 +756,115 @@ body.theme-archive.page-home .hero--archive .hero__titleLine--ar {
   }
 }
 
+/* Inner pages: bilingual exhibition title + section kicker (History / Discussion / Information) */
+.subpageHero {
+  position: relative;
+  text-align: center;
+  padding: clamp(28px, 5.5vw, 56px) clamp(18px, 4vw, 32px) clamp(10px, 2vw, 22px);
+}
+
+.subpageHero__title {
+  margin: 0;
+}
+
+.subpageHero .hero__titleStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: min(100%, var(--home-hero-title-max));
+  margin-inline: auto;
+  padding-block: 0.15em 0.45em;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.subpageHero--archive .subpageHero__line--en,
+.subpageHero--archive .subpageHero__line--ar {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: min(100%, var(--home-hero-title-max));
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.subpageHero--archive .subpageHero__line--en {
+  position: relative;
+  z-index: 1;
+  font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.05rem, min(3.6vw, 7.5vh), 2.55rem);
+  letter-spacing: -0.052em;
+  color: var(--home-hero-en);
+}
+
+.subpageHero--archive .subpageHero__line--ar {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-0.95rem, -2.4vw, -0.2rem);
+  direction: rtl;
+  font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui,
+    sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.98rem, min(3.1vw, 6.5vh), 2.2rem);
+  line-height: 1.22;
+  letter-spacing: 0;
+  color: var(--archive-bg);
+  -webkit-text-fill-color: var(--archive-bg);
+  -webkit-text-stroke: clamp(1.25px, 0.18vw, 2.5px) #fff;
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 1px var(--archive-hero-ink),
+    0 2px 14px rgba(66, 28, 20, 0.18);
+}
+
+.subpageHero__kicker {
+  margin: clamp(0.65rem, 2vw, 1.1rem) 0 0;
+  font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.45vw, 1.05rem);
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--archive-muted);
+}
+
+body.lang-ar .subpageHero__kicker {
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-family: "Kufam", "Noto Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+.subpageHero--discussion {
+  padding-bottom: clamp(18px, 3.5vw, 36px);
+  border-bottom: 1px solid color-mix(in srgb, var(--discussion-brown) 22%, transparent);
+}
+
+.subpageHero--discussion .subpageHero__line--en {
+  color: #fdf6f2;
+  text-shadow: 0 2px 18px rgba(45, 28, 18, 0.35);
+}
+
+.subpageHero--discussion .subpageHero__line--ar {
+  color: var(--discussion-surface);
+  -webkit-text-fill-color: var(--discussion-surface);
+  -webkit-text-stroke: clamp(1.25px, 0.18vw, 2.5px) color-mix(in srgb, var(--discussion-brown) 55%, #fff);
+  text-shadow:
+    0 0 1px var(--discussion-ink),
+    0 3px 16px rgba(30, 18, 12, 0.45);
+}
+
+.subpageHero--discussion .subpageHero__kicker {
+  color: var(--discussion-blue-soft);
+  text-transform: lowercase;
+}
+
+body.lang-ar .subpageHero--discussion .subpageHero__kicker {
+  color: color-mix(in srgb, var(--discussion-blue-soft) 92%, #fff);
+}
+
 body.theme-archive.page-home .hero--archive p {
   box-sizing: border-box;
   /* ~3 lines for the collaboration blurb (narrower than a 2-line strip) */
@@ -998,13 +1113,13 @@ body.theme-archive.page-home .landingCopy .landingBand__main p {
   padding-right: clamp(18px, 5vw, 40px);
 }
 
-.theme-archive .infoPage--editorial h1 {
+.theme-archive .infoPage--editorial .infoPage__lead {
   position: relative;
   padding-inline-start: clamp(14px, 2.5vw, 22px);
-  max-width: 22ch;
+  max-width: min(36rem, 100%);
 }
 
-.theme-archive .infoPage--editorial h1::before {
+.theme-archive .infoPage--editorial .infoPage__lead::before {
   content: "";
   position: absolute;
   inset-inline-start: 0;
@@ -1017,6 +1132,10 @@ body.theme-archive.page-home .landingCopy .landingBand__main p {
 
 .theme-archive .infoPage--editorial .infoPage__lead {
   max-width: min(36rem, 100%);
+}
+
+.theme-archive .infoPage--editorial.infoPage--wide {
+  max-width: min(1200px, 100%);
 }
 
 .theme-archive .infoPage--editorial .infoPage__body {
@@ -1118,97 +1237,176 @@ body.theme-storymap .siteNav--archive .siteNav__langBtn:focus {
   transform: none;
 }
 
-/* Discussion: solid gray viewport + brown type */
+/* Discussion: terracotta viewport + brown type + blue accents */
 body[data-mode="discussion"] {
   background: var(--discussion-bg);
-  color: var(--discussion-ink);
+  color: var(--discussion-brown);
   font-weight: 600;
-  --text: var(--discussion-ink);
-  --muted: #5c403b;
-  --border: rgba(61, 16, 12, 0.2);
+  --text: var(--discussion-brown);
+  --muted: color-mix(in srgb, var(--discussion-brown) 72%, var(--discussion-blue) 28%);
+  --border: color-mix(in srgb, var(--discussion-brown) 35%, transparent);
 }
 
 body[data-mode="discussion"] .siteNav__brandLink {
-  color: var(--discussion-ink);
+  color: var(--discussion-brown);
 }
 
 body[data-mode="discussion"] .jsStatus {
   background: var(--discussion-bg);
-  border-color: rgba(61, 16, 12, 0.22);
-  color: var(--discussion-ink);
+  border-color: color-mix(in srgb, var(--discussion-blue) 28%, transparent);
+  color: var(--discussion-brown);
 }
 
 body[data-mode="discussion"] .siteNav__langMenu {
   background: var(--discussion-bg);
-  border-color: rgba(61, 16, 12, 0.2);
+  border-color: color-mix(in srgb, var(--discussion-brown) 22%, transparent);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__primary .siteNav__tab {
-  color: var(--discussion-ink);
+  color: var(--discussion-brown);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__primary .siteNav__tab:hover,
 body[data-mode="discussion"] .siteNav--archive .siteNav__primary .siteNav__tab--active {
-  color: var(--discussion-ink);
+  color: var(--discussion-blue);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn {
-  background: rgba(255, 255, 255, 0.42);
-  color: var(--discussion-ink);
-  border-color: rgba(61, 16, 12, 0.28);
+  background: color-mix(in srgb, var(--discussion-surface) 55%, transparent);
+  color: var(--discussion-brown);
+  border-color: color-mix(in srgb, var(--discussion-blue) 35%, transparent);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn:hover,
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn:focus {
   transform: none;
+  border-color: var(--discussion-blue-soft);
+  color: var(--discussion-blue);
 }
 
 body[data-mode="discussion"] .discussionComposer {
-  background: color-mix(in srgb, var(--discussion-bg) 82%, #fff);
-  border-color: rgba(61, 16, 12, 0.18);
-  box-shadow: 0 10px 28px rgba(61, 16, 12, 0.06);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--discussion-brown) 16%, var(--discussion-blue) 10%, transparent);
+  padding: 0 0 clamp(22px, 3.5vw, 36px);
+  margin-bottom: 0;
 }
 
-body[data-mode="discussion"] .discussionComposer h1 {
-  color: var(--discussion-ink);
+body[data-mode="discussion"] .discussionComposer.card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+body[data-mode="discussion"] .discussionComposer h2 {
+  color: var(--discussion-brown);
+}
+
+body[data-mode="discussion"] .discussionComposer .muted,
+body[data-mode="discussion"] .discussionBackendNote {
+  color: color-mix(in srgb, var(--discussion-brown) 85%, var(--discussion-blue) 15%) !important;
+}
+
+body[data-mode="discussion"] .discussionComposer label {
+  color: var(--discussion-blue);
+}
+
+body[data-mode="discussion"] .discussionComposer input,
+body[data-mode="discussion"] .discussionComposer textarea {
+  border-color: color-mix(in srgb, var(--discussion-brown) 25%, var(--discussion-blue) 20%);
+  background: color-mix(in srgb, var(--discussion-bg) 12%, #fff 88%);
+  color: var(--discussion-brown);
+}
+
+body[data-mode="discussion"] .discussionComposer input:focus,
+body[data-mode="discussion"] .discussionComposer textarea:focus {
+  border-color: var(--discussion-blue-soft);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--discussion-blue) 18%, transparent);
+  outline: none;
 }
 
 body[data-mode="discussion"] .discussionPost {
-  background: color-mix(in srgb, var(--discussion-bg) 76%, #fff);
-  border-color: rgba(61, 16, 12, 0.16);
-  border-left-color: var(--discussion-ink);
-  box-shadow: 0 10px 28px rgba(61, 16, 12, 0.05);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--discussion-brown) 14%, var(--discussion-blue) 10%, transparent);
+  padding: clamp(16px, 2.5vw, 24px) 0;
 }
 
-body[data-mode="discussion"] .discussionPost__header h2 {
-  color: var(--discussion-ink);
+body[data-mode="discussion"] .discussionPost:last-child {
+  border-bottom: none;
+}
+
+body[data-mode="discussion"] .discussionPost--empty {
+  border-bottom: none;
+  padding: 10px 0;
+}
+  color: var(--discussion-brown);
+}
+
+body[data-mode="discussion"] .discussionPost__description {
+  color: color-mix(in srgb, var(--discussion-brown) 92%, var(--discussion-blue) 8%);
 }
 
 body[data-mode="discussion"] .discussionReplyItem {
-  background: color-mix(in srgb, var(--discussion-bg) 88%, #fff);
-  border-color: rgba(61, 16, 12, 0.14);
+  background: transparent;
+  border: none;
+  border-left: 2px solid color-mix(in srgb, var(--discussion-blue) 70%, var(--discussion-brown) 30%);
+  border-radius: 0;
+}
+
+body[data-mode="discussion"] .discussionReplyToggleBtn {
+  color: var(--discussion-brown);
+}
+
+body[data-mode="discussion"] .discussionReplySubmitBtn {
+  background: var(--discussion-blue);
+  border-color: var(--discussion-blue);
+  color: #faf7f4;
+}
+
+body[data-mode="discussion"] .discussionReplySubmitBtn:hover {
+  background: var(--discussion-brown);
+  border-color: var(--discussion-brown);
+  color: #faf7f4;
+}
+
+body[data-mode="discussion"] .discussionReplyComposer {
+  border-top-color: color-mix(in srgb, var(--discussion-blue) 22%, var(--discussion-brown) 18%);
+}
+
+body[data-mode="discussion"] .discussionReplyItem time {
+  color: color-mix(in srgb, var(--discussion-brown) 65%, var(--discussion-blue) 35%);
 }
 
 body[data-mode="discussion"] #discussionPostBtn {
-  background: var(--discussion-ink);
-  border-color: var(--discussion-ink);
-  color: #fffefb;
+  background: var(--discussion-blue);
+  border-color: var(--discussion-blue);
+  color: #faf7f4;
 }
 
 body[data-mode="discussion"] #discussionPostBtn:hover {
-  background: #5c403b;
-  border-color: #5c403b;
-  color: #fffefb;
+  background: var(--discussion-brown);
+  border-color: var(--discussion-brown);
+  color: #faf7f4;
 }
 
 body[data-mode="discussion"] .discussionPost:hover {
-  box-shadow: 0 14px 36px rgba(61, 16, 12, 0.12);
+  box-shadow: none;
+  transform: none;
 }
 
 body[data-mode="discussion"] .card:hover {
-  border-color: rgba(61, 16, 12, 0.28);
-  box-shadow: 0 12px 32px rgba(61, 16, 12, 0.1);
-  transform: scale(1.01) translateY(-1px);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.page-subpage.theme-archive .infoPage {
+  padding-top: clamp(12px, 3vw, 28px);
 }
 
 .infoPage {
@@ -1238,6 +1436,103 @@ body[data-mode="discussion"] .card:hover {
   font-size: 1.02rem;
   line-height: 1.75;
   color: var(--archive-muted);
+}
+
+.infoPage__htmlBlock + .infoPage__htmlBlock {
+  margin-top: 1.35rem;
+}
+
+.infoPage__link {
+  color: var(--wmf-magenta);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  font-weight: 600;
+}
+
+.infoPage__link:hover,
+.infoPage__link:focus-visible {
+  color: var(--archive-hero-ink);
+  outline: none;
+}
+
+.infoPage__link:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--wmf-magenta) 35%, transparent);
+  border-radius: 2px;
+}
+
+.infoPage__figure {
+  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  max-width: min(72rem, 100%);
+  width: 100%;
+}
+
+.infoCarousel__viewport {
+  overflow: hidden;
+  width: 100%;
+  min-height: clamp(220px, 38vw, 360px);
+  border-radius: 2px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+
+.infoCarousel__track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: max-content;
+  /* Seamless loop: two identical groups; move from -50% → 0 so strip travels left → right across the viewport */
+  animation: infoCarouselMarquee 75s linear infinite;
+  will-change: transform;
+}
+
+.infoCarousel__group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: clamp(10px, 1.8vw, 16px);
+  padding-inline-end: clamp(10px, 1.8vw, 16px);
+  flex-shrink: 0;
+}
+
+.infoCarousel__slide {
+  flex: 0 0 auto;
+  width: min(440px, 78vw);
+  height: min(300px, 48vw);
+  min-height: 220px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--archive-ink) 6%, var(--archive-bg) 94%);
+}
+
+.infoCarousel__slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoPage__carouselCaption {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--archive-muted);
+}
+
+@keyframes infoCarouselMarquee {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infoCarousel__track {
+    animation-duration: 240s;
+  }
 }
 
 .cornerHeader {
@@ -1654,6 +1949,12 @@ body[data-mode="discussion"] .card:hover {
   border-color: rgba(var(--wmf-magenta-rgb), 0.45);
   transform: scale(1.02) translateY(-2px);
   box-shadow: var(--shadow-magenta);
+}
+
+.discussionPage .discussionComposer.card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
 }
 
 .toolbarRow {
@@ -2210,6 +2511,17 @@ body[data-mode="discussion"] .stickyFooterLinks {
   background: var(--discussion-bg);
 }
 
+body[data-mode="discussion"] .stickyFooterLinks a,
+body[data-mode="discussion"] .footerLoginBtn {
+  color: color-mix(in srgb, var(--discussion-brown) 88%, var(--discussion-blue) 12%);
+}
+
+body[data-mode="discussion"] .stickyFooterLinks a:hover,
+body[data-mode="discussion"] .stickyFooterLinks a:focus-visible {
+  color: var(--discussion-blue);
+  opacity: 1;
+}
+
 body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .stickyFooterLinks {
   background: var(--wmf-cream);
 }
@@ -2267,35 +2579,23 @@ body.theme-archive.page-home .homePageBuffer {
   position: relative;
   max-width: min(900px, 100%);
   margin: 0 auto;
-  padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 36px) 140px;
-}
-
-.historyPage h1 {
-  margin: 0 0 20px;
-  padding-left: clamp(0px, 2vw, 8px);
-  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-  font-size: calc(clamp(2rem, 4.5vw, 3.25rem) + var(--header-bump));
-  line-height: 1.1;
-  font-style: italic;
-  font-weight: 700;
-  color: var(--wmf-magenta);
-  letter-spacing: 0.01em;
+  padding: clamp(20px, 4vw, 40px) clamp(20px, 5vw, 36px) 140px;
 }
 
 .historyBody {
   margin: 0;
   position: relative;
   z-index: 1;
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--wmf-magenta);
-  background: linear-gradient(135deg, #fffefb 0%, var(--wmf-pink-soft) 100%);
-  border-radius: var(--radius-card);
-  padding: 22px 24px;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  max-width: min(52rem, 100%);
   line-height: 1.85;
   font-size: 1.05rem;
   color: var(--text);
   white-space: pre-wrap;
-  box-shadow: var(--shadow-soft);
+  box-shadow: none;
 }
 
 .discussionPage {
@@ -2304,14 +2604,18 @@ body.theme-archive.page-home .homePageBuffer {
   padding: clamp(40px, 7vw, 88px) clamp(16px, 4vw, 28px) 170px;
 }
 
-.discussionComposer {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  background: linear-gradient(180deg, #fffefb, var(--wmf-cream));
-  box-shadow: var(--shadow-soft);
+.page-subpage .discussionPage {
+  padding-top: clamp(12px, 2.5vw, 28px);
 }
 
-.discussionComposer h1 {
+.discussionComposer {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.discussionComposer h2 {
   margin: 0 0 8px;
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: calc(clamp(1.8rem, 3vw, 2.4rem) + var(--header-bump));
@@ -2338,27 +2642,33 @@ body.theme-archive.page-home .homePageBuffer {
 }
 
 .discussionFeed {
-  margin-top: 16px;
+  margin-top: 0;
 }
 
 .discussionPost {
-  background: linear-gradient(135deg, #fffefb, var(--wmf-cream));
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--wmf-magenta);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-soft);
-  padding: 16px 18px;
-  margin-bottom: 16px;
-  transition: transform 0.25s var(--ease-out-back), box-shadow 0.25s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: clamp(18px, 3vw, 26px) 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  transition: none;
 }
 
 .discussionPost:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-magenta);
+  transform: none;
+  box-shadow: none;
+}
+
+.discussionPost:last-child {
+  border-bottom: none;
 }
 
 .discussionPost--empty {
   margin-top: 0;
+  padding: 12px 0;
+  border-bottom: none;
 }
 
 .discussionPost__header {
@@ -2398,11 +2708,11 @@ body.theme-archive.page-home .homePageBuffer {
 }
 
 .discussionReplyItem {
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--wmf-gold);
-  background: rgba(255, 254, 251, 0.95);
-  border-radius: 14px;
-  padding: 12px;
+  border: none;
+  border-left: 2px solid color-mix(in srgb, var(--wmf-gold) 75%, var(--wmf-ink) 25%);
+  background: transparent;
+  border-radius: 0;
+  padding: 6px 0 6px 14px;
 }
 
 .discussionReplyItem p {
@@ -2416,8 +2726,8 @@ body.theme-archive.page-home .homePageBuffer {
 }
 
 .discussionReplyItem--empty {
-  background: var(--wmf-cream);
-  border-color: rgba(var(--wmf-magenta-rgb), 0.14);
+  background: transparent;
+  border-left-color: color-mix(in srgb, var(--border) 70%, transparent);
 }
 
 .discussionReplyInput {
@@ -2439,8 +2749,8 @@ body.theme-archive.page-home .homePageBuffer {
 
 .discussionReplyComposer {
   margin-top: 10px;
-  border-top: 1px dashed rgba(var(--wmf-magenta-rgb), 0.2);
-  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  padding-top: 12px;
 }
 
 .discussionReplySubmitBtn {

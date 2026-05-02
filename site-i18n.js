@@ -12,6 +12,17 @@ var STORYMAP_EXTRA_I18N = {
     navDiscussion: "Discussion",
     navInformation: "Information",
     infoPageTitle: "Information",
+    siteExhibitTitleEn: "Feminism in Egypt and Beyond",
+    siteExhibitTitleAr: "النسوية في مصر وخارجها",
+    subpageSectionHistory: "History",
+    subpageSectionDiscussion: "discussion",
+    subpageSectionInformation: "information",
+    infoPageBlock1Html:
+      "<p class=\"infoPage__lead\"><strong class=\"infoPage__exhibitTitle\">&ldquo;Doing Well, Don&rsquo;t Worry&rdquo;: Short Tales of Women&rsquo;s Work and Mobility</strong> was originally <a href=\"https://wmf.org.eg/en/events/women-and-memory-forums-exhibition-doing-well-dont-worry-short-tales-of-womens-work-and-mobility/\" class=\"infoPage__link\" target=\"_blank\" rel=\"noopener noreferrer\">exhibited</a> at the American University in Cairo in May 2017. It was powered by international collaboration with the Women and Memory Forum (EG), Women&rsquo;s Museum in Denmark (DK), Danish-Egyptian Dialogue Institute (EG/DK), Anthropology Unit and the Cynthia Nelson Institute from the American University in Cairo (EG), the Tiraz Centre (JO) and the Knowledge Workshop (LE).</p>",
+    infoPageBlock2Html:
+      "<p class=\"infoPage__body\">In March 2026, the Women and Memory Forum hosted students part of Georgetown University&rsquo;s (USA) Centennial Lab, ARST 4478, <em>Heritage and Development in the Arab World</em>. Students learned about feminist heritage in Egypt, the WMF&rsquo;s challenges, their community efforts, and their archival practices. Engaging Georgetown&rsquo;s Jesuit values of &ldquo;people for others&rdquo; and &ldquo;community in diversity,&rdquo; they wished to take their learning outside of the classroom. Out of this sentiment, this digital archive was born.</p>",
+    infoPageCarouselCaption: "Photos from the May 2017 exhibition at AUC.",
+    infoPageCarouselAria: "Photographs from the May 2017 exhibition at the American University in Cairo",
     infoPageLead:
       "This page will hold practical details about the exhibition and the storymap. For now, it is a placeholder so navigation and layout can be finalized.",
     langMenuAria: "Choose language",
@@ -152,7 +163,7 @@ var STORYMAP_EXTRA_I18N = {
       "Women are always on the move. Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people's lives. This exhibition introduces glimpses into the lives of 21 women \u2013 women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work. This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
     historyTitle: "Feminism in Egypt and Beyond",
     historyBody:
-      "[EXAMPLE TEXT] The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
+      "The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
   },
   ar: {
     navAriaPrimary: "التنقّل الرئيسي",
@@ -163,6 +174,11 @@ var STORYMAP_EXTRA_I18N = {
     navDiscussion: "النقاش",
     navInformation: "معلومات",
     infoPageTitle: "معلومات",
+    siteExhibitTitleEn: "Feminism in Egypt and Beyond",
+    siteExhibitTitleAr: "النسوية في مصر وخارجها",
+    subpageSectionHistory: "التاريخ",
+    subpageSectionDiscussion: "مناقشة",
+    subpageSectionInformation: "معلومات",
     infoPageLead:
       "ستتضمن هذه الصفحة تفاصيل عملية عن المعرض والخريطة القصصية. وهي الآن صفحة مؤقتة لاستكمال التنقل والتصميم.",
     langMenuAria: "اختر اللغة",
@@ -299,7 +315,7 @@ var STORYMAP_EXTRA_I18N = {
     heroCta: "استكشف خريطة القصة",
     landingBody:
       "\u0627\u0644\u0646\u0633\u0627\u0621 \u062f\u0627\u0626\u0645\u064b\u0627 \u0639\u0644\u0649 \u062d\u0631\u0643\u0629. \u062a\u0645\u0627\u0631\u0633 \u0627\u0644\u0646\u0633\u0627\u0621 \u0623\u0646\u0648\u0627\u0639\u064b\u0627 \u0645\u062e\u062a\u0644\u0641\u0629 \u0645\u0646 \u0627\u0644\u0639\u0645\u0644 \u0648\u0627\u0644\u062a\u0646\u0642\u0651\u0644 \u062a\u064f\u0634\u0643\u0651\u0644 \u0631\u062d\u0644\u0627\u062a\u0647\u0646 \u0641\u064a \u0627\u0644\u062d\u064a\u0627\u0629. \u064a\u0639\u0645\u0644\u0646 \u0641\u064a \u0627\u0644\u0628\u064a\u062a\u060c \u0641\u064a \u0627\u0644\u062d\u0642\u0648\u0644\u060c \u0641\u064a \u0627\u0644\u0648\u0631\u0634\u060c \u0641\u064a \u0627\u0644\u0645\u062f\u0646 \u0627\u0644\u0643\u0628\u0631\u0649 \u0648\u0627\u0644\u0628\u0644\u062f\u0627\u062a \u0627\u0644\u0635\u063a\u064a\u0631\u0629 \u0623\u0648 \u0641\u064a \u0628\u0644\u062f\u0627\u0646 \u0623\u062e\u0631\u0649. \u064a\u0639\u0628\u064f\u0631 \u0639\u0645\u0644\u0647\u0646 \u0648\u062a\u062d\u0631\u0643\u0647\u0646 \u0641\u0636\u0627\u0621\u0627\u062a \u0645\u062a\u0639\u062f\u062f\u0629\u060c \u0648\u064a\u0639\u064a\u062f\u0627\u0646 \u062a\u0631\u062a\u064a\u0628 \u0639\u0644\u0627\u0642\u0627\u062a\u0647\u0646 \u0648\u0647\u0646 \u064a\u0635\u0628\u062d\u0646 \u062c\u0632\u0621\u064b\u0627 \u0645\u0646 \u062d\u064a\u0627\u0629 \u0643\u062b\u064a\u0631\u064a\u0646. \u064a\u0642\u062f\u0651\u0645 \u0647\u0630\u0627 \u0627\u0644\u0645\u0639\u0631\u0636 \u0644\u0645\u062d\u0627\u062a \u0645\u0646 \u062d\u064a\u0627\u0629 21 \u0627\u0645\u0631\u0623\u0629\u2014\u0637\u0628\u064a\u0628\u0627\u062a\u060c \u062e\u0627\u062f\u0645\u0627\u062a\u060c \u0645\u0645\u062b\u0644\u0627\u062a\u060c \u0637\u0627\u0644\u0628\u0627\u062a\u060c \u0645\u062d\u0627\u0633\u0628\u0627\u062a\u060c \u0635\u0627\u0646\u0639\u0627\u062a \u0623\u0641\u0644\u0627\u0645\u060c \u062a\u0637\u0631\u064a\u0632\u0627\u062a\u060c \u0645\u0639\u0644\u0645\u0627\u062a\u060c \u0641\u0646\u0627\u0646\u0627\u062a\u060c \u0648\u0623\u0645\u0651\u0647\u0627\u062a \u0648\u0628\u0646\u0627\u062a \u0648\u0645\u0631\u0634\u062f\u0627\u062a \u0648\u0635\u062f\u064a\u0642\u0627\u062a. \u064a\u0639\u0634\u0646 \u0641\u064a \u0645\u0635\u0631 \u0648\u0627\u0644\u0623\u0631\u062f\u0646 \u0648\u0644\u0628\u0646\u0627\u0646 \u0648\u0627\u0644\u062f\u0646\u0645\u0627\u0631\u0643\u060c \u0644\u0643\u0646 \u062d\u064a\u0627\u062a\u0647\u0646 \u062a\u062f\u0639\u0648\u0646\u0627 \u0644\u0644\u0633\u0641\u0631 \u0639\u0628\u0631 \u0641\u0636\u0627\u0621\u0627\u062a \u0648\u0623\u0632\u0645\u0646\u0629 \u0648\u0634\u0639\u0648\u0628 \u0623\u0643\u062b\u0631\u060c \u0648\u0644\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u062a\u0641\u0643\u064a\u0631 \u0641\u064a \u0627\u0644\u0645\u0639\u0627\u0646\u064a \u0648\u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u0627\u062a \u0627\u0644\u0645\u0639\u062a\u0627\u062f\u0629 \u0639\u0646 \u0627\u0644\u0646\u0633\u0627\u0621 \u0648\u0627\u0644\u062a\u0646\u0642\u0651\u0644 \u0648\u0627\u0644\u0639\u0645\u0644. \u064a\u0639\u062a\u0645\u062f \u0647\u0630\u0627 \u0627\u0644\u0645\u0639\u0631\u0636 \u0639\u0644\u0649 \u0645\u0642\u0627\u0628\u0644\u0627\u062a \u0645\u0639 \u0647\u0624\u0644\u0627\u0621 \u0627\u0644\u0646\u0633\u0627\u0621 \u0627\u0644\u0645\u062a\u0646\u0648\u0639\u0627\u062a. \u0646\u062d\u0646 \u0645\u062c\u0645\u0648\u0639\u0629 \u0645\u0646 \u0627\u0644\u0628\u0627\u062d\u062b\u064a\u0646 \u0648\u0627\u0644\u0623\u0645\u0646\u0627\u0621 \u0648\u0627\u0644\u0639\u0627\u0645\u0644\u064a\u0646 \u0641\u064a \u0627\u0644\u0645\u062a\u0627\u062d\u0641 \u0648\u0627\u0644\u0634\u0628\u0627\u0628 \u0641\u064a \u0647\u0630\u0647 \u0627\u0644\u0645\u0647\u0646\u060c \u064a\u062c\u0645\u0639\u0646\u0627 \u0627\u0644\u0634\u063a\u0641 \u0628\u0633\u0631\u062f \u0642\u0635\u0635\u0647\u0646 \u0648\u0645\u0634\u0627\u0631\u0643\u062a\u0647\u0627\u061b \u0642\u0635\u0635 \u0645\u0644\u0647\u0645\u0629 \u064a\u062c\u0628 \u0623\u0646 \u062a\u064f\u062d\u0641\u0638 \u0648\u062a\u064f\u0630\u0643\u0631 \u0644\u0623\u062c\u064a\u0627\u0644 \u0642\u0627\u062f\u0645\u0629. \u0646\u062f\u0639\u0648\u0643\u0645 \u0639\u0644\u0649 \u0631\u062d\u0644\u0629 \u0639\u0628\u0631 \u062d\u064a\u0627\u062a\u0647\u0646 \u0644\u0646\u0631\u0649 \u0643\u064a\u0641 \u062a\u062d\u0631\u0651\u0643\u0646 \u0648\u0644\u0645\u0627\u0630\u0627. \u0646\u0633\u0644\u0651\u0637 \u0627\u0644\u0636\u0648\u0621 \u0639\u0644\u0649 \u0623\u062b\u0631 \u0647\u0630\u0647 \u0627\u0644\u062a\u062d\u0631\u0643\u0627\u062a \u0648\u0623\u0639\u0645\u0627\u0644\u0647\u0646 \u0639\u0644\u0649 \u0639\u0644\u0627\u0642\u0627\u062a\u0647\u0646 \u0628\u0645\u0646 \u062d\u0648\u0644\u0647\u0646\u060c \u0648\u0646\u0633\u062a\u0643\u0634\u0641 \u0623\u0646\u0648\u0627\u0639 \u0639\u0645\u0644\u0647\u0646 \u0627\u0644\u0645\u062e\u062a\u0644\u0641\u0629 \u0644\u0646\u0631\u0649 \u0643\u064a\u0641 \u064a\u0633\u0627\u0647\u0645\u0646 \u0641\u064a \u062d\u064a\u0627\u062a\u0647\u0646 \u0648\u0641\u064a \u0623\u0633\u0631\u0647\u0646 \u0648\u0623\u0635\u062f\u0642\u0627\u0626\u0647\u0646 \u0648\u0632\u0645\u0644\u0627\u0626\u0647\u0646 \u0648\u0641\u064a \u0627\u0644\u0645\u062c\u062a\u0645\u0639.",
-    historyTitle: "النسوية في مصر وما وراءها",
+    historyTitle: "النسوية في مصر وخارجها",
     historyBody:
       "[نص تجريبي] يُفهم الأرشيف أفضل عند وضعه في سياقه التاريخي. لذلك ستعكس بعض العقد تحولات تاريخية في مصر في القرنين العشرين والحادي والعشرين. وقعت أحداث مهمة في تطور الخطاب النسوي. بعد ثورة 1952 نمت السياسة النسوية مرتبطة بخطاب مناهض للاستعمار ورأسمالية كجزء من المشهد السياسي (إبراهيم 2017، 4-5). ومع ذلك واجه النشطاء صعوبة في التواصل مع الطبقة العاملة، وكان الخطاب «يُنشئ ديناميكية أبوية ومنفصلة» (إبراهيم 2017، 3). وسّعت الدولة فرص عمل و تعليم النساء بينما أُغلق المجال السياسي لهن (إبراهيم 2017، 6؛ غول 2025، 78-79، 101). مع تحولات الخطاب النسوي، وسّعت الدولة التعليم للفقراء فشكّل ذلك نسوية أكثر شمولاً للطبقة العاملة (إبراهيم 2017، 13). تدخلات الدولة صارت في توتر مع انفتاح السادات الاقتصادي. تركّز نشاط النساء على الواقع الاقتصادي والسياسي (إبراهيم 2017، 15) وصار «الغرب الحديث» هدفًا معياريًا للنسوية (إبراهيم 2017، 16). أعادت انتفاضة 2011 طرح هذه التوترات بزاوية تقاطعية (إبراهيم 2017، 20). حاتم (2011) توثّق نساء «صغيرات وكبيرات، محجبات وغير محجبات، فقيرات وغنيّات» في ميدان التحرير (36). وترجم ذلك إلى خطاب ينتقد النسوية الرسمية (حاتم 2011، 37). هذه التحولات لا تُقرأ فقط كسياق تاريخي بل تشكّل المادة الأرشيفية لـ«أنا بخير، اطمئنوا». سياسات ناصر التعليمية تُرسم أرشيف معلمة ريفية؛ انفتاح السادات يؤثر على مراسلات ميتري من السجن؛ وربيع العرب يصدى لتنوع التحالفات (حسن 2021؛ حاتم 2011، 36).",
   },
@@ -312,6 +328,11 @@ var STORYMAP_EXTRA_I18N = {
     navDiscussion: "Discussione",
     navInformation: "Informazioni",
     infoPageTitle: "Informazioni",
+    siteExhibitTitleEn: "Feminism in Egypt and Beyond",
+    siteExhibitTitleAr: "النسوية في مصر وخارجها",
+    subpageSectionHistory: "Storia",
+    subpageSectionDiscussion: "discussione",
+    subpageSectionInformation: "informazioni",
     infoPageLead:
       "Questa pagina conterrà dettagli pratici sulla mostra e sulla storymap. Per ora è un segnaposto per definire navigazione e impaginazione.",
     langMenuAria: "Scegli la lingua",
@@ -461,6 +482,11 @@ var STORYMAP_EXTRA_I18N = {
     navDiscussion: "Discussion",
     navInformation: "Informations",
     infoPageTitle: "Informations",
+    siteExhibitTitleEn: "Feminism in Egypt and Beyond",
+    siteExhibitTitleAr: "النسوية في مصر وخارجها",
+    subpageSectionHistory: "Histoire",
+    subpageSectionDiscussion: "discussion",
+    subpageSectionInformation: "informations",
     infoPageLead:
       "Cette page présentera des informations pratiques sur l'exposition et la storymap. Pour l'instant, il s'agit d'un texte d'exemple pour valider la navigation et la mise en page.",
     langMenuAria: "Choisir la langue",
@@ -610,6 +636,11 @@ var STORYMAP_EXTRA_I18N = {
     navDiscussion: "Debate",
     navInformation: "Información",
     infoPageTitle: "Información",
+    siteExhibitTitleEn: "Feminism in Egypt and Beyond",
+    siteExhibitTitleAr: "النسوية في مصر وخارجها",
+    subpageSectionHistory: "Historia",
+    subpageSectionDiscussion: "discusión",
+    subpageSectionInformation: "información",
     infoPageLead:
       "Esta página incluirá detalles prácticos sobre la exposición y el storymap. De momento es un texto de ejemplo para afinar la navegación y el diseño.",
     langMenuAria: "Elegir idioma",
@@ -759,6 +790,11 @@ var STORYMAP_EXTRA_I18N = {
     navDiscussion: "Diskussion",
     navInformation: "Informationen",
     infoPageTitle: "Informationen",
+    siteExhibitTitleEn: "Feminism in Egypt and Beyond",
+    siteExhibitTitleAr: "النسوية في مصر وخارجها",
+    subpageSectionHistory: "Geschichte",
+    subpageSectionDiscussion: "Diskussion",
+    subpageSectionInformation: "Information",
     infoPageLead:
       "Auf dieser Seite finden Sie später praktische Angaben zur Ausstellung und zum Storymap. Vorerst dient dieser Text als Platzhalter für Navigation und Layout.",
     langMenuAria: "Sprache wählen",

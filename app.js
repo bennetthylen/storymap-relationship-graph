@@ -294,7 +294,7 @@ const DEFAULT_CONTENT = {
       "Women are always on the move. Women engage in different types of work and mobility that inform their journeys through life. They work at home, in the fields, in the workshops, in big cities, small towns, or in other countries. Their work and their movement traverse different spaces, reassembling their relationships as they become part of many other people's lives. This exhibition introduces glimpses into the lives of 21 women \u2013 women, who have worked and moved as doctors, maids, actresses, students, accountants, filmmakers, embroiderers, teachers, artists, and as mothers, daughters, mentors and friends. They live in Egypt, Jordan, Lebanon and Denmark, yet their lives invite us to travel across many more spaces, peoples, and times, and inspire us to rethink familiar meanings and assumptions about women, mobility and work. This exhibition is based on interviews with these diverse women. We are a group of researchers, archivists, museum professionals and young people in these professions, who all share an interest in telling and sharing the stories of these women, whose inspiring tales should be kept and remembered for generations to come. We invite you on a journey through their lives to see how they have moved and for what different reasons. We shed light on the effect that these movements and their work have on their relationships with the people around them and delve into their different types of work to see how they contribute to not only their own lives but also to their families, friends, co-workers and to society.",
   historyTitle: "Feminism in Egypt and Beyond",
   historyBody:
-    "[EXAMPLE TEXT] The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
+    "The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
 };
 
 function buildPageUrl(pageName) {
@@ -923,6 +923,14 @@ function applyTranslations() {
     applyTextDirToNode(node);
   });
 
+  document.querySelectorAll("[data-i18n-html]").forEach((node) => {
+    const key = node.getAttribute("data-i18n-html");
+    if (!key) return;
+    const html = t(key);
+    if (typeof html === "string" && html !== key) node.innerHTML = html;
+    applyTextDirToNode(node);
+  });
+
   document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
     const key = node.getAttribute("data-i18n-placeholder");
     if (!key) return;
@@ -1299,113 +1307,492 @@ const PUBLISHED_STORYMAP_CANVAS = {
       "imageSrc": "",
       "content": "",
       "color": "white",
-      "x": 58.576313316320764,
-      "y": 30.077950572841104,
+      "x": 0.0,
+      "y": 0.0,
       "legacyType": "person"
-    },
-    {
-      "id": "n_3c68e6e6",
-      "type": "text",
-      "label": "On Work",
-      "text": "WORK IS A COMPLEX EXPERIENCE that marks women\u2019s worlds. But what is work and how does it become a central part of a life project? What is recognized as work, what has to be rendered invisible to be able to fend for one\u2019s life, and how are our bodies and affects moulded with work rhythms, routines, tools and corporeal traces? The stories of the women presented here urge us to rethink the meanings, worlds and effects of work. Work traverses women\u2019s lives from early years to late moments of being; work experiences inhabit our worlds at home, in the fields, factories, banks, schools, workshops, gas stations, galleries, and movie screens. The women you are about to meet have worked hard all their lives in many different spaces and times. Their experiences encourage us to reflect on what lies in and outside of work, how work spills over other domains of being, and how work has exuded pride and shame, happiness and sadness, leaving unmistakable marks on our bodies and the worlds we inhabit.\n\nInstead of learning how to read and write, Rawya Mohammed (b. 1978) learned the craft of pottery already at age 12. Since then, her work has inspired many other women to take up pottery and her patterns have forever changed the face of pottery in Fayoum in Egypt. Kawkab Hifni Nassef (1905 - 1999) was the first woman to ever run a hospital in Egypt. Balsam Abou Zour\u2019s (b. 1982) village did not approve of her work as a painter, but after a visit from her teachers, her fate changed. When she opened her first art exhibition, her entire village attended in celebration.",
-      "imageSrc": "",
-      "content": "On Work",
-      "color": "green",
-      "x": -39.68462401795731,
-      "y": 368.76543209876536,
-      "legacyType": "text"
     },
     {
       "id": "n_011e6d0c",
       "type": "text",
       "label": "On Mobility",
-      "text": "SOMETIMES WOMEN MOVE BY ACCIDENT, sometimes by choice, and sometimes by force. Many never stop moving despite the obstacles on the road, with possibilities and challenges always as a potential along the way. Their movements have shaped their lives and those of others, leaving traces on who and how they are.\n\nNadia Safwat (b. 1986) travelled with her family who settled in Denmark to work, ambivalently shrouding her relations to her family in Cairo. The Nakba forced Im Ibrahim (b.1927) to flee her hometown Jaffa when it was invaded by Israeli soldiers in 1948. While fleeing on foot, she carried her embroidered costumes as inseparable parts of her being that cannot be left behind. Hind Rostum(1931 -2011) became an actress at the age of 15. As a child, she travelled together with her father whose changing professions took them all over Egypt. Her work later would take her through many more places and relationships. Safeya Gamal (b.\n1934) was one of the Nubians who were forced to move when the Aswan High Dam was built. She felt as if this was their judgement day. Wedad Mitri (1927 - 2007) came into teaching by chance. Since beginning her career she has moved to many places, and inspired many of her students. Widad Al Orfali (b. 1929) opened the first private gallery in Iraq in the 1980s. When the war began in 2003, she was forced to leave her gallery and her paintings behind.",
+      "text": "Sometimes women move by accident, sometimes by choice, and sometimes by force. Many never stop moving despite the obstacles on the road, with possibilities and challenges always as a potential along the way. Their movements have shaped their lives and those of others, leaving traces on who and how they are.\n\nNadia Safwat (b. 1986) travelled with her family who settled in Denmark to work, ambivalently shrouding her relations to her family in Cairo. The Nakba forced Im Ibrahim (b.1927) to flee her hometown Jaffa when it was invaded by Israeli soldiers in 1948. While fleeing on foot, she carried her embroidered costumes as inseparable parts of her being that cannot be left behind. Hind Rostum(1931 -2011) became an actress at the age of 15. As a child, she travelled together with her father whose changing professions took them all over Egypt. Her work later would take her through many more places and relationships. Safeya Gamal (b.\n1934) was one of the Nubians who were forced to move when the Aswan High Dam was built. She felt as if this was their judgement day. Wedad Mitri (1927 - 2007) came into teaching by chance. Since beginning her career she has moved to many places, and inspired many of her students. Widad Al Orfali (b. 1929) opened the first private gallery in Iraq in the 1980s. When the war began in 2003, she was forced to leave her gallery and her paintings behind.",
       "imageSrc": "",
       "content": "On Mobility",
       "color": "green",
-      "x": 256.46932376816835,
-      "y": -83.75197160228578,
+      "x": 0.0,
+      "y": -920.0,
       "legacyType": "text"
     },
     {
       "id": "n_4412adea",
       "type": "image",
       "label": "Wedad Mitri and Sedad Louka's Wedding Photo",
-      "text": "Cairo, Egypt. 1961.",
+      "text": "Wedad Metri and Saad Louka's wedding photo. Cairo, Egypt. 1961.",
       "imageSrc": "",
       "content": "Wedad Mitri and Sedad Louka's Wedding Photo",
       "color": "green",
-      "x": 418.65859620208744,
-      "y": -355.65481287254505,
+      "x": 1495.933548,
+      "y": -174.601442,
       "legacyType": "text"
     },
     {
       "id": "n_5cd72ca5",
       "type": "text",
-      "label": "On Re-Assembling Relations",
-      "text": "RELATIONSHIPS ARE REASSEMBLED along the roads of women\u2019s lives, connecting and disconnecting them with people and spaces in constantly evolving life projects. From friends, neighbours, mentors, to colleagues, wives, daughters, and role models, women reconstitute their worlds for better and for worse. But the most valuable relationships can come from somewhere completely unexpected \u2013 be it from your students, neighbours, friends or from other women you live with. The photographs and other memorable traces of relationships that we present here, reveal how people and objects along life journeys make who and how we are constantly in a process of becoming.\n\nThroughout her life and career as a teacher, Wedad Mitri (1927 -2007) became a mentor to different students, who expressed their love and appreciation through postcards that filled Wedad\u2019s suitcases on her travels.\n\nThe primacy of family, particularly her daughter, transformed Hind Rustom\u2019s (1931 -2011) world. She shielded her personal life from the public gaze, ultimately giving up her career as a celebrity actress to become the mother she dreamed of being.\n\nBy observing women at the mosque in Jerusalem, Im Ibrahim (b.1927) added new embroidery patterns to her repertoire that she developed in Jaffa prior to the Nakba. Her daughters-in-law became her trainees in whom she entrusted her cherished embroidery patterns.\n\nDuring many strenuous moments in her life, Aliaa Khairy (b. 1952) learned from her mother the centrality of being part of women\u2019s world of rotating credit associations or gam\u2019iyya. Her turn to cash the money always came at the start of the school year to meet the demands of her children\u2019s education.",
+      "label": "On Work",
+      "text": "Work is a complex experience that marks women\u2019s worlds. But what is work and how does it become a central part of a life project? What is recognized as work, what has to be rendered invisible to be able to fend for one\u2019s life, and how are our bodies and affects moulded with work rhythms, routines, tools and corporeal traces? The stories of the women presented here urge us to rethink the meanings, worlds and effects of work. Work traverses women\u2019s lives from early years to late moments of being; work experiences inhabit our worlds at home, in the fields, factories, banks, schools, workshops, gas stations, galleries, and movie screens. The women you are about to meet have worked hard all their lives in many different spaces and times. Their experiences encourage us to reflect on what lies in and outside of work, how work spills over other domains of being, and how work has exuded pride and shame, happiness and sadness, leaving unmistakable marks on our bodies and the worlds we inhabit.\n\nInstead of learning how to read and write, Rawya Mohammed (b. 1978) learned the craft of pottery already at age 12. Since then, her work has inspired many other women to take up pottery and her patterns have forever changed the face of pottery in Fayoum in Egypt. Kawkab Hifni Nassef (1905 - 1999) was the first woman to ever run a hospital in Egypt. Balsam Abou Zour\u2019s (b. 1982) village did not approve of her work as a painter, but after a visit from her teachers, her fate changed. When she opened her first art exhibition, her entire village attended in celebration.",
       "imageSrc": "",
-      "content": "On Re-Assembling Relations",
+      "content": "On Work",
       "color": "green",
-      "x": -58.32005237560773,
-      "y": -107.4222889815571,
+      "x": 796.743371,
+      "y": 460.0,
       "legacyType": "text"
-    },
-    {
-      "id": "n_65932f6a",
-      "type": "image",
-      "label": "Kawkab's Certificate",
-      "text": "",
-      "imageSrc": "",
-      "content": "Kawkab's Certificate",
-      "color": "green",
-      "x": 159.64832300488052,
-      "y": -84.24464450048788,
-      "legacyType": "image"
     },
     {
       "id": "n_3101be93",
       "type": "image",
       "label": "Hind Rustum Advertisement",
-      "text": "",
+      "text": "Hind Rustum advertisement in Al-Kawakb Magazine, 1952.",
       "imageSrc": "",
       "content": "Hind Rustum Advertisement",
       "color": "green",
-      "x": 471.46932376816846,
-      "y": -557.085304935619,
+      "x": 254.438349,
+      "y": -1394.013963,
       "legacyType": "image"
     },
     {
       "id": "n_a9b1c62f",
       "type": "image",
       "label": "Wedad Mitri and her Students",
-      "text": "",
+      "text": "Wedad Metri with her students in Shibin El-Kom, Egypt, 1957.",
       "imageSrc": "",
       "content": "Wedad Mitri and her Students",
       "color": "green",
-      "x": 453.13599043483504,
-      "y": -507.0853049356192,
+      "x": 1953.090833,
+      "y": -771.645125,
       "legacyType": "image"
     },
     {
-      "id": "n_62058234",
+      "id": "n_ea58683f",
+      "type": "text",
+      "label": "On Reassembling Relations",
+      "text": "Relationships are Reassembled along the roads of women\u2019s lives, connecting and disconnecting them with people and spaces in constantly evolving life projects. From friends, neighbours, mentors, to colleagues, wives, daughters, and role models, women reconstitute their worlds for better and for worse. But the most valuable relationships can come from somewhere completely unexpected \u2013 be it from your students, neighbours, friends or from other women you live with. The photographs and other memorable traces of relationships that we present here, reveal how people and objects along life journeys make who and how we are constantly in a process of becoming.",
+      "imageSrc": "",
+      "content": "On Reassembling Relations",
+      "color": "green",
+      "x": -796.743371,
+      "y": 460.0,
+      "legacyType": "text"
+    },
+    {
+      "id": "n_3c088a79",
+      "type": "image",
+      "label": "Kawkab's Certificate",
+      "text": "Kawkab Hefny Nasif's certificate of graduation from University College London's London School of Medicine for Women, 1933.",
+      "imageSrc": "",
+      "content": "Kawkab's Certificate",
+      "color": "green",
+      "x": 990.623741,
+      "y": -1072.503895,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_7e05d126",
       "type": "image",
       "label": "Passports",
       "text": "",
       "imageSrc": "",
       "content": "Passports",
       "color": "green",
-      "x": 326.4693237681683,
-      "y": -527.0853049356192,
+      "x": 1049.196774,
+      "y": -1823.860032,
       "legacyType": "image"
+    },
+    {
+      "id": "n_f4394d4a",
+      "type": "image",
+      "label": "Rim El Jundi",
+      "text": "Rim El Jundi (b. 1965) with her son Assem in London.",
+      "imageSrc": "",
+      "content": "Reem Gendy",
+      "color": "green",
+      "x": 2705.090172,
+      "y": 435.989866,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_34c9269f",
+      "type": "image",
+      "label": "Ballsam's Village",
+      "text": "Balsam Abou Zour's hometown, Tannoura village, Lebanon, 2016.",
+      "imageSrc": "",
+      "content": "Ballsam's Village",
+      "color": "green",
+      "x": 564.063884,
+      "y": -1346.637269,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_df2c2e48",
+      "type": "image",
+      "label": "Nada Shaving",
+      "text": "Nada Abdel Rahman (left) and her friend in Cairo, Egypt, 2013.",
+      "imageSrc": "",
+      "content": "Nada Shaving",
+      "color": "green",
+      "x": 1992.158305,
+      "y": 664.308128,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_3ca6ff59",
+      "type": "image",
+      "label": "Nubian Women",
+      "text": "A photo of two Nubian women, mid 1960s. From the collections of the American University in Cairo.",
+      "imageSrc": "",
+      "content": "Nubian Women",
+      "color": "green",
+      "x": 1212.507914,
+      "y": -833.86215,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_fd593951",
+      "type": "image",
+      "label": "The Nubian Exodus",
+      "text": "A collage of Al-Ahram coverage of the Nubian Exodus, 1964.",
+      "imageSrc": "",
+      "content": "The Nubian Exodus",
+      "color": "green",
+      "x": 2124.681875,
+      "y": 1730.123386,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_6a4170af",
+      "type": "image",
+      "label": "The Palestinian Exodus",
+      "text": "Palestinian exodus from the West Bank across the Jordan River, 1967. From the UNRWA photo archive.",
+      "imageSrc": "",
+      "content": "The Palestinian Exodus",
+      "color": "green",
+      "x": 377.410308,
+      "y": -2103.469001,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_e9836f8d",
+      "type": "image",
+      "label": "Widad al Orfali",
+      "text": "Widad al Orfali in front of her gallery in Baghdad, Iraq, mid-1990s.",
+      "imageSrc": "",
+      "content": "Widad al Orfali",
+      "color": "green",
+      "x": 1730.123386,
+      "y": -2124.681875,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_f31d40d9",
+      "type": "image",
+      "label": "Mai Kassicieh",
+      "text": "May Kassicieh and her mother in Carthage, Tunisia, 1978.",
+      "imageSrc": "",
+      "content": "Mai Kassicieh",
+      "color": "green",
+      "x": 2560.671741,
+      "y": -974.966786,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_98cb7ee6",
+      "type": "image",
+      "label": "Divorce Agreement",
+      "text": "An Egyptian divorce agreement, 1977.",
+      "imageSrc": "",
+      "content": "Divorce Agreement",
+      "color": "green",
+      "x": 1571.386867,
+      "y": -1393.105637,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_1bd6e5b1",
+      "type": "image",
+      "label": "Alya's Drawing",
+      "text": "In her artwork, Alya Khairy (b. 1952) tries to bring elements from her Nubian heritage.",
+      "imageSrc": "",
+      "content": "Alya's Drawing",
+      "color": "green",
+      "x": -1413.205104,
+      "y": 366.676061,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_ec4044e8",
+      "type": "image",
+      "label": "Nada Abdel Rahman's Keys",
+      "text": "When Nada Abdel Rahman (b. 1986), moved to Cairo in 2014, she shared a flat with nineteen other women. The twenty women, who were in their 20s, 30s, and 40s, were all migrants, coming from various towns across Egypt. By sharing food and stories, Nada started building bonds with her flat mates. \"I thought that breaking bread together would bring the girls closer to each other. I started thinking that all we have is each other.\" Nada, 2016. Through her new friends, Nada heard of a feminist filmmaking workshop where she directed her first short film.",
+      "imageSrc": "",
+      "content": "Nada Abdel Rahman's Keys",
+      "color": "green",
+      "x": -1496.99567,
+      "y": -2294.908269,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_b01c45aa",
+      "type": "image",
+      "label": "Safeya's Basket",
+      "text": "Safeya Gamal was born in 1934 in Cairo to a Nubian family. Safeya spent most of her childhood in Nubia where she went to primary school. Like other girls growing up in Nubia at the time, Safeya learned how to weave baskets, plates, mats, fans and jars from straw. Perceived primarily as brides-to-be, the girls were told that perfecting basket-making would help them get married. Safeya made this plate herself. At the age of sixteen, Safeya was married and moved to Cairo in 1948. Safeya's mother taught her the Nubian language and gave her this leather wallet (left), a family heirloom which the mother herself inherited. Now, the wallet belongs to Safeya's grandson.",
+      "imageSrc": "",
+      "content": "Safeya's Basket",
+      "color": "green",
+      "x": -1316.758123,
+      "y": -1635.893654,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_afd59aca",
+      "type": "image",
+      "label": "Wedad's Postcards",
+      "text": "Wedad Metri (1927-2007) worked as a teacher in public schools outside of Cairo during the 1950s. Wedad became a mentor for many of her young students. Her private collected, hosted at the Women and Memory Forum, includes many postcards she received from her devoted students over the years.",
+      "imageSrc": "",
+      "content": "Wedad's Postcards",
+      "color": "green",
+      "x": -1796.856473,
+      "y": -1086.879393,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_a4e5328e",
+      "type": "image",
+      "label": "Shahenda's Letter to Reem",
+      "text": "A letter from Shahenda Mekled, a political prisoner at the time, to Reem Saad, Egypt, 1978. At the end of the letter, Shahenda wrote \"Doing well, don't worry\" next to her signature.",
+      "imageSrc": "",
+      "content": "Shakenda's Letter to Reem",
+      "color": "green",
+      "x": -2060.227414,
+      "y": -406.771437,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_cf4a9fdf",
+      "type": "image",
+      "label": "Reem and Shahinda",
+      "text": "A photo of Shahinda Mekled (right) and Reem Saad (left), Wedad Metri's daughter, taken during the filming of the documentary Four Women of Egypt, Egypt, 1995. In addition to being an inspiring teacher, Wedad Metri, a prominent activist herself, encouraged her students to engage with political and social movements. Among these students was Shahenda Mekled, who later became an icon of the peasant rights movement in Egypt. Over the years, Shahenda became a close friend of Wedad's daughter, Reem Saad.",
+      "imageSrc": "",
+      "content": "Reem and Shahinda",
+      "color": "green",
+      "x": 24.561118,
+      "y": -2183.972344,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_773e1569",
+      "type": "image",
+      "label": "Kawkab's Family Photos",
+      "text": "Photos from the family album of Kawkab Hefni Nassef (1905-1999).",
+      "imageSrc": "",
+      "content": "Kawkab's Family Photos",
+      "color": "green",
+      "x": -1024.153336,
+      "y": -1040.53349,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_6aaa7646",
+      "type": "image",
+      "label": "Reem's Grandmother",
+      "text": "\"Grandmother,\" 2014. Reem El-Jundi (b. 1965) was born in Beirut, Lebanon where she currently works as a painter. In the painting, Reem's grandmother (from her mother's side) was carrying Reem when she was a baby.",
+      "imageSrc": "",
+      "content": "Reem's Grandmother",
+      "color": "green",
+      "x": -1318.272746,
+      "y": -627.500572,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_e35c2119",
+      "type": "image",
+      "label": "Hind Rustom and Passent",
+      "text": "Hind Rustom (1931-2011) and her daughter Passent on the beach in Alexandria, Egypt, 1955.",
+      "imageSrc": "",
+      "content": "Hind Rustom and Passent",
+      "color": "green",
+      "x": 720.776414,
+      "y": -1976.757847,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_039f0fe6",
+      "type": "image",
+      "label": "Gam3aya",
+      "text": "",
+      "imageSrc": "",
+      "content": "Gam3aya",
+      "color": "green",
+      "x": -459.06207,
+      "y": -1425.018674,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_c1e55042",
+      "type": "image",
+      "label": "May Kassicieh's Embroidery",
+      "text": "May Kassicieh was born in Amman, Jordan in 1952. She currently lives in the United States of America. May cherishes this handkerchief as it is the first piece of embroidery she made as a child. \"To me, embroidery represents a permanent sense of self. Despite leaving my homeland, moving from country to country, city to city, embroidery is a craft that allows me to transcend location, being, and even identity. There is a sense of permanence to it; it can't be washed away or removed. Embroidery is a craft that was passed down to me from my mother, and to her from her mother, and so on. It's a story and an identity and a way of life that taught me, and all of us, the importance of patience and the intricacy of dedication.\" May Kassicieh, 2016.",
+      "imageSrc": "",
+      "content": "May Kassicieh's Embroidery",
+      "color": "green",
+      "x": -677.839309,
+      "y": -1987.594997,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_44c350fe",
+      "type": "image",
+      "label": "Wedad Metri's Family Photo",
+      "text": "A studio portrait of Wedad Metri (1927-2007) and her husband Saad Luka with their friend Safinaz Kazem and her daughter Nawara Negm in Baghdad, Iraq, 1975. Left to right: Safinaz, Wedad (seated), Nawara (on Wedad's lap), and Saad. Despite not being blood-related, the friends posed together for this family photo.",
+      "imageSrc": "",
+      "content": "Wedad Metri's Family Photo",
+      "color": "green",
+      "x": -1453.389007,
+      "y": -138.781823,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_8a73f34d",
+      "type": "image",
+      "label": "Saadeya's Wedding Ring",
+      "text": "Wedding Photo of Saadeya Hussein in Cairo, 1990s. Saadeya Hussein (b. 1975) currently works as a house-maid. \"Before getting married, I had to work to pay for setting up the new household. My mother did not have an income... she used to tell me that I am the hands and legs of the household. Without working, I would not have been able to feed my children.\" Saadeya, 2016.",
+      "imageSrc": "",
+      "content": "Saadeya's Wedding Ring",
+      "color": "green",
+      "x": -777.023123,
+      "y": -1255.405282,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_9de1e49b",
+      "type": "image",
+      "label": "Im Ibrahim's Embroidery",
+      "text": "Ruqaya el-Santarisy \"Im Ibrahim\" (b. 1927) has been known for her fine and detailed embroidery. Through her workshops in Amman, Im Ibrahim has been safeguarding traditional Palestinian embroidery styles. Her daughters-in-law became her trainees, whom she entrusted with her cherished embroidery patterns. While growing up in Jaffa, Im Ibrahim visited Jerusalem on Fridays with her family. She remembers how she used to observe the different embroidery patterns on women's clothing in Jerusalem. Later, she would copy these patterns in her own work.",
+      "imageSrc": "",
+      "content": "Im Ibrahim's Embroidery",
+      "color": "green",
+      "x": -96.588259,
+      "y": -1475.701373,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_f538876c",
+      "type": "image",
+      "label": "Mariam's Soap & Oil",
+      "text": "\"There is a certain smell I associate (with home)... a smell of the clothes that my grandmother washed.\" Mariam Safwat (b. 1992), 2016.",
+      "imageSrc": "",
+      "content": "Mariam's Soap & Oil",
+      "color": "green",
+      "x": 1238.951026,
+      "y": -2443.890414,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_1f0d978c",
+      "type": "image",
+      "label": "Widad al-Orfali Biography",
+      "text": "Widad al-Orfali was born in Baghdad, Iraq in 1929. She currently lives in Amman, Jordan. Widad's many travels inspired her paintings that were exhibited in Germany, Jordan, Lebanon, the UAE and the USA. In addition to being an accomplished painter, Widad has been a documentarian of Iraqi cultural heritage and traditional crafts.\n\nal-Orfali opened the first private gallery in Iraq in the 1980s. Over the years, this gallery became an essential player in the Iraqi cultural scene by supporting emerging artists, musicians, and singers. However, sustaining the gallery became challenging as audiences diminished under the Embargo of 1990. Speaking of the meager public visiting the gallery, al-Orfali said, the \"decided to launch a bullet of mercy on the Orfali Gallery.\" Widad, Swalif, 2015.\n\nWhen the war began in 2003, she was forced to leave her country and her paintings behind. Afterwards, Widad stopped painting and channeled her creative forces into music. She released an album, Rhythms of Arabia, in 2010. In 2015, Widad published her autobiography Swalif.",
+      "imageSrc": "",
+      "content": "Widad al-Orfali Biography",
+      "color": "green",
+      "x": 1409.645777,
+      "y": -530.284476,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_3bd64fb4",
+      "type": "image",
+      "label": "Hind Rustum Poster",
+      "text": "",
+      "imageSrc": "",
+      "content": "Hind Rustum Poster",
+      "color": "green",
+      "x": 1371.951226,
+      "y": 499.349409,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_4934c38e",
+      "type": "image",
+      "label": "\"Confessions of a Husband\"",
+      "text": "",
+      "imageSrc": "",
+      "content": "\"Confessions of a Husband\"",
+      "color": "green",
+      "x": 1118.424887,
+      "y": 938.46991,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_ddf4942b",
+      "type": "image",
+      "label": "Embroidered Palestinian Dress",
+      "text": "A dress ornamented with Palestinian embroidery patterns.",
+      "imageSrc": "",
+      "content": "Embroidered Palestinian Dress",
+      "color": "green",
+      "x": 253.526339,
+      "y": 1437.819319,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_dc275c11",
+      "type": "image",
+      "label": "Biography of Wedad Mitri",
+      "text": "Wedad Metri (1927-2007), a pioneering unionist, social activist and educator, was born in Cairo, Egypt. At the age of 23, Wedad joined the communist movement. In 1951, Wedad, a young student of philosophy at the time, was the first woman to be elected to the Student Union at any Egyptian University.\n\nWedad's activism and teaching career were intertwined. As an educator, she paid special attention to school journalism, giving space for students to engage with pressing social and political issues such as the Algerian Revolution (1950s-1960s). Upon her political imprisonment in 1959, she set up literacy classes for women serving life sentences.\n\nA meticulous documentarian, Wedad kept detailed records of her travels as an activist as well as tips with her husband, Saad Louka, and two children. Wedad was also a member of several women's groups, but did not describe herself as a women's rights activist, but rather as someone who \"presented a practical example of what that is about.\"",
+      "imageSrc": "",
+      "content": "Biography of Wedad Mitri",
+      "color": "green",
+      "x": 730.0,
+      "y": 1264.39709,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_3132c164",
+      "type": "image",
+      "label": "Biography of Im Ibrahim",
+      "text": "Ruqaya el-Santarisy \"Im Ibrahim\" was born in Jaffa, Palestine in 1927. Im Ibrahim currently lives in Amman, Jordan, where she runs her own embroidery workshop.\n\nIn 1948, Im Ibrahim fled her hometown with her husband, who was trained as a teacher. After three years of financial hardship in Damascus, Syria, Im Ibrahim and her family migrated to Jordan. Im Ibrahim, her husband, and their eight children made a home for themselves in Amman. By the 1950s, the resourceful Im Ibrahim turned her embroidery skills, which she learned at the age of 10, into an income-generating activity. In addition to training several generations of embroiderers over the following decades, Im Ibrahim has become known for re-fashioning the embroidery of cushions.\n\nIn recent years, Im Ibrahim's workshop sales have been declining due to decreasing demand on embroidery in contemporary markets.",
+      "imageSrc": "",
+      "content": "Biography of Im Ibrahim",
+      "color": "green",
+      "x": 1459.817769,
+      "y": 185.562954,
+      "legacyType": "image"
+    },
+    {
+      "id": "n_b5166d0b",
+      "type": "text",
+      "label": "Gam3aya",
+      "text": "The gameya is form of rotating savings and credit association. It is a small group, often ranging from 10 to upwards of 30 people, who contribute to a money sharing pool on a monthly basis. Each month this group gathers money and distributes it to each member within the group in turn, allowing for larger expenditures on tuition fees, medical expenses, or small business investments without the need to rely on formal banks. While both men and women often participate in gameyas, they are more frequently operated and organized by women. Similarly, many women operate in the role of moneykeepers, informally storing savings given to them by community members.",
+      "imageSrc": "",
+      "content": "Gam3aya",
+      "color": "green",
+      "x": -85.685629,
+      "y": -1839.354199,
+      "legacyType": "text"
+    },
+    {
+      "id": "n_c9a2465c",
+      "type": "text",
+      "label": "AAWC",
+      "text": "Hosted in Lahore, Pakistan from January 19-25 of 1931, the All Asian Women\u2019s Congress brought together delegates from across Asia to build a transnational feminist movement. With 26 delegate representatives from India, Afghanistan, Burma, Ceylon, Japan, and Persia in addition to 1200 observers, the conference sought to create a feminist movement from the perspective of non-Western women. While the role of Western feminists was acknowledged, the main concern, voiced by one conference organizer, stated that colonialism and geography limited \u201cwe only know of those who come to us\u201d (Nijhhawan 17). Thus, the conference sought to de-imperialize feminism by creating a shared regional identity. While men and women from Europe and America were permitted to attend the conference, they were barred from speaking until the fourth day of assembly.\n\nThe conference proposed six goals: the promotion of a shared consciousness of unity amongst Asian women, appreciation of the positive qualities of their civilizations, review and remediation of traditional society, the sifting of Western influence for appropriate adoption, the sharing of national data, and world peace.\n\nThough not directly related, these conferences served as a link in the broader chain of formal women\u2019s networks in Asia which stood against conventional Western narratives around feminism. Hanifa Khouri would serve as one of the organizers of a following conference, the Eastern Women\u2019s Congress in Tehran. Nour Hamada, a prominent Druze activist from Mount Lebanon, advised the planning of the All Asian Women\u2019s Congress (Hannun 13). Her organization, the General Union for Syrian Women, was later responsible for organizing the Eastern Women\u2019s Congress in 1932.",
+      "imageSrc": "",
+      "content": "AAWC",
+      "color": "green",
+      "x": 2099.22322,
+      "y": -57.112823,
+      "legacyType": "text"
     }
   ],
   "edges": [
-    {
-      "source": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
-      "target": "n_3c68e6e6",
-      "label": ""
-    },
     {
       "source": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
       "target": "n_011e6d0c",
@@ -1423,11 +1810,6 @@ const PUBLISHED_STORYMAP_CANVAS = {
     },
     {
       "source": "n_011e6d0c",
-      "target": "n_65932f6a",
-      "label": ""
-    },
-    {
-      "source": "n_011e6d0c",
       "target": "n_3101be93",
       "label": ""
     },
@@ -1437,11 +1819,183 @@ const PUBLISHED_STORYMAP_CANVAS = {
       "label": ""
     },
     {
+      "source": "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
+      "target": "n_ea58683f",
+      "label": ""
+    },
+    {
       "source": "n_011e6d0c",
-      "target": "n_62058234",
+      "target": "n_3c088a79",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_7e05d126",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_f4394d4a",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_34c9269f",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_df2c2e48",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_3ca6ff59",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_fd593951",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_6a4170af",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_e9836f8d",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_f31d40d9",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_98cb7ee6",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_1bd6e5b1",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_ec4044e8",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_b01c45aa",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_afd59aca",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_a4e5328e",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_cf4a9fdf",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_773e1569",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_6aaa7646",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_e35c2119",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_c1e55042",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_44c350fe",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_8a73f34d",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_9de1e49b",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_f538876c",
+      "label": ""
+    },
+    {
+      "source": "n_5cd72ca5",
+      "target": "n_1f0d978c",
+      "label": ""
+    },
+    {
+      "source": "n_5cd72ca5",
+      "target": "n_3bd64fb4",
+      "label": ""
+    },
+    {
+      "source": "n_5cd72ca5",
+      "target": "n_4934c38e",
+      "label": ""
+    },
+    {
+      "source": "n_5cd72ca5",
+      "target": "n_ddf4942b",
+      "label": ""
+    },
+    {
+      "source": "n_5cd72ca5",
+      "target": "n_dc275c11",
+      "label": ""
+    },
+    {
+      "source": "n_5cd72ca5",
+      "target": "n_3132c164",
+      "label": ""
+    },
+    {
+      "source": "n_039f0fe6",
+      "target": "n_b5166d0b",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_c9a2465c",
+      "label": ""
+    },
+    {
+      "source": "n_011e6d0c",
+      "target": "n_039f0fe6",
       "label": ""
     }
-  ]
+  ],
+  "_layoutRevision": 1777700464,
+  "_layoutAlgo": "hub-partition-v6-center-view-spread"
 };
 const PUBLISHED_STORYMAP_RELEASE = "2026-04-20-fallback-sync";
 
@@ -1453,7 +2007,13 @@ function syncCanvasToPublishedRelease() {
   try {
     const currentRelease = localStorage.getItem(STORYMAP_CANVAS_RELEASE_KEY);
     const hasPublishedCanvas = Boolean(localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY));
-    if (currentRelease === PUBLISHED_STORYMAP_RELEASE || hasPublishedCanvas) return;
+    const earlyExit = currentRelease === PUBLISHED_STORYMAP_RELEASE || hasPublishedCanvas;
+    debugSessionLog("H4", "syncCanvasToPublishedRelease", earlyExit ? "early_exit" : "seed_embedded_baseline", {
+      currentRelease: currentRelease || null,
+      hasPublishedCanvas,
+      publishedReleaseConstant: PUBLISHED_STORYMAP_RELEASE,
+    });
+    if (earlyExit) return;
     const serialized = JSON.stringify(PUBLISHED_STORYMAP_CANVAS);
     localStorage.setItem(STORYMAP_CANVAS_ADMIN_KEY, serialized);
     localStorage.setItem(STORYMAP_CANVAS_PUBLIC_KEY, serialized);
@@ -1475,6 +2035,20 @@ function defaultStorymapAdminCanvasState() {
 /** Trim; primary id form for lookups and edge keys. */
 function canonicalStorymapId(id) {
   return String(id ?? "").trim();
+}
+
+/** Reject partial localStorage drafts (missing a hub) so Work/Relations layouts aren’t “missing”. */
+const STORYMAP_REQUIRED_STRUCTURAL_IDS = [
+  "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
+  "n_5cd72ca5",
+  "n_011e6d0c",
+  "n_ea58683f",
+];
+
+function storymapParsedCanvasHasStructuralBaseline(parsed) {
+  if (!parsed || !Array.isArray(parsed.nodes)) return false;
+  const ids = new Set(parsed.nodes.map((n) => canonicalStorymapId(n?.id)));
+  return STORYMAP_REQUIRED_STRUCTURAL_IDS.every((req) => ids.has(req));
 }
 
 const STORYMAP_ZW_RE = /[\u200b-\u200d\ufeff\u2060]/g;
@@ -1841,6 +2415,32 @@ function storymapGraphSignature(canvas) {
   return `${ids.join(",")}|e:${es.join(",")}|entry:${ent}|rule:centralOrHubOrSourcesSinks-out`;
 }
 
+/** Debug NDJSON (session ede851); no PII. */
+function debugSessionLog(hypothesisId, location, message, data) {
+  // #region agent log
+  if (typeof fetch === "undefined") return;
+  fetch("http://127.0.0.1:7478/ingest/7a20c658-54ad-4565-b4df-99efe61d8de8", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "ede851" },
+    body: JSON.stringify({
+      sessionId: "ede851",
+      hypothesisId,
+      location,
+      message,
+      data: data || {},
+      timestamp: Date.now(),
+    }),
+  }).catch(() => {});
+  // #endregion
+}
+
+function sampleCentralNodeCoords(canvas) {
+  const cent =
+    canvas?.nodes?.find((n) => String(n?.id || "").startsWith("p_7d1c0")) || canvas?.nodes?.[0];
+  if (!cent) return null;
+  return { id: cent.id, x: cent.x, y: cent.y };
+}
+
 /**
  * Loads viewer unlock/visit progress. If stored `graphSig` does not match the current canvas,
  * progress is reset (avoids stale IDs/coords after a publish or import). Cross-browser “sync”
@@ -1887,17 +2487,59 @@ function loadStorymapCanvasState() {
     const fallback = isAdminCanvas ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
     if (!isAdminCanvas) {
       const publishedRaw = localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
-      if (publishedRaw) return normalizeStorymapCanvasState(JSON.parse(publishedRaw), fallback);
-      return normalizeStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS, fallback);
+      if (publishedRaw) {
+        let parsed;
+        try {
+          parsed = JSON.parse(publishedRaw);
+        } catch {
+          parsed = null;
+        }
+        if (parsed && storymapParsedCanvasHasStructuralBaseline(parsed)) {
+          const state = normalizeStorymapCanvasState(parsed, fallback);
+          debugSessionLog("H1", "loadStorymapCanvasState", "viewer_from_ls_public", {
+            graphSig: storymapGraphSignature(state),
+            centralSample: sampleCentralNodeCoords(state),
+            nodeCount: state.nodes.length,
+          });
+          return state;
+        }
+        debugSessionLog("H1", "loadStorymapCanvasState", "viewer_ls_rejected_incomplete", {
+          nodeCount: Array.isArray(parsed?.nodes) ? parsed.nodes.length : 0,
+          hasBaseline: storymapParsedCanvasHasStructuralBaseline(parsed),
+        });
+      }
+      const embedded = normalizeStorymapCanvasState(PUBLISHED_STORYMAP_CANVAS, fallback);
+      debugSessionLog("H1", "loadStorymapCanvasState", "viewer_embedded_until_fetch", {
+        graphSig: storymapGraphSignature(embedded),
+        centralSample: sampleCentralNodeCoords(embedded),
+      });
+      return embedded;
     }
     // Admin: prefer draft key, then fall back to whatever the public viewer last used.
     const raw = localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY) || localStorage.getItem(STORYMAP_CANVAS_PUBLIC_KEY);
-    if (!raw) return normalizeStorymapCanvasState(fallback, fallback);
-    const parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) {
+    if (!raw) {
+      debugSessionLog("H2", "loadStorymapCanvasState", "admin_no_ls_raw", { graphSig: "" });
       return normalizeStorymapCanvasState(fallback, fallback);
     }
-    return normalizeStorymapCanvasState(parsed, fallback);
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.nodes) || !Array.isArray(parsed.edges)) {
+      debugSessionLog("H2", "loadStorymapCanvasState", "admin_invalid_raw", {});
+      return normalizeStorymapCanvasState(fallback, fallback);
+    }
+    if (!storymapParsedCanvasHasStructuralBaseline(parsed)) {
+      debugSessionLog("H2", "loadStorymapCanvasState", "admin_ls_rejected_incomplete", {
+        nodeCount: parsed.nodes.length,
+      });
+      return normalizeStorymapCanvasState(fallback, fallback);
+    }
+    const state = normalizeStorymapCanvasState(parsed, fallback);
+    debugSessionLog("H2", "loadStorymapCanvasState", "admin_from_ls", {
+      usedAdminKey: Boolean(localStorage.getItem(STORYMAP_CANVAS_ADMIN_KEY)),
+      graphSig: storymapGraphSignature(state),
+      centralSample: sampleCentralNodeCoords(state),
+      nodeCount: state.nodes.length,
+    });
+    return state;
   } catch {
     const fallback = MODE === "admin" ? defaultStorymapAdminCanvasState() : defaultStorymapCanvasState();
     return normalizeStorymapCanvasState(fallback, fallback);
@@ -1908,6 +2550,13 @@ function saveStorymapCanvasState(payload) {
   try {
     const normalized = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
     const serialized = JSON.stringify(normalized);
+    debugSessionLog("H2", "saveStorymapCanvasState", "write_keys", {
+      mode: MODE,
+      bytes: serialized.length,
+      graphSig: storymapGraphSignature(normalized),
+      centralSample: sampleCentralNodeCoords(normalized),
+      writesAdminToo: MODE === "admin",
+    });
     if (MODE === "admin") {
       localStorage.setItem(STORYMAP_CANVAS_ADMIN_KEY, serialized);
       // Keep public cache in sync so storymap.html shows the same canvas without a separate publish step.
@@ -2037,11 +2686,332 @@ async function publishStorymapCanvasToGithub(payload, token, commitMessage) {
   }
 }
 
+function storymapLayoutRuntimeProbe(state) {
+  const hubIds = [
+    "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092",
+    "n_011e6d0c",
+    "n_5cd72ca5",
+    "n_ea58683f",
+  ];
+  const hubs = {};
+  for (const id of hubIds) {
+    const n = state?.nodes?.find((x) => x.id === id);
+    if (n) hubs[id] = { x: Math.round(Number(n.x)), y: Math.round(Number(n.y)) };
+  }
+  const leafIds = ["n_4412adea", "n_1f0d978c", "n_44c350fe"];
+  const leafSamples = {};
+  for (const id of leafIds) {
+    const n = state?.nodes?.find((x) => x.id === id);
+    if (n) leafSamples[id] = { x: Math.round(Number(n.x)), y: Math.round(Number(n.y)) };
+  }
+  const imgs = (state?.nodes || []).filter(
+    (n) => n.type === "image" && !String(n.id || "").startsWith("p_")
+  );
+  let minD = Infinity;
+  for (let i = 0; i < imgs.length; i++) {
+    for (let j = i + 1; j < imgs.length; j++) {
+      const dx = Number(imgs[i].x) - Number(imgs[j].x);
+      const dy = Number(imgs[i].y) - Number(imgs[j].y);
+      const d = Math.hypot(dx, dy);
+      if (d < minD) minD = d;
+    }
+  }
+  return {
+    hubs,
+    leafSamples,
+    minImagePairDist: Number.isFinite(minD) ? Math.round(minD) : null,
+    imageCount: imgs.length,
+  };
+}
+
+/** Mirrors `scripts/layout_storymap_radial.py` — overwrites every node x/y after load so positions always apply. */
+const STORYMAP_RADIAL_CENTRAL = "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092";
+const STORYMAP_RADIAL_HUB_ORDER = ["n_5cd72ca5", "n_011e6d0c", "n_ea58683f"];
+/** −π/2 + k·2π/3 with Mobility at top (largest subtree → least mass dragged toward +y). */
+const STORYMAP_RADIAL_HUB_THETA = {
+  n_011e6d0c: -Math.PI / 2,
+  n_5cd72ca5: -Math.PI / 2 + (2 * Math.PI) / 3,
+  n_ea58683f: -Math.PI / 2 + (4 * Math.PI) / 3,
+};
+const STORYMAP_RADIAL_ORBIT = 920;
+/** Keep thumbnails close to their hub / parent; tune with scripts/layout_storymap_radial.py */
+const STORYMAP_RADIAL_CHILD_FIRST = 540;
+const STORYMAP_RADIAL_CHILD_STEP = 640;
+const STORYMAP_RADIAL_PER_RING = 6;
+const STORYMAP_RADIAL_CHAIN_FIRST = 400;
+const STORYMAP_RADIAL_CHAIN_STEP = 480;
+const STORYMAP_RADIAL_CHAIN_PER_RING = 8;
+/** Child arc width — ⅔π avoids wrapping thumbnails back toward +y (screen-down) “spines”. */
+const STORYMAP_RADIAL_ARC_SPAN = (2 * Math.PI) / 3;
+
+function applyStorymapRadialLayoutClient(canvasState) {
+  if (!canvasState?.nodes?.length || !canvasState?.edges?.length) return;
+  const ids = new Set(canvasState.nodes.map((n) => n.id));
+  if (!ids.has(STORYMAP_RADIAL_CENTRAL)) return;
+  for (const h of STORYMAP_RADIAL_HUB_ORDER) {
+    if (!ids.has(h)) return;
+  }
+
+  const hubSet = new Set(STORYMAP_RADIAL_HUB_ORDER);
+  const edges = canvasState.edges;
+  const parentMap = {};
+  for (const e of edges) {
+    if (e.source && e.target) parentMap[e.target] = e.source;
+  }
+  const children = {};
+  for (const e of edges) {
+    const s = e.source;
+    const t = e.target;
+    if (!s || !t || s === t) continue;
+    if (!children[s]) children[s] = [];
+    children[s].push(t);
+  }
+  for (const k of Object.keys(children)) {
+    children[k] = [...new Set(children[k])].sort();
+  }
+
+  const radialPlace = (cx, cy, childIds, pos, r0, ringStep, perRing, phase, arcSpan = STORYMAP_RADIAL_ARC_SPAN) => {
+    if (!childIds.length) return;
+    const hubDist = Math.hypot(cx, cy);
+    const basePhi = hubDist < 1e-9 ? 0 : Math.atan2(cy, cx);
+    const n = childIds.length;
+    let ring = 0;
+    let i = 0;
+    while (i < n) {
+      const batch = childIds.slice(i, i + perRing);
+      const m = batch.length;
+      const rmag = r0 + ring * ringStep;
+      const twist = ring * (Math.PI / Math.max(7, m));
+      const half = arcSpan / 2;
+      for (let j = 0; j < batch.length; j++) {
+        const nid = batch[j];
+        const t = -half + arcSpan * (j + 0.5) / m;
+        const theta = basePhi + t + phase + twist;
+        const rWorld = hubDist + rmag;
+        pos[nid] = { x: rWorld * Math.cos(theta), y: rWorld * Math.sin(theta) };
+      }
+      i += perRing;
+      ring += 1;
+    }
+  };
+
+  const bfsDepthFromRoots = (rootIds) => {
+    const depth = {};
+    const q = [];
+    for (const r of rootIds) {
+      if (ids.has(r)) q.push([r, 0]);
+    }
+    while (q.length) {
+      const [nid, d] = q.shift();
+      if (nid in depth) continue;
+      depth[nid] = d;
+      for (const c of children[nid] || []) {
+        if (ids.has(c) && !(c in depth)) q.push([c, d + 1]);
+      }
+    }
+    return depth;
+  };
+
+  const themeHubFor = (nid) => {
+    let x = nid;
+    const seen = new Set();
+    while (x && x !== STORYMAP_RADIAL_CENTRAL) {
+      if (hubSet.has(x)) return x;
+      if (seen.has(x)) return null;
+      seen.add(x);
+      x = parentMap[x];
+    }
+    return null;
+  };
+
+  const relaxOverlapSubset = (pos, anchorIds, keys, iterations = 220, minDist = 620) => {
+    const movable = keys.filter((k) => !anchorIds.has(k));
+    for (let it = 0; it < iterations; it++) {
+      let moved = false;
+      for (let i = 0; i < movable.length; i++) {
+        for (let j = i + 1; j < movable.length; j++) {
+          const a = movable[i];
+          const b = movable[j];
+          let ax = pos[a].x;
+          let ay = pos[a].y;
+          let bx = pos[b].x;
+          let by = pos[b].y;
+          const dx = bx - ax;
+          const dy = by - ay;
+          const dist = Math.hypot(dx, dy);
+          if (dist >= minDist || dist < 1e-6) continue;
+          const push = (minDist - dist) / 2 + 4;
+          const ux = dx / dist;
+          const uy = dy / dist;
+          pos[a] = { x: ax - ux * push, y: ay - uy * push };
+          pos[b] = { x: bx + ux * push, y: by + uy * push };
+          moved = true;
+        }
+      }
+      if (!moved) break;
+    }
+  };
+
+  const relaxCrossPartition = (pos, anchorIds, hubPartitions, iterations = 140, minDist = 520) => {
+    const hubList = STORYMAP_RADIAL_HUB_ORDER.filter((h) => hubPartitions[h]?.length);
+    for (let it = 0; it < iterations; it++) {
+      let moved = false;
+      for (let ii = 0; ii < hubList.length; ii++) {
+        for (let jj = ii + 1; jj < hubList.length; jj++) {
+          const ha = hubList[ii];
+          const hb = hubList[jj];
+          for (const a of hubPartitions[ha]) {
+            if (anchorIds.has(a)) continue;
+            for (const b of hubPartitions[hb]) {
+              if (anchorIds.has(b)) continue;
+              let ax = pos[a].x;
+              let ay = pos[a].y;
+              let bx = pos[b].x;
+              let by = pos[b].y;
+              const dx = bx - ax;
+              const dy = by - ay;
+              const dist = Math.hypot(dx, dy);
+              if (dist >= minDist || dist < 1e-6) continue;
+              const push = (minDist - dist) / 2 + 3;
+              const ux = dx / dist;
+              const uy = dy / dist;
+              pos[a] = { x: ax - ux * push, y: ay - uy * push };
+              pos[b] = { x: bx + ux * push, y: by + uy * push };
+              moved = true;
+            }
+          }
+        }
+      }
+      if (!moved) break;
+    }
+  };
+
+  /** @type {Record<string, { x: number; y: number }>} */
+  const pos = {};
+  pos[STORYMAP_RADIAL_CENTRAL] = { x: 0, y: 0 };
+
+  for (const hid of STORYMAP_RADIAL_HUB_ORDER) {
+    const theta = STORYMAP_RADIAL_HUB_THETA[hid];
+    pos[hid] = {
+      x: STORYMAP_RADIAL_ORBIT * Math.cos(theta),
+      y: STORYMAP_RADIAL_ORBIT * Math.sin(theta),
+    };
+  }
+
+  STORYMAP_RADIAL_HUB_ORDER.forEach((hid, hi) => {
+    const kids = (children[hid] || []).filter((c) => ids.has(c));
+    const hubPhase = hi * ((2 * Math.PI) / 11);
+    radialPlace(
+      pos[hid].x,
+      pos[hid].y,
+      kids,
+      pos,
+      STORYMAP_RADIAL_CHILD_FIRST,
+      STORYMAP_RADIAL_CHILD_STEP,
+      STORYMAP_RADIAL_PER_RING,
+      hubPhase
+    );
+  });
+
+  const depth = bfsDepthFromRoots([STORYMAP_RADIAL_CENTRAL]);
+
+  for (let round = 0; round < 256; round++) {
+    let progressed = false;
+    const pendingParents = [];
+    for (const pid of Object.keys(pos)) {
+      const pending = (children[pid] || []).filter((c) => ids.has(c) && !(c in pos));
+      if (pending.length) pendingParents.push([depth[pid] ?? 9999, pid, pending]);
+    }
+    pendingParents.sort((a, b) => a[0] - b[0] || String(a[1]).localeCompare(String(b[1])));
+    for (const [, pid, pend] of pendingParents) {
+      const pidPhase = ((Array.from(pid).reduce((s, ch) => s + ch.charCodeAt(0), 0) % 360) / 360) * 2 * Math.PI * 0.35;
+      radialPlace(
+        pos[pid].x,
+        pos[pid].y,
+        pend,
+        pos,
+        STORYMAP_RADIAL_CHAIN_FIRST,
+        STORYMAP_RADIAL_CHAIN_STEP,
+        STORYMAP_RADIAL_CHAIN_PER_RING,
+        pidPhase
+      );
+      progressed = true;
+    }
+    if (!progressed) break;
+  }
+
+  const anchor = new Set([STORYMAP_RADIAL_CENTRAL, ...STORYMAP_RADIAL_HUB_ORDER]);
+  /** @type {Record<string, string[]>} */
+  const partitionsTyped = {};
+  for (const hid of STORYMAP_RADIAL_HUB_ORDER) partitionsTyped[hid] = [];
+  for (const nid of ids) {
+    if (anchor.has(nid)) continue;
+    const th = themeHubFor(nid);
+    if (th && partitionsTyped[th]) partitionsTyped[th].push(nid);
+  }
+  for (const hid of STORYMAP_RADIAL_HUB_ORDER) {
+    relaxOverlapSubset(pos, anchor, partitionsTyped[hid] || [], 160, 460);
+  }
+  relaxCrossPartition(pos, anchor, partitionsTyped, 120, 360);
+
+  let ix = 0;
+  for (const n of canvasState.nodes) {
+    if (!pos[n.id]) {
+      pos[n.id] = {
+        x: 2600 + (ix % 6) * 120,
+        y: 800 + Math.floor(ix / 6) * 120,
+      };
+      ix += 1;
+    }
+  }
+
+  for (const n of canvasState.nodes) {
+    const p = pos[n.id];
+    if (p) {
+      n.x = Math.round(p.x * 1e6) / 1e6;
+      n.y = Math.round(p.y * 1e6) / 1e6;
+    }
+  }
+
+  // #region agent log
+  const leaf = canvasState.nodes.find((x) => x.id === "n_4412adea");
+  const hubMob = canvasState.nodes.find((x) => x.id === "n_011e6d0c");
+  debugSessionLog("H14", "applyStorymapRadialLayoutClient", "positions_written", {
+    spreadVariant: "v7-mobility-top-vertex",
+    nodeCount: canvasState.nodes.length,
+    mobilityHubXY: hubMob ? { x: hubMob.x, y: hubMob.y } : null,
+    sampleMobilityLeaf: leaf ? { x: leaf.x, y: leaf.y } : null,
+  });
+  // #endregion
+}
+
 async function loadPublishedStorymapFromRepo() {
-  const response = await fetch(`./${GITHUB_PUBLISHED_CANVAS_PATH}?t=${Date.now()}`, { cache: "no-store" });
+  const response = await fetch(
+    `./${GITHUB_PUBLISHED_CANVAS_PATH}?t=${Date.now()}&r=${encodeURIComponent(String(Math.random()))}`,
+    { cache: "no-store", headers: { Pragma: "no-cache", "Cache-Control": "no-cache" } }
+  );
   if (!response.ok) throw new Error(`Published storymap fetch failed (${response.status})`);
   const payload = await response.json();
-  return normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
+  // #region agent log
+  debugSessionLog("H13", "loadPublishedStorymapFromRepo", "payload_meta", {
+    layoutRevision: payload._layoutRevision ?? null,
+    layoutAlgo: payload._layoutAlgo ?? null,
+    contentLength: response.headers.get("content-length"),
+  });
+  // #endregion
+  const out = normalizeStorymapCanvasState(payload, defaultStorymapCanvasState());
+  applyStorymapRadialLayoutClient(out);
+  // #region agent log
+  const probe = storymapLayoutRuntimeProbe(out);
+  debugSessionLog("H10", "loadPublishedStorymapFromRepo", "layout_probe_after_fetch", probe);
+  // #endregion
+  debugSessionLog("H5", "loadPublishedStorymapFromRepo", "network_normalized", {
+    graphSig: storymapGraphSignature(out),
+    centralSample: sampleCentralNodeCoords(out),
+    nodeCount: out.nodes.length,
+    fetchOk: response.ok,
+  });
+  return out;
 }
 
 /**
@@ -2113,6 +3083,12 @@ function initCustomStorymapCanvas() {
     if (canvasPanel) canvasPanel.style.minHeight = "70vh";
   }
   let canvas = loadStorymapCanvasState();
+  let skipIntroFigurePan = false;
+  try {
+    skipIntroFigurePan = new URLSearchParams(window.location.search).has("storymapOverview");
+  } catch {
+    /* ignore */
+  }
   let selectedId = null;
   let view = { scale: 1, panX: 0, panY: 0 };
   let panDraft = null;
@@ -2255,11 +3231,10 @@ function initCustomStorymapCanvas() {
   };
 
   /**
-   * Node box in world (storymap) coordinates — matches `node.x` / `node.y` space inside `#storymapWorld`.
-   * Uses getBoundingClientRect + screenToWorld so edges align even when offsetParent ≠ `#storymapNodes`.
+   * Axis-aligned rect from a DOMRect in world (storymap) coordinates — matches `node.x` / `node.y`
+   * inside `#storymapWorld`. Uses getBoundingClientRect + screenToWorld when passed `el.getBoundingClientRect()`.
    */
-  const nodeWorldRectFromEl = (el) => {
-    const r = el.getBoundingClientRect();
+  const worldRectFromClientRect = (r) => {
     const tl = screenToWorld(r.left, r.top);
     const tr = screenToWorld(r.right, r.top);
     const bl = screenToWorld(r.left, r.bottom);
@@ -2275,6 +3250,9 @@ function initCustomStorymapCanvas() {
     return { left, top, w, h, cx: (left + right) / 2, cy: (top + bottom) / 2 };
   };
 
+  /** Node box in world coordinates (full `.smNode` element). */
+  const nodeWorldRectFromEl = (el) => worldRectFromClientRect(el.getBoundingClientRect());
+
   /**
    * Edge endpoints only: for image nodes, use the `<img>` box — not the caption below it.
    * Otherwise edge centers shift down vs. layouts where the thumbnail filled the node box.
@@ -2284,43 +3262,16 @@ function initCustomStorymapCanvas() {
       const img = el.querySelector(":scope > img");
       if (img) {
         const r = img.getBoundingClientRect();
-        if (r.width > 0 && r.height > 0) {
-          const tl = screenToWorld(r.left, r.top);
-          const tr = screenToWorld(r.right, r.top);
-          const bl = screenToWorld(r.left, r.bottom);
-          const br = screenToWorld(r.right, r.bottom);
-          const xs = [tl.x, tr.x, bl.x, br.x];
-          const ys = [tl.y, tr.y, bl.y, br.y];
-          const left = Math.min(...xs);
-          const right = Math.max(...xs);
-          const top = Math.min(...ys);
-          const bottom = Math.max(...ys);
-          const w = Math.max(1, right - left);
-          const h = Math.max(1, bottom - top);
-          return { left, top, w, h, cx: (left + right) / 2, cy: (top + bottom) / 2 };
-        }
+        if (r.width > 0 && r.height > 0) return worldRectFromClientRect(r);
       }
     }
     return nodeWorldRectFromEl(el);
   };
 
-  /**
-   * Grow the world + edge SVG to cover every node in world px. Otherwise the SVG viewport
-   * stays viewport-sized and clips <line> coordinates past ~1400px — edges look "stubby".
-   */
-  const syncStorymapSheetExtent = () => {
-    const vr = Math.max(1, viewport.clientWidth || 0);
-    const vh = Math.max(1, viewport.clientHeight || 0);
+  /** Union of all `.smNode` boxes in world coordinates, or `null` if none. */
+  const measureStorymapNodeBounds = () => {
     const nodes = nodesLayer.querySelectorAll(".smNode");
-    if (!nodes.length) {
-      world.style.minWidth = "";
-      world.style.minHeight = "";
-      nodesLayer.style.minWidth = "";
-      nodesLayer.style.minHeight = "";
-      edgesSvg.style.width = "";
-      edgesSvg.style.height = "";
-      return;
-    }
+    if (!nodes.length) return null;
     let minX = Infinity;
     let minY = Infinity;
     let maxX = -Infinity;
@@ -2332,7 +3283,26 @@ function initCustomStorymapCanvas() {
       maxX = Math.max(maxX, r.left + r.w);
       maxY = Math.max(maxY, r.top + r.h);
     });
-    if (!Number.isFinite(minX)) return;
+    if (!Number.isFinite(minX)) return null;
+    return { minX, minY, maxX, maxY };
+  };
+
+  /**
+   * Grow the world + edge SVG to cover bounds in world px. Otherwise the SVG viewport
+   * stays viewport-sized and clips <line> coordinates past ~1400px — edges look "stubby".
+   */
+  const applyStorymapSheetExtentBounds = (minX, minY, maxX, maxY) => {
+    const vr = Math.max(1, viewport.clientWidth || 0);
+    const vh = Math.max(1, viewport.clientHeight || 0);
+    if (!Number.isFinite(minX) || !Number.isFinite(maxX)) {
+      world.style.minWidth = "";
+      world.style.minHeight = "";
+      nodesLayer.style.minWidth = "";
+      nodesLayer.style.minHeight = "";
+      edgesSvg.style.width = "";
+      edgesSvg.style.height = "";
+      return;
+    }
     const pad = 280;
     const w = Math.max(vr, maxX - Math.min(0, minX) + pad);
     const h = Math.max(vh, maxY - Math.min(0, minY) + pad);
@@ -2344,6 +3314,20 @@ function initCustomStorymapCanvas() {
     nodesLayer.style.minHeight = `${ch}px`;
     edgesSvg.style.width = `${cw}px`;
     edgesSvg.style.height = `${ch}px`;
+  };
+
+  const syncStorymapSheetExtent = () => {
+    const b = measureStorymapNodeBounds();
+    if (!b) {
+      world.style.minWidth = "";
+      world.style.minHeight = "";
+      nodesLayer.style.minWidth = "";
+      nodesLayer.style.minHeight = "";
+      edgesSvg.style.width = "";
+      edgesSvg.style.height = "";
+      return;
+    }
+    applyStorymapSheetExtentBounds(b.minX, b.minY, b.maxX, b.maxY);
   };
 
   const getNodeByIdLocal = (id) => canvas.nodes.find((n) => n.id === id) || null;
@@ -2846,7 +3830,6 @@ function initCustomStorymapCanvas() {
     nodesLayer.querySelectorAll(".smNode").forEach((elNode) => {
       nodeEls.set(elNode.getAttribute("data-id"), elNode);
     });
-    syncStorymapSheetExtent();
     const centralIds = getEffectiveCentralIdSet();
     const edgeKind = (sId, tId) => {
       const s = getNodeByIdLocal(sId);
@@ -2863,7 +3846,19 @@ function initCustomStorymapCanvas() {
       worldRectById.set(id, box);
       return box;
     };
-    // Draw every edge (static strokes); unlock overlay is an extra line segment during animation.
+    const RELATIONS_HUB_DEBUG_ID = "n_ea58683f";
+    const exitSideTowardPoint = (p, left, top, w, h) => {
+      const eps = 4;
+      const right = left + w;
+      const bottom = top + h;
+      if (Math.abs(p.x - left) < eps) return "left";
+      if (Math.abs(p.x - right) < eps) return "right";
+      if (Math.abs(p.y - top) < eps) return "top";
+      if (Math.abs(p.y - bottom) < eps) return "bottom";
+      return "other";
+    };
+
+    const segments = [];
     canvas.edges.forEach((edge) => {
       const ek = storymapEdgeKey(edge.source, edge.target);
       const source = nodeEls.get(edge.source);
@@ -2871,12 +3866,79 @@ function initCustomStorymapCanvas() {
       if (!source || !target) return;
       const ra = getWorldRect(edge.source, source);
       const rb = getWorldRect(edge.target, target);
-      const x1c = ra.cx;
+      let x1c = ra.cx;
       const y1c = ra.cy;
       const x2c = rb.cx;
       const y2c = rb.cy;
+      const kindPre = edgeKind(edge.source, edge.target);
+      if (kindPre === "hubSpoke" && source.classList.contains("smNode--hub")) {
+        const dx = x2c - ra.cx;
+        const lateral = Math.min(ra.w * 0.42, Math.max(-ra.w * 0.42, dx * 0.3));
+        x1c = ra.cx + lateral;
+      }
       const p1 = rayExitRectToward(x1c, y1c, x2c, y2c, ra.left, ra.top, ra.w, ra.h);
       const p2 = rayExitRectToward(x2c, y2c, x1c, y1c, rb.left, rb.top, rb.w, rb.h);
+      segments.push({ edge, ek, source, target, ra, rb, p1, p2, kindPre });
+    });
+
+    const nb = measureStorymapNodeBounds();
+    let unionMinX = nb?.minX ?? Infinity;
+    let unionMinY = nb?.minY ?? Infinity;
+    let unionMaxX = nb?.maxX ?? -Infinity;
+    let unionMaxY = nb?.maxY ?? -Infinity;
+    segments.forEach((s) => {
+      unionMinX = Math.min(unionMinX, s.p1.x, s.p2.x);
+      unionMaxX = Math.max(unionMaxX, s.p1.x, s.p2.x);
+      unionMinY = Math.min(unionMinY, s.p1.y, s.p2.y);
+      unionMaxY = Math.max(unionMaxY, s.p1.y, s.p2.y);
+    });
+    if (Number.isFinite(unionMinX)) {
+      applyStorymapSheetExtentBounds(unionMinX, unionMinY, unionMaxX, unionMaxY);
+    } else {
+      syncStorymapSheetExtent();
+    }
+
+    // Draw every edge (static strokes); unlock overlay is an extra line segment during animation.
+    // #region agent log
+    let relationsHubSpokeLogs = 0;
+    let edgeMinX = Infinity;
+    let edgeMaxX = -Infinity;
+    let edgeMinY = Infinity;
+    let edgeMaxY = -Infinity;
+    const bumpXY = (x, y) => {
+      edgeMinX = Math.min(edgeMinX, x);
+      edgeMaxX = Math.max(edgeMaxX, x);
+      edgeMinY = Math.min(edgeMinY, y);
+      edgeMaxY = Math.max(edgeMaxY, y);
+    };
+    // #endregion
+    segments.forEach((s) => {
+      const { edge, ek, source, target, ra, rb, p1, p2 } = s;
+      // #region agent log
+      bumpXY(p1.x, p1.y);
+      bumpXY(p2.x, p2.y);
+      if (edge.source === RELATIONS_HUB_DEBUG_ID && relationsHubSpokeLogs < 8) {
+        const fullWrap = nodeWorldRectFromEl(source);
+        const hubInnerEl = source.querySelector(":scope > .smNodeHub");
+        const innerWrap = hubInnerEl
+          ? worldRectFromClientRect(hubInnerEl.getBoundingClientRect())
+          : null;
+        debugSessionLog("H17", "drawEdges", "relations_hub_spoke", {
+          targetId: edge.target,
+          fullCy: fullWrap.cy,
+          fullH: fullWrap.h,
+          anchorCyUsed: ra.cy,
+          anchorHUsed: ra.h,
+          innerCy: innerWrap?.cy ?? null,
+          innerH: innerWrap?.h ?? null,
+          deltaCyInnerVsFull: innerWrap ? innerWrap.cy - fullWrap.cy : null,
+          exitSide: exitSideTowardPoint(p1, ra.left, ra.top, ra.w, ra.h),
+          p1y: p1.y,
+          runId: "post-fix-extent-hubfan",
+        });
+        relationsHubSpokeLogs += 1;
+      }
+      // #endregion
       const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
       line.setAttribute("x1", String(p1.x));
       line.setAttribute("y1", String(p1.y));
@@ -2900,6 +3962,40 @@ function initCustomStorymapCanvas() {
         edgesSvg.appendChild(overlay);
       }
     });
+    // #region agent log
+    const sw = edgesSvg.style.width || "";
+    const sh = edgesSvg.style.height || "";
+    const cw = Number.parseFloat(sw) || edgesSvg.clientWidth || 0;
+    const ch = Number.parseFloat(sh) || edgesSvg.clientHeight || 0;
+    const tol = 8;
+    debugSessionLog("H18", "drawEdges", "svg_extent_vs_coords", {
+      svgStyleW: sw,
+      svgStyleH: sh,
+      svgParsedW: cw,
+      svgParsedH: ch,
+      unionMinX: Number.isFinite(unionMinX) ? unionMinX : null,
+      unionMaxX: Number.isFinite(unionMaxX) ? unionMaxX : null,
+      unionMinY: Number.isFinite(unionMinY) ? unionMinY : null,
+      unionMaxY: Number.isFinite(unionMaxY) ? unionMaxY : null,
+      edgeMinX: Number.isFinite(edgeMinX) ? edgeMinX : null,
+      edgeMaxX: Number.isFinite(edgeMaxX) ? edgeMaxX : null,
+      edgeMinY: Number.isFinite(edgeMinY) ? edgeMinY : null,
+      edgeMaxY: Number.isFinite(edgeMaxY) ? edgeMaxY : null,
+      coordsOutsideUnion:
+        Number.isFinite(edgeMinX) &&
+        Number.isFinite(unionMinX) &&
+        Number.isFinite(unionMaxX) &&
+        Number.isFinite(edgeMaxX)
+          ? edgeMinX < unionMinX - tol ||
+            edgeMaxX > unionMaxX + tol ||
+            edgeMinY < unionMinY - tol ||
+            edgeMaxY > unionMaxY + tol
+          : null,
+      legacyCompare0Cw:
+        Number.isFinite(edgeMinX) && cw > 0 ? edgeMinX < 0 || edgeMaxX > cw : null,
+      runId: "post-fix-extent-hubfan",
+    });
+    // #endregion
   };
 
   /** After layout, fit the camera to real DOM boxes (images, captions, wrapped text). */
@@ -3028,7 +4124,7 @@ function initCustomStorymapCanvas() {
     view.panY = height / 2 - graphCenterY * fittedScale;
     updateWorldTransform();
     drawEdges();
-    if (initialViewer && isViewerLike()) {
+    if (initialViewer && isViewerLike() && !skipIntroFigurePan) {
       applyInitialViewerPanToFigure01();
       const fid = getFirstStorymapImageNodeId();
       if (fid) {
@@ -3535,6 +4631,11 @@ function initCustomStorymapCanvas() {
       setStatus("Publishing storymap to GitHub...", { isLoading: true });
       const published = await publishStorymapCanvasToGithub(canvas, token, commitMessage);
       publishStorymapCanvasState(published);
+      debugSessionLog("H3", "publishBtn:PAT", "after_publishStorymapCanvasState", {
+        graphSig: storymapGraphSignature(published),
+        centralSample: sampleCentralNodeCoords(published),
+        nodeCount: published.nodes.length,
+      });
       if (publishHelp) publishHelp.textContent = `Published to ${GITHUB_PUBLISHED_CANVAS_PATH} on ${GITHUB_REPO_BRANCH}.`;
       setStatus("Storymap published globally. GitHub Pages may take a minute to refresh.");
     } catch (err) {
@@ -3634,9 +4735,18 @@ function initCustomStorymapCanvas() {
         // Keep public localStorage in sync with the file the site just served (same as admin path).
         // Otherwise the next `loadStorymapCanvasState()` still has old x/y from a previous visit or PAT publish.
         saveStorymapCanvasState(canvas);
+        debugSessionLog("H3", "initCustomStorymap:viewer", "remote_applied_and_ls_saved", {
+          graphSig: storymapGraphSignature(canvas),
+          centralSample: sampleCentralNodeCoords(canvas),
+        });
         bootstrapAfterPublishedLoad();
       })
       .catch((err) => {
+        debugSessionLog("H1", "initCustomStorymap:viewer", "fetch_failed_using_boot_canvas", {
+          errMsg: String(err && err.message ? err.message : err),
+          bootGraphSig: storymapGraphSignature(canvas),
+          bootCentral: sampleCentralNodeCoords(canvas),
+        });
         console.warn("Published storymap fetch fallback:", err);
         bootstrapAfterPublishedLoad();
       });

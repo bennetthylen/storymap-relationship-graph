@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-mode="discussion" id="top">
+  <body data-mode="discussion" id="top" class="page-subpage">
     <nav class="siteNav siteNav--archive" data-i18n-aria-label="navAriaPrimary" aria-label="Primary navigation">
       <a href="./index.html#home" class="siteNav__brandLink" data-i18n-aria-label="siteBrand" aria-label="Doing Well, Don't Worry">
         <img
@@ -108,13 +108,27 @@
 
     <div id="jsStatus" class="jsStatus jsStatus--hidden"></div>
 
+    <header class="subpageHero subpageHero--archive subpageHero--discussion" aria-labelledby="subpageExhibitTitle">
+      <h1 id="subpageExhibitTitle" class="subpageHero__title">
+        <span class="hero__titleStack">
+          <span class="subpageHero__line subpageHero__line--en" lang="en" data-i18n="siteExhibitTitleEn"
+            >Feminism in Egypt and Beyond</span
+          >
+          <span class="subpageHero__line subpageHero__line--ar" lang="ar" dir="rtl" data-i18n="siteExhibitTitleAr"
+            >النسوية في مصر وخارجها</span
+          >
+        </span>
+      </h1>
+      <p class="subpageHero__kicker" data-i18n="subpageSectionDiscussion">discussion</p>
+    </header>
+
     <main class="discussionPage">
       <section
         class="discussionComposer card"
         data-i18n-aria-label="ariaDiscussionComposer"
         aria-label="Create discussion post"
       >
-        <h1 data-i18n="discussionBoardTitle">Discussion board</h1>
+        <h2 data-i18n="discussionBoardTitle">Discussion board</h2>
         <p class="muted" data-i18n="discussionIntro">Share reflections, add context, and reply to others.</p>
         <p id="discussionBackendNote" class="muted small discussionBackendNote" hidden></p>
         <div class="field">

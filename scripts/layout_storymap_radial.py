@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """
-Radial layout for published-storymap.json: children on rotated rings around each parent.
-Central intro → three hubs on separated bearings (not stacked on one downward spine); each hub’s
-images fill circles with staggered angles and generous radii to reduce overlap.
+Radial layout for published-storymap.json: children fan outward from each theme hub.
+
+Central intro → three hubs (On Work, On Mobility, On Reassembling Relations) on separated bearings.
+Under each hub, nodes sit on arcs whose outward axis follows the ray from the archive center through
+that hub (semicircle facing away from the center). Relaxation runs **per theme subtree** so thumbnails
+spread under their hub without global packing that collapses wedges together; a light cross-wedge pass
+separates nodes from different hubs when they collide.
 
 Run from repo root: python3 scripts/layout_storymap_radial.py
 """
@@ -10,6 +14,7 @@ from __future__ import annotations
 
 import json
 import math
+import time
 from collections import defaultdict, deque
 from pathlib import Path
 
@@ -17,28 +22,30 @@ ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "published-storymap.json"
 
 CENTRAL = "p_7d1c0cfc-8703-4aaf-9d21-ba7e23ad1092"
+# Theme hubs (labels): On Work, On Mobility, On Reassembling Relations — each subtree fans outward here.
 HUB_ORDER = ["n_5cd72ca5", "n_011e6d0c", "n_ea58683f"]
-# Equilateral on the orbit, rotated 30° so no two hubs share the same x (0°,120°,240° put two hubs at x=-R/2 — reads as a vertical column).
+HUB_SET = frozenset(HUB_ORDER)
+# Same −π/2 + k·2π/3 triangle as v4, but **which hub sits at the top vertex** matters for viewport balance:
+# Mobility has the largest subtree — assign it −π/2 (above center) so those thumbnails aren’t pulled toward +y.
 HUB_THETA = {
-    "n_5cd72ca5": math.pi / 6,
-    "n_011e6d0c": 5 * math.pi / 6,
-    "n_ea58683f": 3 * math.pi / 2,
+    "n_011e6d0c": -math.pi / 2,
+    "n_5cd72ca5": -math.pi / 2 + 2 * math.pi / 3,
+    "n_ea58683f": -math.pi / 2 + 4 * math.pi / 3,
 }
 
-R_HUB_ORBIT = 1280.0
+R_HUB_ORBIT = 920.0
 
-R_CHILD_FIRST = 920.0
-R_CHILD_STEP = 960.0
+R_CHILD_FIRST = 540.0
+R_CHILD_STEP = 640.0
 PER_RING = 6
 
-R_CHAIN_FIRST = 620.0
-CHAIN_STEP = 700.0
+R_CHAIN_FIRST = 400.0
+CHAIN_STEP = 480.0
 CHAIN_PER_RING = 8
 
-# Place children on an arc centered on the ray from the archive root (0,0) through the parent —
-# not a full 360° ring. A full circle wraps half the children back toward the center, which reads as
-# long vertical spines in screen space (+y is down). Use a wide outward-facing arc instead.
-CHILD_ARC_SPAN = math.pi  # Semicircle facing away from the archive root through each parent (balloon tree).
+# Place children on an arc along the ray from the archive center through the parent.
+# Use a 120° wedge (not 180°): full half-planes wrap mass toward +y (screen-down) and look like vertical “waterfall” edges.
+CHILD_ARC_SPAN = 2 * math.pi / 3
 
 
 def collect_children(edges: list) -> dict[str, list[str]]:
@@ -74,13 +81,6 @@ def bfs_depth_from_roots(
     return depth
 
 
-def outward_base_angle(cx: float, cy: float) -> float:
-    """Angle from world origin toward (cx, cy); rotate child rings so mass radiates away from the central node."""
-    if abs(cx) < 1e-9 and abs(cy) < 1e-9:
-        return 0.0
-    return math.atan2(cy, cx)
-
-
 def radial_place(
     cx: float,
     cy: float,
@@ -92,24 +92,123 @@ def radial_place(
     phase: float = 0.0,
     arc_span: float = CHILD_ARC_SPAN,
 ) -> None:
+    """Place children on arcs of circles centered at the archive origin — edges radiate *outward* from center,
+    not as arbitrary offsets that collapse toward +y (screen-down) in tall vertical spines."""
     if not child_ids:
         return
-    base_phi = outward_base_angle(cx, cy)
+    hub_dist = math.hypot(cx, cy)
+    if hub_dist < 1e-9:
+        base_phi = 0.0
+    else:
+        base_phi = math.atan2(cy, cx)
     n = len(child_ids)
     ring = 0
     i = 0
     while i < n:
         batch = child_ids[i : i + per_ring]
         m = len(batch)
-        r = r0 + ring * ring_step
+        rmag = r0 + ring * ring_step
         twist = ring * (math.pi / max(7, m))
         half = arc_span / 2
         for j, nid in enumerate(batch):
             t = -half + arc_span * (j + 0.5) / m
             theta = base_phi + t + phase + twist
-            out[nid] = (cx + r * math.cos(theta), cy + r * math.sin(theta))
+            r_world = hub_dist + rmag
+            out[nid] = (r_world * math.cos(theta), r_world * math.sin(theta))
         i += per_ring
         ring += 1
+
+
+def build_parent_map(edges: list) -> dict[str, str]:
+    """target -> source (last edge wins if duplicates)."""
+    parent: dict[str, str] = {}
+    for e in edges:
+        s, t = e.get("source"), e.get("target")
+        if s and t:
+            parent[t] = s
+    return parent
+
+
+def theme_hub_for(
+    nid: str,
+    parent: dict[str, str],
+    central: str,
+    hubs: frozenset[str],
+) -> str | None:
+    """Walk parents until we hit On Work / On Mobility / On Reassembling Relations."""
+    x: str | None = nid
+    seen: set[str] = set()
+    while x and x != central:
+        if x in hubs:
+            return x
+        if x in seen:
+            return None
+        seen.add(x)
+        x = parent.get(x)
+    return None
+
+
+def relax_overlap_subset(
+    pos: dict[str, tuple[float, float]],
+    anchor_ids: set[str],
+    keys: list[str],
+    iterations: int = 160,
+    min_dist: float = 460.0,
+) -> None:
+    """Push apart nodes within one list only (same theme hub subtree)."""
+    movable = [k for k in keys if k not in anchor_ids]
+    for _ in range(iterations):
+        moved = False
+        for i, a in enumerate(movable):
+            for b in movable[i + 1 :]:
+                ax, ay = pos[a]
+                bx, by = pos[b]
+                dx, dy = bx - ax, by - ay
+                dist = math.hypot(dx, dy)
+                if dist >= min_dist or dist < 1e-6:
+                    continue
+                push = (min_dist - dist) / 2 + 4
+                ux, uy = dx / dist, dy / dist
+                pos[a] = (ax - ux * push, ay - uy * push)
+                pos[b] = (bx + ux * push, by + uy * push)
+                moved = True
+        if not moved:
+            break
+
+
+def relax_cross_partition(
+    pos: dict[str, tuple[float, float]],
+    anchor_ids: set[str],
+    hub_partitions: dict[str, list[str]],
+    iterations: int = 120,
+    min_dist: float = 360.0,
+) -> None:
+    """Separate nodes from different theme hubs when thumbnails collide between wedges."""
+    hubs = [h for h in HUB_ORDER if hub_partitions.get(h)]
+    for _ in range(iterations):
+        moved = False
+        for ii in range(len(hubs)):
+            for jj in range(ii + 1, len(hubs)):
+                ha, hb = hubs[ii], hubs[jj]
+                for a in hub_partitions[ha]:
+                    if a in anchor_ids:
+                        continue
+                    for b in hub_partitions[hb]:
+                        if b in anchor_ids:
+                            continue
+                        ax, ay = pos[a]
+                        bx, by = pos[b]
+                        dx, dy = bx - ax, by - ay
+                        dist = math.hypot(dx, dy)
+                        if dist >= min_dist or dist < 1e-6:
+                            continue
+                        push = (min_dist - dist) / 2 + 3
+                        ux, uy = dx / dist, dy / dist
+                        pos[a] = (ax - ux * push, ay - uy * push)
+                        pos[b] = (bx + ux * push, by + uy * push)
+                        moved = True
+        if not moved:
+            break
 
 
 def main() -> None:
@@ -118,6 +217,7 @@ def main() -> None:
     nodes = data["nodes"]
     edges = data["edges"]
     ids = {n["id"] for n in nodes}
+    parent_map = build_parent_map(edges)
     children = collect_children(edges)
 
     pos: dict[str, tuple[float, float]] = {}
@@ -172,6 +272,20 @@ def main() -> None:
         if not progressed:
             break
 
+    anchor = {CENTRAL, *HUB_ORDER}
+    # Global relaxation destroyed radial “fan from each hub” by shuffling Mobility vs Work vs Relations.
+    # Relax only within each theme subtree so nodes stay grouped under their hub but spread for thumbnails.
+    partitions_typed: dict[str, list[str]] = defaultdict(list)
+    for nid in ids:
+        if nid in anchor:
+            continue
+        th = theme_hub_for(nid, parent_map, CENTRAL, HUB_SET)
+        if th:
+            partitions_typed[th].append(nid)
+    for hid in HUB_ORDER:
+        relax_overlap_subset(pos, anchor, partitions_typed.get(hid, []))
+    relax_cross_partition(pos, anchor, dict(partitions_typed))
+
     ix = 0
     for n in nodes:
         nid = n["id"]
@@ -184,6 +298,9 @@ def main() -> None:
         x, y = pos[nid]
         n["x"] = round(x, 6)
         n["y"] = round(y, 6)
+
+    data["_layoutRevision"] = int(time.time())
+    data["_layoutAlgo"] = "hub-partition-v6-center-view-spread"
 
     PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("Wrote radial layout to", PATH)
