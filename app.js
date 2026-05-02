@@ -2952,6 +2952,44 @@ function initCustomStorymapCanvas() {
     });
   };
 
+  /** First image node in `canvas.nodes` order — matches caption “fig. 01”. */
+  const getFirstStorymapImageNodeId = () => {
+    for (const n of canvas.nodes) {
+      if (n.type === "image") return n.id;
+    }
+    return null;
+  };
+
+  /** Keep world-space rect fully inside viewport at fixed scale (best-effort if rect is larger than view). */
+  const clampInitialPanAxis = (pan, worldMin, worldMax, vDim, scale, margin) => {
+    const L = margin - worldMin * scale;
+    const U = vDim - margin - worldMax * scale;
+    if (L <= U) return Math.min(U, Math.max(L, pan));
+    return (L + U) / 2;
+  };
+
+  /** After default fit scale is applied, pan only so fig. 01 is centered (same scale). */
+  const applyInitialViewerPanToFigure01 = () => {
+    const figureId = getFirstStorymapImageNodeId();
+    if (!figureId) return;
+    const el = nodeElById(figureId);
+    if (!el) return;
+    const r = nodeWorldRectFromEl(el);
+    const vr = viewport.getBoundingClientRect();
+    const vw = Math.max(1, vr.width);
+    const vh = Math.max(1, vr.height);
+    const s = view.scale;
+    const m = 10;
+    let panX = vw / 2 - r.cx * s;
+    let panY = vh / 2 - r.cy * s;
+    panX = clampInitialPanAxis(panX, r.left, r.left + r.w, vw, s, m);
+    panY = clampInitialPanAxis(panY, r.top, r.top + r.h, vh, s, m);
+    view.panX = panX;
+    view.panY = panY;
+    updateWorldTransform();
+    drawEdges();
+  };
+
   const fitViewToRenderedNodes = (opts = {}) => {
     const initialViewer = Boolean(opts.initialViewer);
     if (!canvas.nodes.length) return;
@@ -2985,7 +3023,24 @@ function initCustomStorymapCanvas() {
     view.panY = height / 2 - graphCenterY * fittedScale;
     updateWorldTransform();
     drawEdges();
-    if (initialViewer && isViewerLike()) maybeShowStorymapNavHint();
+    if (initialViewer && isViewerLike()) {
+      applyInitialViewerPanToFigure01();
+      const fid = getFirstStorymapImageNodeId();
+      if (fid) {
+        const fel = nodeElById(fid);
+        const img = fel && fel.querySelector ? fel.querySelector(":scope > img") : null;
+        if (img && !img.complete) {
+          img.addEventListener(
+            "load",
+            () => {
+              applyInitialViewerPanToFigure01();
+            },
+            { once: true }
+          );
+        }
+      }
+      maybeShowStorymapNavHint();
+    }
   };
 
   const scheduleFitViewToRenderedNodes = (opts) => {
