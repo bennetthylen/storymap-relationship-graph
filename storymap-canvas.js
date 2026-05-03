@@ -19,6 +19,10 @@
   const ARC_OUTER = 900;
   const ARC_SPAN = (200 * Math.PI) / 180;
   const PER_RING = 9;
+  const MIN_CHILD_GAP = 20;
+  const MOBILITY_HUB = "n_011e6d0c";
+  const WORK_HUB = "n_5cd72ca5";
+  const REASSEMBLING_HUB = "n_ea58683f";
 
   // ── DOM refs ──
   const viewport = document.getElementById("storymapViewport");
@@ -28,8 +32,8 @@
   const infoPanel = document.getElementById("smInfoPanel");
   const infoTitle = document.getElementById("smInfoTitle");
   const infoBody = document.getElementById("smInfoBody");
-  const infoImage = document.getElementById("smInfoImage");
-  const infoMediaWrap = document.getElementById("smInfoMediaWrap");
+  const infoImage = document.getElementById("infoImage");
+  const infoMediaWrap = document.getElementById("infoMediaWrap");
   const infoCloseBtn = document.getElementById("smInfoClose");
   const zoomInBtn = document.getElementById("smZoomIn");
   const zoomOutBtn = document.getElementById("smZoomOut");
@@ -45,9 +49,70 @@
   let selectedId = null;
   let view = { scale: 1, panX: 0, panY: 0 };
   let panDraft = null;
+  let worldW = 0;
+  let worldH = 0;
+  /** Pending info panel close animation listener (display:none after transitionend). */
+  let infoPanelHideTransitionEnd = null;
+
+  /** Estimated layout box per node (matches CSS-driven rendering; used for spacing and edge anchors). */
+  function nodeDimensions(n) {
+    if (!n) return { w: 120, h: 80 };
+    if (n.id === CENTRAL_ID) return { w: 200, h: 320 };
+    if (HUB_SET.has(n.id)) return { w: 420, h: 54 };
+    if (n.imageSrc) return { w: 180, h: 260 };
+    return { w: 180, h: 48 };
+  }
+
+  function layoutBoundsNodes() {
+    let minx = Infinity;
+    let miny = Infinity;
+    let maxx = -Infinity;
+    let maxy = -Infinity;
+    nodes.forEach((n) => {
+      const d = nodeDimensions(n);
+      minx = Math.min(minx, n.x);
+      miny = Math.min(miny, n.y);
+      maxx = Math.max(maxx, n.x + d.w);
+      maxy = Math.max(maxy, n.y + d.h);
+    });
+    return { minx, miny, maxx, maxy };
+  }
+
+  /** Places the central node's bbox center at (worldW/2, worldH/2) and sets worldW/worldH. */
+  function recenterCentralInWorld() {
+    const central = nodes.find((n) => n.id === CENTRAL_ID);
+    if (!central) return;
+    const dc = nodeDimensions(central);
+    const b = layoutBoundsNodes();
+    const ccx = central.x + dc.w / 2;
+    const ccy = central.y + dc.h / 2;
+    const halfW = Math.max(ccx - b.minx, b.maxx - ccx);
+    const halfH = Math.max(ccy - b.miny, b.maxy - ccy);
+    const EDGE = 800;
+    const canvasW = 2 * halfW + EDGE;
+    const canvasH = 2 * halfH + EDGE;
+    const targetLeft = canvasW / 2 - dc.w / 2;
+    const targetTop = canvasH / 2 - dc.h / 2;
+    const dx = targetLeft - central.x;
+    const dy = targetTop - central.y;
+    nodes.forEach((n) => {
+      n.x = Math.round(n.x + dx);
+      n.y = Math.round(n.y + dy);
+    });
+    const b2 = layoutBoundsNodes();
+    worldW = Math.max(canvasW, b2.maxx + EDGE / 2);
+    worldH = Math.max(canvasH, b2.maxy + EDGE / 2);
+    console.log("[storymap layout] central AFTER (bbox center at world/2):", {
+      worldSize: { w: worldW, h: worldH },
+      centralTopLeft: { x: central.x, y: central.y },
+      centralCenter: { x: central.x + dc.w / 2, y: central.y + dc.h / 2 },
+    });
+  }
 
   // ── Layout ──
   function layout() {
+    worldW = 0;
+    worldH = 0;
     const ids = new Set(nodes.map((n) => n.id));
     childrenOf = {};
     parentOf = {};
@@ -65,6 +130,10 @@
       const a = HUB_ANGLES[hid];
       pos[hid] = { x: HUB_ORBIT * Math.cos(a), y: HUB_ORBIT * Math.sin(a) };
     });
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7478/ingest/7a20c658-54ad-4565-b4df-99efe61d8de8',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'ede851'},body:JSON.stringify({sessionId:'ede851',location:'storymap-canvas.js:68',message:'Hub positions calculated',data:{hubs:HUB_IDS.map(h=>({id:h,x:pos[h].x,y:pos[h].y})),centralPos:pos[CENTRAL_ID]},timestamp:Date.now(),hypothesisId:'H1a'})}).catch(()=>{});
+    // #endregion
 
     HUB_IDS.forEach((hid) => {
       const kids = (childrenOf[hid] || []).filter((c) => ids.has(c));
@@ -76,19 +145,132 @@
       const ring1 = useTwo ? kids.slice(0, PER_RING) : kids;
       const ring2 = useTwo ? kids.slice(PER_RING) : [];
 
-      // Arc center is pushed outward from the hub so children appear beyond the label
       const arcCX = hub.x + 120 * Math.cos(bearing);
       const arcCY = hub.y + 120 * Math.sin(bearing);
 
-      const placeArc = (list, r) => {
-        const n = list.length;
+      function placeRingGap(list, rStart) {
+        const listN = list.length;
+        if (!listN) return;
+        const dims = list.map((id) => nodeDimensions(nodes.find((nd) => nd.id === id)));
+        let Rcur = rStart;
+        function computeDeltas(rad) {
+          const d = [];
+          if (listN <= 1) return { deltas: d, sum: 0 };
+          for (let i = 0; i < listN - 1; i++) {
+            const chordNeed = dims[i].w / 2 + dims[i + 1].w / 2 + MIN_CHILD_GAP;
+            const x = Math.min(1, chordNeed / (2 * rad));
+            d.push(2 * Math.asin(x));
+          }
+          const sum = d.reduce((a, b) => a + b, 0);
+          return { deltas: d, sum };
+        }
+        let ag = computeDeltas(Rcur);
+        while (ag.sum > ARC_SPAN && Rcur < 4000) {
+          Rcur *= 1.06;
+          ag = computeDeltas(Rcur);
+        }
+        const deltas = ag.deltas;
+        if (listN === 1) {
+          const id = list[0];
+          const cx = arcCX + Rcur * Math.cos(bearing);
+          const cy = arcCY + Rcur * Math.sin(bearing);
+          pos[id] = { x: cx - dims[0].w / 2, y: cy - dims[0].h / 2 };
+          return;
+        }
+        const sumD = deltas.reduce((a, b) => a + b, 0);
+        let ang = bearing - sumD / 2;
         list.forEach((id, i) => {
-          const t = n === 1 ? 0 : -half + ARC_SPAN * (i / (n - 1));
-          pos[id] = { x: arcCX + r * Math.cos(bearing + t), y: arcCY + r * Math.sin(bearing + t) };
+          const cx = arcCX + Rcur * Math.cos(ang);
+          const cy = arcCY + Rcur * Math.sin(ang);
+          pos[id] = { x: cx - dims[i].w / 2, y: cy - dims[i].h / 2 };
+          if (i < listN - 1) ang += deltas[i];
         });
-      };
-      placeArc(ring1, ARC_INNER);
-      if (ring2.length) placeArc(ring2, ARC_OUTER);
+      }
+
+      if (hid === MOBILITY_HUB || hid === REASSEMBLING_HUB) {
+        const beforePts = [];
+        ring1.forEach((id, i) => {
+          const rn = ring1.length;
+          const t = rn === 1 ? 0 : -half + ARC_SPAN * (i / (rn - 1));
+          beforePts.push({
+            id,
+            arcPoint: {
+              x: arcCX + ARC_INNER * Math.cos(bearing + t),
+              y: arcCY + ARC_INNER * Math.sin(bearing + t),
+            },
+          });
+        });
+        ring2.forEach((id, i) => {
+          const rn = ring2.length;
+          const t = rn === 1 ? 0 : -half + ARC_SPAN * (i / (rn - 1));
+          beforePts.push({
+            id,
+            arcPoint: {
+              x: arcCX + ARC_OUTER * Math.cos(bearing + t),
+              y: arcCY + ARC_OUTER * Math.sin(bearing + t),
+            },
+          });
+        });
+        console.log("[storymap layout] hub " + hid + " children BEFORE (arc reference points):", beforePts);
+
+        placeRingGap(ring1, ARC_INNER);
+        if (ring2.length) placeRingGap(ring2, ARC_OUTER);
+
+        const afterLog = kids.map((id) => {
+          const node = nodes.find((x) => x.id === id);
+          const d = nodeDimensions(node);
+          return {
+            id,
+            topLeft: { x: pos[id].x, y: pos[id].y },
+            center: { x: pos[id].x + d.w / 2, y: pos[id].y + d.h / 2 },
+            size: d,
+          };
+        });
+        console.log("[storymap layout] hub " + hid + " children AFTER (bbox-aware fan):", afterLog);
+        // #region agent log
+        const childPositions = kids.map(k => ({id: k, x: pos[k].x, y: pos[k].y})); const distances = []; for(let i=0; i<childPositions.length-1; i++){for(let j=i+1; j<childPositions.length; j++){const dx=childPositions[i].x-childPositions[j].x; const dy=childPositions[i].y-childPositions[j].y; distances.push({pair:[childPositions[i].id,childPositions[j].id],dist:Math.hypot(dx,dy)});}} fetch('http://127.0.0.1:7478/ingest/7a20c658-54ad-4565-b4df-99efe61d8de8',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'ede851'},body:JSON.stringify({sessionId:'ede851',location:'storymap-canvas.js:92',message:'Child node spacing',data:{hubId:hid,kidsCount:kids.length,useTwo:useTwo,ring1Count:ring1.length,ring2Count:ring2.length,ARC_SPAN:ARC_SPAN,minDist:distances.length?Math.min(...distances.map(d=>d.dist)):null,allDistances:distances},timestamp:Date.now(),hypothesisId:'H2a,H2b,H2c'})}).catch(()=>{});
+        // #endregion
+      } else {
+        const placeArc = (list, r) => {
+          const n = list.length;
+          list.forEach((id, i) => {
+            const t = n === 1 ? 0 : -half + ARC_SPAN * (i / (n - 1));
+            pos[id] = { x: arcCX + r * Math.cos(bearing + t), y: arcCY + r * Math.sin(bearing + t) };
+          });
+        };
+        placeArc(ring1, ARC_INNER);
+        if (ring2.length) placeArc(ring2, ARC_OUTER);
+
+        if (hid === WORK_HUB) {
+          const workBefore = kids.map((id) => {
+            const inR1 = ring1.includes(id);
+            const list = inR1 ? ring1 : ring2;
+            const idx = list.indexOf(id);
+            const rn = list.length;
+            const r = inR1 ? ARC_INNER : ARC_OUTER;
+            const t = rn === 1 ? 0 : -half + ARC_SPAN * (idx / (rn - 1));
+            return {
+              id,
+              arcPoint: { x: arcCX + r * Math.cos(bearing + t), y: arcCY + r * Math.sin(bearing + t) },
+            };
+          });
+          console.log("[storymap layout] On Work children BEFORE (arc reference points):", workBefore);
+          const workAfter = kids.map((id) => {
+            const node = nodes.find((x) => x.id === id);
+            const d = nodeDimensions(node);
+            return {
+              id,
+              topLeft: { x: pos[id].x, y: pos[id].y },
+              center: { x: pos[id].x + d.w / 2, y: pos[id].y + d.h / 2 },
+            };
+          });
+          console.log("[storymap layout] On Work children AFTER (top-left placement):", workAfter);
+        }
+
+        // #region agent log
+        const childPositions = kids.map(k => ({id: k, x: pos[k].x, y: pos[k].y})); const distances = []; for(let i=0; i<childPositions.length-1; i++){for(let j=i+1; j<childPositions.length; j++){const dx=childPositions[i].x-childPositions[j].x; const dy=childPositions[i].y-childPositions[j].y; distances.push({pair:[childPositions[i].id,childPositions[j].id],dist:Math.hypot(dx,dy)});}} fetch('http://127.0.0.1:7478/ingest/7a20c658-54ad-4565-b4df-99efe61d8de8',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'ede851'},body:JSON.stringify({sessionId:'ede851',location:'storymap-canvas.js:92',message:'Child node spacing',data:{hubId:hid,kidsCount:kids.length,useTwo:useTwo,ring1Count:ring1.length,ring2Count:ring2.length,ARC_SPAN:ARC_SPAN,minDist:distances.length?Math.min(...distances.map(d=>d.dist)):null,allDistances:distances},timestamp:Date.now(),hypothesisId:'H2a,H2b,H2c'})}).catch(()=>{});
+        // #endregion
+      }
     });
 
     // Shift to positive space
@@ -106,6 +288,21 @@
         n.y = pad;
       }
     });
+
+    const centralBefore = nodes.find((n) => n.id === CENTRAL_ID);
+    if (centralBefore) {
+      const db = nodeDimensions(centralBefore);
+      console.log("[storymap layout] central BEFORE recenter", {
+        topLeft: { x: centralBefore.x, y: centralBefore.y },
+        center: { x: centralBefore.x + db.w / 2, y: centralBefore.y + db.h / 2 },
+      });
+    }
+
+    recenterCentralInWorld();
+
+    // #region agent log
+    const centralNode = nodes.find(n => n.id === CENTRAL_ID); const hubNodes = nodes.filter(n => HUB_IDS.includes(n.id)); const hubCenterX = hubNodes.reduce((s,h)=>s+h.x,0)/hubNodes.length; const hubCenterY = hubNodes.reduce((s,h)=>s+h.y,0)/hubNodes.length; fetch('http://127.0.0.1:7478/ingest/7a20c658-54ad-4565-b4df-99efe61d8de8',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'ede851'},body:JSON.stringify({sessionId:'ede851',location:'storymap-canvas.js:109',message:'Final node positions after shift',data:{centralFinalPos:{x:centralNode.x,y:centralNode.y},hubCenterPos:{x:hubCenterX,y:hubCenterY},offsetFromHubCenter:{x:centralNode.x-hubCenterX,y:centralNode.y-hubCenterY},hubFinalPos:hubNodes.map(h=>({id:h.id,x:h.x,y:h.y}))},timestamp:Date.now(),hypothesisId:'H1b'})}).catch(()=>{});
+    // #endregion
   }
 
   // ── Helpers ──
@@ -132,6 +329,13 @@
     if (h === expandedHub) return { x: n.x, y: n.y };
     const hub = nodes.find((nd) => nd.id === h);
     return hub ? { x: hub.x, y: hub.y } : { x: n.x, y: n.y };
+  }
+
+  /** World-space center of node div (left/top + half size). */
+  function edgeAnchor(n) {
+    const d = nodeDimensions(n);
+    const p = displayPos(n);
+    return { x: p.x + d.w / 2, y: p.y + d.h / 2 };
   }
 
   function isVisible(n) {
@@ -164,7 +368,7 @@
       } else if (HUB_SET.has(n.id)) {
         el.classList.add("smNode--text", "smNode--hub");
         if (n.id === expandedHub) el.classList.add("smNode--hubActive");
-      } else if (n.type === "image") {
+      } else if (n.imageSrc) {
         el.classList.add("smNode--image");
       } else {
         el.classList.add("smNode--text");
@@ -173,15 +377,15 @@
       if (selectedId === n.id) el.classList.add("smNode--selected");
 
       // Content
-      if (n.type === "image" || n.id === CENTRAL_ID) {
+      if (n.imageSrc || n.id === CENTRAL_ID) {
         imgOrd++;
         const src = n.imageSrc || n.content || "";
-        if (src && src.startsWith("data:")) {
+        if (src) {
           const img = document.createElement("img");
           img.src = src;
           img.alt = n.label || "";
           img.style.width = "100%";
-          img.style.maxWidth = "200px";
+          img.style.maxWidth = "none";
           img.style.display = "block";
           img.style.borderRadius = "3px";
           el.appendChild(img);
@@ -228,6 +432,10 @@
 
   function drawEdges() {
     edgesSvg.querySelectorAll("line").forEach((l) => l.remove());
+    
+    // #region agent log
+    const edgeSamples = [];
+    // #endregion
 
     edges.forEach((e) => {
       const s = nodes.find((n) => n.id === e.source);
@@ -238,34 +446,88 @@
 
       const sp = displayPos(s);
       const tp = displayPos(t);
-      const dx = tp.x - sp.x;
-      const dy = tp.y - sp.y;
-      const dist = Math.hypot(dx, dy) || 1;
-      const ux = dx / dist;
-      const uy = dy / dist;
+      const legDx = tp.x - sp.x;
+      const legDy = tp.y - sp.y;
+      const legDist = Math.hypot(legDx, legDy) || 1;
+      const ux = legDx / legDist;
+      const uy = legDy / legDist;
       const inset = 60;
 
+      const sa = edgeAnchor(s);
+      const ta = edgeAnchor(t);
+
+      if (HUB_SET.has(s.id) && isChild(t)) {
+        const beforePayload = {
+          hubId: s.id,
+          targetId: t.id,
+          x1: sp.x + ux * inset,
+          y1: sp.y + uy * inset,
+          x2: tp.x - ux * inset,
+          y2: tp.y - uy * inset,
+        };
+        const afterPayload = {
+          hubId: s.id,
+          targetId: t.id,
+          sourceCenter: sa,
+          targetCenter: ta,
+          x1: sa.x,
+          y1: sa.y,
+          x2: ta.x,
+          y2: ta.y,
+        };
+        if (s.id === WORK_HUB) {
+          console.log("[storymap edges] On Work edge BEFORE (top-left + inset 60)", beforePayload);
+          console.log("[storymap edges] On Work edge AFTER (node center anchors)", afterPayload);
+        }
+        if (s.id === MOBILITY_HUB || s.id === REASSEMBLING_HUB) {
+          console.log("[storymap edges] hub " + s.id + " child edge BEFORE (top-left + inset 60)", beforePayload);
+          console.log("[storymap edges] hub " + s.id + " child edge AFTER (node center anchors)", afterPayload);
+        }
+      }
+
       const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", String(sp.x + ux * inset));
-      line.setAttribute("y1", String(sp.y + uy * inset));
-      line.setAttribute("x2", String(tp.x - ux * inset));
-      line.setAttribute("y2", String(tp.y - uy * inset));
+      line.setAttribute("x1", String(sa.x));
+      line.setAttribute("y1", String(sa.y));
+      line.setAttribute("x2", String(ta.x));
+      line.setAttribute("y2", String(ta.y));
 
       if (s.id === CENTRAL_ID) line.classList.add("storymapEdge--fromCenter");
       else if (HUB_SET.has(s.id)) line.classList.add("storymapEdge--hubSpoke");
 
       edgesSvg.appendChild(line);
+      
+      // #region agent log
+      if (HUB_SET.has(s.id) && isChild(t)) {
+        edgeSamples.push({
+          source: s.id,
+          target: t.id,
+          sourceCenter: sa,
+          targetCenter: ta,
+          lineX1: sa.x,
+          lineY1: sa.y,
+          lineX2: ta.x,
+          lineY2: ta.y,
+        });
+      }
+      // #endregion
     });
+    
+    // #region agent log
+    if(edgeSamples.length>0){fetch('http://127.0.0.1:7478/ingest/7a20c658-54ad-4565-b4df-99efe61d8de8',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'ede851'},body:JSON.stringify({sessionId:'ede851',location:'storymap-canvas.js:259',message:'Edge drawing samples for hub-to-child connections',data:{samples:edgeSamples.slice(0,5),expandedHub:expandedHub},timestamp:Date.now(),hypothesisId:'H4a,H4b,H4c'})}).catch(()=>{});}
+    // #endregion
   }
 
   function sizeWorld() {
-    let maxX = 0, maxY = 0;
-    nodes.forEach((n) => {
-      if (n.x > maxX) maxX = n.x;
-      if (n.y > maxY) maxY = n.y;
-    });
-    const w = maxX + 800;
-    const h = maxY + 800;
+    let w;
+    let h;
+    if (worldW > 0 && worldH > 0) {
+      w = worldW;
+      h = worldH;
+    } else {
+      const b = layoutBoundsNodes();
+      w = b.maxx + 800;
+      h = b.maxy + 800;
+    }
     world.style.minWidth = `${w}px`;
     world.style.minHeight = `${h}px`;
     nodesLayer.style.minWidth = `${w}px`;
@@ -343,6 +605,44 @@
     showInfo(n);
   }
 
+  function finishHideInfoPanel() {
+    if (!infoPanel) return;
+    if (infoPanelHideTransitionEnd) {
+      infoPanel.removeEventListener("transitionend", infoPanelHideTransitionEnd);
+      infoPanelHideTransitionEnd = null;
+    }
+    infoPanel.classList.remove("smInfoPanel--closing", "smInfoPanel--open");
+    infoPanel.style.display = "none";
+    infoPanel.setAttribute("aria-hidden", "true");
+    infoPanel.classList.remove("smInfoPanel--withImage");
+    if (infoImage) infoImage.removeAttribute("src");
+    if (infoTitle) infoTitle.textContent = "";
+    if (infoBody) infoBody.textContent = "";
+    if (infoMediaWrap) infoMediaWrap.hidden = true;
+    selectedId = null;
+  }
+
+  function revealInfoPanel() {
+    if (!infoPanel) return;
+    if (infoPanelHideTransitionEnd) {
+      infoPanel.removeEventListener("transitionend", infoPanelHideTransitionEnd);
+      infoPanelHideTransitionEnd = null;
+    }
+    const wasOpen = infoPanel.classList.contains("smInfoPanel--open");
+    infoPanel.style.display = "flex";
+    infoPanel.setAttribute("aria-hidden", "false");
+    infoPanel.classList.remove("smInfoPanel--closing");
+    if (!wasOpen) {
+      infoPanel.classList.remove("smInfoPanel--open");
+      void infoPanel.offsetHeight;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          infoPanel.classList.add("smInfoPanel--open");
+        });
+      });
+    }
+  }
+
   function showInfo(n) {
     if (!infoPanel) return;
 
@@ -356,8 +656,9 @@
     if (infoTitle) infoTitle.textContent = n.label || "";
     if (infoBody) infoBody.textContent = n.text || "";
 
-    const src = n.type === "image" ? (n.imageSrc || n.content || "") : "";
-    if (src && src.startsWith("data:") && infoImage && infoMediaWrap) {
+    const src = n.imageSrc || "";
+
+    if (src && infoImage && infoMediaWrap) {
       infoImage.src = src;
       infoMediaWrap.hidden = false;
       infoPanel.classList.add("smInfoPanel--withImage");
@@ -366,18 +667,30 @@
       if (infoImage) infoImage.removeAttribute("src");
       infoPanel.classList.remove("smInfoPanel--withImage");
     }
-    infoPanel.setAttribute("aria-hidden", "false");
+    revealInfoPanel();
   }
 
   function hideInfo() {
     if (!infoPanel) return;
-    infoPanel.setAttribute("aria-hidden", "true");
-    infoPanel.classList.remove("smInfoPanel--withImage");
-    if (infoImage) infoImage.removeAttribute("src");
-    if (infoTitle) infoTitle.textContent = "";
-    if (infoBody) infoBody.textContent = "";
-    if (infoMediaWrap) infoMediaWrap.hidden = true;
-    selectedId = null;
+    if (infoPanel.classList.contains("smInfoPanel--closing")) return;
+    if (!infoPanel.classList.contains("smInfoPanel--open")) {
+      finishHideInfoPanel();
+      return;
+    }
+    if (infoPanelHideTransitionEnd) {
+      infoPanel.removeEventListener("transitionend", infoPanelHideTransitionEnd);
+      infoPanelHideTransitionEnd = null;
+    }
+    infoPanel.classList.remove("smInfoPanel--open");
+    infoPanel.classList.add("smInfoPanel--closing");
+    infoPanelHideTransitionEnd = (e) => {
+      if (e.target !== infoPanel) return;
+      if (e.propertyName !== "opacity") return;
+      infoPanel.removeEventListener("transitionend", infoPanelHideTransitionEnd);
+      infoPanelHideTransitionEnd = null;
+      finishHideInfoPanel();
+    };
+    infoPanel.addEventListener("transitionend", infoPanelHideTransitionEnd);
   }
 
   // ── Events ──

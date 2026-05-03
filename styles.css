@@ -146,12 +146,6 @@ body.lang-ar #jsStatus {
     box-shadow 0.32s ease;
 }
 
-.siteNav.siteNav--scrolled {
-  background: rgba(249, 243, 235, 0.94);
-  border-bottom-color: rgba(var(--wmf-gold-rgb), 0.35);
-  box-shadow: var(--shadow-soft);
-}
-
 .siteNav__brand {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-weight: 600;
@@ -320,48 +314,33 @@ body.lang-ar #jsStatus {
   gap: 8px 14px;
   row-gap: 10px;
   padding: 10px clamp(12px, 2.8vw, 22px);
-  background: transparent;
   border-bottom: none;
   backdrop-filter: none;
-  transition: none;
 }
 
-.siteNav--archive.siteNav--scrolled {
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
-}
-
-/* Same solid fill as the page behind it so scrolling copy never shows through the bar. */
-body.theme-archive:not(.page-home) .siteNav--archive,
-body.theme-archive:not(.page-home) .siteNav--archive.siteNav--scrolled {
+body.theme-archive:not(.page-home) .siteNav--archive {
   background: var(--archive-bg);
+  box-shadow: 0 1px 0 rgba(60, 27, 22, 0.08);
 }
 
-body.theme-archive.page-home .siteNav--archive,
-body.theme-archive.page-home .siteNav--archive.siteNav--scrolled {
+body.theme-archive.page-home .siteNav--archive {
   background: var(--home-bg);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
 }
 
-body.theme-storymap .siteNav--archive,
-body.theme-storymap .siteNav--archive.siteNav--scrolled {
+body.theme-storymap .siteNav--archive {
   background: var(--storymap-bg);
-  backdrop-filter: none;
-  border-bottom: none;
-  box-shadow: none;
+  box-shadow: 0 1px 0 rgba(15, 24, 36, 0.08);
 }
 
-body[data-mode="discussion"] .siteNav--archive,
-body[data-mode="discussion"] .siteNav--archive.siteNav--scrolled {
+body[data-mode="discussion"] .siteNav--archive {
   background: var(--discussion-bg);
-  backdrop-filter: none;
-  border-bottom: none;
-  box-shadow: none;
+  box-shadow: 0 1px 0 rgba(60, 27, 22, 0.08);
 }
 
-body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .siteNav--archive,
-body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .siteNav--archive.siteNav--scrolled {
+body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .siteNav--archive {
   background: var(--wmf-cream);
+  box-shadow: var(--shadow-soft);
 }
 
 .siteNav__brandLink {
@@ -382,6 +361,9 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sit
   gap: 0;
   text-align: start;
   min-width: 0;
+  max-width: min(42vw, 22rem);
+  opacity: 1;
+  overflow: hidden;
 }
 
 .siteNav__brandPrimary {
@@ -403,10 +385,16 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sit
 }
 
 .siteNav__logo {
-  height: clamp(36px, 4.2vw, 52px);
-  width: auto;
   display: block;
   flex-shrink: 0;
+  width: auto;
+  height: auto;
+}
+
+/* Archive bar: logo ~½ prior clamp so it scales with the “Doing Well…” title band. */
+.siteNav--archive .siteNav__logo {
+  height: clamp(26px, 3.5vw, 44px);
+  width: auto;
 }
 
 .siteNav__end {
@@ -841,9 +829,9 @@ body[data-mode="history"].theme-archive .siteNav__langMenu {
 }
 
 /* Override archive subpage nav bar (higher specificity than body.theme-archive:not(.page-home) .siteNav--archive) */
-body[data-mode="history"].theme-archive:not(.page-home) .siteNav--archive,
-body[data-mode="history"].theme-archive:not(.page-home) .siteNav--archive.siteNav--scrolled {
+body[data-mode="history"].theme-archive:not(.page-home) .siteNav--archive {
   background: var(--history-field);
+  box-shadow: 0 1px 0 rgba(60, 27, 22, 0.1);
 }
 
 body[data-mode="history"] .siteNav--archive .siteNav__primary .siteNav__tab {
@@ -3135,6 +3123,45 @@ body.theme-archive.page-home .homePageBuffer {
   color: var(--text);
   white-space: pre-wrap;
   box-shadow: none;
+}
+
+.historyPage__heading {
+  margin: 0 0 1rem;
+  max-width: min(52rem, 100%);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  color: var(--discussion-blue);
+}
+
+.historyPage__subheading {
+  margin: clamp(1.75rem, 4vw, 2.5rem) 0 0.85rem;
+  max-width: min(52rem, 100%);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  color: var(--discussion-blue);
+}
+
+.historyPage__prose {
+  max-width: min(52rem, 100%);
+  line-height: 1.85;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.historyPage__prose p {
+  margin: 0 0 1.1em;
+}
+
+.historyPage__prose p:last-child {
+  margin-bottom: 0;
 }
 
 .discussionPage {

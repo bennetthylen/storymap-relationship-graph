@@ -289,6 +289,15 @@ body.layout--storymapPreview .storymapAdminPanel {
   z-index: 4;
 }
 
+/* Leaf catalog stamps: same width as image cards + layout `nodeDimensions` (180px) */
+.smNode--text:not(.smNode--hub):not(.smNode--central) {
+  max-width: min(180px, 94vw);
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+}
+
 /* —— Central colophon —— */
 .smNode--text.smNode--central {
   width: max-content;
@@ -411,8 +420,6 @@ body.layout--storymapPreview .storymapAdminPanel {
   padding: 0;
   border-radius: 0;
   box-shadow: none;
-  width: auto;
-  min-width: 104px;
   min-height: 82px;
   aspect-ratio: auto;
   position: relative;
@@ -420,6 +427,19 @@ body.layout--storymapPreview .storymapAdminPanel {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
+
+.smNode--image:not(.smNode--central) {
+  /* Match leaf text stamp width (`nodeDimensions` text = 180) */
+  width: 180px;
+  max-width: min(180px, 94vw);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.smNode--image.smNode--central {
+  width: auto;
+  min-width: 104px;
 }
 
 .smNode--image img {
@@ -525,54 +545,44 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoPanel {
   position: fixed;
-  top: var(--sm-info-panel-top, 12px);
-  bottom: var(--sm-info-panel-bottom, 12px);
-  right: 12px;
-  left: auto;
-  width: min(50vw, calc(100vw - 24px));
-  max-width: min(720px, calc(100vw - 24px));
-  max-height: none;
-  overflow: auto;
-  background: var(--sm-arch-paper);
-  border-radius: 0;
-  border: 0.5px solid color-mix(in srgb, var(--sm-arch-ink) 28%, transparent);
-  box-shadow: none;
-  padding: 12px 12px 14px;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  overflow: hidden;
+  background: #f5f0e8;
   display: none;
-  z-index: 55;
-  box-sizing: border-box;
-}
-
-.smInfoPanel[aria-hidden="false"] {
-  display: block;
-}
-
-.smInfoPanel__inner {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  align-items: stretch;
-}
-
-.smInfoPanel--withImage .smInfoPanel__inner {
   flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 250ms ease-out,
+    transform 250ms ease-out;
 }
 
-.smInfoPanel__media {
-  flex: 0 1 auto;
-  min-width: 0;
-  max-width: min(100%, 46vw);
+.smInfoPanel.smInfoPanel--open {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.smInfoPanel__copy {
-  flex: 1 1 min(200px, 100%);
-  min-width: 0;
+.smInfoPanel.smInfoPanel--closing {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 200ms ease-in,
+    transform 200ms ease-in;
 }
 
 .smInfoClose {
-  float: right;
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1001;
+  float: none;
   border: 0.5px solid color-mix(in srgb, var(--sm-arch-ink) 35%, transparent);
   border-radius: 0;
   background: var(--sm-arch-bg);
@@ -580,6 +590,83 @@ body.layout--storymapPreview .storymapAdminPanel {
   cursor: pointer;
   width: 30px;
   height: 30px;
+}
+
+.smInfoPanel__row {
+  flex: 1 1 auto;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.smInfoPanel__col--media {
+  flex: 0 0 50%;
+  width: 50%;
+  max-width: 50%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f0e8;
+  overflow: hidden;
+}
+
+.smInfoPanel__col--copy {
+  flex: 0 0 50%;
+  width: 50%;
+  max-width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px;
+  overflow: hidden;
+  text-align: right;
+  min-width: 0;
+}
+
+#infoMediaWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+#infoImage {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.smInfoPanel__copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .smInfoTitle {
@@ -604,7 +691,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoBody {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: clamp(12px, 1.4vw, 16px);
   font-weight: 600;
   color: var(--sm-arch-ink);
   line-height: 1.68;
@@ -618,7 +705,7 @@ body.layout--storymapPreview .storymapAdminPanel {
 
 .smInfoImage {
   display: block;
-  width: auto;
+  width: 100%;
   height: auto;
   max-width: 100%;
   max-height: min(
@@ -639,16 +726,6 @@ body.layout--storymapPreview .storymapAdminPanel {
 .smInfoImage.smInfoImage--enter {
   opacity: 1;
   transform: none;
-}
-
-@media (max-width: 540px) {
-  .smInfoPanel--withImage .smInfoPanel__inner {
-    flex-direction: column;
-  }
-
-  .smInfoPanel__media {
-    max-width: 100%;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

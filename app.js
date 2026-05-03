@@ -5924,19 +5924,6 @@ function initHeroParallax() {
   onScroll();
 }
 
-/** Cream navbar “fills in” after a little scroll (visual only). */
-function initNavScrollClass() {
-  const nav = document.querySelector(".siteNav");
-  if (!nav) return;
-  const threshold = 12;
-  const apply = () => {
-    const y = window.scrollY || window.pageYOffset || 0;
-    nav.classList.toggle("siteNav--scrolled", y > threshold);
-  };
-  window.addEventListener("scroll", apply, { passive: true });
-  apply();
-}
-
 function initContentEditorPanel() {
   if (!el.btnSaveContentConfig) return;
   const cfg = loadContentConfig();
@@ -6096,7 +6083,6 @@ window.addEventListener("error", (evt) => {
     syncCanvasToPublishedRelease();
     initScrollReveals();
     initHeroParallax();
-    initNavScrollClass();
     initContentEditorPanel();
     await initDiscussionBoard();
     initDiscussionAdminControls();

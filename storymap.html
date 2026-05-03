@@ -149,28 +149,33 @@
             <div id="storymapNodes" class="storymapNodes"></div>
           </div>
         </div>
-        <aside id="smInfoPanel" class="smInfoPanel" aria-hidden="true">
-          <button
-            id="smInfoClose"
-            class="smInfoClose"
-            type="button"
-            data-i18n-aria-label="ariaCloseNodeInfo"
-            aria-label="Close node info"
-          >
-            X
-          </button>
-          <div class="smInfoPanel__inner">
-            <div id="smInfoMediaWrap" class="smInfoPanel__media" hidden>
-              <img id="smInfoImage" class="smInfoImage" alt="" />
-            </div>
-            <div class="smInfoPanel__copy">
-              <h3 id="smInfoTitle" class="smInfoTitle"></h3>
-              <p id="smInfoBody" class="smInfoBody"></p>
-            </div>
-          </div>
-        </aside>
       </section>
     </main>
+
+    <aside id="smInfoPanel" class="smInfoPanel" aria-hidden="true">
+      <button
+        id="smInfoClose"
+        class="smInfoClose"
+        type="button"
+        data-i18n-aria-label="ariaCloseNodeInfo"
+        aria-label="Close node info"
+      >
+        X
+      </button>
+      <div class="smInfoPanel__row">
+        <div class="smInfoPanel__col smInfoPanel__col--media">
+          <div id="infoMediaWrap" hidden>
+            <img id="infoImage" alt="" />
+          </div>
+        </div>
+        <div class="smInfoPanel__col smInfoPanel__col--copy">
+          <div class="smInfoPanel__copy">
+            <h3 id="smInfoTitle" class="smInfoTitle"></h3>
+            <p id="smInfoBody" class="smInfoBody"></p>
+          </div>
+        </div>
+      </div>
+    </aside>
 
     <div
       id="storymapWelcome"
@@ -215,6 +220,6 @@
     <script src="./canvas-nodes-i18n.js?v=20260501"></script>
     <script>window.__storymapCanvasStandalone = true;</script>
     <script src="./app.js?v=20260502clean-radial5"></script>
-    <script src="./storymap-canvas.js?v=20260502v7"></script>
+    <script src="./storymap-canvas.js?v=20260502debug1"></script>
   </body>
 </html>
