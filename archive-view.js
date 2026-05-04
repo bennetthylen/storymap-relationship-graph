@@ -569,9 +569,9 @@
     gridEl.innerHTML = "";
     const hub = hubsData.find((x) => x.id === activeHubId);
 
-    // ORR uses a masonry-style column layout so cards flow around the very tall
-    // "Shahenda's Letter to Reem"; other hubs keep the regular grid.
-    const masonry = !!(hub && hub.slug === "reassembling");
+    // Mobility + ORR use a masonry-style column layout so tall cards (e.g.
+    // "Shahenda's Letter to Reem") don't leave gaps; On Work keeps the regular grid.
+    const masonry = !!(hub && (hub.slug === "reassembling" || hub.slug === "mobility"));
     gridEl.classList.toggle("archiveGrid--masonry", masonry);
     if (masonry) bindMasonryResize();
 
