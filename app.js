@@ -1044,6 +1044,7 @@ const el = {
   discussionAdminClearHint: document.getElementById("discussionAdminClearHint"),
   discussionTitle: document.getElementById("discussionTitle"),
   discussionDescription: document.getElementById("discussionDescription"),
+  discussionAuthor: document.getElementById("discussionAuthor"),
   discussionPostBtn: document.getElementById("discussionPostBtn"),
   discussionPosts: document.getElementById("discussionPosts"),
   discussionBackendNote: document.getElementById("discussionBackendNote"),
@@ -1112,25 +1113,145 @@ function formatTimestamp(value) {
 let discussionSupabaseClient = null;
 let discussionRemoteEnabled = false;
 
+/**
+ * Returns a flat array of threaded comments. Each entry has parent_id (null for
+ * top-level threads). Migrates the legacy `{title, description, replies[]}` shape
+ * forward so existing data keeps working.
+ */
 function normalizeDiscussionPosts(rawList) {
   if (!Array.isArray(rawList)) return [];
-  return rawList
-    .filter((post) => post && typeof post === "object")
-    .map((post) => ({
-      id: Number(post.id) || Date.now(),
-      title: String(post.title || "").trim(),
-      description: String(post.description || "").trim(),
-      timestamp: Number(post.timestamp) || Date.now(),
-      replies: Array.isArray(post.replies)
-        ? post.replies
-            .filter((reply) => reply && typeof reply === "object")
-            .map((reply) => ({
-              id: Number(reply.id) || Date.now(),
-              text: String(reply.text || "").trim(),
-              timestamp: Number(reply.timestamp) || Date.now(),
-            }))
-        : [],
-    }));
+  const out = [];
+  const seen = new Set();
+  let auto = 1;
+  const nextId = () => {
+    let id = Date.now() + auto;
+    while (seen.has(id)) id += 1;
+    auto += 1;
+    seen.add(id);
+    return id;
+  };
+  for (const item of rawList) {
+    if (!item || typeof item !== "object") continue;
+    // Legacy shape (top-level "post" with embedded replies array).
+    if ("description" in item || Array.isArray(item.replies)) {
+      const postId = Number(item.id) || nextId();
+      seen.add(postId);
+      out.push({
+        id: postId,
+        parent_id: null,
+        title: String(item.title || "").trim(),
+        body: String(item.description || item.body || "").trim(),
+        author: String(item.author || "").trim() || "Anonymous",
+        country: cleanCountryCode(item.country),
+        timestamp: Number(item.timestamp) || Date.now(),
+        edited: !!item.edited,
+      });
+      if (Array.isArray(item.replies)) {
+        for (const r of item.replies) {
+          if (!r || typeof r !== "object") continue;
+          const rid = Number(r.id) || nextId();
+          seen.add(rid);
+          out.push({
+            id: rid,
+            parent_id: postId,
+            title: "",
+            body: String(r.text || r.body || "").trim(),
+            author: String(r.author || "").trim() || "Anonymous",
+            country: cleanCountryCode(r.country),
+            timestamp: Number(r.timestamp) || Date.now(),
+            edited: !!r.edited,
+          });
+        }
+      }
+      continue;
+    }
+    // New shape (flat).
+    const id = Number(item.id) || nextId();
+    seen.add(id);
+    const parent = item.parent_id == null ? null : Number(item.parent_id) || null;
+    out.push({
+      id,
+      parent_id: parent,
+      title: String(item.title || "").trim(),
+      body: String(item.body || "").trim(),
+      author: String(item.author || "").trim() || "Anonymous",
+      country: cleanCountryCode(item.country),
+      timestamp: Number(item.timestamp) || Date.now(),
+      edited: !!item.edited,
+    });
+  }
+  return out;
+}
+
+function cleanCountryCode(raw) {
+  const s = String(raw || "")
+    .trim()
+    .toUpperCase();
+  if (!/^[A-Z]{2}$/.test(s)) return null;
+  return s;
+}
+
+const VIEWER_COUNTRY_KEY = "storymapViewerCountryV1";
+
+async function getViewerCountry() {
+  try {
+    const cached = sessionStorage.getItem(VIEWER_COUNTRY_KEY);
+    if (cached === "_none_") return null;
+    if (cached) return cleanCountryCode(cached);
+  } catch {
+    /* ignore */
+  }
+  try {
+    const r = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+    if (!r.ok) throw new Error("geo lookup failed: " + r.status);
+    const j = await r.json();
+    const code = cleanCountryCode(j && (j.country_code || j.country));
+    try {
+      sessionStorage.setItem(VIEWER_COUNTRY_KEY, code || "_none_");
+    } catch {
+      /* ignore */
+    }
+    return code;
+  } catch (err) {
+    console.warn("[discussion] country lookup failed:", err);
+    try {
+      sessionStorage.setItem(VIEWER_COUNTRY_KEY, "_none_");
+    } catch {
+      /* ignore */
+    }
+    return null;
+  }
+}
+
+function buildCommentTree(flat) {
+  const byId = new Map();
+  const nodes = (flat || []).map((c) => ({ ...c, children: [] }));
+  nodes.forEach((c) => byId.set(c.id, c));
+  const roots = [];
+  nodes.forEach((c) => {
+    if (c.parent_id != null && byId.has(c.parent_id)) {
+      byId.get(c.parent_id).children.push(c);
+    } else {
+      roots.push(c);
+    }
+  });
+  return roots;
+}
+
+/** Remove a comment and any descendants from a flat list. */
+function deleteCommentCascade(flat, idToDelete) {
+  const ids = new Set([idToDelete]);
+  let added = true;
+  while (added) {
+    added = false;
+    for (const c of flat) {
+      if (!ids.has(c.id) && c.parent_id != null && ids.has(c.parent_id)) {
+        ids.add(c.id);
+        added = true;
+      }
+    }
+  }
+  return flat.filter((c) => !ids.has(c.id));
 }
 
 function loadDiscussionsLocal() {
@@ -4607,74 +4728,82 @@ let selected = null; // { kind: 'node'|'edge', id: string }
 let connectDraft = null;
 let discussionState = [];
 
+function renderCommentNode(node, depth, isAdmin) {
+  const flagHtml = node.country
+    ? `<img class="discussionComment__flag" src="https://flagcdn.com/w40/${escapeHtml(
+        node.country.toLowerCase()
+      )}.png" srcset="https://flagcdn.com/w80/${escapeHtml(
+        node.country.toLowerCase()
+      )}.png 2x" alt="${escapeHtml(node.country)}" loading="lazy" decoding="async" width="20" height="14" />`
+    : "";
+  const titleHtml =
+    depth === 0 && node.title
+      ? `<h2 class="discussionComment__title">${escapeHtml(node.title)}</h2>`
+      : "";
+  const editedTag = node.edited
+    ? `<span class="discussionComment__edited">${escapeHtml(t("discussionEdited") || "edited")}</span>`
+    : "";
+  const adminButtons = isAdmin
+    ? `
+        <button class="discussionComment__action discussionComment__editBtn" data-comment-id="${node.id}" type="button">${escapeHtml(
+          t("discussionEdit") || "Edit"
+        )}</button>
+        <button class="discussionComment__action discussionComment__deleteBtn" data-comment-id="${node.id}" type="button">${escapeHtml(
+          t("discussionDelete") || "Delete"
+        )}</button>`
+    : "";
+  const sortedChildren = [...node.children].sort((a, b) => a.timestamp - b.timestamp);
+  const childrenHtml = sortedChildren
+    .map((c) => renderCommentNode(c, depth + 1, isAdmin))
+    .join("");
+  return `
+    <article class="discussionComment ${depth === 0 ? "discussionComment--root" : "discussionComment--reply"}" data-comment-id="${node.id}" data-depth="${depth}">
+      <header class="discussionComment__header">
+        ${flagHtml}
+        <span class="discussionComment__author">${escapeHtml(node.author || "Anonymous")}</span>
+        <time class="discussionComment__time" datetime="${escapeHtml(new Date(node.timestamp).toISOString())}">${escapeHtml(
+          formatTimestamp(node.timestamp)
+        )}</time>
+        ${editedTag}
+      </header>
+      ${titleHtml}
+      <div class="discussionComment__body" data-comment-body="${node.id}">${escapeHtml(node.body)}</div>
+      <div class="discussionComment__actions">
+        <button class="discussionComment__action discussionComment__replyBtn" data-comment-id="${node.id}" type="button">${escapeHtml(
+          t("discussionReply") || "Reply"
+        )}</button>
+        ${adminButtons}
+      </div>
+      <div class="discussionComment__inlineComposer" data-reply-for="${node.id}" hidden></div>
+      ${
+        sortedChildren.length
+          ? `<div class="discussionComment__children">${childrenHtml}</div>`
+          : ""
+      }
+    </article>
+  `;
+}
+
 function renderDiscussionBoard({ animatePostId = null } = {}) {
   if (!el.discussionPosts) return;
-  const orderedPosts = [...discussionState].sort((a, b) => b.timestamp - a.timestamp);
-  if (!orderedPosts.length) {
+  const isAdmin = isAdminUnlocked();
+  el.discussionPosts.classList.toggle("discussionPosts--admin", isAdmin);
+  const tree = buildCommentTree(discussionState);
+  if (!tree.length) {
     el.discussionPosts.innerHTML = `
-      <article class="discussionPost discussionPost--empty">
+      <article class="discussionComment discussionComment--empty">
         <p class="muted">${escapeHtml(t("discussionEmpty"))}</p>
       </article>
     `;
     return;
   }
-
-  el.discussionPosts.innerHTML = orderedPosts
-    .map((post) => {
-      const replies = Array.isArray(post.replies) ? post.replies : [];
-      const repliesHtml = replies.length
-        ? replies
-            .sort((a, b) => a.timestamp - b.timestamp)
-            .map(
-              (reply) => `
-                <li class="discussionReplyItem">
-                  <p>${escapeHtml(reply.text)}</p>
-                  <time datetime="${escapeHtml(new Date(reply.timestamp).toISOString())}">${escapeHtml(
-                    formatTimestamp(reply.timestamp)
-                  )}</time>
-                </li>
-              `
-            )
-            .join("")
-        : `<li class="discussionReplyItem discussionReplyItem--empty"><p class="muted">${escapeHtml(
-            t("discussionNoReplies")
-          )}</p></li>`;
-      return `
-        <article class="discussionPost" data-post-id="${post.id}">
-          <header class="discussionPost__header">
-            <h2>${escapeHtml(post.title)}</h2>
-            <time datetime="${escapeHtml(new Date(post.timestamp).toISOString())}">${escapeHtml(
-              formatTimestamp(post.timestamp)
-            )}</time>
-          </header>
-          <p class="discussionPost__description">${escapeHtml(post.description)}</p>
-          <ul class="discussionReplies">${repliesHtml}</ul>
-          <div class="discussionPost__actions">
-            <button class="btn btn--secondary discussionReplyToggleBtn" type="button" data-post-id="${post.id}">${escapeHtml(
-              t("discussionReply")
-            )}</button>
-          </div>
-          <div class="discussionReplyComposer" data-post-id="${post.id}" hidden>
-            <div class="field">
-              <label for="discussionReplyInput-${post.id}">${escapeHtml(t("discussionAddReply"))}</label>
-              <textarea id="discussionReplyInput-${post.id}" class="discussionReplyInput" data-post-id="${
-                post.id
-              }" rows="2" placeholder="${escapeHtml(t("discussionReplyPlaceholder"))}"></textarea>
-            </div>
-            <div class="actions">
-              <button class="btn discussionReplySubmitBtn" type="button" data-post-id="${post.id}">${escapeHtml(
-                t("discussionPostReply")
-              )}</button>
-            </div>
-          </div>
-        </article>
-      `;
-    })
+  const ordered = tree.sort((a, b) => b.timestamp - a.timestamp);
+  el.discussionPosts.innerHTML = ordered
+    .map((node) => renderCommentNode(node, 0, isAdmin))
     .join("");
-
-  if (animatePostId !== null) {
-    const node = el.discussionPosts.querySelector(`[data-post-id="${animatePostId}"]`);
-    if (node) node.classList.add("discussionPost--new");
+  if (animatePostId != null) {
+    const node = el.discussionPosts.querySelector(`[data-comment-id="${animatePostId}"]`);
+    if (node) node.classList.add("discussionComment--new");
   }
 }
 
@@ -4701,16 +4830,29 @@ async function initDiscussionBoard() {
   }
   updateDiscussionBackendNotice();
   renderDiscussionBoard();
+  // Warm the country cache in the background so the first post is fast.
+  void getViewerCountry();
 
   on(el.discussionPostBtn, "click", async () => {
     const title = el.discussionTitle ? el.discussionTitle.value.trim() : "";
-    const description = el.discussionDescription ? el.discussionDescription.value.trim() : "";
-    if (!title || !description) {
+    const body = el.discussionDescription ? el.discussionDescription.value.trim() : "";
+    const author = el.discussionAuthor ? el.discussionAuthor.value.trim() : "";
+    if (!body) {
       setStatus(t("statusDiscussionPostMissing"), { isError: true });
       return;
     }
+    const country = await getViewerCountry();
     const now = Date.now();
-    const post = { id: now, title, description, timestamp: now, replies: [] };
+    const post = {
+      id: now,
+      parent_id: null,
+      title,
+      body,
+      author: author || "Anonymous",
+      country,
+      timestamp: now,
+      edited: false,
+    };
     discussionState = [post, ...discussionState];
     const saved = await persistDiscussions(discussionState);
     if (!saved) {
@@ -4724,50 +4866,177 @@ async function initDiscussionBoard() {
   });
 
   on(el.discussionPosts, "click", async (evt) => {
-    const toggleBtn = evt.target && evt.target.closest ? evt.target.closest(".discussionReplyToggleBtn") : null;
-    if (toggleBtn) {
-      const postId = Number(toggleBtn.getAttribute("data-post-id"));
-      if (!postId) return;
-      const composer = el.discussionPosts.querySelector(`.discussionReplyComposer[data-post-id="${postId}"]`);
+    const target = evt.target;
+    if (!target || !target.closest) return;
+
+    // ── Reply toggle ───────────────────────────────────────────────
+    const replyBtn = target.closest(".discussionComment__replyBtn");
+    if (replyBtn) {
+      const cid = Number(replyBtn.getAttribute("data-comment-id"));
+      const composer = el.discussionPosts.querySelector(
+        `.discussionComment__inlineComposer[data-reply-for="${cid}"]`
+      );
       if (!composer) return;
-      const isOpen = !composer.hasAttribute("hidden");
-      if (isOpen) {
+      if (!composer.hasAttribute("hidden")) {
         composer.setAttribute("hidden", "");
-      } else {
-        composer.removeAttribute("hidden");
-        const input = composer.querySelector(".discussionReplyInput");
-        if (input) input.focus();
+        composer.innerHTML = "";
+        return;
+      }
+      composer.innerHTML = `
+        <div class="field">
+          <label>${escapeHtml(t("discussionReplyAuthorLabel") || "Name (optional)")}
+            <input type="text" class="discussionReplyAuthor" maxlength="80" placeholder="${escapeHtml(
+              t("discussionReplyAuthorPlaceholder") || "Anonymous"
+            )}" />
+          </label>
+        </div>
+        <div class="field">
+          <label>${escapeHtml(t("discussionAddReply") || "Add a reply")}
+            <textarea class="discussionReplyInput" rows="2" placeholder="${escapeHtml(
+              t("discussionReplyPlaceholder") || "Write your reply"
+            )}"></textarea>
+          </label>
+        </div>
+        <div class="actions">
+          <button class="btn discussionReplySubmitBtn" data-comment-id="${cid}" type="button">${escapeHtml(
+            t("discussionPostReply") || "Post reply"
+          )}</button>
+          <button class="btn btn--secondary discussionReplyCancelBtn" data-comment-id="${cid}" type="button">${escapeHtml(
+            t("loginCancel") || "Cancel"
+          )}</button>
+        </div>
+      `;
+      composer.removeAttribute("hidden");
+      const input = composer.querySelector(".discussionReplyInput");
+      if (input) input.focus();
+      return;
+    }
+
+    const cancelBtn = target.closest(".discussionReplyCancelBtn");
+    if (cancelBtn) {
+      const cid = Number(cancelBtn.getAttribute("data-comment-id"));
+      const composer = el.discussionPosts.querySelector(
+        `.discussionComment__inlineComposer[data-reply-for="${cid}"]`
+      );
+      if (composer) {
+        composer.setAttribute("hidden", "");
+        composer.innerHTML = "";
       }
       return;
     }
 
-    const submitBtn = evt.target && evt.target.closest ? evt.target.closest(".discussionReplySubmitBtn") : null;
-    if (!submitBtn) return;
-    const postId = Number(submitBtn.getAttribute("data-post-id"));
-    if (!postId) return;
-    const composer = el.discussionPosts.querySelector(`.discussionReplyComposer[data-post-id="${postId}"]`);
-    const input = composer ? composer.querySelector(".discussionReplyInput") : null;
-    const text = input ? String(input.value || "").trim() : "";
-    if (!text) {
-      setStatus(t("statusReplyEmpty"), { isError: true });
-      return;
-    }
-    const replyNow = Date.now();
-    discussionState = discussionState.map((post) => {
-      if (post.id !== postId) return post;
-      const replies = Array.isArray(post.replies) ? post.replies : [];
-      return {
-        ...post,
-        replies: [...replies, { id: replyNow, text, timestamp: replyNow }],
+    const submitBtn = target.closest(".discussionReplySubmitBtn");
+    if (submitBtn) {
+      const parentId = Number(submitBtn.getAttribute("data-comment-id"));
+      const composer = el.discussionPosts.querySelector(
+        `.discussionComment__inlineComposer[data-reply-for="${parentId}"]`
+      );
+      if (!composer) return;
+      const input = composer.querySelector(".discussionReplyInput");
+      const authorInput = composer.querySelector(".discussionReplyAuthor");
+      const body = input ? String(input.value || "").trim() : "";
+      const author = authorInput ? authorInput.value.trim() : "";
+      if (!body) {
+        setStatus(t("statusReplyEmpty"), { isError: true });
+        return;
+      }
+      const country = await getViewerCountry();
+      const now = Date.now();
+      const reply = {
+        id: now,
+        parent_id: parentId,
+        title: "",
+        body,
+        author: author || "Anonymous",
+        country,
+        timestamp: now,
+        edited: false,
       };
-    });
-    const saved = await persistDiscussions(discussionState);
-    if (!saved) {
-      setStatus(t("statusReplySaveFail"), { isError: true });
+      discussionState = [...discussionState, reply];
+      const saved = await persistDiscussions(discussionState);
+      if (!saved) {
+        setStatus(t("statusReplySaveFail"), { isError: true });
+        return;
+      }
+      renderDiscussionBoard();
+      setStatus("");
       return;
     }
-    renderDiscussionBoard();
-    setStatus("");
+
+    // ── Admin: edit ────────────────────────────────────────────────
+    const editBtn = target.closest(".discussionComment__editBtn");
+    if (editBtn && isAdminUnlocked()) {
+      const cid = Number(editBtn.getAttribute("data-comment-id"));
+      const article = el.discussionPosts.querySelector(`.discussionComment[data-comment-id="${cid}"]`);
+      const bodyEl = article ? article.querySelector(`[data-comment-body="${cid}"]`) : null;
+      const node = discussionState.find((c) => c.id === cid);
+      if (!article || !bodyEl || !node) return;
+      if (article.classList.contains("discussionComment--editing")) return;
+      article.classList.add("discussionComment--editing");
+      const originalText = bodyEl.textContent;
+      bodyEl.innerHTML = `
+        <textarea class="discussionComment__editArea" rows="3">${escapeHtml(node.body)}</textarea>
+        <div class="actions">
+          <button class="btn discussionComment__editSaveBtn" data-comment-id="${cid}" type="button">${escapeHtml(
+            t("discussionSave") || "Save"
+          )}</button>
+          <button class="btn btn--secondary discussionComment__editCancelBtn" data-comment-id="${cid}" type="button" data-original="${escapeHtml(
+            originalText
+          )}">${escapeHtml(t("loginCancel") || "Cancel")}</button>
+        </div>
+      `;
+      const ta = bodyEl.querySelector("textarea");
+      if (ta) ta.focus();
+      return;
+    }
+
+    const editSave = target.closest(".discussionComment__editSaveBtn");
+    if (editSave && isAdminUnlocked()) {
+      const cid = Number(editSave.getAttribute("data-comment-id"));
+      const article = el.discussionPosts.querySelector(`.discussionComment[data-comment-id="${cid}"]`);
+      const ta = article ? article.querySelector(".discussionComment__editArea") : null;
+      const next = ta ? String(ta.value || "").trim() : "";
+      if (!next) {
+        setStatus(t("statusReplyEmpty"), { isError: true });
+        return;
+      }
+      discussionState = discussionState.map((c) =>
+        c.id === cid ? { ...c, body: next, edited: true } : c
+      );
+      const saved = await persistDiscussions(discussionState);
+      if (!saved) {
+        setStatus(t("statusDiscussionSaveFail"), { isError: true });
+        return;
+      }
+      renderDiscussionBoard();
+      setStatus("");
+      return;
+    }
+
+    const editCancel = target.closest(".discussionComment__editCancelBtn");
+    if (editCancel) {
+      renderDiscussionBoard();
+      return;
+    }
+
+    // ── Admin: delete ──────────────────────────────────────────────
+    const delBtn = target.closest(".discussionComment__deleteBtn");
+    if (delBtn && isAdminUnlocked()) {
+      const cid = Number(delBtn.getAttribute("data-comment-id"));
+      const ok = window.confirm(
+        t("discussionDeleteConfirm") ||
+          "Delete this comment and all its replies? This cannot be undone."
+      );
+      if (!ok) return;
+      discussionState = deleteCommentCascade(discussionState, cid);
+      const saved = await persistDiscussions(discussionState);
+      if (!saved) {
+        setStatus(t("statusDiscussionSaveFail"), { isError: true });
+        return;
+      }
+      renderDiscussionBoard();
+      setStatus("");
+    }
   });
 }
 
@@ -6033,10 +6302,42 @@ function submitLogin() {
     if (el.loginError) el.loginError.textContent = "Storage unavailable. Please enable session storage.";
     return;
   }
+  // On the Discussion page, stay put and reveal admin controls inline.
+  if (el.discussionPosts) {
+    hideLoginModal();
+    if (typeof renderDiscussionBoard === "function") renderDiscussionBoard();
+    syncLoginButtonLabel();
+    setStatus(t("statusAdminUnlocked") || "Admin mode unlocked.", { isError: false });
+    return;
+  }
   window.location.href = buildPageUrl("admin.html");
 }
 
-on(el.btnLogin, "click", () => showLoginModal());
+function syncLoginButtonLabel() {
+  if (!el.btnLogin) return;
+  // Only the Discussion page uses the toggle behavior; elsewhere the button shows "Login".
+  if (!el.discussionPosts) return;
+  const unlocked = isAdminUnlocked();
+  const fallback = unlocked ? "Logout" : "Login";
+  const key = unlocked ? "footerLogout" : "footerLogin";
+  el.btnLogin.textContent = t(key) || fallback;
+  el.btnLogin.setAttribute("data-i18n", key);
+}
+
+on(el.btnLogin, "click", () => {
+  if (el.discussionPosts && isAdminUnlocked()) {
+    try {
+      sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
+    } catch {
+      /* ignore */
+    }
+    syncLoginButtonLabel();
+    if (typeof renderDiscussionBoard === "function") renderDiscussionBoard();
+    setStatus(t("statusAdminLockedAgain") || "Admin mode locked.", { isError: false });
+    return;
+  }
+  showLoginModal();
+});
 on(el.btnCancelLogin, "click", () => hideLoginModal());
 on(el.btnSubmitLogin, "click", () => submitLogin());
 on(el.adminPassword, "keydown", (evt) => {
@@ -6073,6 +6374,7 @@ window.addEventListener("error", (evt) => {
     initContentEditorPanel();
     await initDiscussionBoard();
     initDiscussionAdminControls();
+    if (typeof syncLoginButtonLabel === "function") syncLoginButtonLabel();
     // Avoid flashing "Loading storymap" on discussion.html (discussion has its own load path)
     // or on simple static pages like information.html.
     const isInformationPage = typeof window !== "undefined" && window.location.pathname.includes("information.html");

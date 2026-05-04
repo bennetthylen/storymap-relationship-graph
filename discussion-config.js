@@ -5,5 +5,5 @@
  *
  * Safe to commit the anon key (it is public); protect data with RLS policies above.
  */
-window.STORYMAP_DISCUSSION_SUPABASE_URL = "";
-window.STORYMAP_DISCUSSION_SUPABASE_ANON_KEY = "";
+window.STORYMAP_DISCUSSION_SUPABASE_URL = "https://nummznykqrklyqtgrzbh.supabase.co";
+window.STORYMAP_DISCUSSION_SUPABASE_ANON_KEY = "sb_publishable_Sak9_0Xr01xf13uM6FM6lw_mkStPVgT";

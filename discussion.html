@@ -131,18 +131,31 @@
           Share reflections, add context, and reply to others.
         </p>
         <p id="discussionBackendNote" class="muted small discussionBackendNote" hidden></p>
-        <div class="field">
-          <label for="discussionTitle" data-i18n="discussionTitleLabel">Title</label>
-          <input
-            id="discussionTitle"
-            type="text"
-            maxlength="120"
-            data-i18n-placeholder="discussionTitlePlaceholder"
-            placeholder="Post title"
-          />
+        <div class="discussionComposer__row">
+          <div class="field">
+            <label for="discussionAuthor" data-i18n="discussionAuthorLabel">Name (optional)</label>
+            <input
+              id="discussionAuthor"
+              type="text"
+              maxlength="80"
+              autocomplete="nickname"
+              data-i18n-placeholder="discussionAuthorPlaceholder"
+              placeholder="Anonymous"
+            />
+          </div>
+          <div class="field">
+            <label for="discussionTitle" data-i18n="discussionTitleLabel">Title (optional)</label>
+            <input
+              id="discussionTitle"
+              type="text"
+              maxlength="120"
+              data-i18n-placeholder="discussionTitlePlaceholder"
+              placeholder="Thread title"
+            />
+          </div>
         </div>
         <div class="field">
-          <label for="discussionDescription" data-i18n="discussionDescLabel">Description</label>
+          <label for="discussionDescription" data-i18n="discussionDescLabel">Comment</label>
           <textarea
             id="discussionDescription"
             rows="4"
@@ -150,13 +163,16 @@
             placeholder="Write your post"
           ></textarea>
         </div>
+        <p class="muted small discussionComposer__hint" data-i18n="discussionGeoNote">
+          Your country flag will be added automatically (best-effort, by IP).
+        </p>
         <div class="actions">
           <button id="discussionPostBtn" class="btn" type="button" data-i18n="discussionPost">Post</button>
         </div>
       </section>
 
       <section class="discussionFeed" data-i18n-aria-label="ariaDiscussionFeed" aria-label="Discussion posts">
-        <div id="discussionPosts"></div>
+        <div id="discussionPosts" class="discussionPosts"></div>
       </section>
     </main>
 
@@ -195,6 +211,6 @@
 
     <script src="./site-i18n.js"></script>
     <script src="./discussion-config.js"></script>
-    <script src="./app.js?v=20260422sheet"></script>
+    <script src="./app.js?v=20260504discussion"></script>
   </body>
 </html>
