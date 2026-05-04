@@ -1705,6 +1705,13 @@ body.archiveModalOpen {
   white-space: pre-wrap;
 }
 
+/* Body text added after the original exhibit (scholarly annotation) is shown
+   in a distinct accent color so visitors can tell it apart from primary copy. */
+.archiveModal__body--userAdded {
+  color: #2f6b8a;
+  font-style: italic;
+}
+
 .archiveBadge {
   display: inline-block;
   align-self: flex-start;

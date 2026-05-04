@@ -745,6 +745,7 @@
     if (modalBody) {
       modalBody.textContent = bodyText;
       modalBody.setAttribute("dir", getLang() === "ar" ? "rtl" : "ltr");
+      modalBody.classList.toggle("archiveModal__body--userAdded", !!node.userAdded);
     }
     const modalCopy = document.getElementById("archiveModalCopy");
     if (modalCopy) modalCopy.setAttribute("dir", getLang() === "ar" ? "rtl" : "ltr");
