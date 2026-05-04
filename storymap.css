@@ -1,6 +1,6 @@
 /* Storymap canvas — archival catalog palette (flat, typographic; see brief in repo history). */
 :root {
-  --sm-arch-bg: #cdd5d3;
+  --sm-arch-bg: #c5d3d4;
   --sm-arch-ink: #1a1a18;
   --sm-arch-paper: #f5f0e8;
   --sm-arch-terra: #c4562a;
@@ -766,18 +766,34 @@ body.theme-storymap.storymapWelcomeOpen {
 
 .storymapWelcome {
   --storymap-welcome-bg: var(--landing-dusty-blue);
+  --storymap-welcome-ink: var(--archive-ink);
+  --storymap-welcome-body: var(--archive-ink);
+  --storymap-welcome-accent: var(--archive-ink);
   position: fixed;
   inset: 0;
   z-index: 500;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: clamp(20px, 5vw, 48px);
+  justify-content: flex-start;
+  padding: clamp(28px, 6vw, 56px) clamp(20px, 5vw, 48px) clamp(36px, 7vw, 72px);
   box-sizing: border-box;
   background: var(--storymap-welcome-bg);
   overflow-y: auto;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   transition: opacity 0.28s ease;
+}
+
+.storymapWelcome::before,
+.storymapWelcome::after {
+  content: "";
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.storymapWelcome::after {
+  flex-grow: 1.2;
 }
 
 .storymapWelcome[hidden] {
@@ -819,7 +835,7 @@ body.theme-storymap.storymapWelcomeOpen {
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: -0.058em;
-  color: var(--archive-ink);
+  color: var(--storymap-welcome-ink);
   padding-bottom: 0.12em;
   padding-top: 0.06em;
   -webkit-font-smoothing: antialiased;
@@ -828,7 +844,7 @@ body.theme-storymap.storymapWelcomeOpen {
 .storymapWelcome__titleAr {
   position: relative;
   z-index: 2;
-  margin-top: clamp(-2.15rem, -5.5vw, -0.65rem);
+  margin-top: clamp(-1.35rem, -3.5vw, -0.1rem);
   direction: rtl;
   font-family:
     "Noto Nastaliq Urdu",
@@ -844,15 +860,15 @@ body.theme-storymap.storymapWelcomeOpen {
   letter-spacing: 0;
   color: var(--storymap-welcome-bg);
   -webkit-text-fill-color: var(--storymap-welcome-bg);
-  -webkit-text-stroke: clamp(1.25px, 0.18vw, 2.75px) var(--archive-ink);
+  -webkit-text-stroke: clamp(1.25px, 0.18vw, 2.75px) var(--storymap-welcome-accent);
   paint-order: stroke fill;
   text-shadow:
     0 0 1px var(--storymap-welcome-bg),
-    0 2px 12px rgba(0, 0, 0, 0.18);
+    0 2px 12px rgba(0, 0, 0, 0.28);
 }
 
 .storymapWelcome__body {
-  margin: clamp(1rem, 3vw, 1.5rem) 0 0;
+  margin: clamp(1.35rem, 3.6vw, 1.85rem) 0 0;
   text-align: left;
   font-family:
     "Inter",
@@ -863,7 +879,7 @@ body.theme-storymap.storymapWelcomeOpen {
   font-weight: 600;
   line-height: 1.72;
   letter-spacing: 0.01em;
-  color: var(--archive-ink);
+  color: var(--storymap-welcome-body);
   text-wrap: pretty;
 }
 
@@ -874,7 +890,7 @@ body.theme-storymap.storymapWelcomeOpen {
   font-size: clamp(1.1rem, 2.4vw, 1.3rem);
   line-height: 1.35;
   letter-spacing: -0.01em;
-  color: var(--archive-ink);
+  color: var(--storymap-welcome-ink);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.15em;
@@ -890,13 +906,902 @@ body.theme-storymap.storymapWelcomeOpen {
 
 @media (max-width: 540px) {
   .storymapWelcome__titleAr {
-    margin-top: clamp(-1.35rem, -4vw, -0.35rem);
-    -webkit-text-stroke: clamp(1px, 0.32vw, 2px) var(--archive-ink);
+    margin-top: clamp(-0.7rem, -2vw, 0.1rem);
+    -webkit-text-stroke: clamp(1px, 0.32vw, 2px) var(--storymap-welcome-accent);
+  }
+}
+
+/* Per-hub intro popup (reuses .storymapWelcome chrome; widens the panel and stacks paragraphs).
+   Color scheme is unique to the hub intros — the first-visit Archive welcome keeps its dusty blue. */
+.archiveHubIntro {
+  --storymap-welcome-bg: #032b43;
+  --storymap-welcome-ink: #a4161a;
+  --storymap-welcome-body: #ffffff;
+  --storymap-welcome-accent: #ffba08;
+}
+
+/* Hub intro: keep the popup compact and centered. The inner block is capped to the
+   visible viewport, the body scrolls internally so title and CTA always stay in view. */
+.archiveHubIntro::before,
+.archiveHubIntro::after {
+  content: none;
+}
+
+.archiveHubIntro {
+  justify-content: center;
+  overflow: hidden;
+}
+
+.archiveHubIntro .archiveHubIntro__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-height: 100%;
+  margin-block: 0;
+}
+
+.archiveHubIntro__body {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: clamp(2px, 0.6vw, 8px);
+}
+
+.archiveHubIntro__cta {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+.archiveHubIntro__inner {
+  max-width: min(48rem, 100%);
+}
+
+.archiveHubIntro .storymapWelcome__titleEn {
+  font-size: clamp(1.55rem, min(5.2vw, 9.5vh), 3rem);
+}
+
+.archiveHubIntro .storymapWelcome__titleAr {
+  font-size: clamp(1.2rem, min(4vw, 7.5vh), 2.35rem);
+}
+
+.archiveHubIntro__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85em;
+  text-align: left;
+  white-space: normal;
+  font-size: clamp(0.96rem, 1.95vw, 1.06rem);
+  line-height: 1.65;
+}
+
+.archiveHubIntro__body p {
+  margin: 0;
+}
+
+.archiveHubIntro__body[dir="rtl"] {
+  text-align: right;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Archive timeline + browser (public storymap.html)
+   ═══════════════════════════════════════════════════════════════════════════ */
+body.theme-storymap {
+  --archive-page-bg: #c5d3d4;
+  --archive-maroon: #5a0a0a;
+  --archive-body-ink: #3a3a3a;
+  --archive-browser-cream: #e8e4d8;
+  --archive-row-blue: #a3b3b8;
+  --archive-panel-a: var(--archive-row-blue);
+  --archive-panel-b: var(--archive-row-blue);
+}
+
+body.theme-storymap .storymapCanvasPanel {
+  background: var(--archive-page-bg);
+}
+
+.archiveShell {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 44px);
+  padding: 0;
+  margin: 0;
+  background: var(--archive-page-bg);
+}
+
+.archiveTrack {
+  display: flex;
+  width: 200%;
+  min-height: calc(100vh - 44px);
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
+
+.archiveTrack--browser {
+  transform: translate3d(-50%, 0, 0);
+}
+
+.archivePanel {
+  flex: 0 0 50%;
+  width: 50%;
+  min-width: 0;
+  box-sizing: border-box;
+  background: var(--archive-page-bg);
+}
+
+.archivePanel--timeline {
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3.5rem) 3.5rem;
+}
+
+.archivePanel--browser {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 44px);
+  background: var(--archive-browser-cream, #e8e4d8);
+}
+
+/* When viewing the photo grid, the page background is cream — keep the navbar in sync. */
+body.theme-storymap.archiveShell--browser .siteNav--archive {
+  background: var(--archive-browser-cream, #e8e4d8);
+  box-shadow: 0 1px 0 rgba(60, 27, 22, 0.08);
+}
+
+/* Timeline hero — same bilingual stack + Syne as home; sage field + maroon type */
+.archiveHero {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.archiveHero__heading {
+  margin: 0;
+}
+
+body.theme-storymap .archiveHero .hero__title.hero__title--bilingual {
+  min-width: 0;
+  width: 100%;
+  max-width: min(100%, var(--home-hero-title-max));
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  overflow: visible;
+}
+
+body.theme-storymap .archiveHero .hero__titleStack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: min(100%, var(--home-hero-title-max));
+  margin-inline: auto;
+  padding-block: 0.35em 0.65em;
+  overflow: visible;
+  isolation: isolate;
+}
+
+body.theme-storymap .archiveHero .hero__titleLine--en,
+body.theme-storymap .archiveHero .hero__titleLine--ar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  font-size: var(--home-hero-title-fs);
+  font-weight: 800;
+  line-height: 1.12;
+  text-align: center;
+  white-space: nowrap;
+  direction: ltr;
+  unicode-bidi: isolate;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.theme-storymap .archiveHero .hero__titleLine--en {
+  position: relative;
+  z-index: 1;
+  font-family: "Syne", "Inter", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.058em;
+  line-height: 1.35;
+  padding-bottom: 0.38em;
+  padding-top: 0.06em;
+  color: var(--archive-maroon);
+}
+
+body.theme-storymap .archiveHero .hero__titleLine--ar {
+  position: relative;
+  z-index: 2;
+  direction: rtl;
+  margin-top: clamp(-2.85rem, -7vw, -1.15rem);
+  font-family: "Noto Nastaliq Urdu", "Noto Sans Arabic", "Kufam", "Inter", ui-sans-serif, system-ui,
+    sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--archive-page-bg);
+  -webkit-text-fill-color: var(--archive-page-bg);
+  -webkit-text-stroke: clamp(1.25px, 0.18vw, 2.75px) var(--archive-maroon);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 1px var(--archive-page-bg),
+    0 2px 12px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 540px) {
+  body.theme-storymap .archiveHero .hero__titleLine--en,
+  body.theme-storymap .archiveHero .hero__titleLine--ar {
+    font-size: var(--home-hero-title-fs-sm);
+  }
+
+  body.theme-storymap .archiveHero .hero__titleLine--ar {
+    margin-top: clamp(-1.85rem, -5vw, -0.7rem);
+    -webkit-text-stroke: clamp(1px, 0.32vw, 2px) var(--archive-maroon);
+  }
+}
+
+.archiveTimeline__rows {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.archiveRow {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) minmax(0, 1fr) auto;
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: stretch;
+  width: 100%;
+  margin: 0;
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
+  border: none;
+  border-radius: 0;
+  background: var(--archive-panel-a);
+  cursor: pointer;
+  text-align: inherit;
+  font: inherit;
+  color: inherit;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.archiveRow:hover,
+.archiveRow:focus-visible {
+  background: color-mix(in srgb, var(--archive-panel-a) 85%, var(--archive-maroon) 6%);
+  outline: none;
+}
+
+.archiveRow:focus-visible {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--archive-maroon) 35%, transparent);
+}
+
+.archiveRow--b {
+  background: var(--archive-panel-b);
+}
+
+.archiveRow--b:hover,
+.archiveRow--b:focus-visible {
+  background: color-mix(in srgb, var(--archive-panel-b) 88%, var(--archive-maroon) 5%);
+}
+
+.archiveRow__thumb {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  align-self: center;
+  background: color-mix(in srgb, var(--archive-page-bg) 60%, #fff 40%);
+}
+
+.archiveRow__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.archiveRow__thumbPh {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 140px;
+  background: color-mix(in srgb, var(--archive-maroon) 8%, var(--archive-page-bg));
+}
+
+.archiveRow__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.archiveRow__title {
+  margin: 0;
+  font-family: "Playfair Display", "Bodoni Moda", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  color: var(--archive-maroon);
+  line-height: 1.2;
+}
+
+.archiveRow__body {
+  margin: 0;
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-size: clamp(13px, 1.45vw, 15px);
+  line-height: 1.55;
+  color: var(--archive-body-ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.archiveRow__explore {
+  align-self: end;
+  font-family: "Oswald", system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--archive-maroon);
+  white-space: nowrap;
+}
+
+.archiveBrowser__surface {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  background: var(--archive-browser-cream, #e8e4d8);
+}
+
+.archiveBrowser__inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2.5vw, 1.75rem) clamp(0.75rem, 2.5vw, 2rem) 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.archiveBrowser__topRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.archiveBrowser__hero {
+  margin: 0;
+  padding: 0.25rem 0 0.15rem;
+  text-align: left;
+}
+
+.archiveBrowser__heroTitle {
+  margin: 0;
+  font-family: "Playfair Display", "Bodoni Moda", Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  font-size: clamp(2.4rem, 5.5vw, 4.15rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--archive-maroon);
+  text-align: left;
+  text-wrap: balance;
+}
+
+.archiveBrowser__tabsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.archiveMetaBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 0.65rem 0;
+  margin: 0.15rem 0 0.5rem;
+  border-top: 0.5px solid color-mix(in srgb, var(--archive-maroon) 22%, transparent);
+  border-bottom: 0.5px solid color-mix(in srgb, var(--archive-maroon) 22%, transparent);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: var(--archive-body-ink);
+}
+
+.archiveMetaBar__showing {
+  font-weight: 500;
+}
+
+.archiveMetaBar__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500;
+}
+
+.archiveSortSelect {
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.28rem 0.6rem;
+  border: 0.5px solid color-mix(in srgb, var(--archive-maroon) 28%, transparent);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--archive-maroon);
+  cursor: pointer;
+}
+
+.archiveSortSelect:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--archive-maroon) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.archiveBackBtn {
+  align-self: flex-start;
+  padding: 0.35rem 0;
+  border: none;
+  background: none;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--archive-maroon);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.archiveBackBtn:hover,
+.archiveBackBtn:focus-visible {
+  opacity: 0.85;
+  outline: none;
+}
+
+.archiveBreadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--archive-maroon);
+}
+
+.archiveCrumb--btn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.archiveCrumb--current {
+  font-weight: 700;
+}
+
+.archiveFilterTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.archiveTab {
+  border: none;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--archive-page-bg) 70%, #fff 30%);
+  color: var(--archive-maroon);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.archiveTab:hover,
+.archiveTab:focus-visible {
+  background: color-mix(in srgb, var(--archive-maroon) 12%, var(--archive-page-bg));
+  outline: none;
+}
+
+.archiveTab--active {
+  background: var(--archive-maroon);
+  color: #f5f0ea;
+}
+
+.archiveGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(1rem, 2.2vw, 1.75rem);
+  width: 100%;
+  margin: 0;
+  align-content: start;
+}
+
+.archiveCard {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  transition: opacity 0.18s ease;
+}
+
+.archiveCard:hover,
+.archiveCard:focus-visible {
+  opacity: 0.92;
+  outline: none;
+}
+
+.archiveCard__media {
+  overflow: hidden;
+  background: transparent;
+  transition: opacity 0.18s ease;
+}
+
+.archiveCard__media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: bottom;
+}
+
+/* Document-only card (no image): keep the same 4:5 footprint as photo cards,
+   blend with the cream archive surface, and let the title sit inside the tile. */
+.archiveCard--noImage .archiveCard__media {
+  aspect-ratio: 4 / 5;
+  background: color-mix(in srgb, var(--archive-browser-cream, #e8e4d8) 88%, var(--archive-maroon) 8%);
+  border: 0.5px solid color-mix(in srgb, var(--archive-maroon) 28%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.6rem, 2vw, 1.2rem);
+  box-sizing: border-box;
+  text-align: center;
+  transition: background 0.18s ease;
+}
+
+.archiveCard--noImage:hover .archiveCard__media,
+.archiveCard--noImage:focus-visible .archiveCard__media {
+  background: color-mix(in srgb, var(--archive-browser-cream, #e8e4d8) 78%, var(--archive-maroon) 14%);
+}
+
+.archiveCard__docLabel {
+  font-family: "Playfair Display", "Bodoni Moda", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 1.95rem);
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  color: var(--archive-maroon);
+  text-wrap: balance;
+}
+
+.archiveCard__meta {
+  padding: 0.45rem 0 0;
+  min-width: 0;
+}
+
+.archiveCard__date {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--archive-body-ink) 72%, #888 28%);
+  margin-bottom: 0.15rem;
+}
+
+.archiveCard__caption {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--archive-body-ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.archiveGrid__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--archive-body-ink);
+  font-family: "Cormorant Garamond", serif;
+}
+
+/* Modal */
+body.archiveModalOpen {
+  overflow: hidden;
+}
+
+.archiveModal {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 3vw, 2rem);
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.archiveModal--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.archiveModal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 24, 0.52);
+}
+
+.archiveModal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(1080px, 100%);
+  max-height: min(92vh, 880px);
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--archive-page-bg) 94%, #fff 6%);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.archiveModal__close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 5;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 0;
+  background: color-mix(in srgb, var(--archive-page-bg) 40%, transparent);
+  color: var(--archive-maroon);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.archiveModal__close:hover,
+.archiveModal__close:focus-visible {
+  background: color-mix(in srgb, var(--archive-maroon) 18%, var(--archive-page-bg));
+  outline: none;
+}
+
+.archiveModal__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  background: color-mix(in srgb, var(--archive-page-bg) 55%, #fff 45%);
+  color: var(--archive-maroon);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.archiveModal__nav:hover:not(:disabled),
+.archiveModal__nav:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--archive-maroon) 15%, var(--archive-page-bg));
+  outline: none;
+}
+
+.archiveModal__nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.archiveModal__nav--prev {
+  left: 0.35rem;
+}
+
+.archiveModal__nav--next {
+  right: 0.35rem;
+}
+
+.archiveModal__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  padding-top: 3rem;
+  overflow: auto;
+  max-height: min(92vh, 880px);
+}
+
+@media (max-width: 780px) {
+  .archiveModal__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.archiveModal__inner--noImage {
+  grid-template-columns: 1fr;
+}
+
+.archiveModal__figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.archiveModal__img {
+  max-width: 100%;
+  max-height: min(62vh, 640px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.archiveModal__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.archiveModal__title {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  color: var(--archive-maroon);
+  line-height: 1.25;
+}
+
+.archiveModal__date {
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--archive-body-ink) 80%, var(--archive-maroon));
+}
+
+.archiveModal__body {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--archive-body-ink);
+  white-space: pre-wrap;
+}
+
+.archiveBadge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.28rem 0.75rem;
+  font-family: "Oswald", system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.archiveBadge--mobility {
+  background: #5a0a0a;
+  color: #f8f2ea;
+}
+
+.archiveBadge--reassembling {
+  background: #4a3038;
+  color: #f8f2ea;
+}
+
+.archiveBadge--work {
+  background: #5c2818;
+  color: #f8f2ea;
+}
+
+@media (max-width: 1200px) {
+  .archiveGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .archiveGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ORR-only masonry layout — JS packs cards into N flex columns (shortest-column-first)
+   so the tall Shahenda letter is balanced by shorter cards in adjacent columns and
+   every column is populated. Image dimensions are untouched. */
+.archiveGrid.archiveGrid--masonry {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: clamp(1rem, 2.2vw, 1.75rem);
+}
+
+.archiveMasonryCol {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.2vw, 1.75rem);
+}
+
+.archiveMasonryCol .archiveCard {
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .archiveRow {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .archiveRow__thumb {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+
+  .archiveRow__explore {
+    justify-self: end;
+  }
+
+  .archiveGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .archiveTrack {
+    transition: none;
+  }
+
+  .archiveCard:hover,
+  .archiveCard:focus-visible {
+    opacity: 1;
+  }
+
+  .archiveModal {
+    transition: none;
+  }
+
   .storymapWelcome {
     transition: none;
   }
 }
+

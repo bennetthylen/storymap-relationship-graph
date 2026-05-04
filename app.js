@@ -119,21 +119,8 @@ function initStorymapWelcomeOverlay() {
   const btn = document.getElementById("storymapWelcomeDismiss");
   if (!root || !btn) return;
 
-  let forceShow = false;
-  try {
-    const q = new URLSearchParams(window.location.search);
-    forceShow = q.has("showStorymapWelcome") || q.has("welcome");
-  } catch {
-    forceShow = false;
-  }
-
-  let seen = false;
-  try {
-    seen = Boolean(localStorage.getItem(STORYMAP_WELCOME_SEEN_KEY));
-  } catch {
-    seen = false;
-  }
-  if (seen && !forceShow) return;
+  // Always shows on initial page load / refresh; the seen flag is a no-op now,
+  // but we still write it for downstream code that may key off it.
 
   const reduced =
     typeof window !== "undefined" &&
@@ -289,7 +276,7 @@ const DEFAULT_CONTENT = {
   heroTitleAr: "أنا بخير، أطمئنوا",
   heroSubtitle:
     "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
-  heroCta: "experience the storymap",
+  heroCta: "experience the archive",
   landingSubheading: "Women are always on the move",
   landingSubheadingEn: "Women are always on the move",
   landingSubheadingAr: "النساء دائمًا في حركة",
@@ -331,7 +318,7 @@ if (MODE === "admin" && !isAdminUnlocked()) {
 
 const TRANSLATIONS = {
   en: {
-    appTitle: "Storymap Relationship Graph",
+    appTitle: "Archive relationship graph",
     appPeopleLabel: "People",
     appEventsLabel: "Events",
     resetDemo: "Reset Demo",
@@ -402,7 +389,7 @@ const TRANSLATIONS = {
     noRoleLabel: "No role label.",
   },
   ar: {
-    appTitle: "مخطط القصة والعلاقات",
+    appTitle: "أرشيف العلاقات",
     appPeopleLabel: "الأشخاص",
     appEventsLabel: "الأحداث",
     resetDemo: "إعادة ضبط العرض",
@@ -472,7 +459,7 @@ const TRANSLATIONS = {
     noRoleLabel: "لا يوجد تسمية للدور.",
   },
   es: {
-    appTitle: "Mapa de Historia: Grafo de Relaciones",
+    appTitle: "Archivo: grafo de relaciones",
     appPeopleLabel: "Personas",
     appEventsLabel: "Eventos",
     resetDemo: "Restablecer demo",
@@ -543,7 +530,7 @@ const TRANSLATIONS = {
     noRoleLabel: "Sin etiqueta de rol.",
   },
   fr: {
-    appTitle: "Carte d'Histoire : Graphe de Relations",
+    appTitle: "Archive : graphe de relations",
     appPeopleLabel: "Personnes",
     appEventsLabel: "Événements",
     resetDemo: "Réinitialiser la démo",
@@ -614,7 +601,7 @@ const TRANSLATIONS = {
     noRoleLabel: "Aucune étiquette de rôle.",
   },
   de: {
-    appTitle: "Storymap: Beziehungsdiagramm",
+    appTitle: "Archiv: Beziehungsdiagramm",
     appPeopleLabel: "Personen",
     appEventsLabel: "Ereignisse",
     resetDemo: "Demo zurücksetzen",
@@ -688,7 +675,7 @@ const TRANSLATIONS = {
 
 TRANSLATIONS.it = { ...TRANSLATIONS.en };
 Object.assign(TRANSLATIONS.it, {
-  appTitle: "Mappa della storia: Grafo delle relazioni",
+  appTitle: "Archivio: grafo delle relazioni",
   appPeopleLabel: "Persone",
   appEventsLabel: "Eventi",
   resetDemo: "Reimposta demo",
@@ -2885,7 +2872,7 @@ function computeStorymapImageNodeSize(nw, nh) {
 }
 
 function initCustomStorymapCanvas() {
-  // Skip if the standalone storymap-canvas.js renderer is loaded (viewer mode).
+  // Skip if the legacy standalone canvas script was used (file removed; archive uses archive-view.js).
   if (window.__storymapCanvasStandalone) { setStatus(""); return true; }
 
   const viewport = document.getElementById("storymapViewport");
@@ -6092,7 +6079,9 @@ window.addEventListener("error", (evt) => {
     if (!el.discussionPosts && !isInformationPage) {
       setStatus(t("statusLoadingStorymap"), { isLoading: true });
     }
-    if (document.getElementById("storymapViewport")) {
+    if (document.getElementById("archiveAppRoot")) {
+      setStatus("");
+    } else if (document.getElementById("storymapViewport")) {
       initCustomStorymapCanvas();
       // Status cleared from bootstrapStorymapUi when the canvas is ready (viewer waits for published JSON).
     } else if (MODE === "history" || el.discussionPosts) {

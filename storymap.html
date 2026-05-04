@@ -3,15 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Storymap Relationship Graph</title>
+    <title>Archive</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Kufam:wght@400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Syne:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Kufam:wght@400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600;1,700&family=Syne:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -40,7 +36,7 @@
         </a>
         <a href="./storymap.html" class="siteNav__tab siteNav__tab--active">
           <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond">◆</span>]</span>
-          <span data-i18n="navStorymap">StoryMap</span>
+          <span data-i18n="navStorymap">Archive</span>
         </a>
         <a href="./history.html" class="siteNav__tab">
           <span class="siteNav__bracket" aria-hidden="true">[<span class="siteNav__diamond siteNav__diamond--off">◆</span>]</span>
@@ -111,71 +107,115 @@
       </div>
     </nav>
 
-    <div id="jsStatus" class="jsStatus jsStatus--loading" data-i18n="statusLoadingStorymap">Loading storymap…</div>
+    <div id="jsStatus" class="jsStatus jsStatus--loading" data-i18n="statusLoadingStorymap">Loading archive…</div>
     <noscript>
       <div class="jsStatus jsStatus--error" data-i18n="statusJsRequired">JavaScript is required to run this app.</div>
     </noscript>
 
-    <main class="storymapLayout">
-      <section
-        id="storymapCanvasPanel"
-        class="storymapCanvasPanel"
-        data-i18n-aria-label="ariaStorymapCanvas"
-        aria-label="Storymap canvas"
-      >
-        <div class="mapControls" data-i18n-aria-label="ariaZoomControls" aria-label="Zoom controls">
-          <button
-            id="smZoomIn"
-            class="mapControls__btn"
-            type="button"
-            data-i18n-aria-label="ariaZoomIn"
-            aria-label="Zoom in"
-          >
-            +
-          </button>
-          <button
-            id="smZoomOut"
-            class="mapControls__btn"
-            type="button"
-            data-i18n-aria-label="ariaZoomOut"
-            aria-label="Zoom out"
-          >
-            -
-          </button>
+    <main class="archiveShell" id="archiveAppRoot">
+      <div class="archiveTrack" id="archiveTrack">
+        <div class="archivePanel archivePanel--timeline" id="archiveTimelineView">
+          <header class="archiveHero">
+            <h1 class="hero__title hero__title--bilingual archiveHero__heading" lang="en">
+              <span class="hero__titleStack">
+                <span class="hero__titleLine hero__titleLine--en" lang="en">Archive</span>
+                <span class="hero__titleLine hero__titleLine--ar" lang="ar" dir="rtl">أرشيف</span>
+              </span>
+            </h1>
+          </header>
+          <div class="archiveTimeline__rows" id="archiveTimelineRows"></div>
         </div>
-        <div id="storymapViewport" class="storymapViewport">
-          <div id="storymapWorld" class="storymapWorld">
-            <svg id="storymapEdges" class="storymapEdges" aria-hidden="true"></svg>
-            <div id="storymapNodes" class="storymapNodes"></div>
+
+        <section
+          class="archivePanel archivePanel--browser"
+          id="archiveBrowserView"
+          hidden
+          aria-hidden="true"
+          aria-label="Archive collection"
+        >
+          <div class="archiveBrowser__surface">
+            <div class="archiveBrowser__inner">
+              <div class="archiveBrowser__topRow">
+                <button type="button" class="archiveBackBtn" id="archiveBtnBack">Back to archive</button>
+                <nav class="archiveBreadcrumb" id="archiveBreadcrumb" aria-label="Breadcrumb"></nav>
+              </div>
+
+              <header class="archiveBrowser__hero">
+                <h1 id="archiveBrowserHeroTitle" class="archiveBrowser__heroTitle"></h1>
+              </header>
+
+              <div class="archiveBrowser__tabsRow">
+                <div class="archiveFilterTabs" id="archiveFilterTabs" role="tablist" aria-label="Categories"></div>
+              </div>
+
+              <div class="archiveMetaBar" aria-label="Results">
+                <span class="archiveMetaBar__showing" id="archiveShowingRange"></span>
+                <label class="archiveMetaBar__sort">
+                  <span id="archiveSortLabel">Sort by</span>
+                  <select id="archiveSortSelect" class="archiveSortSelect">
+                    <option value="date-desc">Date (newest first)</option>
+                    <option value="date-asc">Date (oldest first)</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="archiveGrid" id="archiveGrid"></div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
 
-    <aside id="smInfoPanel" class="smInfoPanel" aria-hidden="true">
-      <button
-        id="smInfoClose"
-        class="smInfoClose"
-        type="button"
-        data-i18n-aria-label="ariaCloseNodeInfo"
-        aria-label="Close node info"
-      >
-        X
-      </button>
-      <div class="smInfoPanel__row">
-        <div class="smInfoPanel__col smInfoPanel__col--media">
-          <div id="infoMediaWrap" hidden>
-            <img id="infoImage" alt="" />
+    <div
+      id="archiveModal"
+      class="archiveModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Photo detail"
+      hidden
+      aria-hidden="true"
+    >
+      <div class="archiveModal__backdrop" id="archiveModalBackdrop"></div>
+      <div class="archiveModal__dialog">
+        <button type="button" class="archiveModal__close" id="archiveModalClose" aria-label="Close">✕</button>
+        <button type="button" class="archiveModal__nav archiveModal__nav--prev" id="archiveModalPrev" aria-label="Previous">
+          ←
+        </button>
+        <button type="button" class="archiveModal__nav archiveModal__nav--next" id="archiveModalNext" aria-label="Next">
+          →
+        </button>
+        <div class="archiveModal__inner">
+          <div class="archiveModal__figure">
+            <img id="archiveModalImage" class="archiveModal__img" src="" alt="" />
           </div>
-        </div>
-        <div class="smInfoPanel__col smInfoPanel__col--copy">
-          <div class="smInfoPanel__copy">
-            <h3 id="smInfoTitle" class="smInfoTitle"></h3>
-            <p id="smInfoBody" class="smInfoBody"></p>
+          <div class="archiveModal__copy" id="archiveModalCopy">
+            <span class="archiveBadge" id="archiveModalBadge"></span>
+            <h2 class="archiveModal__title" id="archiveModalTitle"></h2>
+            <p class="archiveModal__date" id="archiveModalDate" hidden></p>
+            <p class="archiveModal__body" id="archiveModalBody"></p>
           </div>
         </div>
       </div>
-    </aside>
+    </div>
+
+    <div
+      id="archiveHubIntro"
+      class="storymapWelcome archiveHubIntro"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="archiveHubIntroTitleEn"
+      aria-describedby="archiveHubIntroBody"
+      hidden
+    >
+      <div class="storymapWelcome__inner archiveHubIntro__inner">
+        <div class="storymapWelcome__titleStack">
+          <span id="archiveHubIntroTitleEn" class="storymapWelcome__titleEn" lang="en"></span>
+          <span id="archiveHubIntroTitleAr" class="storymapWelcome__titleAr" lang="ar" dir="rtl"></span>
+        </div>
+        <div id="archiveHubIntroBody" class="storymapWelcome__body archiveHubIntro__body"></div>
+        <button type="button" class="storymapWelcome__cta archiveHubIntro__cta" id="archiveHubIntroDismiss">enter the room</button>
+      </div>
+    </div>
 
     <div
       id="storymapWelcome"
@@ -188,8 +228,8 @@
     >
       <div class="storymapWelcome__inner">
         <div class="storymapWelcome__titleStack">
-          <span id="storymapWelcomeTitleEn" class="storymapWelcome__titleEn" lang="en">Storymap</span>
-          <span class="storymapWelcome__titleAr" lang="ar" dir="rtl">خريطة أرشيفية</span>
+          <span id="storymapWelcomeTitleEn" class="storymapWelcome__titleEn" lang="en">Archive</span>
+          <span class="storymapWelcome__titleAr" lang="ar" dir="rtl">أرشيف</span>
         </div>
         <p id="storymapWelcomeBody" class="storymapWelcome__body">
           Feminism is made through relationships. "Doing Well, Don't Worry" is a testament to these connections: letters
@@ -218,8 +258,7 @@
 
     <script src="./site-i18n.js"></script>
     <script src="./canvas-nodes-i18n.js?v=20260501"></script>
-    <script>window.__storymapCanvasStandalone = true;</script>
     <script src="./app.js?v=20260502clean-radial5"></script>
-    <script src="./storymap-canvas.js?v=20260502debug1"></script>
+    <script src="./archive-view.js?v=20260504m"></script>
   </body>
 </html>
