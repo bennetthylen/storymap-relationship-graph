@@ -123,51 +123,59 @@
 
     <main class="discussionPage">
       <section
-        class="discussionComposer card"
+        class="discussionComposer card discussionComposer--editor"
         data-i18n-aria-label="ariaDiscussionComposer"
         aria-label="Create discussion post"
       >
-        <p class="muted discussionComposer__intro" data-i18n="discussionIntro">
+        <p class="muted small discussionComposer__intro" data-i18n="discussionIntro">
           Share reflections, add context, and reply to others.
         </p>
         <p id="discussionBackendNote" class="muted small discussionBackendNote" hidden></p>
-        <div class="discussionComposer__row">
-          <div class="field">
-            <label for="discussionAuthor" data-i18n="discussionAuthorLabel">Name (optional)</label>
+
+        <textarea
+          id="discussionDescription"
+          class="discussionComposer__body"
+          rows="5"
+          aria-label="Reflection"
+          data-i18n-aria-label="discussionDescLabel"
+          data-i18n-placeholder="discussionDescPlaceholder"
+          placeholder="Write your reflection…"
+        ></textarea>
+
+        <hr class="discussionComposer__divider" aria-hidden="true" />
+
+        <div class="discussionComposer__metaRow">
+          <label class="discussionComposer__metaField" for="discussionAuthor">
+            <span class="discussionComposer__metaLabel" data-i18n="discussionAuthorLabel">Name</span>
             <input
               id="discussionAuthor"
+              class="discussionComposer__metaInput"
               type="text"
               maxlength="80"
               autocomplete="nickname"
               data-i18n-placeholder="discussionAuthorPlaceholder"
               placeholder="Anonymous"
             />
-          </div>
-          <div class="field">
-            <label for="discussionTitle" data-i18n="discussionTitleLabel">Title (optional)</label>
+          </label>
+          <span class="discussionComposer__metaDivider" aria-hidden="true"></span>
+          <label class="discussionComposer__metaField" for="discussionTitle">
+            <span class="discussionComposer__metaLabel" data-i18n="discussionTitleLabel">Title</span>
             <input
               id="discussionTitle"
+              class="discussionComposer__metaInput"
               type="text"
               maxlength="120"
               data-i18n-placeholder="discussionTitlePlaceholder"
               placeholder="Thread title"
             />
-          </div>
+          </label>
         </div>
-        <div class="field">
-          <label for="discussionDescription" data-i18n="discussionDescLabel">Comment</label>
-          <textarea
-            id="discussionDescription"
-            rows="4"
-            data-i18n-placeholder="discussionDescPlaceholder"
-            placeholder="Write your post"
-          ></textarea>
-        </div>
-        <p class="muted small discussionComposer__hint" data-i18n="discussionGeoNote">
-          Your country flag will be added automatically (best-effort, by IP).
-        </p>
-        <div class="actions">
-          <button id="discussionPostBtn" class="btn" type="button" data-i18n="discussionPost">Post</button>
+
+        <div class="discussionComposer__footer">
+          <p class="muted small discussionComposer__hint" data-i18n="discussionGeoNote">
+            Your country flag is added automatically.
+          </p>
+          <button id="discussionPostBtn" class="btn discussionComposer__postBtn" type="button" data-i18n="discussionPost">Post</button>
         </div>
       </section>
 
@@ -211,6 +219,6 @@
 
     <script src="./site-i18n.js"></script>
     <script src="./discussion-config.js"></script>
-    <script src="./app.js?v=20260504discussion"></script>
+    <script src="./app.js?v=20260504composer"></script>
   </body>
 </html>

@@ -3419,6 +3419,190 @@ body.theme-archive.page-home .homePageBuffer {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   Discussion: integrated post editor — single bordered card, internal divider
+   only between body and metadata; everything else is unified by whitespace.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body[data-mode="discussion"] .discussionComposer.discussionComposer--editor,
+.discussionComposer.discussionComposer--editor {
+  background: #fffdf7;
+  border: 1px solid color-mix(in srgb, var(--wmf-ink, #1a1a18) 18%, transparent);
+  border-radius: 6px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  padding: clamp(14px, 2.4vw, 22px) clamp(16px, 2.6vw, 24px) clamp(12px, 2vw, 18px);
+  margin-bottom: 22px;
+}
+
+body[data-mode="discussion"] .discussionComposer.discussionComposer--editor:hover,
+.discussionComposer.discussionComposer--editor:hover {
+  background: #fffdf7;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  transform: none;
+  border-color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 18%, transparent);
+}
+
+/* Override the data-mode-scoped input/textarea rules that would otherwise
+   re-add borders + tinted backgrounds on the borderless editor inputs. */
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__body,
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaInput {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: var(--wmf-ink, #1a1a18);
+}
+
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__body:focus,
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaInput:focus {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaLabel {
+  color: color-mix(in srgb, var(--discussion-brown, #6b4a2b) 70%, transparent);
+}
+
+.discussionComposer--editor .discussionComposer__intro {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 55%, transparent);
+}
+
+.discussionComposer--editor .discussionBackendNote {
+  margin: 0 0 8px;
+  font-size: 0.74rem;
+}
+
+.discussionComposer__body {
+  width: 100%;
+  display: block;
+  border: none;
+  background: transparent;
+  outline: none;
+  resize: vertical;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 120px;
+  padding: 4px 0;
+  color: var(--wmf-ink, #1a1a18);
+  font-family: inherit;
+}
+
+.discussionComposer__body::placeholder {
+  color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 38%, transparent);
+  opacity: 1;
+}
+
+.discussionComposer__body:focus {
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.discussionComposer__divider {
+  border: none;
+  height: 1px;
+  background: color-mix(in srgb, var(--wmf-ink, #1a1a18) 12%, transparent);
+  margin: 12px 0 8px;
+}
+
+.discussionComposer__metaRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.5fr);
+  align-items: stretch;
+  gap: 14px;
+  padding: 4px 0 6px;
+}
+
+.discussionComposer__metaField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  margin: 0;
+}
+
+.discussionComposer__metaLabel {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 50%, transparent);
+}
+
+.discussionComposer__metaInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  font: inherit;
+  font-size: 0.96rem;
+  line-height: 1.4;
+  padding: 2px 0;
+  color: var(--wmf-ink, #1a1a18);
+  width: 100%;
+  min-width: 0;
+}
+
+.discussionComposer__metaInput::placeholder {
+  color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 30%, transparent);
+  opacity: 1;
+}
+
+.discussionComposer__metaInput:focus {
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.discussionComposer__metaDivider {
+  width: 1px;
+  align-self: stretch;
+  background: color-mix(in srgb, var(--wmf-ink, #1a1a18) 14%, transparent);
+}
+
+.discussionComposer__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+  padding-top: 4px;
+}
+
+.discussionComposer__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 50%, transparent);
+}
+
+.discussionComposer__postBtn {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 540px) {
+  .discussionComposer__metaRow {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .discussionComposer__metaDivider {
+    display: none;
+  }
+  .discussionComposer__footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+  }
+  .discussionComposer__postBtn {
+    align-self: flex-end;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    Discussion: threaded reddit-style comments + replies extending from the side
    ═══════════════════════════════════════════════════════════════════════════ */
 
