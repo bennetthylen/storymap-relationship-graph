@@ -848,7 +848,7 @@ body[data-mode="history"] .siteNav--archive .siteNav__primary .siteNav__tab:hove
 }
 
 body[data-mode="history"] .siteNav--archive .siteNav__primary .siteNav__tab--active {
-  color: #d6b853;
+  color: var(--history-title);
   opacity: 1;
 }
 
@@ -864,9 +864,9 @@ body[data-mode="history"] .siteNav--archive .siteNav__langBtn {
 
 body[data-mode="history"] .siteNav--archive .siteNav__langBtn:hover,
 body[data-mode="history"] .siteNav--archive .siteNav__langBtn:focus {
-  border-color: rgba(214, 184, 83, 0.65);
-  box-shadow: 0 0 0 2px rgba(214, 184, 83, 0.14);
-  color: var(--archive-ink);
+  border-color: color-mix(in srgb, var(--history-title) 60%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--history-title) 18%, transparent);
+  color: var(--history-title);
   transform: none;
   outline: none;
 }
@@ -877,12 +877,12 @@ body[data-mode="history"].theme-archive:not(.page-home) .stickyFooterLinks {
 
 body[data-mode="history"] .stickyFooterLinks a,
 body[data-mode="history"] .footerLoginBtn {
-  color: color-mix(in srgb, var(--archive-ink) 82%, transparent);
+  color: var(--history-title);
 }
 
 body[data-mode="history"] .stickyFooterLinks a:hover,
 body[data-mode="history"] .stickyFooterLinks a:focus-visible {
-  color: #d6b853;
+  color: color-mix(in srgb, var(--history-title) 75%, #fff 25%);
   opacity: 1;
 }
 
