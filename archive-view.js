@@ -81,6 +81,8 @@
   const hubIntroDismissBtn = document.getElementById("archiveHubIntroDismiss");
   let hubIntroPendingId = null;
   let hubIntroKeyHandler = null;
+  /** Each hub intro shows at most once per page load; refresh clears it. */
+  const seenHubIntros = new Set();
 
   let sortMode = "date-desc";
 
@@ -159,6 +161,15 @@
 
   function firstParagraph(s) {
     return splitParagraphs(s)[0] || "";
+  }
+
+  /** First N sentences of the first paragraph — used as a row preview. */
+  function firstSentences(s, n) {
+    const limit = n || 2;
+    const para = firstParagraph(s);
+    if (!para) return "";
+    const parts = para.split(/(?<=[.!?؟])\s+/);
+    return parts.slice(0, limit).join(" ").trim();
   }
 
   function getEnLabel(node) {
@@ -321,6 +332,11 @@
       openBrowser(hubId);
       return;
     }
+    if (seenHubIntros.has(hubId)) {
+      openBrowser(hubId);
+      return;
+    }
+    seenHubIntros.add(hubId);
     hubIntroPendingId = hubId;
     fillHubIntro(hubId);
     hubIntroEl.hidden = false;
@@ -422,7 +438,7 @@
       h2.textContent = getDisplayLabel(hub.node);
       const p = document.createElement("p");
       p.className = "archiveRow__body";
-      p.textContent = firstParagraph(getDisplayText(hub.node));
+      p.textContent = firstSentences(getDisplayText(hub.node), 2);
       main.appendChild(h2);
       main.appendChild(p);
 
