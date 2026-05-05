@@ -1053,8 +1053,10 @@ body.theme-storymap .storymapCanvasPanel {
   background: var(--archive-browser-cream, #e8e4d8);
 }
 
-/* When viewing the photo grid, the page background is cream — keep the navbar in sync. */
-body.theme-storymap.archiveShell--browser .siteNav--archive {
+/* When viewing the photo grid, the page background is cream — keep the top
+   navbar AND the bottom sticky footer in sync. */
+body.theme-storymap.archiveShell--browser .siteNav--archive,
+body.theme-storymap.archiveShell--browser .stickyFooterLinks {
   background: var(--archive-browser-cream, #e8e4d8);
   box-shadow: 0 1px 0 rgba(60, 27, 22, 0.08);
 }

@@ -81,8 +81,6 @@
   const hubIntroDismissBtn = document.getElementById("archiveHubIntroDismiss");
   let hubIntroPendingId = null;
   let hubIntroKeyHandler = null;
-  /** Hub intros only show on the first row click per page-load; resets on refresh. */
-  const seenHubIntros = new Set();
 
   let sortMode = "date-desc";
 
@@ -323,11 +321,6 @@
       openBrowser(hubId);
       return;
     }
-    if (seenHubIntros.has(hubId)) {
-      openBrowser(hubId);
-      return;
-    }
-    seenHubIntros.add(hubId);
     hubIntroPendingId = hubId;
     fillHubIntro(hubId);
     hubIntroEl.hidden = false;
@@ -463,14 +456,9 @@
       b.dataset.hubId = hub.id;
       b.textContent = getDisplayLabel(hub.node);
       b.addEventListener("click", () => {
-        activeHubId = hub.id;
+        if (hub.id === activeHubId) return;
         closeModal();
-        renderBrowser();
-        try {
-          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        } catch {
-          window.scrollTo(0, 0);
-        }
+        openHubIntro(hub.id);
       });
       filterTabsEl.appendChild(b);
     });
