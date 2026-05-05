@@ -36,11 +36,11 @@
   /* Storymap + discussion (solid viewport themes) */
   --storymap-bg: #c5d3d4;
   --storymap-ink: #1a1a18;
-  /* Discussion tab: warm brown field; cream surface + terracotta accents.
+  /* Discussion tab: deep brown field, cream composer card + terracotta accents.
      The legacy --discussion-blue tokens are kept but now alias to terracotta
      so old rules pick up the new palette without renaming everywhere. */
-  --discussion-bg: #6e4b2c;
-  --discussion-bg-soft: #8a6b50;
+  --discussion-bg: #341c02;
+  --discussion-bg-soft: #5a3a1a;
   --discussion-surface: #f5e8e2;
   --discussion-ink: #3d2918;
   --discussion-brown: #5c3d2e;
@@ -3660,13 +3660,64 @@ body[data-mode="discussion"] #discussionPostBtn:hover {
 /* ─── Discussion feed: comments live on a cream "paper" panel ──────────── */
 
 body[data-mode="discussion"] .discussionPosts {
-  background: var(--discussion-surface, #f5e8e2);
-  border: 1px solid color-mix(in srgb, var(--discussion-brown, #5c3d2e) 30%, transparent);
-  border-radius: 6px;
-  padding: clamp(6px, 1.4vw, 12px) clamp(14px, 2.4vw, 22px);
-  color: var(--discussion-ink, #3d2918);
-  --text: var(--discussion-ink, #3d2918);
-  --muted: color-mix(in srgb, var(--discussion-brown, #5c3d2e) 65%, transparent);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  color: #ffffff;
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.72);
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__title,
+body[data-mode="discussion"] .discussionPosts .discussionComment__body,
+body[data-mode="discussion"] .discussionPosts .discussionComment__author {
+  color: #ffffff;
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__header,
+body[data-mode="discussion"] .discussionPosts .discussionComment__time,
+body[data-mode="discussion"] .discussionPosts .discussionComment__edited {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment--root {
+  border-top-color: rgba(255, 255, 255, 0.18);
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment--reply {
+  border-left-color: color-mix(in srgb, var(--discussion-terra, #c4735c) 75%, #fff 25%);
+}
+
+body[data-mode="discussion"] .discussionPosts [dir="rtl"] .discussionComment--reply {
+  border-right-color: color-mix(in srgb, var(--discussion-terra, #c4735c) 75%, #fff 25%);
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__action {
+  color: var(--discussion-terra-soft, #d99272);
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__editBtn {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__deleteBtn {
+  color: #ff6b6b;
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__inlineComposer {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 2px solid color-mix(in srgb, var(--discussion-terra, #c4735c) 70%, transparent);
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__editArea {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+body[data-mode="discussion"] .discussionPosts .discussionComment__flag {
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 body[data-mode="discussion"] .discussionPosts:empty {
