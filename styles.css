@@ -39,8 +39,8 @@
   /* Discussion tab: deep brown field, cream composer card + terracotta accents.
      The legacy --discussion-blue tokens are kept but now alias to terracotta
      so old rules pick up the new palette without renaming everywhere. */
-  --discussion-bg: #341c02;
-  --discussion-bg-soft: #5a3a1a;
+  --discussion-bg: #2e0e07;
+  --discussion-bg-soft: #4d2418;
   --discussion-surface: #f5e8e2;
   --discussion-ink: #3d2918;
   --discussion-brown: #5c3d2e;
