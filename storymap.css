@@ -831,7 +831,8 @@ body.theme-storymap.storymapWelcomeOpen {
     ui-sans-serif,
     system-ui,
     sans-serif;
-  font-size: clamp(2rem, min(6.5vw, 12vh), 3.75rem);
+  /* Match the Archive hero on the timeline page (--home-hero-title-fs). */
+  font-size: var(--home-hero-title-fs);
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: -0.058em;
@@ -854,7 +855,8 @@ body.theme-storymap.storymapWelcomeOpen {
     ui-sans-serif,
     system-ui,
     sans-serif;
-  font-size: clamp(1.5rem, min(5vw, 10vh), 2.85rem);
+  /* Match Archive hero AR size on the timeline page (--home-hero-title-fs). */
+  font-size: var(--home-hero-title-fs);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0;
@@ -954,7 +956,16 @@ body.theme-storymap.storymapWelcomeOpen {
 }
 
 .archiveHubIntro__inner {
-  max-width: min(48rem, 100%);
+  /* Wider than the welcome modal so the hub-intro paragraphs fill more of the
+     screen with smaller side margins; still capped so line-length stays readable. */
+  max-width: min(64rem, 96vw);
+  padding-inline: clamp(0px, 1vw, 12px);
+}
+
+.archiveHubIntro {
+  /* Trim side padding so the body has less gutter between text and screen edge. */
+  padding-left: clamp(14px, 3vw, 32px);
+  padding-right: clamp(14px, 3vw, 32px);
 }
 
 .archiveHubIntro .storymapWelcome__titleEn {

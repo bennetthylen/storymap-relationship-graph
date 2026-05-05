@@ -863,7 +863,7 @@
     if (typeof setStatus === "function") setStatus("");
   }
 
-  fetch("./published-storymap.json?t=" + Date.now())
+  fetch("./published-storymap.json")
     .then((r) => r.json())
     .then(boot)
     .catch((err) => {
