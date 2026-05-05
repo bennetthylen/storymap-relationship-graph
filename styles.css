@@ -36,14 +36,18 @@
   /* Storymap + discussion (solid viewport themes) */
   --storymap-bg: #c5d3d4;
   --storymap-ink: #1a1a18;
-  /* Discussion tab: terracotta field; accents via --discussion-brown / --discussion-blue */
-  --discussion-bg: #c4735c;
-  --discussion-bg-soft: #dba892;
+  /* Discussion tab: warm brown field; cream surface + terracotta accents.
+     The legacy --discussion-blue tokens are kept but now alias to terracotta
+     so old rules pick up the new palette without renaming everywhere. */
+  --discussion-bg: #6e4b2c;
+  --discussion-bg-soft: #8a6b50;
   --discussion-surface: #f5e8e2;
   --discussion-ink: #3d2918;
   --discussion-brown: #5c3d2e;
-  --discussion-blue: #2c5282;
-  --discussion-blue-soft: #4a6fa5;
+  --discussion-terra: #c4735c;
+  --discussion-terra-soft: #d99272;
+  --discussion-blue: #c4735c;
+  --discussion-blue-soft: #d99272;
   /* Home only: deeper burgundy field + cream UI; hero EN uses dusty blue (see --landing-dusty-blue) */
   --home-bg: #5c1528;
   --home-ink: #faf6f0;
@@ -1751,51 +1755,61 @@ body.theme-storymap .siteNav--archive .siteNav__langBtn:focus {
   transform: none;
 }
 
-/* Discussion: terracotta viewport + brown type + blue accents */
+/* Discussion: warm brown viewport + cream surfaces + terracotta accents */
 body[data-mode="discussion"] {
   background: var(--discussion-bg);
-  color: var(--discussion-brown);
+  color: var(--discussion-surface);
   font-weight: 600;
-  --text: var(--discussion-brown);
-  --muted: color-mix(in srgb, var(--discussion-brown) 72%, var(--discussion-blue) 28%);
-  --border: color-mix(in srgb, var(--discussion-brown) 35%, transparent);
+  --text: var(--discussion-surface);
+  --muted: color-mix(in srgb, var(--discussion-surface) 78%, transparent);
+  --border: color-mix(in srgb, var(--discussion-surface) 30%, transparent);
 }
 
 body[data-mode="discussion"] .siteNav__brandLink {
-  color: var(--discussion-brown);
+  color: var(--discussion-surface);
 }
 
 body[data-mode="discussion"] .jsStatus {
-  background: var(--discussion-bg);
-  border-color: color-mix(in srgb, var(--discussion-blue) 28%, transparent);
-  color: var(--discussion-brown);
+  background: color-mix(in srgb, var(--discussion-bg) 70%, var(--discussion-ink) 30%);
+  border-color: color-mix(in srgb, var(--discussion-terra) 30%, transparent);
+  color: var(--discussion-surface);
 }
 
 body[data-mode="discussion"] .siteNav__langMenu {
-  background: var(--discussion-bg);
-  border-color: color-mix(in srgb, var(--discussion-brown) 22%, transparent);
+  background: color-mix(in srgb, var(--discussion-bg) 80%, var(--discussion-ink) 20%);
+  border-color: color-mix(in srgb, var(--discussion-surface) 22%, transparent);
+}
+
+body[data-mode="discussion"] .siteNav__langOption {
+  color: var(--discussion-surface);
+}
+
+body[data-mode="discussion"] .siteNav__langOption:hover,
+body[data-mode="discussion"] .siteNav__langOption:focus {
+  color: var(--discussion-surface);
+  background: color-mix(in srgb, var(--discussion-terra) 22%, transparent);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__primary .siteNav__tab {
-  color: var(--discussion-brown);
+  color: var(--discussion-surface);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__primary .siteNav__tab:hover,
 body[data-mode="discussion"] .siteNav--archive .siteNav__primary .siteNav__tab--active {
-  color: var(--discussion-blue);
+  color: var(--discussion-terra-soft);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn {
-  background: color-mix(in srgb, var(--discussion-surface) 55%, transparent);
-  color: var(--discussion-brown);
-  border-color: color-mix(in srgb, var(--discussion-blue) 35%, transparent);
+  background: color-mix(in srgb, var(--discussion-surface) 12%, transparent);
+  color: var(--discussion-surface);
+  border-color: color-mix(in srgb, var(--discussion-surface) 30%, transparent);
 }
 
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn:hover,
 body[data-mode="discussion"] .siteNav--archive .siteNav__langBtn:focus {
   transform: none;
-  border-color: var(--discussion-blue-soft);
-  color: var(--discussion-blue);
+  border-color: var(--discussion-terra);
+  color: var(--discussion-surface);
 }
 
 body[data-mode="discussion"] .discussionComposer {
@@ -3425,42 +3439,83 @@ body.theme-archive.page-home .homePageBuffer {
 
 body[data-mode="discussion"] .discussionComposer.discussionComposer--editor,
 .discussionComposer.discussionComposer--editor {
-  background: #fffdf7;
-  border: 1px solid color-mix(in srgb, var(--wmf-ink, #1a1a18) 18%, transparent);
+  background: var(--discussion-surface, #f5e8e2);
+  border: 1px solid color-mix(in srgb, var(--discussion-brown, #5c3d2e) 35%, transparent);
   border-radius: 6px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 0 rgba(61, 41, 24, 0.08);
   padding: clamp(14px, 2.4vw, 22px) clamp(16px, 2.6vw, 24px) clamp(12px, 2vw, 18px);
   margin-bottom: 22px;
+  color: var(--discussion-ink, #3d2918);
 }
 
 body[data-mode="discussion"] .discussionComposer.discussionComposer--editor:hover,
 .discussionComposer.discussionComposer--editor:hover {
-  background: #fffdf7;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  background: var(--discussion-surface, #f5e8e2);
+  box-shadow: 0 1px 0 rgba(61, 41, 24, 0.08);
   transform: none;
-  border-color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 18%, transparent);
+  border-color: color-mix(in srgb, var(--discussion-brown, #5c3d2e) 38%, transparent);
 }
 
 /* Override the data-mode-scoped input/textarea rules that would otherwise
    re-add borders + tinted backgrounds on the borderless editor inputs. */
 body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__body,
-body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaInput {
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaInput,
+.discussionComposer--editor .discussionComposer__body,
+.discussionComposer--editor .discussionComposer__metaInput {
   border: none;
   background: transparent;
   box-shadow: none;
-  color: var(--wmf-ink, #1a1a18);
+  color: var(--discussion-ink, #3d2918);
 }
 
 body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__body:focus,
-body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaInput:focus {
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaInput:focus,
+.discussionComposer--editor .discussionComposer__body:focus,
+.discussionComposer--editor .discussionComposer__metaInput:focus {
   border: none;
   background: transparent;
   box-shadow: none;
   outline: none;
 }
 
-body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaLabel {
-  color: color-mix(in srgb, var(--discussion-brown, #6b4a2b) 70%, transparent);
+.discussionComposer--editor .discussionComposer__body::placeholder,
+.discussionComposer--editor .discussionComposer__metaInput::placeholder {
+  color: color-mix(in srgb, var(--discussion-brown, #5c3d2e) 45%, transparent);
+}
+
+.discussionComposer--editor .discussionComposer__divider {
+  background: color-mix(in srgb, var(--discussion-terra, #c4735c) 40%, transparent);
+}
+
+.discussionComposer--editor .discussionComposer__metaDivider {
+  background: color-mix(in srgb, var(--discussion-terra, #c4735c) 40%, transparent);
+}
+
+body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__metaLabel,
+.discussionComposer--editor .discussionComposer__metaLabel {
+  color: var(--discussion-terra, #c4735c);
+}
+
+.discussionComposer--editor .discussionComposer__hint {
+  color: color-mix(in srgb, var(--discussion-brown, #5c3d2e) 65%, transparent);
+}
+
+.discussionComposer--editor .discussionComposer__intro {
+  color: color-mix(in srgb, var(--discussion-brown, #5c3d2e) 75%, transparent);
+}
+
+.discussionComposer--editor .discussionComposer__postBtn,
+body[data-mode="discussion"] #discussionPostBtn {
+  background: var(--discussion-terra, #c4735c);
+  border-color: var(--discussion-terra, #c4735c);
+  color: var(--discussion-surface, #f5e8e2);
+}
+
+.discussionComposer--editor .discussionComposer__postBtn:hover,
+body[data-mode="discussion"] #discussionPostBtn:hover {
+  background: var(--discussion-brown, #5c3d2e);
+  border-color: var(--discussion-brown, #5c3d2e);
+  color: var(--discussion-surface, #f5e8e2);
 }
 
 .discussionComposer--editor .discussionComposer__intro {
@@ -3602,6 +3657,31 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   }
 }
 
+/* ─── Discussion feed: comments live on a cream "paper" panel ──────────── */
+
+body[data-mode="discussion"] .discussionPosts {
+  background: var(--discussion-surface, #f5e8e2);
+  border: 1px solid color-mix(in srgb, var(--discussion-brown, #5c3d2e) 30%, transparent);
+  border-radius: 6px;
+  padding: clamp(6px, 1.4vw, 12px) clamp(14px, 2.4vw, 22px);
+  color: var(--discussion-ink, #3d2918);
+  --text: var(--discussion-ink, #3d2918);
+  --muted: color-mix(in srgb, var(--discussion-brown, #5c3d2e) 65%, transparent);
+}
+
+body[data-mode="discussion"] .discussionPosts:empty {
+  display: none;
+}
+
+body[data-mode="discussion"] .discussionFeed {
+  margin-top: 14px;
+}
+
+body[data-mode="discussion"] .discussionFeed,
+body[data-mode="discussion"] .discussionFeed > * {
+  background: transparent;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    Discussion: threaded reddit-style comments + replies extending from the side
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -3639,7 +3719,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
 }
 
 .discussionComment--root {
-  border-top: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--discussion-brown, #5c3d2e) 22%, transparent);
   padding-top: 18px;
 }
 
@@ -3652,7 +3732,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   margin-left: 18px;
   padding-left: 18px;
   padding-top: 10px;
-  border-left: 2px solid color-mix(in srgb, var(--wmf-gold, #c79b3a) 70%, var(--wmf-ink, #333) 30%);
+  border-left: 2px solid color-mix(in srgb, var(--discussion-terra, #c4735c) 70%, var(--discussion-brown, #5c3d2e) 30%);
 }
 
 [dir="rtl"] .discussionComment--reply {
@@ -3661,7 +3741,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   padding-left: 0;
   padding-right: 18px;
   border-left: none;
-  border-right: 2px solid color-mix(in srgb, var(--wmf-gold, #c79b3a) 70%, var(--wmf-ink, #333) 30%);
+  border-right: 2px solid color-mix(in srgb, var(--discussion-terra, #c4735c) 70%, var(--discussion-brown, #5c3d2e) 30%);
 }
 
 .discussionComment__children {
@@ -3677,7 +3757,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   gap: 8px;
   flex-wrap: wrap;
   font-size: 0.84rem;
-  color: var(--muted, #555);
+  color: color-mix(in srgb, var(--discussion-brown, #5c3d2e) 70%, transparent);
 }
 
 .discussionComment__flag {
@@ -3685,14 +3765,14 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   height: 14px;
   object-fit: cover;
   border-radius: 2px;
-  border: 0.5px solid color-mix(in srgb, var(--wmf-ink, #333) 30%, transparent);
+  border: 0.5px solid color-mix(in srgb, var(--discussion-brown, #5c3d2e) 30%, transparent);
   flex: 0 0 auto;
   display: inline-block;
 }
 
 .discussionComment__author {
   font-weight: 600;
-  color: var(--wmf-ink, #333);
+  color: var(--discussion-brown, #5c3d2e);
 }
 
 .discussionComment__time {
@@ -3713,7 +3793,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   font-style: italic;
   font-weight: 700;
   font-size: calc(1.15rem + var(--header-bump, 0px));
-  color: var(--wmf-ink, #1a1a18);
+  color: var(--discussion-ink, #3d2918);
   line-height: 1.25;
 }
 
@@ -3721,7 +3801,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   margin: 6px 0 8px;
   white-space: pre-wrap;
   line-height: 1.55;
-  color: var(--wmf-ink, #1a1a18);
+  color: var(--discussion-ink, #3d2918);
   font-size: 0.98rem;
 }
 
@@ -3729,15 +3809,15 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   width: 100%;
   font: inherit;
   padding: 8px 10px;
-  border: 1px solid color-mix(in srgb, var(--wmf-ink, #1a1a18) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--discussion-brown, #5c3d2e) 30%, transparent);
   border-radius: 4px;
-  background: #fffdf7;
-  color: var(--wmf-ink, #1a1a18);
+  background: color-mix(in srgb, var(--discussion-surface, #f5e8e2) 40%, #fff 60%);
+  color: var(--discussion-ink, #3d2918);
   resize: vertical;
 }
 
 .discussionComment__editArea:focus {
-  outline: 2px solid color-mix(in srgb, var(--wmf-magenta, #b55385) 35%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--discussion-terra, #c4735c) 45%, transparent);
   outline-offset: 1px;
 }
 
@@ -3755,7 +3835,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
   padding: 0;
   font: inherit;
   letter-spacing: 0.04em;
-  color: var(--wmf-magenta, #b55385);
+  color: var(--discussion-terra, #c4735c);
   cursor: pointer;
   text-transform: uppercase;
   font-weight: 600;
@@ -3770,7 +3850,7 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
 
 .discussionComment__editBtn,
 .discussionComment__deleteBtn {
-  color: color-mix(in srgb, var(--wmf-ink, #1a1a18) 70%, var(--wmf-magenta, #b55385) 30%);
+  color: color-mix(in srgb, var(--discussion-ink, #3d2918) 70%, var(--discussion-terra, #c4735c) 30%);
 }
 
 .discussionComment__deleteBtn {
@@ -3780,8 +3860,8 @@ body[data-mode="discussion"] .discussionComposer--editor .discussionComposer__me
 .discussionComment__inlineComposer {
   margin: 8px 0 4px;
   padding: 10px 12px;
-  border-left: 2px solid color-mix(in srgb, var(--wmf-magenta, #b55385) 50%, transparent);
-  background: color-mix(in srgb, var(--wmf-cream, #f4ead2) 60%, #fff 40%);
+  border-left: 2px solid color-mix(in srgb, var(--discussion-terra, #c4735c) 60%, transparent);
+  background: color-mix(in srgb, var(--discussion-surface, #f5e8e2) 50%, #fff 50%);
 }
 
 .discussionComment__inlineComposer[hidden] {
