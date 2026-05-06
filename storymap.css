@@ -900,6 +900,25 @@ body.theme-storymap.storymapWelcomeOpen {
   border: none;
   padding: 0;
   cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.storymapWelcome__cta::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.storymapWelcome__cta:focus,
+.storymapWelcome__cta:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.storymapWelcome__cta:focus-visible {
+  text-decoration-thickness: 2px;
 }
 
 .storymapWelcome__cta:hover {
@@ -1472,16 +1491,79 @@ body.theme-storymap .archiveHero .hero__titleLine--ar {
 }
 
 .archiveCard__media {
-  overflow: hidden;
+  position: relative;
+  overflow: visible;
   background: transparent;
   transition: opacity 0.18s ease;
 }
 
-.archiveCard__media img {
+.archiveCard__media > img {
   width: 100%;
   height: auto;
   display: block;
   vertical-align: bottom;
+}
+
+/* Stack-of-photos hint for cards backed by a multi-image gallery node.
+   The cover image stays in place; we paint two offset paper-edge layers
+   behind it so the card reads as a small pile. */
+.archiveCard--gallery .archiveCard__media {
+  overflow: visible;
+}
+
+.archiveCard--gallery .archiveCard__media::before,
+.archiveCard--gallery .archiveCard__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--archive-browser-cream, #efe8d8);
+  border: 0.5px solid color-mix(in srgb, var(--archive-maroon) 22%, transparent);
+  z-index: -1;
+  pointer-events: none;
+  transition: transform 0.22s ease;
+}
+
+.archiveCard--gallery .archiveCard__media::before {
+  transform: translate(6px, 6px) rotate(1.4deg);
+}
+
+.archiveCard--gallery .archiveCard__media::after {
+  transform: translate(-5px, 9px) rotate(-1.6deg);
+}
+
+.archiveCard--gallery:hover .archiveCard__media::before,
+.archiveCard--gallery:focus-visible .archiveCard__media::before {
+  transform: translate(8px, 9px) rotate(2deg);
+}
+
+.archiveCard--gallery:hover .archiveCard__media::after,
+.archiveCard--gallery:focus-visible .archiveCard__media::after {
+  transform: translate(-7px, 12px) rotate(-2.2deg);
+}
+
+.archiveCard__stack {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 22px;
+  padding: 0 8px;
+  background: color-mix(in srgb, #4a3038 92%, black 8%);
+  color: #f8f2ea;
+  border-radius: 11px;
+  font-family: "Oswald", system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  z-index: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.archiveCard__stackCount {
+  display: inline-block;
 }
 
 /* Document-only card (no image): keep the same 4:5 footprint as photo cards,
@@ -1669,11 +1751,72 @@ body.archiveModalOpen {
   grid-template-columns: 1fr;
 }
 
+/* Gallery layout: the figure column hosts a vertical scroll of every image
+   in the node's `images` array. Visitors keep the description on the right
+   while scrolling through the suitcase contents one full-size image at a time. */
+.archiveModal__inner--gallery {
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  max-height: min(94vh, 920px);
+}
+
+@media (max-width: 780px) {
+  .archiveModal__inner--gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
 .archiveModal__figure {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 200px;
+}
+
+.archiveModal__figure--gallery {
+  align-items: stretch;
+  align-self: stretch;
+  min-height: 0;
+}
+
+.archiveModal__gallery {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.85rem, 2vw, 1.4rem);
+  width: 100%;
+  max-height: min(82vh, 820px);
+  overflow-y: auto;
+  padding-right: 6px;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+.archiveModal__galleryItem {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.archiveModal__galleryItem img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #1a0e0a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.archiveModal__galleryCaption {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--archive-body-ink);
+  font-style: italic;
+}
+
+@media (max-width: 780px) {
+  .archiveModal__gallery {
+    max-height: 60vh;
+  }
 }
 
 .archiveModal__img {
@@ -1825,3 +1968,163 @@ body.archiveModalOpen {
   }
 }
 
+/* ----- Archive: phone layout --------------------------------------------
+   - Tighter spacing and smaller hero so the room title doesn't dominate.
+   - Bigger tap targets on back/breadcrumb/filter tabs.
+   - Modal: full-viewport, prev/next moved to a bottom bar so the image
+     and copy aren't covered by side controls. */
+@media (max-width: 600px) {
+  .archiveBrowser__inner {
+    padding: 0.75rem 0.85rem 1.5rem;
+    gap: 0.65rem;
+  }
+
+  .archiveBrowser__topRow {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .archiveBackBtn {
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .archiveBreadcrumb {
+    font-size: 0.92rem;
+  }
+
+  .archiveBrowser__heroTitle {
+    font-size: clamp(1.7rem, 8vw, 2.4rem);
+    line-height: 1.1;
+  }
+
+  .archiveFilterTabs {
+    gap: 0.3rem;
+  }
+
+  .archiveTab {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.92rem;
+    min-height: 36px;
+  }
+
+  .archiveMetaBar {
+    font-size: 0.78rem;
+    gap: 0.4rem 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .archiveTimeline__rows {
+    gap: 1rem;
+  }
+
+  .archiveRow {
+    padding: 1rem 0.85rem;
+    gap: 0.85rem;
+  }
+
+  .archiveRow__title {
+    font-size: 1.2rem;
+  }
+
+  .archiveRow__body {
+    font-size: 13px;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+}
+
+@media (max-width: 540px) {
+  .archiveGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Modal: full-viewport on phones, navigation moved to bottom row. */
+@media (max-width: 780px) {
+  .archiveModal {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .archiveModal__dialog {
+    width: 100%;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  .archiveModal__inner,
+  .archiveModal__inner--gallery {
+    max-height: none;
+    height: 100%;
+    padding: 2.75rem 1rem 4.5rem;
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .archiveModal__close {
+    top: 0.4rem;
+    right: 0.4rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    background: color-mix(in srgb, var(--archive-page-bg) 85%, #fff 15%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  }
+
+  /* Move prev/next from vertical-center side to a fixed bottom bar so they
+     don't overlap the photo or text. */
+  .archiveModal__nav {
+    top: auto;
+    bottom: 0;
+    transform: none;
+    height: 3.5rem;
+    width: 50%;
+    background: color-mix(in srgb, var(--archive-page-bg) 92%, #fff 8%);
+    border-top: 1px solid color-mix(in srgb, var(--archive-maroon) 18%, transparent);
+    font-size: 1.4rem;
+  }
+
+  .archiveModal__nav--prev { left: 0; right: auto; }
+  .archiveModal__nav--next { right: 0; left: auto; border-left: 1px solid color-mix(in srgb, var(--archive-maroon) 18%, transparent); }
+
+  .archiveModal__img {
+    max-height: 50vh;
+  }
+
+  .archiveModal__gallery {
+    max-height: none;
+  }
+
+  .archiveModal__title {
+    font-size: 1.3rem;
+  }
+
+  .archiveModal__body {
+    font-size: 1rem;
+  }
+}
+
+/* Welcome / hub-intro popups: tighten padding and shrink hero text so the
+   "enter the archive" CTA stays visible without scrolling on phones. */
+@media (max-width: 600px) {
+  .storymapWelcome {
+    padding: 18px 16px 28px;
+  }
+
+  .storymapWelcome__titleEn,
+  .storymapWelcome__titleAr {
+    font-size: clamp(1.6rem, 8vw, 2.4rem);
+  }
+
+  .storymapWelcome__body {
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+}

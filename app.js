@@ -273,7 +273,7 @@ const GITHUB_REPO_BRANCH = "main";
 
 const DEFAULT_CONTENT = {
   heroTitleEn: "Doing Well, Don't Worry.",
-  heroTitleAr: "أنا بخير، أطمئنوا",
+  heroTitleAr: "أنا بخير، اطمئنوا",
   heroSubtitle:
     "A digital collaboration between The Women and Memory Forum (Egypt) and Georgetown University (USA) students in the SFS Centennial Lab Class, Arab Studies 4478: Heritage and Development in the Arab World.",
   heroCta: "experience the archive",
@@ -782,7 +782,7 @@ Object.values(TRANSLATIONS).forEach((bundle) => {
 });
 
 Object.assign(TRANSLATIONS.ar, {
-  exhibitionTitle: "أنا بخير، أطمئنوا: أرشيف نسوي علائقي",
+  exhibitionTitle: "أنا بخير، اطمئنوا: أرشيف نسوي علائقي",
   exhibitionSubtitle:
     "تعيد «المرأة والذاكرة» قراءة أرشيف وداد متري بوصفه إرشادًا نسويًا عابرًا للأجيال والطبقات.",
   citationsTitle: "مراجع وفق أسلوب شيكاغو",
@@ -5972,7 +5972,50 @@ function initLanguageMenu() {
   });
 }
 
+function initMobileNav() {
+  const nav = document.querySelector(".siteNav");
+  if (!nav || nav.querySelector(".siteNav__menuToggle")) return;
+  const primary = nav.querySelector(".siteNav__primary");
+  if (!primary) return;
+  if (!primary.id) primary.id = "siteNavPrimary";
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "siteNav__menuToggle";
+  btn.setAttribute("aria-label", "Menu");
+  btn.setAttribute("aria-controls", primary.id);
+  btn.setAttribute("aria-expanded", "false");
+  btn.innerHTML = '<span class="siteNav__menuIcon" aria-hidden="true"></span>';
+  nav.insertBefore(btn, primary);
+
+  const close = () => {
+    nav.classList.remove("siteNav--open");
+    btn.setAttribute("aria-expanded", "false");
+  };
+  const toggle = () => {
+    const open = nav.classList.toggle("siteNav--open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  };
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggle();
+  });
+  primary.addEventListener("click", (e) => {
+    if (e.target && e.target.closest && e.target.closest("a")) close();
+  });
+  document.addEventListener("click", (e) => {
+    if (!nav.classList.contains("siteNav--open")) return;
+    if (e.target && e.target.closest && e.target.closest(".siteNav")) return;
+    close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+}
+
 initLanguageMenu();
+initMobileNav();
 syncLangToUrl();
 applyTranslations();
 

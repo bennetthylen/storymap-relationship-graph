@@ -47,6 +47,62 @@
       sortDateAsc: "التاريخ (الأقدم أولًا)",
       enterRoom: "ادخل الغرفة",
     },
+    it: {
+      explore: "Esplora",
+      archive: "Archivio",
+      backTimeline: "Torna all'archivio",
+      close: "Chiudi",
+      prev: "Precedente",
+      next: "Successivo",
+      photo: "Foto",
+      loading: "Caricamento…",
+      sortLabel: "Ordina per",
+      sortDateDesc: "Data (dalla più recente)",
+      sortDateAsc: "Data (dalla più antica)",
+      enterRoom: "entra nella stanza",
+    },
+    fr: {
+      explore: "Explorer",
+      archive: "Archive",
+      backTimeline: "Retour à l'archive",
+      close: "Fermer",
+      prev: "Précédent",
+      next: "Suivant",
+      photo: "Photo",
+      loading: "Chargement…",
+      sortLabel: "Trier par",
+      sortDateDesc: "Date (du plus récent)",
+      sortDateAsc: "Date (du plus ancien)",
+      enterRoom: "entrer dans la salle",
+    },
+    es: {
+      explore: "Explorar",
+      archive: "Archivo",
+      backTimeline: "Volver al archivo",
+      close: "Cerrar",
+      prev: "Anterior",
+      next: "Siguiente",
+      photo: "Foto",
+      loading: "Cargando…",
+      sortLabel: "Ordenar por",
+      sortDateDesc: "Fecha (más reciente primero)",
+      sortDateAsc: "Fecha (más antigua primero)",
+      enterRoom: "entrar en la sala",
+    },
+    de: {
+      explore: "Erkunden",
+      archive: "Archiv",
+      backTimeline: "Zurück zum Archiv",
+      close: "Schließen",
+      prev: "Zurück",
+      next: "Weiter",
+      photo: "Foto",
+      loading: "Wird geladen…",
+      sortLabel: "Sortieren nach",
+      sortDateDesc: "Datum (neueste zuerst)",
+      sortDateAsc: "Datum (älteste zuerst)",
+      enterRoom: "den Raum betreten",
+    },
   };
 
   const root = document.getElementById("archiveAppRoot");
@@ -586,10 +642,13 @@
       const card = document.createElement("button");
       card.type = "button";
       const src = imageSrcOf(node);
-      card.className = "archiveCard" + (src ? "" : " archiveCard--noImage");
+      const galleryImages = Array.isArray(node.images) ? node.images.filter((it) => it && it.src) : [];
+      const isGallery = galleryImages.length > 1;
+      card.className = "archiveCard" + (src ? "" : " archiveCard--noImage") + (isGallery ? " archiveCard--gallery" : "");
       const cap = getDisplayLabel(node);
       const dateLine = bracketDateForCard(node);
-      card.setAttribute("aria-label", `${cap}. ${uik("photo")} ${i + 1} / ${sorted.length}`);
+      const ariaSuffix = isGallery ? `. ${galleryImages.length} ${uik("photo")}` : "";
+      card.setAttribute("aria-label", `${cap}. ${uik("photo")} ${i + 1} / ${sorted.length}${ariaSuffix}`);
 
       const media = document.createElement("div");
       media.className = "archiveCard__media";
@@ -605,6 +664,16 @@
         ph.className = "archiveCard__docLabel";
         ph.textContent = cap;
         media.appendChild(ph);
+      }
+      if (isGallery) {
+        const stack = document.createElement("span");
+        stack.className = "archiveCard__stack";
+        stack.setAttribute("aria-hidden", "true");
+        const stackCount = document.createElement("span");
+        stackCount.className = "archiveCard__stackCount";
+        stackCount.textContent = `+${galleryImages.length - 1}`;
+        stack.appendChild(stackCount);
+        media.appendChild(stack);
       }
 
       card.appendChild(media);
@@ -726,8 +795,10 @@
     const src = imageSrcOf(node);
     const figure = modalImg ? modalImg.closest(".archiveModal__figure") : null;
     const inner = modalImg ? modalImg.closest(".archiveModal__inner") : null;
+    const galleryImages = Array.isArray(node.images) ? node.images.filter((it) => it && it.src) : [];
+    const isGallery = galleryImages.length > 1;
     if (modalImg) {
-      if (src) {
+      if (src && !isGallery) {
         modalImg.src = src;
         modalImg.alt = getDisplayLabel(node);
         modalImg.style.display = "";
@@ -737,8 +808,47 @@
         modalImg.style.display = "none";
       }
     }
-    if (figure) figure.style.display = src ? "" : "none";
-    if (inner) inner.classList.toggle("archiveModal__inner--noImage", !src);
+    if (figure) {
+      let galleryEl = figure.querySelector(".archiveModal__gallery");
+      if (isGallery) {
+        if (!galleryEl) {
+          galleryEl = document.createElement("div");
+          galleryEl.className = "archiveModal__gallery";
+          figure.appendChild(galleryEl);
+        }
+        galleryEl.innerHTML = "";
+        galleryEl.scrollTop = 0;
+        const isAr = getLang() === "ar";
+        galleryImages.forEach((item, idx) => {
+          const fig = document.createElement("figure");
+          fig.className = "archiveModal__galleryItem";
+          const im = document.createElement("img");
+          im.src = item.src;
+          im.alt = item.caption || "";
+          im.loading = idx === 0 ? "eager" : "lazy";
+          im.decoding = "async";
+          fig.appendChild(im);
+          if (item.caption) {
+            const cap = document.createElement("figcaption");
+            cap.className = "archiveModal__galleryCaption";
+            cap.textContent = `${idx + 1}. ${item.caption}`;
+            cap.setAttribute("dir", isAr ? "rtl" : "ltr");
+            fig.appendChild(cap);
+          }
+          galleryEl.appendChild(fig);
+        });
+        galleryEl.style.display = "";
+      } else if (galleryEl) {
+        galleryEl.innerHTML = "";
+        galleryEl.style.display = "none";
+      }
+      figure.style.display = src || isGallery ? "" : "none";
+      figure.classList.toggle("archiveModal__figure--gallery", isGallery);
+    }
+    if (inner) {
+      inner.classList.toggle("archiveModal__inner--noImage", !src && !isGallery);
+      inner.classList.toggle("archiveModal__inner--gallery", isGallery);
+    }
     if (modalTitle) modalTitle.textContent = getDisplayLabel(node);
     const bodyText = getDisplayText(node);
     const dateStr = extractDateHint(bodyText);

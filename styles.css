@@ -357,6 +357,8 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sit
   text-decoration: none;
   line-height: 1.05;
   color: inherit;
+  position: relative;
+  z-index: 2;
 }
 
 .siteNav__brandText {
@@ -407,6 +409,8 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sit
   gap: 8px;
   flex-shrink: 0;
   margin-left: auto;
+  position: relative;
+  z-index: 2;
 }
 
 .siteNav__primary {
@@ -415,8 +419,21 @@ body:not(.theme-archive):not(.theme-storymap):not([data-mode="discussion"]) .sit
   align-items: center;
   justify-content: center;
   gap: 3px 12px;
-  flex: 1 1 200px;
   min-width: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 860px) {
+  .siteNav__primary {
+    position: static;
+    transform: none;
+    flex: 1 1 200px;
+  }
 }
 
 .siteNav--archive .siteNav__primary .siteNav__tab {
@@ -1370,7 +1387,11 @@ body.theme-archive.page-home .homeLetterCaption__seam {
   background: #c4562a;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
+  body.theme-archive.page-home .homeLetterCaption__inner {
+    padding: clamp(24px, 5vw, 36px) clamp(12px, 3vw, 20px) clamp(16px, 3vw, 24px);
+  }
+
   body.theme-archive.page-home .homeLetterCaption__midRow {
     flex-direction: column-reverse;
     align-items: flex-end;
@@ -1384,16 +1405,40 @@ body.theme-archive.page-home .homeLetterCaption__seam {
   }
 
   body.theme-archive.page-home .homeLetterCaption__nameStack {
-    min-height: clamp(5rem, 22vw, 6.4rem);
+    min-height: clamp(4.2rem, 18vw, 5.4rem);
   }
 
+  /* Phone: shrink the big names so SHAHINDA MEKLED + شاهندة مقلد don't
+     blow past the viewport edge. nowrap is preserved on purpose — names
+     should stay one line — so font-size has to do all the fitting work. */
   body.theme-archive.page-home .homeLetterCaption__nameEn {
-    font-size: clamp(1.9rem, 11vw, 2.7rem);
+    font-size: clamp(1.3rem, 7vw, 2.2rem);
+    letter-spacing: -0.045em;
   }
 
   body.theme-archive.page-home .homeLetterCaption__nameAr {
-    top: clamp(1.8rem, 9vw, 2.75rem);
-    font-size: clamp(2.3rem, 12vw, 3.1rem);
+    top: clamp(1.4rem, 7vw, 2.3rem);
+    font-size: clamp(1.6rem, 8vw, 2.5rem);
+  }
+
+  body.theme-archive.page-home .homeLetterCaption__headline {
+    font-size: clamp(1.15rem, 4.5vw, 1.6rem);
+  }
+
+  body.theme-archive.page-home .homeLetterCaption__lede {
+    font-size: clamp(0.95rem, 3.6vw, 1.15rem);
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 380px) {
+  body.theme-archive.page-home .homeLetterCaption__nameEn {
+    font-size: 5.6vw;
+    letter-spacing: -0.05em;
+  }
+  body.theme-archive.page-home .homeLetterCaption__nameAr {
+    top: 5.4vw;
+    font-size: 6.4vw;
   }
 }
 
@@ -1731,8 +1776,23 @@ body.theme-storymap .jsStatus {
 }
 
 body.theme-storymap .siteNav__langMenu {
-  background: var(--storymap-bg);
-  border-color: rgba(61, 16, 12, 0.2);
+  background: #2a1410;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.theme-storymap .siteNav__langOption {
+  color: #f8f2ea;
+}
+
+body.theme-storymap .siteNav__langOption:hover,
+body.theme-storymap .siteNav__langOption:focus {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+body.theme-storymap .siteNav__langOption.is-active {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 body.theme-storymap .siteNav--archive .siteNav__primary .siteNav__tab {
@@ -2003,6 +2063,27 @@ body[data-mode="discussion"] .card:hover {
   margin-inline: calc(50% - 50vw + 0.5in);
 }
 
+/* Single hero photo above the carousel — sits in the same full-bleed gutter
+   as the marquee, but uses display layout (not the carousel viewport rules). */
+.infoPage__figure--standalone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.4rem, 1vw, 0.7rem);
+  margin-top: clamp(2rem, 5vw, 3rem);
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+.infoPage__standaloneImg {
+  display: block;
+  width: 100%;
+  max-width: min(64rem, 92%);
+  height: auto;
+  object-fit: contain;
+  background: #1a0e0a;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
 .infoCarousel__viewport {
   overflow: hidden;
   width: 100%;
@@ -2059,6 +2140,88 @@ body[data-mode="discussion"] .card:hover {
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--archive-muted);
+}
+
+.bibliography {
+  margin: clamp(2.25rem, 5vw, 3.25rem) auto 0;
+  max-width: min(720px, 100%);
+  border-top: 1px solid color-mix(in srgb, var(--archive-ink) 18%, transparent);
+  padding-top: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.bibliography__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--home-bg);
+  user-select: none;
+}
+
+.bibliography__summary::-webkit-details-marker {
+  display: none;
+}
+
+.bibliography__summary::marker {
+  content: "";
+}
+
+.bibliography__caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid currentColor;
+  transform: rotate(-90deg);
+  transition: transform 0.2s ease;
+}
+
+.bibliography[open] .bibliography__caret {
+  transform: rotate(0deg);
+}
+
+.bibliography__summary:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--home-bg) 50%, transparent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.bibliography__list {
+  margin-top: 1.1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--archive-muted, var(--text));
+}
+
+.bibliography__list p {
+  margin: 0 0 0.85em;
+  padding-left: 2em;
+  text-indent: -2em;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.bibliography__list p:last-child {
+  margin-bottom: 0;
+}
+
+.bibliography__link {
+  color: var(--wmf-magenta, var(--discussion-blue, currentColor));
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.bibliography__link:hover,
+.bibliography__link:focus-visible {
+  color: var(--archive-hero-ink, var(--archive-ink));
+  outline: none;
 }
 
 @keyframes infoCarouselMarquee {
@@ -3178,6 +3341,42 @@ body.theme-archive.page-home .homePageBuffer {
   margin-bottom: 0;
 }
 
+.historyPage__prose h4 {
+  margin: clamp(1.5rem, 3.5vw, 2rem) 0 0.6rem;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  color: var(--discussion-blue);
+}
+
+.historyPage__prose .historyPage__minor {
+  margin: 1rem 0 0.4rem;
+  font-style: italic;
+  color: var(--text);
+}
+
+.historyPage__prose ul {
+  margin: 0 0 1.1em;
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.historyPage__prose ul ul {
+  margin: 0.35em 0 0.35em;
+  list-style: circle;
+}
+
+.historyPage__prose li {
+  margin: 0 0 0.45em;
+  line-height: 1.7;
+}
+
+.historyPage__prose li:last-child {
+  margin-bottom: 0;
+}
+
 .discussionPage {
   max-width: min(920px, 100%);
   margin: 0 auto;
@@ -3967,6 +4166,115 @@ body[data-mode="discussion"] .discussionFeed > * {
 @media (prefers-reduced-motion: reduce) {
   .discussionComment--new {
     animation: none;
+  }
+}
+
+/* ----- Mobile nav (hamburger) -------------------------------------------
+   Injected button (.siteNav__menuToggle) is hidden on desktop. At phone
+   width, the absolute-centered primary nav is converted to a drop-down
+   sheet that opens via .siteNav--open. Hits storymap, archive, info,
+   discussion, history, and admin since the markup is identical. */
+.siteNav__menuToggle {
+  display: none;
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(var(--wmf-magenta-rgb), 0.28);
+  border-radius: 6px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-inline-start: 6px;
+}
+
+.siteNav__menuToggle:hover,
+.siteNav__menuToggle:focus-visible {
+  border-color: rgba(var(--wmf-magenta-rgb), 0.6);
+  outline: none;
+}
+
+.siteNav__menuIcon,
+.siteNav__menuIcon::before,
+.siteNav__menuIcon::after {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 200ms ease, opacity 150ms ease, top 200ms ease;
+}
+
+.siteNav__menuIcon {
+  position: relative;
+}
+
+.siteNav__menuIcon::before,
+.siteNav__menuIcon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.siteNav__menuIcon::before { top: -6px; }
+.siteNav__menuIcon::after  { top:  6px; }
+
+.siteNav--open .siteNav__menuIcon { background: transparent; }
+.siteNav--open .siteNav__menuIcon::before { top: 0; transform: rotate(45deg); }
+.siteNav--open .siteNav__menuIcon::after  { top: 0; transform: rotate(-45deg); }
+
+@media (max-width: 780px) {
+  .siteNav {
+    flex-wrap: nowrap;
+    padding: 8px clamp(10px, 3vw, 18px);
+    gap: 6px;
+  }
+  .siteNav__menuToggle { display: inline-flex; margin-inline-start: auto; }
+  .siteNav__brandLink { max-width: calc(100vw - 180px); }
+  .siteNav__brandText { max-width: calc(100vw - 200px); }
+  .siteNav__brandPrimary { font-size: 0.78rem; }
+  .siteNav__brandSecondary { font-size: 0.62rem; }
+  .siteNav--archive .siteNav__logo { height: 28px; }
+
+  .siteNav__primary {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    transform: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 6px 0;
+    background: var(--archive-page-bg, #f9f3eb);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-top: 1px solid rgba(var(--wmf-magenta-rgb), 0.18);
+    z-index: 90;
+  }
+
+  .siteNav--open .siteNav__primary { display: flex; }
+
+  .siteNav--archive .siteNav__primary .siteNav__tab {
+    padding: 12px clamp(14px, 4vw, 22px);
+    justify-content: flex-start;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(var(--wmf-magenta-rgb), 0.08);
+  }
+
+  .siteNav--archive .siteNav__primary .siteNav__tab:last-child {
+    border-bottom: none;
+  }
+
+  /* Lang button: keep visible next to hamburger but compact */
+  .siteNav__end { gap: 4px; margin-left: 0; }
+  .siteNav--archive .siteNav__langBtn {
+    padding: 5px 9px;
+    min-height: 30px;
+    font-size: 0.72rem;
   }
 }
 

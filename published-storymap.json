@@ -498,6 +498,33 @@
       "x": 2099.22322,
       "y": -57.112823,
       "legacyType": "text"
+    },
+    {
+      "id": "n_5e17ca5e",
+      "type": "image",
+      "label": "Nadia and Zeynab's Suitcase",
+      "text": "Zeynab and Nadia Safwat's suitcase is a portable archive that travels with the exhibition. Inside, family photographs from Saudi Arabia, Egypt, and Denmark sit beside silver jewelry, embroidered textiles, and a Hamsa-engraved keepsake — small objects whose weight is the relationships they carry across distance. Open the case to scroll through every item at full size.",
+      "imageSrc": "./assets/published-images/n_suitcase_01.png",
+      "content": "Nadia and Zeynab's Suitcase",
+      "color": "green",
+      "x": -1532.18,
+      "y": 940.0,
+      "legacyType": "image",
+      "userAdded": true,
+      "images": [
+        { "src": "./assets/published-images/n_suitcase_01.png", "caption": "The open vitrine: photographs, silver jewelry, embroidered textiles, and small keepsakes assembled together." },
+        { "src": "./assets/published-images/n_suitcase_02.png", "caption": "Folded textiles inside the case." },
+        { "src": "./assets/published-images/n_suitcase_03.png", "caption": "Exhibit panel — Zeynab (left) and Nadia Safwat, in English and Arabic." },
+        { "src": "./assets/published-images/n_suitcase_04.png", "caption": "Family photographs alongside silver jewelry and a Hamsa-engraved ring box." },
+        { "src": "./assets/published-images/n_suitcase_05.png", "caption": "A second arrangement: photographs, a wooden figurine, a small bell, and chandelier earrings." },
+        { "src": "./assets/published-images/n_suitcase_06.png", "caption": "The Safwat family in front of their car, Saudi Arabia." },
+        { "src": "./assets/published-images/n_suitcase_07.png", "caption": "Family Christmas portrait." },
+        { "src": "./assets/published-images/n_suitcase_08.png", "caption": "Two children gathered around a brass tea tray, March 2002." },
+        { "src": "./assets/published-images/n_suitcase_09.png", "caption": "Looking down a stairwell." },
+        { "src": "./assets/published-images/n_suitcase_10.png", "caption": "Nadia performing on trumpet." },
+        { "src": "./assets/published-images/n_suitcase_11.png", "caption": "A young Nadia on a sunlit balcony." },
+        { "src": "./assets/published-images/n_suitcase_12.png", "caption": "A mother holding two of her children." }
+      ]
     }
   ],
   "edges": [
@@ -699,6 +726,11 @@
     {
       "source": "n_011e6d0c",
       "target": "n_039f0fe6",
+      "label": ""
+    },
+    {
+      "source": "n_ea58683f",
+      "target": "n_5e17ca5e",
       "label": ""
     }
   ],
