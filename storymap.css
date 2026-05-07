@@ -1737,8 +1737,9 @@ body.archiveModalOpen {
   gap: clamp(1rem, 3vw, 2rem);
   padding: clamp(1.25rem, 3vw, 2.25rem);
   padding-top: 3rem;
-  overflow: auto;
+  overflow-y: auto;
   max-height: min(92vh, 880px);
+  align-items: start;
 }
 
 @media (max-width: 780px) {
@@ -1770,6 +1771,15 @@ body.archiveModalOpen {
   align-items: center;
   justify-content: center;
   min-height: 200px;
+  position: sticky;
+  top: 0;
+  align-self: start;
+}
+
+@media (max-width: 780px) {
+  .archiveModal__figure {
+    position: static;
+  }
 }
 
 .archiveModal__figure--gallery {
@@ -1850,6 +1860,21 @@ body.archiveModalOpen {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--archive-body-ink) 80%, var(--archive-maroon));
+}
+
+.archiveModal__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--archive-body-ink);
+  font-weight: 600;
+}
+
+.archiveModal__caption p {
+  margin: 0;
 }
 
 .archiveModal__body {

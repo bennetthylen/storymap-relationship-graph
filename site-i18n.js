@@ -204,34 +204,50 @@ var STORYMAP_EXTRA_I18N = {
     historyTitle: "Feminism in Egypt and Beyond",
     historyHeadingModernEgypt: "Women in Modern Egypt",
     historySubheadingNasserSadat: "Women in the times of Nasser and Sadat",
+    historySubheadingFeministUnion: "The Egyptian Feminist Union From 1923 to Today",
+    historySubheadingInternational: "Egyptian Women\u2019s Rights Activists and International Engagement",
+    historySubheadingAsianCongress: "All Asian Women\u2019s Congress",
+    historySubheadingIslamicFeminism: "Perspectives on Feminist Movements: Islamic Feminism",
+    historyHeadingUzbekistan: "Egypt and Uzbekistan",
+    historyHeadingKhouriSoraya: "Hanifa Khouri of Egypt and Queen Soraya Tarzi of Afghanistan",
+    historyHeadingMorocco: "Egypt and Morocco",
+    historyFigNasserCaption: "Prime Minister Gamal Abdel Nasser in Alexandria, Egypt, October 1954.",
+    historyFigSorayaCaption: "Queen Soraya Tarzi on the cover of TIME, 1927.",
+    historyFigIslamicFeminismCaption: "Egyptian women calling for change, December 2011.",
     historyNasserSadatHtml:
       "<p>Many Egyptian women embraced Nasser and the Free Officers&rsquo; overhaul of the monarchy in 1952, as it seemed to open the door to a more just society for all Egyptians. By the 1940s, a pioneering collective of women had begun connecting demands for equality to the broader fight against British colonial rule, articulating gender liberation through the lens of national independence. Activists during this era rarely separated gender from other structures of oppression, and viewed imperialism, class inequality, and the subjugation of women as deeply co-constitutive.</p><p>In 1956, though women won the right to vote, gained greater access to education, and entered the workforce in increasing numbers, the state regime simultaneously closed down independent political organizations and curtailed dissent, forcing women&rsquo;s activism to operate within&mdash;and sometimes in direct opposition to&mdash;the boundaries of state-sanctioned feminism.</p><p>In the 1970s, President Sadat shifted Egypt toward an open-market economy, fundamentally changing the landscape for women&rsquo;s organizing. The socialist and anti-colonial frameworks that had united much of the previous generation of activists evolved into a more fragmented movement. As a result, there was a gradual shift away from structural critiques of capitalism and imperialism through a Pan-Arab lens toward narrower, rights-based approaches to gender advocacy within Egypt.</p>",
-    historySubheadingInternational: "Egyptian Women\u2019s Rights Activists and International Engagement",
-    historyInternationalHtml:
-      "<p>It is important that we do not limit our understanding of women&rsquo;s movements to the analytical framework of the nation-state (Bier 2004, 104). Egyptian women&rsquo;s rights activists in the early twentieth century interacted with women&rsquo;s rights movements across the region. For example, the women&rsquo;s press in Egypt featured many stories on foreign women, often expressing solidarity with those colonized or formerly colonized by Europeans (Bier 2004, 102). Below are fun facts about a few women intended to inspire further research on the international dimension of Egyptian women&rsquo;s activism.</p>" +
-      "<h4>Hanifa Khouri of Egypt and Queen Soraya Tarzi of Afghanistan</h4>" +
+    historyFeministUnionHtml:
+      "<p>The Egyptian Feminist Union, founded in 1923 by Huda Sha&rsquo;rawi, began as an informal network of upper class Egyptian women and feminist activists. At the time, the Egyptian Feminist Union was the primary association concerned with women&rsquo;s affairs, acting to counter an increasingly male-dominated state, which emerged after the 1919 revolution. Throughout its existence, the movement pushed for political change often calling on the state to maintain the morality of the nation and care for the welfare of its people (Khater and Nelson 467). The organization also supported anti-colonial activity at large, echoing the support of many women throughout the era of colonized Egypt. This included hosting the 1938 Eastern Women&rsquo;s Congress for the Defense of Palestine.</p>" +
+      "<p>As the 1952 revolution approached more women, especially middle class women, began to play a role in Egyptian feminist politics. This resulted in the creation of several offshoots of the Egyptian Feminist Union. One such group, the Bint el-Nil Union or Daughter of the Nile, focused primarily on achieving equality of women under the Egyptian constitution and providing welfare for the poor (Khater and Nelson 470). Yet another group, the socialist feminists, saw both the Egyptian Feminist Union and the Bint el-Nil Union as too cautionary and elitist. This group promoted socialist ideologies with the hopes of achieving liberation through a general struggle for social equality (Khater and Nelson 473). While the right for women to vote and stand for office was recognized, the momentum behind many feminist movements dwindled. During the period from 1957 to 1970, feminist movements were directly influenced by state policy, as the Ministry of the Interior co-opted the Egyptian Feminist Union to expel its left wing members (Khater and Nelson 476), and was later banned during subsequent years (Enloe 157).</p>" +
+      "<p>On the eve of the first post-Mubarak elections, the Egyptian Feminist Union was revitalized by new female revolutionary activists with Hoda Badran as its head. This rendition of the organization seeks not only to continue to play a role in the state making and revolutionary process, but to cast a spotlight on the work of early female activists in Egypt&rsquo;s revolutionary processes (Enloe 158).</p>",
+    historyInternationalIntroHtml:
+      "<p>It is important that we do not limit our understanding of women&rsquo;s movements to the analytical framework of the nation-state (Bier 2004, 104). Egyptian women&rsquo;s rights activists in the early twentieth century interacted with women&rsquo;s rights movements across the region. For example, the women&rsquo;s press in Egypt featured many stories on foreign women, often expressing solidarity with those colonized or formerly colonized by Europeans (Bier 2004, 102). Below are fun facts about a few women intended to inspire further research on the international dimension of Egyptian women&rsquo;s activism.</p>",
+    historyUzbekistanHtml:
+      "<p>Scholar Sayid Ahmad Wasli from Samarqand, Uzbekistan wrote a poem in which he referenced Egypt and Syria to claim that hijab should not be seen as an obstacle to learning. His poem, printed in the Afghan state newspaper <em>Aman-i-Afghan</em> in 1920, is one example of how Egypt&rsquo;s model was used to encourage women&rsquo;s progress internationally (Hannun 2025, 107).</p>",
+    historyKhouriHtml:
       "<p class=\"historyPage__minor\"><em>Who was Hanifa Khouri?</em></p>" +
       "<ul>" +
-        "<li>An Egyptian journalist and women&rsquo;s rights activist (Hannun 2020, 1).</li>" +
+        "<li>Hanifa Khouri was an Egyptian journalist and women&rsquo;s rights activist (Hannun 2020, 1).</li>" +
         "<li>She was involved in the interwar, anti-colonial transregional women&rsquo;s network (Hannun 2020, 2).</li>" +
         "<li>She served as an official delegate from Egypt to a conference held by the Young Women&rsquo;s Christian Association in Beirut, Lebanon in 1928 (Hannun 2020, 1).</li>" +
         "<li>She helped coordinate the Second Eastern Women&rsquo;s Congress in Tehran in 1932 (Hannun 2020, 12)." +
           "<ul>" +
             "<li>Khouri cited Huda Shaarawi, leader of the Egyptian Feminist Union, and spoke about the importance of maintaining certain traditions and selectively adopting European customs for progress (Hannun 2020, 13).</li>" +
-            "<li>The Second Eastern Women&rsquo;s Congress in Tehran in 1932 took place after the All Asia Women&rsquo;s Congress (AAWC) met in Lahore in 1931 (Hannun 2020, 12).</li>" +
-            "<li>This was part of the increase of formal women&rsquo;s networks mobilizing in solidarity regionally and in opposition to Western colonialism and imperialism during the interwar period (Hannun 2020, 12).</li>" +
+            "<li>The Second Eastern Women&rsquo;s Congress in Tehran in 1932 took place after the All Asia Women&rsquo;s Congress (AAWC) met in Lahore in 1931 (Hannun 2020, 12). This was part of the increase of formal women&rsquo;s networks mobilizing in solidarity regionally and in opposition to Western colonialism and imperialism during the interwar period (Hannun 2020, 12).</li>" +
           "</ul>" +
         "</li>" +
-      "</ul>" +
+      "</ul>",
+    historySorayaHtml:
       "<p class=\"historyPage__minor\"><em>Who was Queen Soraya Tarzi (1899&ndash;1968)?</em></p>" +
+      "<p>Soraya Tarzi was the first queen of newly independent Afghanistan (Hannun 2020, 1).</p>" +
       "<ul>" +
-        "<li>The first queen of newly independent Afghanistan (Hannun 2020, 1).</li>" +
         "<li>She was an important figure in interwar Middle East and South Asia politics (Hannun 2020, 2).</li>" +
         "<li>She was the daughter of reformer Mahmud Tarzi (Hannun 2020, 2).</li>" +
         "<li>Her marriage to Aman Allah Khan (r.&nbsp;1919&ndash;1929) was the first monogamous royal marriage in Afghanistan&rsquo;s history (Hannun 2021, 468).</li>" +
         "<li>She accompanied her husband, King Aman Allah, on a world tour (1927&ndash;1928) that included India, Egypt, Europe, T\u00fcrkiye and Iran (Hannun 2020, 9).</li>" +
         "<li>Her public speaking about women&rsquo;s progress is similar to Egyptian feminist Huda Sharaawi&rsquo;s (1879&ndash;1947) words (Hannun 2021, 468).</li>" +
-      "</ul>" +
+      "</ul>",
+    historyKhouriVisitHtml:
       "<p class=\"historyPage__minor\"><em>Khouri&rsquo;s Visit to Afghanistan</em></p>" +
       "<ul>" +
         "<li>In 1927, Khouri met Queen Soraya in Cairo, who invited Khouri to Afghanistan. In the summer of 1928, Khouri traveled from Beirut through Port Said to Aden, Yemen to Karachi, British India, to Peshawar to Jalalabad and finally to Kabul, Afghanistan (Hannun 2020, 1).</li>" +
@@ -239,20 +255,17 @@ var STORYMAP_EXTRA_I18N = {
           "<ul>" +
             "<li>Although temporary due to the Queen and King&rsquo;s overthrow in 1929, under their rule, Afghanistan had undergone many changes that uplifted women.</li>" +
             "<li>These transformations included the establishment of the first modern school for girls in Afghanistan and legal reforms that altered personal status laws impacting women and the family (Hannun 2020, 1).</li>" +
-            "<li>The reforms were rooted in Islamic principles, as part of the larger connection between feminist and pan-Islamist movements (Hannun 2020, 7).</li>" +
+            "<li>The reforms were rooted in Islamic principles, as part of the larger connection between feminist and pan-Islamist movements (Hannun 2020, 7). Interestingly, one defense for women&rsquo;s education was the successful examples set by girls&rsquo; schools in other Muslim countries, including Egypt (Hannun 2020, 8).</li>" +
           "</ul>" +
         "</li>" +
-        "<li>Interestingly, one defense for women&rsquo;s education was the successful examples set by girls&rsquo; schools in other Muslim countries, including Egypt (Hannun 2020, 8).</li>" +
-      "</ul>" +
-      "<h4>Egypt and Uzbekistan</h4>" +
-      "<p>Scholar Sayid Ahmad Wasli from Samarqand, Uzbekistan wrote a poem in which he referenced Egypt and Syria to claim that hijab should not be seen as an obstacle to learning. His poem, printed in the Afghan state newspaper <em>Aman-i-Afghan</em> in 1920, is one example of how Egypt&rsquo;s model was used to encourage women&rsquo;s progress internationally (Hannun 2025, 107).</p>" +
-      "<h4>Egypt and Morocco</h4>" +
+      "</ul>",
+    historyMoroccoHtml:
       "<p class=\"historyPage__minor\"><em>Gender Reform in Morocco in the 1930s and 1940s</em></p>" +
       "<p>Moroccan nationalists, whose movement flourished in the 1930s and 1940s, were proponents for the reform and expansion of women&rsquo;s education. Their advocacy for gender reform was not only shaped by French colonial policy, but was also shaped by Islamic reform movements taking place around the Middle East (Gaul 2022, 60).</p>" +
       "<ul>" +
         "<li>Moroccan nationalists&rsquo; discourse on gender reform in the 1930s invoked domestic happiness similar to what Egyptians were already doing (Gaul 2022, 68)." +
           "<ul>" +
-            "<li>Gender reform based on Arab and Islamic modernity.</li>" +
+            "<li>Gender reform was based on Arab and Islamic modernity.</li>" +
             "<li>Egyptian textbooks and writers claimed that a woman&rsquo;s expertise in modern cooking and housekeeping would create happiness.</li>" +
           "</ul>" +
         "</li>" +
@@ -272,16 +285,22 @@ var STORYMAP_EXTRA_I18N = {
         "</li>" +
       "</ul>" +
       "<p class=\"historyPage__minor\"><em>Malika al-Fassi (1919&ndash;2007)</em></p>" +
+      "<p>Malika al-Fassi is often considered the foremother of the Moroccan women&rsquo;s movement (Gaul 2022, 68).</p>" +
       "<ul>" +
-        "<li>She is often considered the foremother of the Moroccan women&rsquo;s movement (Gaul 2022, 68).</li>" +
         "<li>Her husband and relatives were nationalists active in transnational anticolonial networks&mdash;she probably learned about Egyptian ideas on gender reform from them (Gaul 2022, 68).</li>" +
         "<li>In the 1930s &amp; 40s, she published essays under the names &ldquo;Al-Fatat&rdquo; (the young woman) and &ldquo;Bahithat al-Hadira&rdquo; (seeker in the city) which probably refers to &ldquo;Bahithat al-Badiya&rdquo; (seeker in the desert), the pseudonym of Egyptian Malak Hifni Nasif, a prominent advocate for women&rsquo;s education (Gaul 2022, 68).</li>" +
         "<li>She referenced Egyptian models in her writings on women&rsquo;s education and used rhetoric that echoed Malak Hifni Nasif&rsquo;s rhetoric (Gaul 2022, 69).</li>" +
         "<li>In line with the Egyptian model, she believed that happiness would result from educational reform (Gaul 2022, 69).</li>" +
       "</ul>",
-    historySubheadingAsianCongress: "All Asian Women\u2019s Congress",
     historyAsianCongressHtml:
-      "<p>Hosted in Lahore, Pakistan from January 19&ndash;25 of 1931, the All Asian Women&rsquo;s Congress brought together delegates from across Asia to build a transnational feminist movement. With 26 delegate representatives from India, Afghanistan, Burma, Ceylon, Japan, and Persia in addition to 1200 observers, the conference sought to create a feminist movement from the perspective of non-Western women. While the role of Western feminists was acknowledged, the main concern, voiced by one conference organizer, stated that colonialism and geography limited &ldquo;we only know of those who come to us&rdquo; (Nijhhawan 17). Thus, the conference sought to de-imperialize feminism by creating a shared regional identity. While men and women from Europe and America were permitted to attend the conference, they were barred from speaking until the fourth day of assembly.</p><p>The conference proposed six goals: (1) the promotion of a shared consciousness of unity amongst Asian women, (2) appreciation of the positive qualities of their civilizations, (3) review and remediation of traditional society, (4) the sifting of Western influence for appropriate adoption, (5) the sharing of national data, and (6) world peace.</p><p>Though not directly related, these conferences served as a link in the broader chain of formal women&rsquo;s networks in Asia which stood against conventional Western narratives around feminism. Hanifa Khouri would serve as one of the organizers of a following conference, the Eastern Women&rsquo;s Congress in Tehran. Nour Hamada, a prominent Druze activist from Mount Lebanon, advised the planning of the All Asian Women&rsquo;s Congress (Hannun 13). Her organization, the General Union for Syrian Women, was later responsible for organizing the Eastern Women&rsquo;s Congress in 1932.</p>",
+      "<p>Egyptian women also played a role in the growing movement of non-Western and non-aligned feminism in the Middle East and Asia. In the early 20th century, several conferences were held across the region, redefining feminism outside of the traditional Western dominated feminist movement.</p>" +
+      "<p>Hosted in Lahore, Pakistan from January 19&ndash;25 of 1931, the All Asian Women&rsquo;s Congress brought together delegates from across Asia to build a transnational feminist movement. With 26 delegate representatives from India, Afghanistan, Burma, Ceylon, Japan, and Persia in addition to 1200 observers, the conference sought to create a feminist movement from the perspective of non-Western women. While the role of Western feminists was acknowledged, the main concern, voiced by one conference organizer, stated that colonialism and geography limited &ldquo;we only know of those who come to us&rdquo; (Nijhhawan 17). Thus, the conference sought to de-imperialize feminism by creating a shared regional identity. While men and women from Europe and America were permitted to attend the conference, they were barred from speaking until the fourth day of assembly.</p>" +
+      "<p>The conference proposed six goals: (1) the promotion of a shared consciousness of unity amongst Asian women, (2) appreciation of the positive qualities of their civilizations, (3) review and remediation of traditional society, (4) the sifting of Western influence for appropriate adoption, (5) the sharing of national data, and (6) world peace.</p>" +
+      "<p>Later conferences of feminist groups throughout the non-Western world would draw inspiration from this event. Nour Hamada, a prominent Druze activist from Mount Lebanon, advised the planning of the All Asian Women&rsquo;s Congress (Hannun 13). Her organization, the General Union for Syrian Women, was previously responsible for organizing the Eastern Women&rsquo;s Congress in 1930. Hanifa Khouri would serve as one of the organizers of a following conference, the Eastern Women&rsquo;s Congress in Tehran in 1932. The third Eastern Women&rsquo;s Congress would happen in 1938 and be hosted in Cairo. This conference, organized by the Egyptian Feminist Union, concentrated on the British mandate for Palestine and brought together feminist groups from throughout the region, including the largest delegation from Palestine (Karim).</p>" +
+      "<p>Though not directly related, these conferences served as a link in the broader chain of formal women&rsquo;s networks in Asia which stood against conventional Western narratives around feminism.</p>",
+    historyIslamicFeminismHtml:
+      "<p>Islamic feminism is a global movement that advocates for the full equality of the sexes through an Islamic framework, drawing on the teachings of the Quran and Sunnah to discuss women&rsquo;s rights issues. Islamic feminists argue that the limits placed on women in Muslim society derive from cultural traditions and male religious interpretations, rather than Islam itself. The movement seeks to challenge the dominant narrative around Muslim women and reinterpret religious texts to advance women&rsquo;s rights in politics, education, marriage, and other issues.</p>" +
+      "<p>The term &ldquo;Islamic feminism&rdquo; was not commonly used until the 1990s, but its core ideas have existed for multiple centuries. Early figures such as Aisha and Fatima are often cited as evidence that women have long held important positions within Islam. During the late 19th and early 20th centuries, periods of social and political change led more women to openly debate the role of gender equality in Islam. Today, Islamic feminism continues as both an academic field and an activist movement.</p>",
     historyBody:
       "The archive is best understood when contextualized. Thus, some nodes will reflect historical transformations in 20th and 21st century Egypt. Several events in the evolution of feminist discourse are particularly important. Feminist politics grew after the 1952 Revolution; under Nasser, feminism was tied to anti-colonial and anti-capitalist discourses that comprised the larger political milieu (Ibrahim 2017, 4-5). Still, Egyptian activists struggled to connect with the working-class, and the discourse \"creat[ed] a paternalistic and detached dynamic\" (Ibrahim 2017, 3). Within the state, opportunities for women's work and education were expanded just as women's political space was shut down (Ibrahim 2017, 6; Gaul 2025, 78-79, 101). Alongside shifts in feminist discourse, the state's expansion of education access-especially for the poor-would shape feminism to better incorporate working class women (Ibrahim 2017, 13). These state-led interventions into women's experiences would come into tension with Sadat's policy of economic liberalization (infitah). Women's activism focused less on colonialism and more on the economic and political realities of the time (Ibrahim 2017, 15). In this political iteration, the \"modern\" West became the normative goal of feminism (Ibrahim 2017, 16). These unresolved tensions would reemerge in the 2011 Arab Spring as feminism reasserted itself through a more intersectional lens (Ibrahim 2017, 20). Hatem (2011) documents women, \"young and old, veiled and unveiled, poor and affluent,\" joining together in Tahrir Square against the rule of the state (36). This experience was likewise translated into discourse: feminists discredited both historical and contemporaneous versions of state-sponsored feminism (Hatem 2011, 37). These social transformations do not only function as historical context. They also shape the archival material of \"Doing Well, Don't Worry.\" Nasser's education policies contour the archives of a rural teacher; Sadat's infitah frames Mitri's prison correspondence; and the Arab Spring echoes the diverse coalitions in Tahrir square (Hassan 2021; Hatem 2011, 36).",
   },
@@ -456,8 +475,16 @@ var STORYMAP_EXTRA_I18N = {
     historyBody:
       "[نص تجريبي] يُفهم الأرشيف أفضل عند وضعه في سياقه التاريخي. لذلك ستعكس بعض العقد تحولات تاريخية في مصر في القرنين العشرين والحادي والعشرين. وقعت أحداث مهمة في تطور الخطاب النسوي. بعد ثورة 1952 نمت السياسة النسوية مرتبطة بخطاب مناهض للاستعمار ورأسمالية كجزء من المشهد السياسي (إبراهيم 2017، 4-5). ومع ذلك واجه النشطاء صعوبة في التواصل مع الطبقة العاملة، وكان الخطاب «يُنشئ ديناميكية أبوية ومنفصلة» (إبراهيم 2017، 3). وسّعت الدولة فرص عمل و تعليم النساء بينما أُغلق المجال السياسي لهن (إبراهيم 2017، 6؛ غول 2025، 78-79، 101). مع تحولات الخطاب النسوي، وسّعت الدولة التعليم للفقراء فشكّل ذلك نسوية أكثر شمولاً للطبقة العاملة (إبراهيم 2017، 13). تدخلات الدولة صارت في توتر مع انفتاح السادات الاقتصادي. تركّز نشاط النساء على الواقع الاقتصادي والسياسي (إبراهيم 2017، 15) وصار «الغرب الحديث» هدفًا معياريًا للنسوية (إبراهيم 2017، 16). أعادت انتفاضة 2011 طرح هذه التوترات بزاوية تقاطعية (إبراهيم 2017، 20). حاتم (2011) توثّق نساء «صغيرات وكبيرات، محجبات وغير محجبات، فقيرات وغنيّات» في ميدان التحرير (36). وترجم ذلك إلى خطاب ينتقد النسوية الرسمية (حاتم 2011، 37). هذه التحولات لا تُقرأ فقط كسياق تاريخي بل تشكّل المادة الأرشيفية لـ«أنا بخير، اطمئنوا». سياسات ناصر التعليمية تُرسم أرشيف معلمة ريفية؛ انفتاح السادات يؤثر على مراسلات ميتري من السجن؛ وربيع العرب يصدى لتنوع التحالفات (حسن 2021؛ حاتم 2011، 36).",
     historySubheadingNasserSadat: "المرأة في عهدَي عبد الناصر والسادات",
+    historySubheadingFeministUnion: "الاتحاد النسائي المصري من 1923 إلى اليوم",
     historySubheadingInternational: "ناشطات حقوق المرأة المصريات والمشاركة الدولية",
     historySubheadingAsianCongress: "مؤتمر نساء آسيا",
+    historySubheadingIslamicFeminism: "آراء حول الحركات النسوية: النسوية الإسلامية",
+    historyHeadingUzbekistan: "مصر وأوزبكستان",
+    historyHeadingKhouriSoraya: "حنيفة الخوري من مصر والملكة ثريا طرزي من أفغانستان",
+    historyHeadingMorocco: "مصر والمغرب",
+    historyFigNasserCaption: "رئيس الوزراء جمال عبد الناصر في الإسكندرية، أكتوبر 1954.",
+    historyFigSorayaCaption: "الملكة ثريا طرزي على غلاف مجلة TIME، 1927.",
+    historyFigIslamicFeminismCaption: "نساء مصريات يطالبن بالتغيير، ديسمبر 2011.",
     bibliographyTitle: "قائمة المراجع",
     infoPageCarouselCaption: "صور من معرض مايو 2017 في الجامعة الأمريكية بالقاهرة.",
     infoPageCarouselAria: "صور من معرض مايو 2017 في الجامعة الأمريكية بالقاهرة",
@@ -474,9 +501,15 @@ var STORYMAP_EXTRA_I18N = {
       "<p class=\"infoPage__body\">في مارس 2026 استضافت مؤسسة المرأة والذاكرة طلاباً من مختبر المئوية بجامعة جورجتاون (الولايات المتحدة)، مادة ARST 4478 <em>التراث والتنمية في العالم العربي</em>. تعلّم الطلاب عن التراث النسوي في مصر، وعن تحديات المؤسسة وجهودها المجتمعية وممارساتها الأرشيفية. وانطلاقاً من قيم جامعة جورجتاون اليسوعية في &laquo;الإنسان من أجل الآخرين&raquo; و&laquo;مجتمعٍ في تنوّع&raquo;، أرادوا أن يأخذوا تعلّمهم خارج جدران الفصل. ومن هذا الإحساس وُلِد هذا الأرشيف الرقمي.</p>",
     historyNasserSadatHtml:
       "<p>تبنّى كثير من المصريات ثورة عبد الناصر والضباط الأحرار على الملكية عام 1952؛ إذ بدت بوّابةً نحو مجتمع أكثر عدلاً للمصريين كافة. وبحلول الأربعينيات كانت طليعة من النساء قد بدأت تربط مطالب المساواة بالكفاح الأوسع ضد الاستعمار البريطاني، وتصوغ تحرّر المرأة من خلال عدسة الاستقلال الوطني. وقلّما فصلت ناشطات تلك الحقبة بين قضية النوع وغيرها من بُنى القمع، فقد رأين الإمبريالية والتفاوت الطبقي وإخضاع المرأة بنىً متضافرة في تكوينها.</p><p>وفي عام 1956، ومع أن المرأة نالت حق التصويت ووسّعت وصولها إلى التعليم وانخرطت في سوق العمل بأعداد متزايدة، فإن النظام أغلق بالموازاة المنظمات السياسية المستقلة وحاصر المعارضة، فاضطرّ النشاط النسوي إلى العمل من داخل حدود نسوية الدولة، وأحياناً في تعارضٍ مباشر معها.</p><p>وفي السبعينيات حوّل الرئيس السادات الاقتصاد المصري نحو السوق المفتوحة، فتغيّر مشهد التنظيم النسوي تغيّراً جوهرياً. وتحوّلت الأطر الاشتراكية ومناهضة الاستعمار التي وحّدت كثيراً من جيل الناشطات السابق إلى حركةٍ أكثر تشظياً. ونتج عن ذلك انزياحٌ تدريجي عن النقد البنيوي للرأسمالية والإمبريالية بمنظور قومي عربي نحو مقارباتٍ أضيق قائمةٍ على الحقوق في مناصرة قضايا النوع داخل مصر.</p>",
-    historyInternationalHtml:
-      "<p>من المهمّ ألاّ نختزل فهمنا للحركات النسائية في إطار التحليل القومي/الدولة-الأمة (Bier 2004, 104). فقد تفاعلت ناشطات حقوق المرأة المصريات في مطلع القرن العشرين مع حركات حقوق المرأة في عموم المنطقة. على سبيل المثال، نشرت الصحافة النسائية في مصر كثيراً من القصص عن نساء أجنبيات، معبّرةً في الغالب عن تضامنها مع مَن تعرّضن للاستعمار الأوروبي أو لا يَزِلْنَ تحت وطأته (Bier 2004, 102). وفيما يلي طرائف عن نخبة من النساء، نأمل أن تُلهم مزيداً من البحث في البُعد الدولي للنشاط النسائي المصري.</p>" +
-      "<h4>حنيفة الخوري من مصر والملكة ثريا طرزي من أفغانستان</h4>" +
+    historyFeministUnionHtml:
+      "<p>تأسّس الاتحاد النسائي المصري عام 1923 على يد هدى شعراوي بوصفه شبكةً غير رسمية تضمّ نساءً من الطبقة العليا المصرية وناشطاتٍ نسويات. وفي ذلك الوقت كان الاتحاد النسائي المصري الجمعية الأبرز المعنية بشؤون المرأة، إذ نهض في مواجهة دولةٍ متزايدة الهيمنة الذكورية برزت بعد ثورة 1919. وعلى مدى وجوده دفع الاتحاد نحو التغيير السياسي، ودعا الدولة في الغالب إلى صون أخلاق الأمّة ورعاية أبنائها (Khater and Nelson 467). كما ساند الاتحادُ النشاطَ المناهض للاستعمار عموماً، مثلما فعلت كثيراتٌ من النساء طوال حقبة استعمار مصر. ومن ذلك استضافته للمؤتمر الشرقي للنساء للدفاع عن فلسطين عام 1938.</p>" +
+      "<p>ومع اقتراب ثورة 1952 بدأت نساءٌ أخريات، وخصوصاً من الطبقة الوسطى، يلعبن دوراً في السياسة النسوية المصرية. وأفضى ذلك إلى نشوء عدّة فروع عن الاتحاد النسائي المصري. ومن هذه الجماعات اتحاد بنت النيل، الذي ركّز أساساً على تحقيق المساواة للمرأة بموجب الدستور المصري وتقديم الرعاية للفقراء (Khater and Nelson 470). وثمّة جماعة أخرى، النسويات الاشتراكيات، رأت أن الاتحاد النسائي المصري واتحاد بنت النيل أكثرُ تحفّظاً ونخبويةً من اللازم. وقد روّجت هذه الجماعة للأفكار الاشتراكية أملاً في تحقيق التحرّر عبر نضالٍ عام للمساواة الاجتماعية (Khater and Nelson 473). ومع الاعتراف بحقّ المرأة في التصويت والترشّح، تراجع زخم كثيرٍ من الحركات النسوية. وفي الفترة من 1957 إلى 1970 صارت الحركات النسوية متأثّرةً تأثّراً مباشراً بسياسة الدولة، إذ احتوت وزارة الداخلية الاتحادَ النسائي المصري وأقصت أعضاءه اليساريين (Khater and Nelson 476)، ثم حُظِر الاتحاد لاحقاً في السنوات التالية (Enloe 157).</p>" +
+      "<p>وعشيّة أوّل انتخاباتٍ في مرحلة ما بعد مبارك أعادت ناشطاتٌ ثوريات إحياءَ الاتحاد النسائي المصري برئاسة هدى بدران. وتسعى هذه النسخة من المنظمة إلى الاستمرار في الإسهام في عمليتَي بناء الدولة والثورة، وفي الوقت نفسه إلى تسليط الضوء على عمل ناشطاتٍ مصريات قديمات في عمليات الثورة في مصر (Enloe 158).</p>",
+    historyInternationalIntroHtml:
+      "<p>من المهمّ ألاّ نختزل فهمنا للحركات النسائية في إطار التحليل القومي/الدولة-الأمة (Bier 2004, 104). فقد تفاعلت ناشطات حقوق المرأة المصريات في مطلع القرن العشرين مع حركات حقوق المرأة في عموم المنطقة. على سبيل المثال، نشرت الصحافة النسائية في مصر كثيراً من القصص عن نساء أجنبيات، معبّرةً في الغالب عن تضامنها مع مَن تعرّضن للاستعمار الأوروبي أو لا يَزِلْنَ تحت وطأته (Bier 2004, 102). وفيما يلي طرائف عن نخبة من النساء، نأمل أن تُلهم مزيداً من البحث في البُعد الدولي للنشاط النسائي المصري.</p>",
+    historyUzbekistanHtml:
+      "<p>كتب العالم سيد أحمد وَصْلي من سمرقند بأوزبكستان قصيدةً أشار فيها إلى مصر وسوريا ليؤكّد أن الحجاب لا ينبغي أن يُرى عائقاً أمام التعلّم. ونُشرت قصيدته في الصحيفة الرسمية الأفغانية <em>أمان أفغان</em> عام 1920، وهي مثالٌ على كيفية استخدام النموذج المصري للتشجيع على تقدّم المرأة دولياً (Hannun 2025, 107).</p>",
+    historyKhouriHtml:
       "<p class=\"historyPage__minor\"><em>مَن هي حنيفة الخوري؟</em></p>" +
       "<ul>" +
         "<li>صحفية مصرية وناشطة في مجال حقوق المرأة (Hannun 2020, 1).</li>" +
@@ -485,20 +518,21 @@ var STORYMAP_EXTRA_I18N = {
         "<li>أسهمت في تنظيم المؤتمر الثاني لنساء الشرق في طهران عام 1932 (Hannun 2020, 12)." +
           "<ul>" +
             "<li>استشهدت الخوري بهدى شعراوي، رئيسة الاتحاد النسائي المصري، وتحدّثت عن أهمية الحفاظ على بعض التقاليد والتبنّي الانتقائي للعادات الأوروبية تحقيقاً للتقدّم (Hannun 2020, 13).</li>" +
-            "<li>جاء المؤتمر الثاني لنساء الشرق في طهران 1932 بعد انعقاد مؤتمر نساء آسيا (AAWC) في لاهور عام 1931 (Hannun 2020, 12).</li>" +
-            "<li>وكان ذلك جزءاً من تنامي الشبكات النسائية الرسمية المتضامنة إقليمياً والمناهضة للاستعمار والإمبريالية الغربيين خلال فترة ما بين الحربين (Hannun 2020, 12).</li>" +
+            "<li>جاء المؤتمر الثاني لنساء الشرق في طهران 1932 بعد انعقاد مؤتمر نساء آسيا (AAWC) في لاهور عام 1931 (Hannun 2020, 12). وكان ذلك جزءاً من تنامي الشبكات النسائية الرسمية المتضامنة إقليمياً والمناهضة للاستعمار والإمبريالية الغربيين خلال فترة ما بين الحربين (Hannun 2020, 12).</li>" +
           "</ul>" +
         "</li>" +
-      "</ul>" +
+      "</ul>",
+    historySorayaHtml:
       "<p class=\"historyPage__minor\"><em>مَن هي الملكة ثريا طرزي (1899&ndash;1968)؟</em></p>" +
+      "<p>الملكة ثريا طرزي هي أوّل ملكة لأفغانستان بعد استقلالها (Hannun 2020, 1).</p>" +
       "<ul>" +
-        "<li>أوّل ملكة لأفغانستان بعد استقلالها (Hannun 2020, 1).</li>" +
         "<li>شخصية مهمّة في السياسة بالشرق الأوسط وجنوب آسيا في فترة ما بين الحربين (Hannun 2020, 2).</li>" +
         "<li>ابنة المُصلِح محمود طرزي (Hannun 2020, 2).</li>" +
         "<li>كان زواجها من أمان الله خان (حكم&nbsp;1919&ndash;1929) أوّل زواجٍ ملكي أحاديٍّ في تاريخ أفغانستان (Hannun 2021, 468).</li>" +
         "<li>رافقت زوجها الملك أمان الله في جولةٍ عالمية (1927&ndash;1928) شملت الهند ومصر وأوروبا وتركيا وإيران (Hannun 2020, 9).</li>" +
         "<li>تتشابه خطاباتها العامّة عن تقدّم المرأة مع كلام النسوية المصرية هدى شعراوي (1879&ndash;1947) (Hannun 2021, 468).</li>" +
-      "</ul>" +
+      "</ul>",
+    historyKhouriVisitHtml:
       "<p class=\"historyPage__minor\"><em>زيارة الخوري لأفغانستان</em></p>" +
       "<ul>" +
         "<li>في عام 1927 التقت الخوري بالملكة ثريا في القاهرة، فدعتها إلى أفغانستان. وفي صيف 1928 سافرت الخوري من بيروت عبر بورسعيد إلى عدن باليمن، ومنها إلى كراتشي بالهند البريطانية، ثم بيشاور وجلال آباد وصولاً إلى كابول في أفغانستان (Hannun 2020, 1).</li>" +
@@ -506,14 +540,11 @@ var STORYMAP_EXTRA_I18N = {
           "<ul>" +
             "<li>وعلى الرغم من قِصَر هذه التحوّلات بسبب خلع الملك والملكة عام 1929، شهدت أفغانستان في عهدهما تحوّلاتٍ كثيرة ارتفعت بمكانة المرأة.</li>" +
             "<li>وشمل ذلك إنشاء أوّل مدرسةٍ حديثة للبنات في أفغانستان، وإصلاحاتٍ قانونية غيّرت قوانين الأحوال الشخصية المؤثّرة في المرأة والأسرة (Hannun 2020, 1).</li>" +
-            "<li>وقد ضربت تلك الإصلاحات جذورها في المبادئ الإسلامية، وذلك ضمن الصلة الأوسع بين الحركات النسوية والجامعة الإسلامية (Hannun 2020, 7).</li>" +
+            "<li>وقد ضربت تلك الإصلاحات جذورها في المبادئ الإسلامية، وذلك ضمن الصلة الأوسع بين الحركات النسوية والجامعة الإسلامية (Hannun 2020, 7). ومن اللافت أن أحد المبررات للدفاع عن تعليم المرأة كان النماذجَ الناجحة لمدارس البنات في بلدانٍ مسلمة أخرى، ومنها مصر (Hannun 2020, 8).</li>" +
           "</ul>" +
         "</li>" +
-        "<li>ومن اللافت أن أحد المبررات للدفاع عن تعليم المرأة كان النماذجَ الناجحة لمدارس البنات في بلدانٍ مسلمة أخرى، ومنها مصر (Hannun 2020, 8).</li>" +
-      "</ul>" +
-      "<h4>مصر وأوزبكستان</h4>" +
-      "<p>كتب العالم سيد أحمد وَصْلي من سمرقند بأوزبكستان قصيدةً أشار فيها إلى مصر وسوريا ليؤكّد أن الحجاب لا ينبغي أن يُرى عائقاً أمام التعلّم. ونُشرت قصيدته في الصحيفة الرسمية الأفغانية <em>أمان أفغان</em> عام 1920، وهي مثالٌ على كيفية استخدام النموذج المصري للتشجيع على تقدّم المرأة دولياً (Hannun 2025, 107).</p>" +
-      "<h4>مصر والمغرب</h4>" +
+      "</ul>",
+    historyMoroccoHtml:
       "<p class=\"historyPage__minor\"><em>إصلاح النوع الاجتماعي في المغرب في الثلاثينيات والأربعينيات</em></p>" +
       "<p>كان القوميون المغاربة، الذين ازدهرت حركتهم في الثلاثينيات والأربعينيات، من أنصار إصلاح تعليم المرأة وتوسيعه. ولم تتشكّل دعوتهم إلى إصلاح النوع الاجتماعي بالسياسات الاستعمارية الفرنسية وحدها، بل تشكّلت أيضاً بحركات الإصلاح الإسلامي القائمة في عموم الشرق الأوسط (Gaul 2022, 60).</p>" +
       "<ul>" +
@@ -539,15 +570,22 @@ var STORYMAP_EXTRA_I18N = {
         "</li>" +
       "</ul>" +
       "<p class=\"historyPage__minor\"><em>مليكة الفاسي (1919&ndash;2007)</em></p>" +
+      "<p>كثيراً ما تُعدّ مليكة الفاسي الأمّ الأولى للحركة النسائية المغربية (Gaul 2022, 68).</p>" +
       "<ul>" +
-        "<li>كثيراً ما تُعدّ الأمّ الأولى للحركة النسائية المغربية (Gaul 2022, 68).</li>" +
         "<li>كان زوجها وأقاربها من القوميين الناشطين في الشبكات المناهضة للاستعمار العابرة للحدود &mdash; وقد تعلّمت على الأرجح الأفكار المصرية عن إصلاح النوع الاجتماعي منهم (Gaul 2022, 68).</li>" +
         "<li>في الثلاثينيات والأربعينيات نشرت مقالاتٍ بأسماءٍ مستعارة هي &laquo;الفتاة&raquo; و&laquo;باحثة الحاضرة&raquo;، وقد يكون ذلك إشارةً إلى &laquo;باحثة البادية&raquo;، الاسم المستعار للمصرية ملك حفني ناصف، وهي من أبرز المدافعات عن تعليم المرأة (Gaul 2022, 68).</li>" +
         "<li>أحالت في كتاباتها عن تعليم المرأة إلى نماذج مصرية، واستخدمت بلاغةً تحاكي بلاغة ملك حفني ناصف (Gaul 2022, 69).</li>" +
         "<li>وعلى نحوٍ متّسق مع النموذج المصري، آمنت بأن السعادة ستكون ثمرة الإصلاح التعليمي (Gaul 2022, 69).</li>" +
       "</ul>",
     historyAsianCongressHtml:
-      "<p>عُقد مؤتمر نساء آسيا في لاهور بباكستان في الفترة من 19 إلى 25 يناير 1931، جامعاً مندوباتٍ من أنحاء آسيا لبناء حركةٍ نسوية عابرة للحدود. وبمشاركة 26 مندوبةً يمثّلن الهند وأفغانستان وبورما وسيلان واليابان وفارس، إضافةً إلى 1200 مراقبة، سعى المؤتمر إلى صياغة حركة نسوية من منظور النساء غير الغربيات. ومع الإقرار بدور النسويات الغربيات، فإن الهمّ الرئيسي، كما عبّرت إحدى منظِّمات المؤتمر، هو أن الاستعمار والجغرافيا قيّدا المعرفة بهنّ، إذ &laquo;لا نعرف إلا من تأتين إلينا&raquo; (Nijhhawan 17). ومن ثَمّ سعى المؤتمر إلى نزع الطابع الإمبريالي عن النسوية ببناء هويةٍ إقليمية مشتركة. وفي حين سُمح للرجال والنساء من أوروبا وأمريكا بحضور المؤتمر، فقد مُنعوا من الكلام حتى اليوم الرابع من الانعقاد.</p><p>اقترح المؤتمر ستة أهداف: (1) تعزيز وعيٍ مشترك بالوحدة بين نساء آسيا، (2) تقدير الجوانب الإيجابية في حضاراتهنّ، (3) مراجعة المجتمع التقليدي وإصلاحه، (4) غربلة التأثير الغربي للأخذ بما يصلح منه، (5) تبادل البيانات الوطنية، (6) السلام العالمي.</p><p>ومع أن الصلة لم تكن مباشرة، فإن هذه المؤتمرات شكّلت حلقةً في سلسلةٍ أوسع من الشبكات النسائية الرسمية في آسيا التي وقفت في وجه السرديات الغربية المعهودة عن النسوية. وقد عملت حنيفة الخوري لاحقاً مع منظِّمات مؤتمر تالٍ هو المؤتمر الثاني لنساء الشرق في طهران. كما قدّمت نور حماده، وهي ناشطة درزية بارزة من جبل لبنان، المشورة في تخطيط مؤتمر نساء آسيا (Hannun 13)، وقد كانت منظمتها، الاتحاد النسائي السوري العام، هي المسؤولة لاحقاً عن تنظيم مؤتمر نساء الشرق عام 1932.</p>",
+      "<p>أسهمت النساء المصريات أيضاً في الحركة المتنامية للنسوية غير الغربية وغير المنحازة في الشرق الأوسط وآسيا. ففي مطلع القرن العشرين عُقدت عدّة مؤتمرات في عموم المنطقة، أعادت تعريف النسوية خارج إطار الحركة النسوية الغربية المهيمنة.</p>" +
+      "<p>عُقد مؤتمر نساء آسيا في لاهور بباكستان في الفترة من 19 إلى 25 يناير 1931، جامعاً مندوباتٍ من أنحاء آسيا لبناء حركةٍ نسوية عابرة للحدود. وبمشاركة 26 مندوبةً يمثّلن الهند وأفغانستان وبورما وسيلان واليابان وفارس، إضافةً إلى 1200 مراقبة، سعى المؤتمر إلى صياغة حركة نسوية من منظور النساء غير الغربيات. ومع الإقرار بدور النسويات الغربيات، فإن الهمّ الرئيسي، كما عبّرت إحدى منظِّمات المؤتمر، هو أن الاستعمار والجغرافيا قيّدا المعرفة بهنّ، إذ &laquo;لا نعرف إلا من تأتين إلينا&raquo; (Nijhhawan 17). ومن ثَمّ سعى المؤتمر إلى نزع الطابع الإمبريالي عن النسوية ببناء هويةٍ إقليمية مشتركة. وفي حين سُمح للرجال والنساء من أوروبا وأمريكا بحضور المؤتمر، فقد مُنعوا من الكلام حتى اليوم الرابع من الانعقاد.</p>" +
+      "<p>اقترح المؤتمر ستة أهداف: (1) تعزيز وعيٍ مشترك بالوحدة بين نساء آسيا، (2) تقدير الجوانب الإيجابية في حضاراتهنّ، (3) مراجعة المجتمع التقليدي وإصلاحه، (4) غربلة التأثير الغربي للأخذ بما يصلح منه، (5) تبادل البيانات الوطنية، (6) السلام العالمي.</p>" +
+      "<p>استلهمت مؤتمراتٌ لاحقة لجماعاتٍ نسوية في عموم العالم غير الغربي من هذا الحدث. وقد قدّمت نور حماده، الناشطة الدرزية البارزة من جبل لبنان، المشورة في تخطيط مؤتمر نساء آسيا (Hannun 13). وكانت منظمتها، الاتحاد النسائي السوري العام، قد تولّت من قبل تنظيم مؤتمر نساء الشرق عام 1930. ثم عملت حنيفة الخوري ضمن منظِّمات المؤتمر التالي، وهو المؤتمر الشرقي للنساء في طهران عام 1932. وانعقد المؤتمر الشرقي الثالث للنساء عام 1938 في القاهرة. وقد ركّز هذا المؤتمر، الذي نظّمه الاتحاد النسائي المصري، على الانتداب البريطاني على فلسطين، وضمّ جماعاتٍ نسوية من أنحاء المنطقة، بما فيها أكبر وفدٍ من فلسطين (Karim).</p>" +
+      "<p>ومع أن الصلة لم تكن مباشرة، فإن هذه المؤتمرات شكّلت حلقةً في سلسلةٍ أوسع من الشبكات النسائية الرسمية في آسيا التي وقفت في وجه السرديات الغربية المعهودة عن النسوية.</p>",
+    historyIslamicFeminismHtml:
+      "<p>النسوية الإسلامية حركةٌ عالمية تدعو إلى المساواة الكاملة بين الجنسين من خلال إطارٍ إسلامي، مستندةً إلى تعاليم القرآن والسنّة في تناول قضايا حقوق المرأة. وترى النسويات الإسلاميات أن القيود المفروضة على المرأة في المجتمع المسلم نابعةٌ من التقاليد الثقافية وتأويلات دينية ذكورية، لا من الإسلام نفسه. وتسعى الحركة إلى تحدّي السردية السائدة عن المرأة المسلمة وإعادة قراءة النصوص الدينية للنهوض بحقوق المرأة في السياسة والتعليم والزواج وقضايا أخرى.</p>" +
+      "<p>لم يُستخدم مصطلح &laquo;النسوية الإسلامية&raquo; على نحوٍ شائع إلا منذ التسعينيات، غير أن أفكاره الجوهرية موجودةٌ منذ قرون. وكثيراً ما تُستحضر شخصياتٌ مبكّرة كعائشة وفاطمة دليلاً على أن المرأة شغلت منذ القِدم مواقع مهمّة في الإسلام. وفي أواخر القرن التاسع عشر ومطلع العشرين، فتحت فترات التحوّل الاجتماعي والسياسي بابَ النقاش العلني أمام مزيدٍ من النساء حول دور المساواة بين الجنسين في الإسلام. واليوم تتواصل النسوية الإسلامية بوصفها حقلاً أكاديمياً وحركةً ناشطة في آنٍ معاً.</p>",
   },
   it: {
     navAriaPrimary: "Navigazione principale",
@@ -707,8 +745,16 @@ var STORYMAP_EXTRA_I18N = {
     historyBody:
       "[TESTO ESEMPIO] L'archivio si comprende meglio contestualizzato. Alcuni nodi rifletteranno trasformazioni storiche nell'Egitto del XX e XXI secolo. Dopo il 1952 il femminismo si legò a discorsi anti-coloniali e anti-capitalisti (Ibrahim 2017, 4-5); le attiviste faticarono a connettersi con la classe lavoratrice (Ibrahim 2017, 3). Lo Stato ampliò istruzione e lavoro delle donne mentre chiudeva spazio politico (Ibrahim 2017, 6; Gaul 2025). L'espansione dell'istruzione per i poveri plasmò un femminismo più inclusivo (Ibrahim 2017, 13); l'infitāḥ di Sadāt creò tensioni (Ibrahim 2017, 15-16). Nel 2011 il femminismo riemerse in chiave intersezionale (Ibrahim 2017, 20). Hatem (2011) documenta donne a Tahrir (36). Queste trasformazioni modellano il materiale archivistico di «Doing Well, Don't Worry» (Hassan 2021; Hatem 2011).",
     historySubheadingNasserSadat: "Le donne nei tempi di Nasser e Sadat",
+    historySubheadingFeministUnion: "L'Unione Femminista Egiziana dal 1923 a oggi",
     historySubheadingInternational: "Attiviste egiziane per i diritti delle donne e l'impegno internazionale",
     historySubheadingAsianCongress: "Congresso pan-asiatico delle donne",
+    historySubheadingIslamicFeminism: "Prospettive sui movimenti femministi: il femminismo islamico",
+    historyHeadingUzbekistan: "Egitto e Uzbekistan",
+    historyHeadingKhouriSoraya: "Hanifa Khouri d'Egitto e la regina Soraya Tarzi d'Afghanistan",
+    historyHeadingMorocco: "Egitto e Marocco",
+    historyFigNasserCaption: "Il primo ministro Gamal Abdel Nasser ad Alessandria d'Egitto, ottobre 1954.",
+    historyFigSorayaCaption: "La regina Soraya Tarzi sulla copertina di TIME, 1927.",
+    historyFigIslamicFeminismCaption: "Donne egiziane chiedono il cambiamento, dicembre 2011.",
     bibliographyTitle: "Bibliografia del sito",
     infoPageCarouselCaption: "Foto della mostra del maggio 2017 all'AUC.",
     infoPageCarouselAria: "Fotografie dalla mostra del maggio 2017 all'Università Americana del Cairo",
@@ -750,31 +796,38 @@ var STORYMAP_EXTRA_I18N = {
       "<p class=\"infoPage__body\">Nel marzo 2026 il Women and Memory Forum ha ospitato studenti del Centennial Lab della Georgetown University (USA), corso ARST 4478, <em>Heritage and Development in the Arab World</em>. Gli studenti hanno conosciuto il patrimonio femminista in Egitto, le sfide del WMF, le sue iniziative comunitarie e le sue pratiche archivistiche. Ispirati dai valori gesuiti di Georgetown, &laquo;persone per gli altri&raquo; e &laquo;comunità nella diversità&raquo;, hanno voluto portare il loro apprendimento fuori dall'aula. Da questo desiderio è nato questo archivio digitale.</p>",
     historyNasserSadatHtml:
       "<p>Molte egiziane accolsero la rivoluzione di Nasser e degli Ufficiali Liberi contro la monarchia nel 1952, perché sembrava aprire la porta a una società più giusta per tutti gli egiziani. Già negli anni Quaranta una pioneristica generazione di donne aveva iniziato a collegare le rivendicazioni di uguaglianza alla più ampia lotta contro il dominio coloniale britannico, articolando la liberazione di genere attraverso la lente dell'indipendenza nazionale. Le attiviste di quell'epoca raramente separavano la questione di genere dalle altre strutture di oppressione: vedevano imperialismo, disuguaglianza di classe e subordinazione delle donne come profondamente co-costitutivi.</p><p>Nel 1956, sebbene le donne ottennero il diritto di voto, un maggiore accesso all'istruzione e l'ingresso nel mondo del lavoro in numero crescente, lo Stato chiuse contemporaneamente le organizzazioni politiche indipendenti e represse il dissenso, costringendo l'attivismo femminile a operare entro — e talvolta in aperta opposizione — i confini di un femminismo di Stato.</p><p>Negli anni Settanta il presidente Sadat orientò l'Egitto verso un'economia di mercato aperto, trasformando profondamente il panorama dell'organizzazione femminile. Le cornici socialiste e anticoloniali che avevano unito gran parte della generazione precedente di attiviste si frammentarono. Ne risultò un graduale spostamento dalla critica strutturale del capitalismo e dell'imperialismo in chiave panaraba verso approcci più ristretti, fondati sui diritti, alla difesa delle questioni di genere all'interno dell'Egitto.</p>",
-    historyInternationalHtml:
-      "<p>È importante non limitare la nostra comprensione dei movimenti delle donne al quadro analitico dello Stato-nazione (Bier 2004, 104). Le attiviste egiziane per i diritti delle donne, all'inizio del Novecento, dialogarono con i movimenti per i diritti delle donne in tutta la regione. Per esempio, la stampa femminile in Egitto pubblicava molte storie su donne straniere, esprimendo spesso solidarietà con quelle colonizzate o ex colonizzate dagli europei (Bier 2004, 102). Di seguito alcune curiosità su un piccolo gruppo di donne, pensate per ispirare ulteriori ricerche sulla dimensione internazionale dell'attivismo femminile egiziano.</p>" +
-      "<h4>Hanifa Khouri d'Egitto e la regina Soraya Tarzi d'Afghanistan</h4>" +
+    historyFeministUnionHtml:
+      "<p>L'Unione Femminista Egiziana, fondata nel 1923 da Huda Sha&rsquo;rawi, nacque come una rete informale di donne egiziane dell'alta borghesia e di attiviste femministe. All'epoca era la principale associazione che si occupava delle questioni femminili, e contrastava uno Stato sempre più dominato dagli uomini, sorto dopo la rivoluzione del 1919. Per tutta la sua esistenza il movimento spinse per il cambiamento politico, chiedendo spesso allo Stato di custodire la moralità della nazione e di prendersi cura del benessere del suo popolo (Khater and Nelson 467). L'organizzazione sostenne anche l'attività anticoloniale in senso lato, in linea con la solidarietà di molte donne durante l'era dell'Egitto colonizzato. Tra l'altro, ospitò il Congresso delle Donne d'Oriente per la difesa della Palestina del 1938.</p>" +
+      "<p>Con l'avvicinarsi della rivoluzione del 1952, sempre più donne, soprattutto di ceto medio, presero parte alla politica femminista egiziana. Da qui nacquero diverse derivazioni dell'Unione Femminista Egiziana. Una di queste, la Bint el-Nil Union (Figlia del Nilo), si concentrò soprattutto sull'eguaglianza delle donne secondo la costituzione egiziana e sull'assistenza ai poveri (Khater and Nelson 470). Un altro gruppo, le femministe socialiste, riteneva l'Unione Femminista Egiziana e la Bint el-Nil Union troppo prudenti ed elitiste, e promuoveva ideologie socialiste nella speranza di ottenere la liberazione attraverso una lotta più generale per l'eguaglianza sociale (Khater and Nelson 473). Pur essendo riconosciuto il diritto di voto e di candidatura, lo slancio di molti movimenti femministi si affievolì. Tra il 1957 e il 1970 i movimenti femministi furono direttamente influenzati dalla politica statale: il Ministero dell'Interno fagocitò l'Unione Femminista Egiziana per espellerne i membri di sinistra (Khater and Nelson 476), e l'Unione fu poi messa al bando negli anni successivi (Enloe 157).</p>" +
+      "<p>Alla vigilia delle prime elezioni post-Mubarak, l'Unione Femminista Egiziana è stata rivitalizzata da nuove attiviste rivoluzionarie con Hoda Badran alla guida. Questa nuova forma dell'organizzazione cerca non solo di continuare a partecipare al processo costituente e rivoluzionario, ma anche di mettere in luce il lavoro delle prime attiviste femministe nei processi rivoluzionari egiziani (Enloe 158).</p>",
+    historyInternationalIntroHtml:
+      "<p>È importante non limitare la nostra comprensione dei movimenti delle donne al quadro analitico dello Stato-nazione (Bier 2004, 104). Le attiviste egiziane per i diritti delle donne, all'inizio del Novecento, dialogarono con i movimenti per i diritti delle donne in tutta la regione. Per esempio, la stampa femminile in Egitto pubblicava molte storie su donne straniere, esprimendo spesso solidarietà con quelle colonizzate o ex colonizzate dagli europei (Bier 2004, 102). Di seguito alcune curiosità su un piccolo gruppo di donne, pensate per ispirare ulteriori ricerche sulla dimensione internazionale dell'attivismo femminile egiziano.</p>",
+    historyUzbekistanHtml:
+      "<p>Il dotto Sayid Ahmad Wasli, di Samarcanda in Uzbekistan, scrisse una poesia in cui evocava Egitto e Siria per affermare che il hijab non doveva essere visto come un ostacolo all'apprendimento. La sua poesia, pubblicata nel quotidiano di Stato afgano <em>Aman-i-Afghan</em> nel 1920, è un esempio di come il modello egiziano fosse usato per incoraggiare il progresso delle donne a livello internazionale (Hannun 2025, 107).</p>",
+    historyKhouriHtml:
       "<p class=\"historyPage__minor\"><em>Chi era Hanifa Khouri?</em></p>" +
       "<ul>" +
-        "<li>Giornalista egiziana e attivista per i diritti delle donne (Hannun 2020, 1).</li>" +
+        "<li>Hanifa Khouri era una giornalista egiziana e un'attivista per i diritti delle donne (Hannun 2020, 1).</li>" +
         "<li>Fece parte della rete femminile transregionale anticoloniale del periodo tra le due guerre (Hannun 2020, 2).</li>" +
         "<li>Fu delegata ufficiale dell'Egitto a una conferenza tenuta dalla Young Women&rsquo;s Christian Association a Beirut, in Libano, nel 1928 (Hannun 2020, 1).</li>" +
         "<li>Contribuì a organizzare il Secondo Congresso delle Donne d'Oriente a Teheran nel 1932 (Hannun 2020, 12)." +
           "<ul>" +
             "<li>Khouri citò Huda Sha&rsquo;rawi, presidente dell'Unione Femminista Egiziana, e parlò dell'importanza di mantenere alcune tradizioni e di adottare in modo selettivo costumi europei per il progresso (Hannun 2020, 13).</li>" +
-            "<li>Il Secondo Congresso delle Donne d'Oriente a Teheran nel 1932 si tenne dopo il Congresso panasiatico delle donne (AAWC) di Lahore del 1931 (Hannun 2020, 12).</li>" +
-            "<li>Faceva parte della crescita di reti femminili formali che si mobilitavano in solidarietà a livello regionale e in opposizione al colonialismo e all'imperialismo occidentali nel periodo tra le due guerre (Hannun 2020, 12).</li>" +
+            "<li>Il Secondo Congresso delle Donne d'Oriente a Teheran nel 1932 si tenne dopo il Congresso panasiatico delle donne (AAWC) di Lahore del 1931 (Hannun 2020, 12). Faceva parte della crescita di reti femminili formali che si mobilitavano in solidarietà a livello regionale e in opposizione al colonialismo e all'imperialismo occidentali nel periodo tra le due guerre (Hannun 2020, 12).</li>" +
           "</ul>" +
         "</li>" +
-      "</ul>" +
+      "</ul>",
+    historySorayaHtml:
       "<p class=\"historyPage__minor\"><em>Chi era la regina Soraya Tarzi (1899&ndash;1968)?</em></p>" +
+      "<p>Soraya Tarzi fu la prima regina dell'Afghanistan da poco indipendente (Hannun 2020, 1).</p>" +
       "<ul>" +
-        "<li>Prima regina dell'Afghanistan da poco indipendente (Hannun 2020, 1).</li>" +
         "<li>Figura importante della politica del Medio Oriente e dell'Asia meridionale nel periodo tra le due guerre (Hannun 2020, 2).</li>" +
         "<li>Figlia del riformatore Mahmud Tarzi (Hannun 2020, 2).</li>" +
         "<li>Il suo matrimonio con Aman Allah Khan (regnò 1919&ndash;1929) fu il primo matrimonio reale monogamico nella storia dell'Afghanistan (Hannun 2021, 468).</li>" +
         "<li>Accompagnò il marito, re Aman Allah, in una tournée mondiale (1927&ndash;1928) che toccò India, Egitto, Europa, Türkiye e Iran (Hannun 2020, 9).</li>" +
         "<li>I suoi discorsi pubblici sul progresso femminile sono simili alle parole della femminista egiziana Huda Sharaawi (1879&ndash;1947) (Hannun 2021, 468).</li>" +
-      "</ul>" +
+      "</ul>",
+    historyKhouriVisitHtml:
       "<p class=\"historyPage__minor\"><em>La visita di Khouri in Afghanistan</em></p>" +
       "<ul>" +
         "<li>Nel 1927 Khouri incontrò la regina Soraya al Cairo, che la invitò in Afghanistan. Nell'estate del 1928 Khouri viaggiò da Beirut, attraverso Port Said, fino ad Aden in Yemen, poi a Karachi nell'India britannica, a Peshawar e Jalalabad, e infine a Kabul, in Afghanistan (Hannun 2020, 1).</li>" +
@@ -782,14 +835,11 @@ var STORYMAP_EXTRA_I18N = {
           "<ul>" +
             "<li>Per quanto temporanee, a causa del rovesciamento del re e della regina nel 1929, sotto il loro governo l'Afghanistan aveva attraversato molti cambiamenti che avevano migliorato la condizione delle donne.</li>" +
             "<li>Tra queste trasformazioni vi furono la fondazione della prima scuola moderna per ragazze in Afghanistan e riforme legali che modificarono le leggi sullo statuto personale che riguardavano le donne e la famiglia (Hannun 2020, 1).</li>" +
-            "<li>Le riforme erano radicate in principi islamici, parte del più ampio legame tra movimenti femministi e panislamici (Hannun 2020, 7).</li>" +
+            "<li>Le riforme erano radicate in principi islamici, parte del più ampio legame tra movimenti femministi e panislamici (Hannun 2020, 7). Curiosamente, una delle giustificazioni a favore dell'istruzione femminile erano gli esempi positivi delle scuole per ragazze in altri Paesi musulmani, tra cui l'Egitto (Hannun 2020, 8).</li>" +
           "</ul>" +
         "</li>" +
-        "<li>Curiosamente, una delle giustificazioni a favore dell'istruzione femminile erano gli esempi positivi delle scuole per ragazze in altri Paesi musulmani, tra cui l'Egitto (Hannun 2020, 8).</li>" +
-      "</ul>" +
-      "<h4>Egitto e Uzbekistan</h4>" +
-      "<p>Il dotto Sayid Ahmad Wasli, di Samarcanda in Uzbekistan, scrisse una poesia in cui evocava Egitto e Siria per affermare che il hijab non doveva essere visto come un ostacolo all'apprendimento. La sua poesia, pubblicata nel quotidiano di Stato afgano <em>Aman-i-Afghan</em> nel 1920, è un esempio di come il modello egiziano fosse usato per incoraggiare il progresso delle donne a livello internazionale (Hannun 2025, 107).</p>" +
-      "<h4>Egitto e Marocco</h4>" +
+      "</ul>",
+    historyMoroccoHtml:
       "<p class=\"historyPage__minor\"><em>La riforma di genere in Marocco negli anni Trenta e Quaranta</em></p>" +
       "<p>I nazionalisti marocchini, il cui movimento prosperò negli anni Trenta e Quaranta, sostennero la riforma e l'espansione dell'istruzione femminile. La loro difesa della riforma di genere fu plasmata non solo dalla politica coloniale francese, ma anche dai movimenti di riforma islamica in atto in tutto il Medio Oriente (Gaul 2022, 60).</p>" +
       "<ul>" +
@@ -815,15 +865,22 @@ var STORYMAP_EXTRA_I18N = {
         "</li>" +
       "</ul>" +
       "<p class=\"historyPage__minor\"><em>Malika al-Fassi (1919&ndash;2007)</em></p>" +
+      "<p>Malika al-Fassi è spesso considerata la madre fondatrice del movimento femminile marocchino (Gaul 2022, 68).</p>" +
       "<ul>" +
-        "<li>È spesso considerata la madre fondatrice del movimento femminile marocchino (Gaul 2022, 68).</li>" +
         "<li>Suo marito e i suoi parenti erano nazionalisti attivi in reti anticoloniali transnazionali — è probabile che da loro abbia conosciuto le idee egiziane sulla riforma di genere (Gaul 2022, 68).</li>" +
         "<li>Negli anni Trenta e Quaranta pubblicò saggi con gli pseudonimi &laquo;Al-Fatat&raquo; (la giovane donna) e &laquo;Bahithat al-Hadira&raquo; (cercatrice della città), che probabilmente allude a &laquo;Bahithat al-Badiya&raquo; (cercatrice del deserto), pseudonimo dell'egiziana Malak Hifni Nasif, autorevole sostenitrice dell'istruzione femminile (Gaul 2022, 68).</li>" +
         "<li>Nei suoi scritti sull'istruzione femminile fece riferimento ai modelli egiziani e usò una retorica che riecheggiava quella di Malak Hifni Nasif (Gaul 2022, 69).</li>" +
         "<li>In linea con il modello egiziano, riteneva che la felicità sarebbe derivata dalla riforma educativa (Gaul 2022, 69).</li>" +
       "</ul>",
     historyAsianCongressHtml:
-      "<p>Ospitato a Lahore, in Pakistan, dal 19 al 25 gennaio 1931, il Congresso panasiatico delle donne riunì delegate da tutta l'Asia per costruire un movimento femminista transnazionale. Con 26 rappresentanti delegate da India, Afghanistan, Birmania, Ceylon, Giappone e Persia, oltre a 1200 osservatrici, la conferenza cercava di creare un movimento femminista dal punto di vista delle donne non occidentali. Pur riconoscendo il ruolo delle femministe occidentali, la principale preoccupazione, espressa da una delle organizzatrici, era che il colonialismo e la geografia limitassero la conoscenza reciproca: &laquo;conosciamo solo coloro che vengono da noi&raquo; (Nijhhawan 17). La conferenza puntava quindi a deimperializzare il femminismo costruendo un'identità regionale condivisa. Sebbene fosse permesso a uomini e donne d'Europa e d'America di assistere, fu loro vietato parlare fino al quarto giorno dell'assemblea.</p><p>Il congresso propose sei obiettivi: (1) la promozione di una coscienza condivisa di unità tra le donne asiatiche, (2) l'apprezzamento delle qualità positive delle proprie civiltà, (3) la revisione e correzione della società tradizionale, (4) il vaglio dell'influenza occidentale per un'adozione appropriata, (5) la condivisione di dati nazionali e (6) la pace mondiale.</p><p>Pur non essendo direttamente collegate, queste conferenze furono un anello della catena più ampia di reti femminili formali in Asia che si opposero alle narrazioni occidentali convenzionali sul femminismo. Hanifa Khouri sarebbe stata tra le organizzatrici di un congresso successivo, il Congresso delle Donne d'Oriente a Teheran. Nour Hamada, autorevole attivista drusa del Monte Libano, partecipò alla pianificazione del Congresso panasiatico delle donne (Hannun 13). La sua organizzazione, l'Unione Generale delle Donne Siriane, fu poi responsabile dell'organizzazione del Congresso delle Donne d'Oriente nel 1932.</p>",
+      "<p>Anche le donne egiziane ebbero un ruolo nel movimento crescente del femminismo non occidentale e non allineato in Medio Oriente e in Asia. All'inizio del XX secolo si tennero in tutta la regione diverse conferenze che ridefinirono il femminismo al di fuori del tradizionale movimento dominato dall'Occidente.</p>" +
+      "<p>Ospitato a Lahore, in Pakistan, dal 19 al 25 gennaio 1931, il Congresso panasiatico delle donne riunì delegate da tutta l'Asia per costruire un movimento femminista transnazionale. Con 26 rappresentanti delegate da India, Afghanistan, Birmania, Ceylon, Giappone e Persia, oltre a 1200 osservatrici, la conferenza cercava di creare un movimento femminista dal punto di vista delle donne non occidentali. Pur riconoscendo il ruolo delle femministe occidentali, la principale preoccupazione, espressa da una delle organizzatrici, era che il colonialismo e la geografia limitassero la conoscenza reciproca: &laquo;conosciamo solo coloro che vengono da noi&raquo; (Nijhhawan 17). La conferenza puntava quindi a deimperializzare il femminismo costruendo un'identità regionale condivisa. Sebbene fosse permesso a uomini e donne d'Europa e d'America di assistere, fu loro vietato parlare fino al quarto giorno dell'assemblea.</p>" +
+      "<p>Il congresso propose sei obiettivi: (1) la promozione di una coscienza condivisa di unità tra le donne asiatiche, (2) l'apprezzamento delle qualità positive delle proprie civiltà, (3) la revisione e correzione della società tradizionale, (4) il vaglio dell'influenza occidentale per un'adozione appropriata, (5) la condivisione di dati nazionali e (6) la pace mondiale.</p>" +
+      "<p>Conferenze successive di gruppi femministi nel mondo non occidentale trassero ispirazione da quest'evento. Nour Hamada, autorevole attivista drusa del Monte Libano, partecipò alla pianificazione del Congresso panasiatico delle donne (Hannun 13). La sua organizzazione, l'Unione Generale delle Donne Siriane, era già stata responsabile dell'organizzazione del Congresso delle Donne d'Oriente nel 1930. Hanifa Khouri sarebbe stata tra le organizzatrici di un congresso successivo, il Secondo Congresso delle Donne d'Oriente a Teheran nel 1932. Il terzo Congresso delle Donne d'Oriente si sarebbe tenuto nel 1938 al Cairo. Quest'ultimo, organizzato dall'Unione Femminista Egiziana, si concentrò sul mandato britannico per la Palestina e riunì gruppi femministi di tutta la regione, compresa la più grande delegazione palestinese (Karim).</p>" +
+      "<p>Pur non essendo direttamente collegate, queste conferenze furono un anello della catena più ampia di reti femminili formali in Asia che si opposero alle narrazioni occidentali convenzionali sul femminismo.</p>",
+    historyIslamicFeminismHtml:
+      "<p>Il femminismo islamico è un movimento globale che difende la piena uguaglianza dei sessi all'interno di un quadro islamico, attingendo agli insegnamenti del Corano e della Sunnah per affrontare le questioni dei diritti delle donne. Le femministe islamiche sostengono che i limiti imposti alle donne nella società musulmana derivino da tradizioni culturali e da interpretazioni religiose maschili, non dall'Islam in sé. Il movimento cerca di mettere in discussione la narrazione dominante sulle donne musulmane e di reinterpretare i testi religiosi per far avanzare i diritti delle donne in politica, istruzione, matrimonio e altri ambiti.</p>" +
+      "<p>Il termine «femminismo islamico» non fu di uso comune fino agli anni Novanta, ma le sue idee fondamentali esistono da molti secoli. Figure antiche come Aisha e Fatima sono spesso citate come prova che le donne hanno a lungo occupato posizioni importanti all'interno dell'Islam. Tra la fine dell'Ottocento e l'inizio del Novecento, periodi di cambiamento sociale e politico portarono un numero crescente di donne a discutere apertamente del ruolo dell'uguaglianza di genere nell'Islam. Oggi il femminismo islamico continua sia come campo di studio sia come movimento attivista.</p>",
   },
   fr: {
     navAriaPrimary: "Navigation principale",
@@ -983,8 +1040,16 @@ var STORYMAP_EXTRA_I18N = {
     historyBody:
       "[TEXTE D'EXEMPLE] L'archive se comprend mieux contextualisée. Certains nœuds refléteront des transformations historiques en Égypte aux XXe et XXIe siècles. La politique féministe s'est développée après 1952 ; sous Nasser, le féminisme était lié aux discours anti-coloniaux et anti-capitalistes (Ibrahim 2017, 4-5). Les activistes peinaient à joindre la classe ouvrière (Ibrahim 2017, 3). L'État élargit l'éducation et le travail des femmes tout en fermant l'espace politique (Ibrahim 2017, 6 ; Gaul 2025). L'expansion de l'éducation pour les pauvres a façonné un féminisme plus inclusif (Ibrahim 2017, 13) ; l'infitāḥ de Sadate créa des tensions (Ibrahim 2017, 15-16) ; le printemps arabe 2011 a réactivé ces tensions (Ibrahim 2017, 20). Hatem (2011) documente des femmes à Tahrir (36). Ces transformations façonnent le matériau archivistique de « Doing Well, Don't Worry » (Hassan 2021 ; Hatem 2011).",
     historySubheadingNasserSadat: "Les femmes à l'époque de Nasser et Sadate",
+    historySubheadingFeministUnion: "L'Union féministe égyptienne de 1923 à aujourd'hui",
     historySubheadingInternational: "Les militantes égyptiennes des droits des femmes et l'engagement international",
     historySubheadingAsianCongress: "Congrès panasiatique des femmes",
+    historySubheadingIslamicFeminism: "Perspectives sur les mouvements féministes : le féminisme islamique",
+    historyHeadingUzbekistan: "Égypte et Ouzbékistan",
+    historyHeadingKhouriSoraya: "Hanifa Khouri d'Égypte et la reine Soraya Tarzi d'Afghanistan",
+    historyHeadingMorocco: "Égypte et Maroc",
+    historyFigNasserCaption: "Le Premier ministre Gamal Abdel Nasser à Alexandrie, Égypte, octobre 1954.",
+    historyFigSorayaCaption: "La reine Soraya Tarzi en couverture de TIME, 1927.",
+    historyFigIslamicFeminismCaption: "Des Égyptiennes appellent au changement, décembre 2011.",
     bibliographyTitle: "Bibliographie du site",
     infoPageCarouselCaption: "Photos de l'exposition de mai 2017 à l'AUC.",
     infoPageCarouselAria: "Photographies de l'exposition de mai 2017 à l'Université américaine du Caire",
@@ -1026,31 +1091,38 @@ var STORYMAP_EXTRA_I18N = {
       "<p class=\"infoPage__body\">En mars 2026, le Women and Memory Forum a accueilli des étudiants du Centennial Lab de l'Université de Georgetown (États-Unis), cours ARST 4478, <em>Heritage and Development in the Arab World</em>. Les étudiants ont étudié le patrimoine féministe en Égypte, les défis du WMF, ses actions communautaires et ses pratiques archivistiques. Inspirés par les valeurs jésuites de Georgetown, «&nbsp;des hommes et des femmes pour les autres&nbsp;» et «&nbsp;une communauté dans la diversité&nbsp;», ils ont voulu prolonger leur apprentissage hors de la salle de classe. C'est de ce désir qu'est né cet archive numérique.</p>",
     historyNasserSadatHtml:
       "<p>De nombreuses Égyptiennes ont accueilli la révolution de Nasser et des Officiers libres contre la monarchie en 1952, qui semblait ouvrir la voie à une société plus juste pour tous les Égyptiens. Dès les années 1940, un collectif pionnier de femmes avait commencé à relier les revendications d'égalité à la lutte plus large contre la domination coloniale britannique, articulant la libération des femmes à travers le prisme de l'indépendance nationale. Les militantes de cette époque dissociaient rarement le genre des autres structures d'oppression et considéraient l'impérialisme, l'inégalité de classe et l'assujettissement des femmes comme profondément co-constitutifs.</p><p>En 1956, bien que les femmes aient obtenu le droit de vote, un meilleur accès à l'éducation et fait leur entrée sur le marché du travail en nombre croissant, le régime ferma simultanément les organisations politiques indépendantes et brida la dissidence, contraignant l'activisme des femmes à opérer à l'intérieur — et parfois en opposition directe avec — les frontières d'un féminisme d'État.</p><p>Dans les années 1970, le président Sadate a réorienté l'Égypte vers une économie de marché ouverte, transformant en profondeur le paysage de l'organisation des femmes. Les cadres socialistes et anticoloniaux qui avaient uni une grande partie de la génération précédente d'activistes se sont fragmentés. Il en a résulté un glissement progressif depuis la critique structurelle du capitalisme et de l'impérialisme, dans une optique panarabe, vers des approches plus étroites et fondées sur les droits dans la défense des questions de genre en Égypte.</p>",
-    historyInternationalHtml:
-      "<p>Il importe de ne pas restreindre notre compréhension des mouvements de femmes au cadre analytique de l'État-nation (Bier 2004, 104). Les militantes égyptiennes des droits des femmes au début du XX<sup>e</sup> siècle dialoguaient avec les mouvements pour les droits des femmes à travers la région. Par exemple, la presse féminine en Égypte publiait de nombreux récits sur des femmes étrangères, exprimant souvent une solidarité avec celles colonisées ou anciennement colonisées par les Européens (Bier 2004, 102). Voici quelques anecdotes sur quelques femmes, destinées à inspirer de nouvelles recherches sur la dimension internationale de l'activisme féminin égyptien.</p>" +
-      "<h4>Hanifa Khouri d'Égypte et la reine Soraya Tarzi d'Afghanistan</h4>" +
+    historyFeministUnionHtml:
+      "<p>L'Union féministe égyptienne, fondée en 1923 par Huda Sha&rsquo;rawi, naquit comme un réseau informel de femmes égyptiennes des classes supérieures et de militantes féministes. À l'époque, c'était la principale association consacrée aux affaires des femmes&nbsp;; elle s'opposait à un État de plus en plus dominé par les hommes, apparu après la révolution de 1919. Tout au long de son existence, le mouvement plaida pour le changement politique, appelant souvent l'État à veiller à la moralité de la nation et au bien-être de son peuple (Khater and Nelson 467). L'organisation soutint aussi l'activité anticoloniale en général, à l'image de l'engagement de nombreuses femmes durant l'époque coloniale en Égypte. Cela inclut l'accueil du Congrès des femmes d'Orient pour la défense de la Palestine en 1938.</p>" +
+      "<p>À l'approche de la révolution de 1952, davantage de femmes, en particulier des classes moyennes, prirent part à la politique féministe égyptienne. Cela donna lieu à plusieurs ramifications de l'Union féministe égyptienne. L'une d'elles, l'Union Bint el-Nil («&nbsp;Fille du Nil&nbsp;»), s'attacha surtout à obtenir l'égalité des femmes selon la constitution égyptienne et à apporter une aide aux pauvres (Khater and Nelson 470). Un autre groupe, les féministes socialistes, jugeait l'Union féministe égyptienne et l'Union Bint el-Nil trop prudentes et élitistes&nbsp;; il promut des idéologies socialistes dans l'espoir d'une libération par une lutte plus générale pour l'égalité sociale (Khater and Nelson 473). Si le droit de vote et de candidature des femmes fut reconnu, l'élan de nombreux mouvements féministes s'est essoufflé. De 1957 à 1970, les mouvements féministes furent directement influencés par la politique étatique&nbsp;: le ministère de l'Intérieur récupéra l'Union féministe égyptienne pour en évincer les membres de gauche (Khater and Nelson 476), et l'Union fut ensuite interdite les années suivantes (Enloe 157).</p>" +
+      "<p>À la veille des premières élections post-Moubarak, l'Union féministe égyptienne fut revitalisée par de nouvelles militantes révolutionnaires, avec Hoda Badran à sa tête. Cette nouvelle mouture cherche non seulement à continuer de jouer un rôle dans le processus de construction de l'État et de la révolution, mais aussi à mettre en lumière le travail des premières militantes féministes dans les processus révolutionnaires égyptiens (Enloe 158).</p>",
+    historyInternationalIntroHtml:
+      "<p>Il importe de ne pas restreindre notre compréhension des mouvements de femmes au cadre analytique de l'État-nation (Bier 2004, 104). Les militantes égyptiennes des droits des femmes au début du XX<sup>e</sup> siècle dialoguaient avec les mouvements pour les droits des femmes à travers la région. Par exemple, la presse féminine en Égypte publiait de nombreux récits sur des femmes étrangères, exprimant souvent une solidarité avec celles colonisées ou anciennement colonisées par les Européens (Bier 2004, 102). Voici quelques anecdotes sur quelques femmes, destinées à inspirer de nouvelles recherches sur la dimension internationale de l'activisme féminin égyptien.</p>",
+    historyUzbekistanHtml:
+      "<p>Le savant Sayid Ahmad Wasli, originaire de Samarcande en Ouzbékistan, écrivit un poème dans lequel il évoqua l'Égypte et la Syrie pour affirmer que le hijab ne devait pas être considéré comme un obstacle à l'apprentissage. Son poème, publié dans le journal d'État afghan <em>Aman-i-Afghan</em> en 1920, est un exemple de l'usage du modèle égyptien pour encourager le progrès des femmes à l'international (Hannun 2025, 107).</p>",
+    historyKhouriHtml:
       "<p class=\"historyPage__minor\"><em>Qui était Hanifa Khouri&nbsp;?</em></p>" +
       "<ul>" +
-        "<li>Journaliste égyptienne et militante des droits des femmes (Hannun 2020, 1).</li>" +
+        "<li>Hanifa Khouri était une journaliste égyptienne et une militante des droits des femmes (Hannun 2020, 1).</li>" +
         "<li>Elle prit part au réseau féminin transrégional anticolonial de l'entre-deux-guerres (Hannun 2020, 2).</li>" +
         "<li>Elle représenta l'Égypte comme déléguée officielle à une conférence organisée par la Young Women&rsquo;s Christian Association à Beyrouth, au Liban, en 1928 (Hannun 2020, 1).</li>" +
         "<li>Elle contribua à organiser le Deuxième Congrès des femmes d'Orient à Téhéran en 1932 (Hannun 2020, 12)." +
           "<ul>" +
             "<li>Khouri cita Huda Sha&rsquo;rawi, présidente de l'Union féministe égyptienne, et évoqua l'importance de préserver certaines traditions tout en adoptant sélectivement des coutumes européennes pour le progrès (Hannun 2020, 13).</li>" +
-            "<li>Le Deuxième Congrès des femmes d'Orient à Téhéran en 1932 eut lieu après la tenue du Congrès panasiatique des femmes (AAWC) à Lahore en 1931 (Hannun 2020, 12).</li>" +
-            "<li>Cela s'inscrivait dans la croissance de réseaux féminins formels mobilisés en solidarité régionale et en opposition au colonialisme et à l'impérialisme occidentaux durant l'entre-deux-guerres (Hannun 2020, 12).</li>" +
+            "<li>Le Deuxième Congrès des femmes d'Orient à Téhéran en 1932 eut lieu après la tenue du Congrès panasiatique des femmes (AAWC) à Lahore en 1931 (Hannun 2020, 12). Cela s'inscrivait dans la croissance de réseaux féminins formels mobilisés en solidarité régionale et en opposition au colonialisme et à l'impérialisme occidentaux durant l'entre-deux-guerres (Hannun 2020, 12).</li>" +
           "</ul>" +
         "</li>" +
-      "</ul>" +
+      "</ul>",
+    historySorayaHtml:
       "<p class=\"historyPage__minor\"><em>Qui était la reine Soraya Tarzi (1899&ndash;1968)&nbsp;?</em></p>" +
+      "<p>Soraya Tarzi fut la première reine d'Afghanistan nouvellement indépendant (Hannun 2020, 1).</p>" +
       "<ul>" +
-        "<li>Première reine d'Afghanistan nouvellement indépendant (Hannun 2020, 1).</li>" +
         "<li>Figure importante de la politique du Moyen-Orient et de l'Asie du Sud durant l'entre-deux-guerres (Hannun 2020, 2).</li>" +
         "<li>Fille du réformateur Mahmud Tarzi (Hannun 2020, 2).</li>" +
         "<li>Son mariage avec Aman Allah Khan (règne 1919&ndash;1929) fut le premier mariage royal monogame de l'histoire de l'Afghanistan (Hannun 2021, 468).</li>" +
         "<li>Elle accompagna son mari, le roi Aman Allah, dans une tournée mondiale (1927&ndash;1928) qui passa par l'Inde, l'Égypte, l'Europe, la Türkiye et l'Iran (Hannun 2020, 9).</li>" +
         "<li>Ses prises de parole publiques sur le progrès des femmes ressemblent à celles de la féministe égyptienne Huda Sharaawi (1879&ndash;1947) (Hannun 2021, 468).</li>" +
-      "</ul>" +
+      "</ul>",
+    historyKhouriVisitHtml:
       "<p class=\"historyPage__minor\"><em>La visite de Khouri en Afghanistan</em></p>" +
       "<ul>" +
         "<li>En 1927, Khouri rencontra la reine Soraya au Caire, qui l'invita en Afghanistan. À l'été 1928, Khouri voyagea de Beyrouth via Port-Saïd jusqu'à Aden au Yémen, puis Karachi en Inde britannique, Peshawar et Jalalabad, pour atteindre enfin Kaboul, en Afghanistan (Hannun 2020, 1).</li>" +
@@ -1058,14 +1130,11 @@ var STORYMAP_EXTRA_I18N = {
           "<ul>" +
             "<li>Bien que temporaires en raison du renversement du roi et de la reine en 1929, sous leur règne l'Afghanistan avait connu de nombreux changements qui avaient amélioré la condition des femmes.</li>" +
             "<li>Ces transformations comprenaient la création de la première école moderne pour filles en Afghanistan et des réformes juridiques modifiant les lois sur le statut personnel concernant les femmes et la famille (Hannun 2020, 1).</li>" +
-            "<li>Ces réformes étaient enracinées dans des principes islamiques, dans le cadre du lien plus large entre les mouvements féministes et panislamistes (Hannun 2020, 7).</li>" +
+            "<li>Ces réformes étaient enracinées dans des principes islamiques, dans le cadre du lien plus large entre les mouvements féministes et panislamistes (Hannun 2020, 7). De manière intéressante, l'un des arguments en faveur de l'instruction des femmes était l'exemple réussi des écoles de filles dans d'autres pays musulmans, dont l'Égypte (Hannun 2020, 8).</li>" +
           "</ul>" +
         "</li>" +
-        "<li>De manière intéressante, l'un des arguments en faveur de l'instruction des femmes était l'exemple réussi des écoles de filles dans d'autres pays musulmans, dont l'Égypte (Hannun 2020, 8).</li>" +
-      "</ul>" +
-      "<h4>Égypte et Ouzbékistan</h4>" +
-      "<p>Le savant Sayid Ahmad Wasli, originaire de Samarcande en Ouzbékistan, écrivit un poème dans lequel il évoqua l'Égypte et la Syrie pour affirmer que le hijab ne devait pas être considéré comme un obstacle à l'apprentissage. Son poème, publié dans le journal d'État afghan <em>Aman-i-Afghan</em> en 1920, est un exemple de l'usage du modèle égyptien pour encourager le progrès des femmes à l'international (Hannun 2025, 107).</p>" +
-      "<h4>Égypte et Maroc</h4>" +
+      "</ul>",
+    historyMoroccoHtml:
       "<p class=\"historyPage__minor\"><em>La réforme de genre au Maroc dans les années 1930 et 1940</em></p>" +
       "<p>Les nationalistes marocains, dont le mouvement s'épanouit dans les années 1930 et 1940, défendaient la réforme et l'élargissement de l'éducation des femmes. Leur plaidoyer pour la réforme de genre fut façonné non seulement par la politique coloniale française, mais aussi par les mouvements de réforme islamique en cours dans tout le Moyen-Orient (Gaul 2022, 60).</p>" +
       "<ul>" +
@@ -1091,15 +1160,22 @@ var STORYMAP_EXTRA_I18N = {
         "</li>" +
       "</ul>" +
       "<p class=\"historyPage__minor\"><em>Malika al-Fassi (1919&ndash;2007)</em></p>" +
+      "<p>Malika al-Fassi est souvent considérée comme la mère fondatrice du mouvement des femmes au Maroc (Gaul 2022, 68).</p>" +
       "<ul>" +
-        "<li>Elle est souvent considérée comme la mère fondatrice du mouvement des femmes au Maroc (Gaul 2022, 68).</li>" +
         "<li>Son mari et ses proches étaient nationalistes, actifs dans des réseaux anticoloniaux transnationaux — c'est probablement par eux qu'elle eut connaissance des idées égyptiennes sur la réforme de genre (Gaul 2022, 68).</li>" +
         "<li>Dans les années 1930 et 1940, elle publia des essais sous les pseudonymes «&nbsp;Al-Fatat&nbsp;» (la jeune femme) et «&nbsp;Bahithat al-Hadira&nbsp;» (la chercheuse de la cité), qui renvoie probablement à «&nbsp;Bahithat al-Badiya&nbsp;» (la chercheuse du désert), pseudonyme de l'Égyptienne Malak Hifni Nasif, éminente défenseure de l'éducation des femmes (Gaul 2022, 68).</li>" +
         "<li>Elle référait à des modèles égyptiens dans ses écrits sur l'éducation des femmes et utilisait une rhétorique faisant écho à celle de Malak Hifni Nasif (Gaul 2022, 69).</li>" +
         "<li>En accord avec le modèle égyptien, elle estimait que le bonheur résulterait de la réforme éducative (Gaul 2022, 69).</li>" +
       "</ul>",
     historyAsianCongressHtml:
-      "<p>Tenu à Lahore, au Pakistan, du 19 au 25 janvier 1931, le Congrès panasiatique des femmes réunit des déléguées de toute l'Asie pour bâtir un mouvement féministe transnational. Avec 26 représentantes officielles d'Inde, d'Afghanistan, de Birmanie, de Ceylan, du Japon et de Perse, ainsi que 1200 observatrices, la conférence cherchait à créer un mouvement féministe à partir du point de vue des femmes non occidentales. Tout en reconnaissant le rôle des féministes occidentales, la principale préoccupation, formulée par une organisatrice, était que le colonialisme et la géographie limitaient la connaissance mutuelle&nbsp;: «&nbsp;nous ne connaissons que celles qui viennent à nous&nbsp;» (Nijhhawan 17). Le congrès cherchait ainsi à dé-impérialiser le féminisme en construisant une identité régionale partagée. Si des hommes et des femmes d'Europe et d'Amérique furent autorisés à assister, il leur fut interdit de prendre la parole avant le quatrième jour de l'assemblée.</p><p>Le congrès proposa six objectifs&nbsp;: (1) promouvoir une conscience d'unité partagée entre les femmes asiatiques, (2) apprécier les qualités positives de leurs civilisations, (3) examiner et réformer la société traditionnelle, (4) trier l'influence occidentale pour n'en adopter que ce qui convient, (5) partager les données nationales et (6) la paix mondiale.</p><p>Bien que sans lien direct, ces conférences servirent de maillon dans la chaîne plus large des réseaux féminins formels d'Asie qui s'opposaient aux récits occidentaux conventionnels sur le féminisme. Hanifa Khouri figurera parmi les organisatrices d'un congrès suivant, le Congrès des femmes d'Orient à Téhéran. Nour Hamada, militante druze de premier plan du Mont Liban, conseilla la planification du Congrès panasiatique des femmes (Hannun 13). Son organisation, l'Union générale pour les femmes syriennes, se chargera ensuite d'organiser le Congrès des femmes d'Orient en 1932.</p>",
+      "<p>Les femmes égyptiennes ont également joué un rôle dans le mouvement croissant d'un féminisme non occidental et non aligné au Moyen-Orient et en Asie. Au début du XX<sup>e</sup> siècle, plusieurs conférences furent tenues à travers la région, redéfinissant le féminisme en dehors du mouvement traditionnel dominé par l'Occident.</p>" +
+      "<p>Tenu à Lahore, au Pakistan, du 19 au 25 janvier 1931, le Congrès panasiatique des femmes réunit des déléguées de toute l'Asie pour bâtir un mouvement féministe transnational. Avec 26 représentantes officielles d'Inde, d'Afghanistan, de Birmanie, de Ceylan, du Japon et de Perse, ainsi que 1200 observatrices, la conférence cherchait à créer un mouvement féministe à partir du point de vue des femmes non occidentales. Tout en reconnaissant le rôle des féministes occidentales, la principale préoccupation, formulée par une organisatrice, était que le colonialisme et la géographie limitaient la connaissance mutuelle&nbsp;: «&nbsp;nous ne connaissons que celles qui viennent à nous&nbsp;» (Nijhhawan 17). Le congrès cherchait ainsi à dé-impérialiser le féminisme en construisant une identité régionale partagée. Si des hommes et des femmes d'Europe et d'Amérique furent autorisés à assister, il leur fut interdit de prendre la parole avant le quatrième jour de l'assemblée.</p>" +
+      "<p>Le congrès proposa six objectifs&nbsp;: (1) promouvoir une conscience d'unité partagée entre les femmes asiatiques, (2) apprécier les qualités positives de leurs civilisations, (3) examiner et réformer la société traditionnelle, (4) trier l'influence occidentale pour n'en adopter que ce qui convient, (5) partager les données nationales et (6) la paix mondiale.</p>" +
+      "<p>Des conférences ultérieures de groupes féministes dans le monde non occidental s'inspirèrent de cet événement. Nour Hamada, militante druze de premier plan du Mont Liban, conseilla la planification du Congrès panasiatique des femmes (Hannun 13). Son organisation, l'Union générale pour les femmes syriennes, avait auparavant organisé le Congrès des femmes d'Orient en 1930. Hanifa Khouri figurera parmi les organisatrices d'un congrès suivant, le Deuxième Congrès des femmes d'Orient à Téhéran en 1932. Le troisième Congrès des femmes d'Orient se tiendra en 1938 au Caire. Cette conférence, organisée par l'Union féministe égyptienne, se concentra sur le mandat britannique pour la Palestine et réunit des groupes féministes de toute la région, dont la plus grande délégation venant de Palestine (Karim).</p>" +
+      "<p>Bien que sans lien direct, ces conférences servirent de maillon dans la chaîne plus large des réseaux féminins formels d'Asie qui s'opposaient aux récits occidentaux conventionnels sur le féminisme.</p>",
+    historyIslamicFeminismHtml:
+      "<p>Le féminisme islamique est un mouvement mondial qui défend la pleine égalité des sexes dans un cadre islamique, en s'appuyant sur les enseignements du Coran et de la Sunna pour aborder les questions des droits des femmes. Les féministes islamiques soutiennent que les limites imposées aux femmes dans la société musulmane découlent des traditions culturelles et d'interprétations religieuses masculines, et non de l'islam lui-même. Le mouvement cherche à remettre en cause le récit dominant sur les femmes musulmanes et à réinterpréter les textes religieux pour faire progresser les droits des femmes en politique, en éducation, dans le mariage et dans d'autres domaines.</p>" +
+      "<p>Le terme «&nbsp;féminisme islamique&nbsp;» n'a été couramment utilisé qu'à partir des années 1990, mais ses idées centrales existent depuis plusieurs siècles. Des figures anciennes comme Aïcha et Fatima sont souvent citées comme preuves que les femmes ont longtemps occupé d'importantes positions au sein de l'islam. À la fin du XIX<sup>e</sup> et au début du XX<sup>e</sup> siècle, des périodes de transformation sociale et politique ont conduit davantage de femmes à débattre ouvertement du rôle de l'égalité des genres dans l'islam. Aujourd'hui, le féminisme islamique se poursuit à la fois comme champ universitaire et comme mouvement militant.</p>",
   },
   es: {
     navAriaPrimary: "Navegación principal",
@@ -1259,8 +1335,16 @@ var STORYMAP_EXTRA_I18N = {
     historyBody:
       "[TEXTO DE EJEMPLO] El archivo se entiende mejor contextualizado. Algunos nodos reflejarán transformaciones históricas en el Egipto de los siglos XX y XXI. La política feminista creció tras 1952; bajo Nasser, el feminismo se ligó a discursos anti-coloniales y anti-capitalistas (Ibrahim 2017, 4-5). Las activistas lucharon por conectar con la clase trabajadora (Ibrahim 2017, 3). El Estado amplió educación y trabajo de las mujeres mientras cerraba espacio político (Ibrahim 2017, 6; Gaul 2025). La expansión educativa para los pobres moldeó un feminismo más inclusivo (Ibrahim 2017, 13); la infitāḥ de Sadat generó tensiones (Ibrahim 2017, 15-16); la primavera árabe de 2011 reactivó estas tensiones (Ibrahim 2017, 20). Hatem (2011) documenta mujeres en Tahrir (36). Estas transformaciones dan forma al material archivístico de «Doing Well, Don't Worry» (Hassan 2021; Hatem 2011).",
     historySubheadingNasserSadat: "Las mujeres en tiempos de Nasser y Sadat",
+    historySubheadingFeministUnion: "La Unión Feminista Egipcia desde 1923 hasta hoy",
     historySubheadingInternational: "Activistas egipcias por los derechos de las mujeres y el compromiso internacional",
     historySubheadingAsianCongress: "Congreso panasiático de las mujeres",
+    historySubheadingIslamicFeminism: "Perspectivas sobre los movimientos feministas: el feminismo islámico",
+    historyHeadingUzbekistan: "Egipto y Uzbekistán",
+    historyHeadingKhouriSoraya: "Hanifa Khouri de Egipto y la reina Soraya Tarzi de Afganistán",
+    historyHeadingMorocco: "Egipto y Marruecos",
+    historyFigNasserCaption: "El primer ministro Gamal Abdel Nasser en Alejandría, Egipto, octubre de 1954.",
+    historyFigSorayaCaption: "La reina Soraya Tarzi en la portada de TIME, 1927.",
+    historyFigIslamicFeminismCaption: "Mujeres egipcias piden el cambio, diciembre de 2011.",
     bibliographyTitle: "Bibliografía del sitio",
     infoPageCarouselCaption: "Fotos de la exposición de mayo de 2017 en la AUC.",
     infoPageCarouselAria: "Fotografías de la exposición de mayo de 2017 en la Universidad Americana de El Cairo",
@@ -1302,31 +1386,38 @@ var STORYMAP_EXTRA_I18N = {
       "<p class=\"infoPage__body\">En marzo de 2026, el Women and Memory Forum recibió a estudiantes del Centennial Lab de la Universidad de Georgetown (EE. UU.), curso ARST 4478, <em>Heritage and Development in the Arab World</em>. Las y los estudiantes conocieron el patrimonio feminista en Egipto, los retos del WMF, sus iniciativas comunitarias y sus prácticas archivísticas. Inspirados por los valores jesuitas de Georgetown, «personas para los demás» y «comunidad en la diversidad», quisieron llevar lo aprendido más allá del aula. De ese impulso nació este archivo digital.</p>",
     historyNasserSadatHtml:
       "<p>Muchas egipcias acogieron la revolución de Nasser y los Oficiales Libres contra la monarquía en 1952, pues parecía abrir la puerta a una sociedad más justa para todas y todos los egipcios. Hacia los años cuarenta, una pionera generación de mujeres había comenzado a vincular las demandas de igualdad a la lucha más amplia contra el dominio colonial británico, articulando la liberación de las mujeres a través de la lente de la independencia nacional. Las activistas de aquella época rara vez separaban el género de otras estructuras de opresión, y veían el imperialismo, la desigualdad de clase y la subordinación de las mujeres como profundamente coconstitutivos.</p><p>En 1956, aunque las mujeres conquistaron el derecho al voto, mayor acceso a la educación e ingresaron al mundo laboral en número creciente, el régimen cerró simultáneamente las organizaciones políticas independientes y reprimió la disidencia, obligando al activismo de las mujeres a operar dentro — y en ocasiones en abierta oposición — a los límites de un feminismo de Estado.</p><p>En los años setenta, el presidente Sadat reorientó Egipto hacia una economía de mercado abierto, transformando profundamente el panorama de la organización de las mujeres. Los marcos socialista y anticolonial que habían unido a buena parte de la generación anterior de activistas evolucionaron hacia un movimiento más fragmentado. Como resultado, hubo un desplazamiento gradual desde la crítica estructural del capitalismo y el imperialismo, en clave panárabe, hacia enfoques más estrechos basados en derechos en la defensa de las cuestiones de género dentro de Egipto.</p>",
-    historyInternationalHtml:
-      "<p>Es importante no limitar nuestra comprensión de los movimientos de mujeres al marco analítico del Estado-nación (Bier 2004, 104). Las activistas egipcias por los derechos de las mujeres en los inicios del siglo XX dialogaron con los movimientos por los derechos de las mujeres en toda la región. Por ejemplo, la prensa femenina en Egipto publicaba muchas historias sobre mujeres extranjeras, expresando con frecuencia solidaridad con aquellas colonizadas o antes colonizadas por europeos (Bier 2004, 102). A continuación, algunas curiosidades sobre unas pocas mujeres, pensadas para inspirar más investigación sobre la dimensión internacional del activismo femenino egipcio.</p>" +
-      "<h4>Hanifa Khouri de Egipto y la reina Soraya Tarzi de Afganistán</h4>" +
+    historyFeministUnionHtml:
+      "<p>La Unión Feminista Egipcia, fundada en 1923 por Huda Sha&rsquo;rawi, comenzó como una red informal de mujeres egipcias de clase alta y activistas feministas. En aquel momento, la Unión Feminista Egipcia era la principal asociación dedicada a los asuntos de las mujeres y actuaba para contrarrestar a un Estado cada vez más dominado por hombres surgido tras la revolución de 1919. A lo largo de su existencia, el movimiento impulsó el cambio político y a menudo apeló al Estado para que sostuviera la moralidad de la nación y velara por el bienestar de su pueblo (Khater and Nelson 467). La organización también respaldó la actividad anticolonial en general, en sintonía con el apoyo de muchas mujeres durante la era del Egipto colonizado. Esto incluyó la celebración del Congreso de Mujeres de Oriente para la defensa de Palestina de 1938.</p>" +
+      "<p>A medida que se acercaba la revolución de 1952, más mujeres, sobre todo de clase media, comenzaron a desempeñar un papel en la política feminista egipcia. Esto dio lugar a la creación de varias ramificaciones de la Unión Feminista Egipcia. Una de ellas, la Bint el-Nil Union (Hija del Nilo), se centró sobre todo en lograr la igualdad de las mujeres bajo la constitución egipcia y en proporcionar asistencia a quienes vivían en la pobreza (Khater and Nelson 470). Otro grupo, las feministas socialistas, consideraba a la Unión Feminista Egipcia y a la Bint el-Nil Union demasiado prudentes y elitistas, y promovió ideologías socialistas con la esperanza de alcanzar la liberación mediante una lucha general por la igualdad social (Khater and Nelson 473). Aunque se reconoció el derecho de las mujeres a votar y a presentarse a cargos públicos, el impulso de muchos movimientos feministas se debilitó. Entre 1957 y 1970 los movimientos feministas estuvieron directamente influidos por la política estatal: el Ministerio del Interior cooptó a la Unión Feminista Egipcia para expulsar a sus integrantes de izquierda (Khater and Nelson 476), y posteriormente la Unión fue prohibida en los años siguientes (Enloe 157).</p>" +
+      "<p>En la víspera de las primeras elecciones tras Mubarak, la Unión Feminista Egipcia fue revitalizada por nuevas activistas revolucionarias con Hoda Badran a la cabeza. Esta nueva versión de la organización busca no solo seguir desempeñando un papel en el proceso constituyente y revolucionario, sino también poner en valor el trabajo de las primeras activistas feministas en los procesos revolucionarios egipcios (Enloe 158).</p>",
+    historyInternationalIntroHtml:
+      "<p>Es importante no limitar nuestra comprensión de los movimientos de mujeres al marco analítico del Estado-nación (Bier 2004, 104). Las activistas egipcias por los derechos de las mujeres en los inicios del siglo XX dialogaron con los movimientos por los derechos de las mujeres en toda la región. Por ejemplo, la prensa femenina en Egipto publicaba muchas historias sobre mujeres extranjeras, expresando con frecuencia solidaridad con aquellas colonizadas o antes colonizadas por europeos (Bier 2004, 102). A continuación, algunas curiosidades sobre unas pocas mujeres, pensadas para inspirar más investigación sobre la dimensión internacional del activismo femenino egipcio.</p>",
+    historyUzbekistanHtml:
+      "<p>El erudito Sayid Ahmad Wasli, de Samarcanda, Uzbekistán, escribió un poema en el que aludía a Egipto y Siria para sostener que el hijab no debía verse como un obstáculo para el aprendizaje. Su poema, publicado en el periódico estatal afgano <em>Aman-i-Afghan</em> en 1920, es un ejemplo de cómo se utilizaba el modelo egipcio para alentar el progreso de las mujeres a nivel internacional (Hannun 2025, 107).</p>",
+    historyKhouriHtml:
       "<p class=\"historyPage__minor\"><em>¿Quién fue Hanifa Khouri?</em></p>" +
       "<ul>" +
-        "<li>Periodista egipcia y activista por los derechos de las mujeres (Hannun 2020, 1).</li>" +
+        "<li>Hanifa Khouri fue una periodista egipcia y activista por los derechos de las mujeres (Hannun 2020, 1).</li>" +
         "<li>Formó parte de la red femenina transregional anticolonial de entreguerras (Hannun 2020, 2).</li>" +
         "<li>Representó a Egipto como delegada oficial en una conferencia organizada por la Young Women&rsquo;s Christian Association en Beirut, Líbano, en 1928 (Hannun 2020, 1).</li>" +
         "<li>Ayudó a coordinar el Segundo Congreso de Mujeres de Oriente en Teherán en 1932 (Hannun 2020, 12)." +
           "<ul>" +
             "<li>Khouri citó a Huda Sha&rsquo;rawi, presidenta de la Unión Feminista Egipcia, y habló de la importancia de mantener ciertas tradiciones y de adoptar selectivamente costumbres europeas para el progreso (Hannun 2020, 13).</li>" +
-            "<li>El Segundo Congreso de Mujeres de Oriente en Teherán en 1932 tuvo lugar después del Congreso panasiático de las mujeres (AAWC) celebrado en Lahore en 1931 (Hannun 2020, 12).</li>" +
-            "<li>Esto formaba parte del crecimiento de redes femeninas formales que se movilizaban en solidaridad regional y en oposición al colonialismo y al imperialismo occidentales durante el periodo de entreguerras (Hannun 2020, 12).</li>" +
+            "<li>El Segundo Congreso de Mujeres de Oriente en Teherán en 1932 tuvo lugar después del Congreso panasiático de las mujeres (AAWC) celebrado en Lahore en 1931 (Hannun 2020, 12). Esto formaba parte del crecimiento de redes femeninas formales que se movilizaban en solidaridad regional y en oposición al colonialismo y al imperialismo occidentales durante el periodo de entreguerras (Hannun 2020, 12).</li>" +
           "</ul>" +
         "</li>" +
-      "</ul>" +
+      "</ul>",
+    historySorayaHtml:
       "<p class=\"historyPage__minor\"><em>¿Quién fue la reina Soraya Tarzi (1899&ndash;1968)?</em></p>" +
+      "<p>Soraya Tarzi fue la primera reina del Afganistán recién independizado (Hannun 2020, 1).</p>" +
       "<ul>" +
-        "<li>Primera reina del Afganistán recién independizado (Hannun 2020, 1).</li>" +
         "<li>Figura importante de la política de Oriente Medio y Asia del Sur durante el periodo de entreguerras (Hannun 2020, 2).</li>" +
         "<li>Hija del reformador Mahmud Tarzi (Hannun 2020, 2).</li>" +
         "<li>Su matrimonio con Aman Allah Khan (reinó 1919&ndash;1929) fue el primer matrimonio real monógamo en la historia de Afganistán (Hannun 2021, 468).</li>" +
         "<li>Acompañó a su esposo, el rey Aman Allah, en una gira mundial (1927&ndash;1928) que incluyó India, Egipto, Europa, Türkiye e Irán (Hannun 2020, 9).</li>" +
         "<li>Sus intervenciones públicas sobre el progreso de las mujeres se asemejan a las palabras de la feminista egipcia Huda Sharaawi (1879&ndash;1947) (Hannun 2021, 468).</li>" +
-      "</ul>" +
+      "</ul>",
+    historyKhouriVisitHtml:
       "<p class=\"historyPage__minor\"><em>La visita de Khouri a Afganistán</em></p>" +
       "<ul>" +
         "<li>En 1927, Khouri se encontró con la reina Soraya en El Cairo, quien la invitó a Afganistán. En el verano de 1928, Khouri viajó desde Beirut por Port Said hasta Adén, en Yemen, luego a Karachi, en la India británica, después a Peshawar y Jalalabad, y finalmente a Kabul, en Afganistán (Hannun 2020, 1).</li>" +
@@ -1334,14 +1425,11 @@ var STORYMAP_EXTRA_I18N = {
           "<ul>" +
             "<li>Aunque temporales, debido al derrocamiento del rey y la reina en 1929, bajo su gobierno Afganistán había vivido muchos cambios que mejoraron la situación de las mujeres.</li>" +
             "<li>Estas transformaciones incluyeron la creación de la primera escuela moderna para niñas en Afganistán y reformas legales que modificaron las leyes de estatuto personal que afectaban a las mujeres y a la familia (Hannun 2020, 1).</li>" +
-            "<li>Las reformas estaban arraigadas en principios islámicos, como parte del vínculo más amplio entre los movimientos feministas y panislamistas (Hannun 2020, 7).</li>" +
+            "<li>Las reformas estaban arraigadas en principios islámicos, como parte del vínculo más amplio entre los movimientos feministas y panislamistas (Hannun 2020, 7). Es interesante que uno de los argumentos a favor de la educación de las mujeres fueran los ejemplos exitosos de las escuelas para niñas en otros países musulmanes, entre ellos Egipto (Hannun 2020, 8).</li>" +
           "</ul>" +
         "</li>" +
-        "<li>Es interesante que uno de los argumentos a favor de la educación de las mujeres fueran los ejemplos exitosos de las escuelas para niñas en otros países musulmanes, entre ellos Egipto (Hannun 2020, 8).</li>" +
-      "</ul>" +
-      "<h4>Egipto y Uzbekistán</h4>" +
-      "<p>El erudito Sayid Ahmad Wasli, de Samarcanda, Uzbekistán, escribió un poema en el que aludía a Egipto y Siria para sostener que el hijab no debía verse como un obstáculo para el aprendizaje. Su poema, publicado en el periódico estatal afgano <em>Aman-i-Afghan</em> en 1920, es un ejemplo de cómo se utilizaba el modelo egipcio para alentar el progreso de las mujeres a nivel internacional (Hannun 2025, 107).</p>" +
-      "<h4>Egipto y Marruecos</h4>" +
+      "</ul>",
+    historyMoroccoHtml:
       "<p class=\"historyPage__minor\"><em>La reforma de género en Marruecos en los años treinta y cuarenta</em></p>" +
       "<p>Los nacionalistas marroquíes, cuyo movimiento floreció en los años treinta y cuarenta, defendieron la reforma y la ampliación de la educación de las mujeres. Su defensa de la reforma de género no estuvo conformada solo por la política colonial francesa, sino también por los movimientos de reforma islámica que tenían lugar en todo Oriente Medio (Gaul 2022, 60).</p>" +
       "<ul>" +
@@ -1367,15 +1455,22 @@ var STORYMAP_EXTRA_I18N = {
         "</li>" +
       "</ul>" +
       "<p class=\"historyPage__minor\"><em>Malika al-Fassi (1919&ndash;2007)</em></p>" +
+      "<p>Malika al-Fassi suele considerarse la madre fundadora del movimiento de mujeres en Marruecos (Gaul 2022, 68).</p>" +
       "<ul>" +
-        "<li>Suele considerarse la madre fundadora del movimiento de mujeres en Marruecos (Gaul 2022, 68).</li>" +
         "<li>Su esposo y sus familiares eran nacionalistas activos en redes anticoloniales transnacionales — probablemente conoció por ellos las ideas egipcias sobre la reforma de género (Gaul 2022, 68).</li>" +
         "<li>En los años treinta y cuarenta publicó ensayos con los seudónimos «Al-Fatat» (la joven) y «Bahithat al-Hadira» (la indagadora de la ciudad), que probablemente alude a «Bahithat al-Badiya» (la indagadora del desierto), seudónimo de la egipcia Malak Hifni Nasif, destacada defensora de la educación de las mujeres (Gaul 2022, 68).</li>" +
         "<li>Hizo referencia a modelos egipcios en sus escritos sobre la educación femenina y empleó una retórica que evocaba la de Malak Hifni Nasif (Gaul 2022, 69).</li>" +
         "<li>En consonancia con el modelo egipcio, creía que la felicidad sería resultado de la reforma educativa (Gaul 2022, 69).</li>" +
       "</ul>",
     historyAsianCongressHtml:
-      "<p>Celebrado en Lahore, Pakistán, del 19 al 25 de enero de 1931, el Congreso panasiático de las mujeres reunió a delegadas de toda Asia para construir un movimiento feminista transnacional. Con 26 delegadas representantes de India, Afganistán, Birmania, Ceilán, Japón y Persia, además de 1200 observadoras, la conferencia buscaba crear un movimiento feminista desde la perspectiva de las mujeres no occidentales. Aunque se reconoció el papel de las feministas occidentales, la principal preocupación, expresada por una de las organizadoras, era que el colonialismo y la geografía limitaban el conocimiento mutuo: «solo conocemos a quienes vienen a nosotras» (Nijhhawan 17). El congreso buscaba así desimperializar el feminismo construyendo una identidad regional compartida. Aunque se permitió a hombres y mujeres de Europa y América asistir al congreso, se les impidió hablar hasta el cuarto día de la asamblea.</p><p>El congreso propuso seis objetivos: (1) la promoción de una conciencia compartida de unidad entre las mujeres asiáticas, (2) el aprecio por las cualidades positivas de sus civilizaciones, (3) la revisión y enmienda de la sociedad tradicional, (4) el cribado de la influencia occidental para una adopción adecuada, (5) la puesta en común de datos nacionales y (6) la paz mundial.</p><p>Aunque sin relación directa, estas conferencias sirvieron como un eslabón en la cadena más amplia de redes femeninas formales en Asia que se opusieron a las narrativas occidentales convencionales sobre el feminismo. Hanifa Khouri sería una de las organizadoras de un congreso posterior, el Congreso de Mujeres de Oriente en Teherán. Nour Hamada, destacada activista drusa del Monte Líbano, asesoró la planificación del Congreso panasiático de las mujeres (Hannun 13). Su organización, la Unión General de Mujeres Sirias, sería luego responsable de organizar el Congreso de Mujeres de Oriente en 1932.</p>",
+      "<p>Las mujeres egipcias también participaron en el creciente movimiento del feminismo no occidental y no alineado en Oriente Medio y Asia. A comienzos del siglo XX se celebraron varias conferencias en toda la región que redefinieron el feminismo fuera del movimiento tradicional dominado por Occidente.</p>" +
+      "<p>Celebrado en Lahore, Pakistán, del 19 al 25 de enero de 1931, el Congreso panasiático de las mujeres reunió a delegadas de toda Asia para construir un movimiento feminista transnacional. Con 26 delegadas representantes de India, Afganistán, Birmania, Ceilán, Japón y Persia, además de 1200 observadoras, la conferencia buscaba crear un movimiento feminista desde la perspectiva de las mujeres no occidentales. Aunque se reconoció el papel de las feministas occidentales, la principal preocupación, expresada por una de las organizadoras, era que el colonialismo y la geografía limitaban el conocimiento mutuo: «solo conocemos a quienes vienen a nosotras» (Nijhhawan 17). El congreso buscaba así desimperializar el feminismo construyendo una identidad regional compartida. Aunque se permitió a hombres y mujeres de Europa y América asistir al congreso, se les impidió hablar hasta el cuarto día de la asamblea.</p>" +
+      "<p>El congreso propuso seis objetivos: (1) la promoción de una conciencia compartida de unidad entre las mujeres asiáticas, (2) el aprecio por las cualidades positivas de sus civilizaciones, (3) la revisión y enmienda de la sociedad tradicional, (4) el cribado de la influencia occidental para una adopción adecuada, (5) la puesta en común de datos nacionales y (6) la paz mundial.</p>" +
+      "<p>Conferencias posteriores de grupos feministas de todo el mundo no occidental se inspirarían en este evento. Nour Hamada, destacada activista drusa del Monte Líbano, asesoró la planificación del Congreso panasiático de las mujeres (Hannun 13). Su organización, la Unión General de Mujeres Sirias, ya había sido responsable de organizar el Congreso de Mujeres de Oriente en 1930. Hanifa Khouri sería una de las organizadoras de un congreso posterior, el Segundo Congreso de Mujeres de Oriente en Teherán en 1932. El tercer Congreso de Mujeres de Oriente se celebraría en 1938 en El Cairo. Esta conferencia, organizada por la Unión Feminista Egipcia, se concentró en el mandato británico para Palestina y reunió a grupos feministas de toda la región, incluida la mayor delegación procedente de Palestina (Karim).</p>" +
+      "<p>Aunque sin relación directa, estas conferencias sirvieron como un eslabón en la cadena más amplia de redes femeninas formales en Asia que se opusieron a las narrativas occidentales convencionales sobre el feminismo.</p>",
+    historyIslamicFeminismHtml:
+      "<p>El feminismo islámico es un movimiento global que aboga por la plena igualdad de los sexos a través de un marco islámico, apoyándose en las enseñanzas del Corán y la Sunnah para abordar las cuestiones de los derechos de las mujeres. Las feministas islámicas sostienen que los límites impuestos a las mujeres en la sociedad musulmana derivan de tradiciones culturales y de interpretaciones religiosas masculinas, y no del islam en sí. El movimiento busca cuestionar la narrativa dominante en torno a las mujeres musulmanas y reinterpretar los textos religiosos para hacer avanzar los derechos de las mujeres en política, educación, matrimonio y otros ámbitos.</p>" +
+      "<p>El término «feminismo islámico» no se utilizó de forma habitual hasta la década de 1990, pero sus ideas centrales existen desde hace varios siglos. Figuras tempranas como Aisha y Fátima son citadas con frecuencia como prueba de que las mujeres han ocupado durante mucho tiempo posiciones importantes dentro del islam. A finales del siglo XIX y comienzos del XX, los periodos de cambio social y político llevaron a más mujeres a debatir abiertamente el papel de la igualdad de género en el islam. Hoy, el feminismo islámico continúa siendo a la vez un campo académico y un movimiento militante.</p>",
   },
   de: {
     navAriaPrimary: "Hauptnavigation",
@@ -1535,8 +1630,16 @@ var STORYMAP_EXTRA_I18N = {
     historyBody:
       "[BEISPIELTEXT] Das Archiv lässt sich am besten kontextualisiert verstehen. Einige Knoten spiegeln historische Transformationen in Ägypten im 20. und 21. Jahrhundert. Feministische Politik wuchs nach 1952; unter Nasser war Feminismus an anti-koloniale und anti-kapitalistische Diskurse gebunden (Ibrahim 2017, 4-5). Aktivistinnen kämpften um Anschluss an die Arbeiterklasse (Ibrahim 2017, 3). Der Staat erweiterte Bildung und Arbeit der Frauen, schloss aber politischen Raum (Ibrahim 2017, 6; Gaul 2025). Bildungsexpansion für Arme prägte inklusiveren Feminismus (Ibrahim 2017, 13); Sadats Infitāḥ erzeugte Spannungen (Ibrahim 2017, 15-16); der Arabische Frühling 2011 reaktivierte diese (Ibrahim 2017, 20). Hatem (2011) dokumentiert Frauen auf dem Tahrir-Platz (36). Diese Transformationen formen das Archivmaterial von „Doing Well, Don't Worry“ (Hassan 2021; Hatem 2011).",
     historySubheadingNasserSadat: "Frauen zur Zeit Nassers und Sadats",
+    historySubheadingFeministUnion: "Die Ägyptische Feministische Union von 1923 bis heute",
     historySubheadingInternational: "Ägyptische Frauenrechtsaktivistinnen und internationales Engagement",
     historySubheadingAsianCongress: "Panasiatischer Frauenkongress",
+    historySubheadingIslamicFeminism: "Perspektiven auf feministische Bewegungen: Islamischer Feminismus",
+    historyHeadingUzbekistan: "Ägypten und Usbekistan",
+    historyHeadingKhouriSoraya: "Hanifa Khouri aus Ägypten und Königin Soraya Tarzi aus Afghanistan",
+    historyHeadingMorocco: "Ägypten und Marokko",
+    historyFigNasserCaption: "Premierminister Gamal Abdel Nasser in Alexandria, Ägypten, Oktober 1954.",
+    historyFigSorayaCaption: "Königin Soraya Tarzi auf dem Cover von TIME, 1927.",
+    historyFigIslamicFeminismCaption: "Ägypterinnen fordern Veränderung, Dezember 2011.",
     bibliographyTitle: "Bibliografie der Website",
     infoPageCarouselCaption: "Fotos von der Ausstellung im Mai 2017 an der AUC.",
     infoPageCarouselAria: "Fotografien von der Ausstellung im Mai 2017 an der Amerikanischen Universität Kairo",
@@ -1578,31 +1681,38 @@ var STORYMAP_EXTRA_I18N = {
       "<p class=\"infoPage__body\">Im März 2026 empfing das Women and Memory Forum Studierende des Centennial Lab der Georgetown University (USA), Kurs ARST 4478, <em>Heritage and Development in the Arab World</em>. Die Studierenden lernten das feministische Erbe in Ägypten kennen, ebenso die Herausforderungen des WMF, sein Engagement in der Gemeinschaft und seine Archivpraxis. Inspiriert von Georgetowns jesuitischen Werten „Menschen für andere&ldquo; und „Gemeinschaft in Vielfalt&ldquo; wollten sie ihr Lernen über das Klassenzimmer hinaustragen. Aus diesem Anliegen ist dieses digitale Archiv hervorgegangen.</p>",
     historyNasserSadatHtml:
       "<p>Viele Ägypterinnen begrüßten die Revolution Nassers und der Freien Offiziere gegen die Monarchie 1952, da sie den Weg zu einer gerechteren Gesellschaft für alle Ägypterinnen und Ägypter zu öffnen schien. Bereits in den 1940er Jahren hatte ein wegweisendes Kollektiv von Frauen begonnen, Forderungen nach Gleichheit mit dem umfassenderen Kampf gegen die britische Kolonialherrschaft zu verknüpfen und Geschlechterbefreiung durch die Linse der nationalen Unabhängigkeit zu artikulieren. Aktivistinnen jener Zeit trennten Geschlecht selten von anderen Unterdrückungsstrukturen und sahen Imperialismus, Klassenungleichheit und die Unterordnung der Frauen als zutiefst miteinander verflochten.</p><p>Im Jahr 1956, obwohl Frauen das Wahlrecht erhielten, größeren Zugang zu Bildung gewannen und in wachsender Zahl in den Arbeitsmarkt eintraten, schloss der Staat zugleich unabhängige politische Organisationen und unterdrückte Dissens, sodass der Frauenaktivismus innerhalb — und mitunter in offenem Widerspruch zu — den Grenzen eines staatlich sanktionierten Feminismus operieren musste.</p><p>In den 1970er Jahren orientierte Präsident Sadat Ägypten in Richtung einer offenen Marktwirtschaft und veränderte damit die Landschaft der Frauenorganisation grundlegend. Die sozialistischen und antikolonialen Rahmen, die einen Großteil der vorherigen Generation von Aktivistinnen geeint hatten, fragmentierten sich. Daraus ergab sich eine schrittweise Verlagerung von einer strukturellen Kritik an Kapitalismus und Imperialismus aus panarabischer Perspektive hin zu engeren, rechtebasierten Ansätzen in der Geschlechterpolitik innerhalb Ägyptens.</p>",
-    historyInternationalHtml:
-      "<p>Es ist wichtig, unser Verständnis der Frauenbewegungen nicht auf den analytischen Rahmen des Nationalstaats zu beschränken (Bier 2004, 104). Ägyptische Frauenrechtsaktivistinnen im frühen 20. Jahrhundert standen im Austausch mit Frauenrechtsbewegungen der gesamten Region. So veröffentlichte die Frauenpresse in Ägypten viele Geschichten über ausländische Frauen und brachte häufig Solidarität mit jenen zum Ausdruck, die von Europäern kolonisiert wurden oder ehemals kolonisiert waren (Bier 2004, 102). Im Folgenden einige Wissenswertes über einige wenige Frauen, gedacht als Anregung für weitere Forschung zur internationalen Dimension des ägyptischen Frauenaktivismus.</p>" +
-      "<h4>Hanifa Khouri aus Ägypten und Königin Soraya Tarzi aus Afghanistan</h4>" +
+    historyFeministUnionHtml:
+      "<p>Die Ägyptische Feministische Union, 1923 von Huda Sha&rsquo;rawi gegründet, begann als informelles Netzwerk ägyptischer Frauen aus der Oberschicht und feministischer Aktivistinnen. Sie war damals die wichtigste Vereinigung, die sich mit Frauenangelegenheiten beschäftigte, und wirkte gegen einen zunehmend männerdominierten Staat, der nach der Revolution von 1919 entstand. Während ihres gesamten Bestehens drängte die Bewegung auf politischen Wandel und forderte den Staat häufig auf, die Sittlichkeit der Nation zu wahren und für das Wohl seines Volkes zu sorgen (Khater and Nelson 467). Die Organisation unterstützte zudem die antikoloniale Aktivität insgesamt, im Einklang mit dem Engagement vieler Frauen während der Zeit des kolonisierten Ägypten. Dazu gehörte die Ausrichtung des Kongresses der Frauen des Ostens zur Verteidigung Palästinas im Jahr 1938.</p>" +
+      "<p>Mit dem Herannahen der Revolution von 1952 begannen mehr Frauen, vor allem aus der Mittelschicht, eine Rolle in der ägyptischen feministischen Politik zu spielen. Daraus entstanden mehrere Ableger der Ägyptischen Feministischen Union. Eine dieser Gruppen, die Bint el-Nil Union (Tochter des Nils), konzentrierte sich vor allem darauf, die Gleichstellung der Frauen unter der ägyptischen Verfassung zu erreichen und Bedürftigen Hilfe zu leisten (Khater and Nelson 470). Eine weitere Gruppe, die sozialistischen Feministinnen, hielt sowohl die Ägyptische Feministische Union als auch die Bint el-Nil Union für zu zurückhaltend und elitär. Sie warb für sozialistische Ideologien in der Hoffnung, durch einen allgemeinen Kampf um soziale Gleichheit Befreiung zu erreichen (Khater and Nelson 473). Während das Wahlrecht der Frauen und ihr Recht auf Kandidatur anerkannt wurden, ließ der Schwung vieler feministischer Bewegungen nach. Von 1957 bis 1970 standen feministische Bewegungen unmittelbar unter dem Einfluss staatlicher Politik: Das Innenministerium vereinnahmte die Ägyptische Feministische Union, um deren linke Mitglieder auszuschließen (Khater and Nelson 476), und die Union wurde in den folgenden Jahren verboten (Enloe 157).</p>" +
+      "<p>Am Vorabend der ersten Wahlen nach Mubarak wurde die Ägyptische Feministische Union von neuen revolutionären Aktivistinnen unter der Leitung von Hoda Badran wiederbelebt. Diese Neuausrichtung der Organisation strebt nicht nur weiter danach, eine Rolle im Prozess der Staats- und Revolutionsbildung zu spielen, sondern will auch die Arbeit früher Aktivistinnen in den ägyptischen Revolutionsprozessen ins Licht rücken (Enloe 158).</p>",
+    historyInternationalIntroHtml:
+      "<p>Es ist wichtig, unser Verständnis der Frauenbewegungen nicht auf den analytischen Rahmen des Nationalstaats zu beschränken (Bier 2004, 104). Ägyptische Frauenrechtsaktivistinnen im frühen 20. Jahrhundert standen im Austausch mit Frauenrechtsbewegungen der gesamten Region. So veröffentlichte die Frauenpresse in Ägypten viele Geschichten über ausländische Frauen und brachte häufig Solidarität mit jenen zum Ausdruck, die von Europäern kolonisiert wurden oder ehemals kolonisiert waren (Bier 2004, 102). Im Folgenden einige Wissenswertes über einige wenige Frauen, gedacht als Anregung für weitere Forschung zur internationalen Dimension des ägyptischen Frauenaktivismus.</p>",
+    historyUzbekistanHtml:
+      "<p>Der Gelehrte Sayid Ahmad Wasli aus Samarkand in Usbekistan verfasste ein Gedicht, in dem er auf Ägypten und Syrien verwies, um zu betonen, dass der Hidschab nicht als Hindernis für das Lernen angesehen werden sollte. Sein Gedicht, das 1920 in der afghanischen Staatszeitung <em>Aman-i-Afghan</em> erschien, ist ein Beispiel dafür, wie das ägyptische Modell genutzt wurde, um den Fortschritt der Frauen international zu fördern (Hannun 2025, 107).</p>",
+    historyKhouriHtml:
       "<p class=\"historyPage__minor\"><em>Wer war Hanifa Khouri?</em></p>" +
       "<ul>" +
-        "<li>Eine ägyptische Journalistin und Frauenrechtsaktivistin (Hannun 2020, 1).</li>" +
+        "<li>Hanifa Khouri war eine ägyptische Journalistin und Frauenrechtsaktivistin (Hannun 2020, 1).</li>" +
         "<li>Sie war Teil des transregionalen, antikolonialen Frauennetzwerks der Zwischenkriegszeit (Hannun 2020, 2).</li>" +
         "<li>Sie war offizielle Delegierte Ägyptens auf einer Konferenz der Young Women&rsquo;s Christian Association in Beirut, Libanon, 1928 (Hannun 2020, 1).</li>" +
         "<li>Sie half 1932 bei der Organisation des Zweiten Kongresses der Frauen des Ostens in Teheran (Hannun 2020, 12)." +
           "<ul>" +
             "<li>Khouri zitierte Huda Sha&rsquo;rawi, die Vorsitzende der Ägyptischen Feministischen Union, und sprach von der Bedeutung, bestimmte Traditionen zu bewahren und europäische Bräuche selektiv für den Fortschritt zu übernehmen (Hannun 2020, 13).</li>" +
-            "<li>Der Zweite Kongress der Frauen des Ostens in Teheran 1932 fand nach dem Panasiatischen Frauenkongress (AAWC) in Lahore 1931 statt (Hannun 2020, 12).</li>" +
-            "<li>Dies war Teil des Wachstums formaler Frauennetzwerke, die sich regional in Solidarität und in Opposition zu westlichem Kolonialismus und Imperialismus während der Zwischenkriegszeit mobilisierten (Hannun 2020, 12).</li>" +
+            "<li>Der Zweite Kongress der Frauen des Ostens in Teheran 1932 fand nach dem Panasiatischen Frauenkongress (AAWC) in Lahore 1931 statt (Hannun 2020, 12). Dies war Teil des Wachstums formaler Frauennetzwerke, die sich regional in Solidarität und in Opposition zu westlichem Kolonialismus und Imperialismus während der Zwischenkriegszeit mobilisierten (Hannun 2020, 12).</li>" +
           "</ul>" +
         "</li>" +
-      "</ul>" +
+      "</ul>",
+    historySorayaHtml:
       "<p class=\"historyPage__minor\"><em>Wer war Königin Soraya Tarzi (1899&ndash;1968)?</em></p>" +
+      "<p>Soraya Tarzi war die erste Königin des neu unabhängigen Afghanistan (Hannun 2020, 1).</p>" +
       "<ul>" +
-        "<li>Die erste Königin des neu unabhängigen Afghanistan (Hannun 2020, 1).</li>" +
         "<li>Eine wichtige Persönlichkeit der Politik des Nahen Ostens und Südasiens in der Zwischenkriegszeit (Hannun 2020, 2).</li>" +
         "<li>Tochter des Reformers Mahmud Tarzi (Hannun 2020, 2).</li>" +
         "<li>Ihre Ehe mit Aman Allah Khan (regierte 1919&ndash;1929) war die erste monogame königliche Ehe in der Geschichte Afghanistans (Hannun 2021, 468).</li>" +
         "<li>Sie begleitete ihren Mann, König Aman Allah, auf einer Weltreise (1927&ndash;1928), die Indien, Ägypten, Europa, Türkiye und Iran umfasste (Hannun 2020, 9).</li>" +
         "<li>Ihre öffentlichen Reden über den Fortschritt der Frauen ähneln den Worten der ägyptischen Feministin Huda Sharaawi (1879&ndash;1947) (Hannun 2021, 468).</li>" +
-      "</ul>" +
+      "</ul>",
+    historyKhouriVisitHtml:
       "<p class=\"historyPage__minor\"><em>Khouris Besuch in Afghanistan</em></p>" +
       "<ul>" +
         "<li>1927 traf Khouri Königin Soraya in Kairo, die sie nach Afghanistan einlud. Im Sommer 1928 reiste Khouri von Beirut über Port Said nach Aden im Jemen, weiter nach Karatschi in Britisch-Indien, dann nach Peshawar und Jalalabad und schließlich nach Kabul, Afghanistan (Hannun 2020, 1).</li>" +
@@ -1610,14 +1720,11 @@ var STORYMAP_EXTRA_I18N = {
           "<ul>" +
             "<li>Obwohl die Veränderungen wegen des Sturzes von König und Königin 1929 nur vorübergehend waren, erlebte Afghanistan unter ihrer Herrschaft viele Wandel, die Frauen aufwerteten.</li>" +
             "<li>Zu diesen Veränderungen gehörten die Gründung der ersten modernen Schule für Mädchen in Afghanistan und Rechtsreformen, die das Personenstandsrecht in Bezug auf Frauen und Familie änderten (Hannun 2020, 1).</li>" +
-            "<li>Die Reformen wurzelten in islamischen Prinzipien und gehörten zu der breiteren Verbindung zwischen feministischen und panislamistischen Bewegungen (Hannun 2020, 7).</li>" +
+            "<li>Die Reformen wurzelten in islamischen Prinzipien und gehörten zu der breiteren Verbindung zwischen feministischen und panislamistischen Bewegungen (Hannun 2020, 7). Bemerkenswerterweise war eines der Argumente für die Bildung der Frauen das erfolgreiche Beispiel von Mädchenschulen in anderen muslimischen Ländern, darunter Ägypten (Hannun 2020, 8).</li>" +
           "</ul>" +
         "</li>" +
-        "<li>Bemerkenswerterweise war eines der Argumente für die Bildung der Frauen das erfolgreiche Beispiel von Mädchenschulen in anderen muslimischen Ländern, darunter Ägypten (Hannun 2020, 8).</li>" +
-      "</ul>" +
-      "<h4>Ägypten und Usbekistan</h4>" +
-      "<p>Der Gelehrte Sayid Ahmad Wasli aus Samarkand in Usbekistan verfasste ein Gedicht, in dem er auf Ägypten und Syrien verwies, um zu betonen, dass der Hidschab nicht als Hindernis für das Lernen angesehen werden sollte. Sein Gedicht, das 1920 in der afghanischen Staatszeitung <em>Aman-i-Afghan</em> erschien, ist ein Beispiel dafür, wie das ägyptische Modell genutzt wurde, um den Fortschritt der Frauen international zu fördern (Hannun 2025, 107).</p>" +
-      "<h4>Ägypten und Marokko</h4>" +
+      "</ul>",
+    historyMoroccoHtml:
       "<p class=\"historyPage__minor\"><em>Geschlechterreform in Marokko in den 1930er und 1940er Jahren</em></p>" +
       "<p>Die marokkanischen Nationalisten, deren Bewegung in den 1930er und 1940er Jahren erblühte, befürworteten die Reform und Ausweitung der Bildung für Frauen. Ihr Eintreten für Geschlechterreform wurde nicht nur durch die französische Kolonialpolitik geprägt, sondern auch durch die islamischen Reformbewegungen, die im gesamten Nahen Osten stattfanden (Gaul 2022, 60).</p>" +
       "<ul>" +
@@ -1643,14 +1750,21 @@ var STORYMAP_EXTRA_I18N = {
         "</li>" +
       "</ul>" +
       "<p class=\"historyPage__minor\"><em>Malika al-Fassi (1919&ndash;2007)</em></p>" +
+      "<p>Malika al-Fassi gilt häufig als die Gründermutter der marokkanischen Frauenbewegung (Gaul 2022, 68).</p>" +
       "<ul>" +
-        "<li>Sie gilt häufig als die Gründermutter der marokkanischen Frauenbewegung (Gaul 2022, 68).</li>" +
         "<li>Ihr Mann und ihre Verwandten waren Nationalisten, aktiv in transnationalen antikolonialen Netzwerken — wahrscheinlich erfuhr sie von ihnen die ägyptischen Ideen zur Geschlechterreform (Gaul 2022, 68).</li>" +
         "<li>In den 1930er und 1940er Jahren veröffentlichte sie Essays unter den Pseudonymen „Al-Fatat&ldquo; (die junge Frau) und „Bahithat al-Hadira&ldquo; (Sucherin der Stadt), was wahrscheinlich auf „Bahithat al-Badiya&ldquo; (Sucherin der Wüste) anspielt, das Pseudonym der Ägypterin Malak Hifni Nasif, einer prominenten Verfechterin der Bildung für Frauen (Gaul 2022, 68).</li>" +
         "<li>In ihren Schriften über die Bildung der Frauen verwies sie auf ägyptische Vorbilder und nutzte eine Rhetorik, die die von Malak Hifni Nasif widerspiegelte (Gaul 2022, 69).</li>" +
         "<li>Im Einklang mit dem ägyptischen Modell glaubte sie, das Glück sei das Ergebnis der Bildungsreform (Gaul 2022, 69).</li>" +
       "</ul>",
     historyAsianCongressHtml:
-      "<p>Vom 19. bis 25. Januar 1931 in Lahore, Pakistan, abgehalten, brachte der Panasiatische Frauenkongress Delegierte aus ganz Asien zusammen, um eine transnationale feministische Bewegung aufzubauen. Mit 26 delegierten Vertreterinnen aus Indien, Afghanistan, Birma, Ceylon, Japan und Persien sowie 1200 Beobachterinnen suchte die Konferenz, eine feministische Bewegung aus der Perspektive nichtwestlicher Frauen zu schaffen. Während die Rolle westlicher Feministinnen anerkannt wurde, lautete die Hauptsorge, die von einer der Organisatorinnen geäußert wurde, dass Kolonialismus und Geographie das gegenseitige Wissen einschränkten: „Wir kennen nur jene, die zu uns kommen&ldquo; (Nijhhawan 17). Der Kongress strebte daher danach, den Feminismus zu ent-imperialisieren, indem er eine gemeinsame regionale Identität aufbaute. Während Männern und Frauen aus Europa und Amerika die Teilnahme erlaubt wurde, war es ihnen bis zum vierten Tag der Versammlung untersagt zu sprechen.</p><p>Der Kongress schlug sechs Ziele vor: (1) die Förderung eines gemeinsamen Bewusstseins der Einheit unter asiatischen Frauen, (2) die Würdigung der positiven Eigenschaften ihrer Zivilisationen, (3) die Überprüfung und Reform der traditionellen Gesellschaft, (4) die Sichtung westlichen Einflusses zur angemessenen Übernahme, (5) den Austausch nationaler Daten und (6) den Weltfrieden.</p><p>Auch wenn nicht direkt verbunden, dienten diese Konferenzen als Glied in einer breiteren Kette formaler Frauennetzwerke in Asien, die sich konventionellen westlichen Erzählungen über Feminismus widersetzten. Hanifa Khouri sollte später zu den Organisatorinnen einer folgenden Konferenz, des Kongresses der Frauen des Ostens in Teheran, gehören. Nour Hamada, eine prominente drusische Aktivistin aus dem Mount Lebanon, beriet die Planung des Panasiatischen Frauenkongresses (Hannun 13). Ihre Organisation, die Allgemeine Union Syrischer Frauen, war später für die Organisation des Kongresses der Frauen des Ostens 1932 verantwortlich.</p>",
+      "<p>Auch ägyptische Frauen spielten eine Rolle in der wachsenden Bewegung eines nichtwestlichen und blockfreien Feminismus im Nahen Osten und in Asien. Im frühen 20. Jahrhundert fanden in der Region mehrere Konferenzen statt, die den Feminismus jenseits der traditionellen, vom Westen dominierten Bewegung neu definierten.</p>" +
+      "<p>Vom 19. bis 25. Januar 1931 in Lahore, Pakistan, abgehalten, brachte der Panasiatische Frauenkongress Delegierte aus ganz Asien zusammen, um eine transnationale feministische Bewegung aufzubauen. Mit 26 delegierten Vertreterinnen aus Indien, Afghanistan, Birma, Ceylon, Japan und Persien sowie 1200 Beobachterinnen suchte die Konferenz, eine feministische Bewegung aus der Perspektive nichtwestlicher Frauen zu schaffen. Während die Rolle westlicher Feministinnen anerkannt wurde, lautete die Hauptsorge, die von einer der Organisatorinnen geäußert wurde, dass Kolonialismus und Geographie das gegenseitige Wissen einschränkten: „Wir kennen nur jene, die zu uns kommen&ldquo; (Nijhhawan 17). Der Kongress strebte daher danach, den Feminismus zu ent-imperialisieren, indem er eine gemeinsame regionale Identität aufbaute. Während Männern und Frauen aus Europa und Amerika die Teilnahme erlaubt wurde, war es ihnen bis zum vierten Tag der Versammlung untersagt zu sprechen.</p>" +
+      "<p>Der Kongress schlug sechs Ziele vor: (1) die Förderung eines gemeinsamen Bewusstseins der Einheit unter asiatischen Frauen, (2) die Würdigung der positiven Eigenschaften ihrer Zivilisationen, (3) die Überprüfung und Reform der traditionellen Gesellschaft, (4) die Sichtung westlichen Einflusses zur angemessenen Übernahme, (5) den Austausch nationaler Daten und (6) den Weltfrieden.</p>" +
+      "<p>Spätere Konferenzen feministischer Gruppen in der nichtwestlichen Welt ließen sich von diesem Ereignis inspirieren. Nour Hamada, eine prominente drusische Aktivistin aus dem Mount Lebanon, beriet die Planung des Panasiatischen Frauenkongresses (Hannun 13). Ihre Organisation, die Allgemeine Union Syrischer Frauen, war zuvor für die Organisation des Kongresses der Frauen des Ostens 1930 verantwortlich. Hanifa Khouri sollte später zu den Organisatorinnen einer folgenden Konferenz, des Zweiten Kongresses der Frauen des Ostens in Teheran 1932, gehören. Der dritte Kongress der Frauen des Ostens fand 1938 in Kairo statt. Diese von der Ägyptischen Feministischen Union organisierte Konferenz konzentrierte sich auf das britische Mandat für Palästina und versammelte feministische Gruppen aus der gesamten Region, darunter die größte Delegation aus Palästina (Karim).</p>" +
+      "<p>Auch wenn nicht direkt verbunden, dienten diese Konferenzen als Glied in einer breiteren Kette formaler Frauennetzwerke in Asien, die sich konventionellen westlichen Erzählungen über Feminismus widersetzten.</p>",
+    historyIslamicFeminismHtml:
+      "<p>Der islamische Feminismus ist eine globale Bewegung, die sich für die volle Gleichstellung der Geschlechter innerhalb eines islamischen Rahmens einsetzt und sich auf die Lehren des Korans und der Sunna stützt, um Fragen der Frauenrechte zu erörtern. Islamische Feministinnen vertreten die Ansicht, dass die Beschränkungen, denen Frauen in muslimischen Gesellschaften unterliegen, aus kulturellen Traditionen und männlichen religiösen Auslegungen herrühren und nicht aus dem Islam selbst. Die Bewegung sucht das vorherrschende Narrativ über muslimische Frauen herauszufordern und religiöse Texte neu zu interpretieren, um die Rechte der Frauen in Politik, Bildung, Ehe und anderen Bereichen voranzubringen.</p>" +
+      "<p>Der Begriff „islamischer Feminismus&ldquo; war erst seit den 1990er Jahren gebräuchlich, doch seine Kerngedanken existieren seit vielen Jahrhunderten. Frühe Gestalten wie Aischa und Fatima werden oft als Beleg dafür angeführt, dass Frauen seit Langem bedeutende Positionen im Islam innehatten. Im späten 19. und frühen 20. Jahrhundert führten Phasen sozialen und politischen Wandels mehr Frauen dazu, die Rolle der Geschlechtergleichheit im Islam offen zu diskutieren. Heute besteht der islamische Feminismus sowohl als akademisches Feld als auch als aktivistische Bewegung fort.</p>",
   },
 };

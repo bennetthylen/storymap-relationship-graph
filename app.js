@@ -6188,6 +6188,7 @@ function viewerStepModal(delta) {
 }
 
 function initScrollReveals() {
+  document.querySelectorAll(".historyPage > *").forEach((el) => el.classList.add("reveal"));
   const revealNodes = Array.from(document.querySelectorAll(".reveal"));
   if (!revealNodes.length) return;
   if (typeof IntersectionObserver !== "function") {

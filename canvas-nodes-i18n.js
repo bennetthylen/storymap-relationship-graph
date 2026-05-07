@@ -22,6 +22,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Biography of Wedad Mitri": {
       "label": "سيرة وداد متري",
+      "caption": "وداد متري (1927–2007)، ناشطةٌ نقابية ومعلّمة وناشطة اجتماعية رائدة، وُلدت في القاهرة بمصر. وفي الثالثة والعشرين من عمرها انضمّت وداد إلى الحركة الشيوعية. وفي عام 1951، وكانت آنذاك طالبةً شابة في الفلسفة، صارت أوّل من انتُخب في اتحاد الطلاب في جامعةٍ مصرية.\n\nوقد تشابكت في حياة وداد المسيرة النضالية والتعليمية. فبوصفها معلّمةً، أولت عنايةً خاصة للصحافة المدرسية، مفسحةً المجال أمام طالباتها للانخراط في القضايا الاجتماعية والسياسية المُلحّة، كالثورة الجزائرية (الخمسينيات–الستينيات). وعند اعتقالها السياسي عام 1959، أنشأت صفوفاً لمحو أمّية النساء اللاتي كنّ يقضين أحكاماً بالسجن المؤبّد.\n\nوكانت وداد موثِّقةً دقيقة، تحتفظ بسجلاتٍ مفصّلة عن رحلاتها بوصفها ناشطة، وكذلك عن رحلاتها مع زوجها سعد لوكا وأبنائها الاثنين. وعلى الرغم من انتمائها إلى عدة جمعياتٍ نسائية، لم تكن وداد تَصِف نفسها بأنها ناشطةٌ في حقوق المرأة، بل كانت تَصِف نفسها بأنها من «قدّمت مثالاً عملياً على ما يدور حوله ذلك». (وداد، مطلع الألفية الثانية)",
       "text": "كانت الثورة الجزائرية (1954–1962)، التي تميّزت برفضها الصريح لأهداف فرنسا «التحضيرية» في مستعمراتها، وبسياساتها اللينينية–الماوية الجذرية، وطموحاتها نحو التحرّر من الاستعمار وتقرير المصير، تعبيراً جوهرياً عن التضامن بين الأمم العربية وغيرها من بلدان الجنوب العالمي، وهو تضامن نشأ من خيبةٍ جماعية وإحباطٍ من المؤسسات والتراتبات الغربية.\n\nوقد تجلّت هويّة عبد الناصر بوصفه نصيراً للقومية العربية في دعمه الصريح لجبهة التحرير الوطني الجزائرية، التي قدّم لها دعماً أيديولوجياً ومادياً ولوجستياً. ومن اللافت أنه وظّف إذاعة «صوت العرب»، الإذاعة المصرية المُسمّاة على هذا النحو الموفّق، لبثّ خطابٍ مناهض للأنجلو-أمريكيين ومناصر للقومية العربية، يحثّ المواطنين عبر المنطقة على إعادة تمحور الهوية العربية وسيلةً لمقاومة الفرض الإمبريالي."
     },
     "Divorce Agreement": {
@@ -30,6 +31,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Embroidered Palestinian Dress": {
       "label": "فستان فلسطيني مطرّز",
+      "caption": "فستان مزخرف بأنماط التطريز الفلسطيني.",
       "text": "التطريز شكلٌ من أشكال التطريز الفلسطيني التقليدي، ويشمل الغرز الملوّنة التي تُرى على المنسوجات الفلسطينية. وقد مُورس على مدى قرون، إذ تعود الشواهد على استخدامه إلى عام 1283م. ويستطيع التطريز أن يصوّر كل شيء، من البيئة الطبيعية إلى الأنماط الهندسية والأشياء المألوفة. والأنماط والأساليب والرموز التي تَبرز على الثوب الفلسطيني، أي ثوب المرأة، تُعبّر عن صلات صاحبتها الشخصية، ومعتقداتها الدينية، أو علاقاتها بمناطق مختلفة من فلسطين.\n\nوبعد النكبة، صار الحصول على المواد اللازمة لهذه المنسوجات بالغ الصعوبة. ومع أن جزءاً من التنوّع الإقليمي قد ضاع، فإن المهجَّرين تبادلوا التقنيات، فأصبح التطريز والثوب رمزَين للمقاومة في وجه المحو الثقافي. وعلى وجه الخصوص، استُخدم التطريز خلال الانتفاضة الأولى لتطريز الأعلام الفلسطينية على الكوفية والثوب. وبالنسبة للشتات الفلسطيني، يربط التطريز الأجيال عبر جغرافيات متباعدة، عبر ممارسةٍ لا ترتبط بكسب العيش وحده، بل بالمقاومة والهوية الجماعية."
     },
     "Gam3aya": {
@@ -42,7 +44,8 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Hind Rustum Advertisement": {
       "label": "إعلان هند رستم",
-      "text": "الكواكب مجلة فنية مصرية اشتُهرت بتغطيتها للسينما المصرية. تأسّست عام 1932 أسبوعيةً على يد الشقيقَين اللبنانيين إميل وشكري زيدان، وأصدرتها دار الهلال، ثم صدرت شهريةً في الفترة بين 1949 و1954. ومنذ ذلك الحين عادت المجلة، التي لا تزال تصدر، أسبوعيةً. وبأسلوبها المُكثَّف بالصور وتركيزها على نجوم السينما، تُعدّ الكواكب «مجلة مشاهير»، وتقدّم توثيقاً غنياً لتاريخ السينما المصرية."
+      "caption": "إعلان لهند رستم في مجلة الكواكب، 1952.",
+      "text": "«الكواكب مجلة فنية مصرية اشتُهرت بتغطيتها للسينما المصرية. تأسّست عام 1932 أسبوعيةً على يد الشقيقَين اللبنانيين إميل وشكري زيدان، وأصدرتها دار الهلال، ثم صدرت شهريةً في الفترة بين 1949 و1954. ومنذ ذلك الحين عادت المجلة، التي لا تزال تصدر، أسبوعيةً. وبأسلوبها المُكثَّف بالصور وتركيزها على نجوم السينما، تُعدّ الكواكب ’مجلة مشاهير‘، وتقدّم توثيقاً غنياً لتاريخ السينما المصرية.» (الكتب النادرة والمجموعات الخاصة، الجامعة الأمريكية بالقاهرة)"
     },
     "Hind Rustum Poster": {
       "label": "ملصق هند رستم",
@@ -50,6 +53,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Im Ibrahim's Embroidery": {
       "label": "تطريز أم إبراهيم",
+      "caption": "اشتُهرت رقيّة الصنطاريسي «أم إبراهيم» (مواليد 1927) بتطريزها الدقيق المتقن. ومن خلال ورشتها في عمّان، حافظت أم إبراهيم على أساليب التطريز الفلسطيني التقليدي. وقد صارت كنّاتها متدرّباتٍ لها، أودعت فيهنّ أنماطها العزيزة في التطريز. وفي طفولتها بيافا، كانت أم إبراهيم تزور القدس مع أسرتها يوم الجمعة، وتتذكّر كيف كانت ترقب أنماط التطريز المختلفة على ملابس النساء في القدس. ثم كانت تنقل تلك الأنماط لاحقاً في أعمالها الخاصة.",
       "text": "التطريز شكلٌ من أشكال التطريز الفلسطيني التقليدي، ويشمل الغرز الملوّنة التي تُرى على المنسوجات الفلسطينية. وقد مُورس على مدى قرون، إذ تعود الشواهد على استخدامه إلى عام 1283م. ويستطيع التطريز أن يصوّر كل شيء، من البيئة الطبيعية إلى الأنماط الهندسية والأشياء المألوفة. والأنماط والأساليب والرموز التي تَبرز على الثوب الفلسطيني، أي ثوب المرأة، تُعبّر عن صلات صاحبتها الشخصية، ومعتقداتها الدينية، أو علاقاتها بمناطق مختلفة من فلسطين.\n\nوبعد النكبة، صار الحصول على المواد اللازمة لهذه المنسوجات بالغ الصعوبة. ومع أن جزءاً من التنوّع الإقليمي قد ضاع، فإن المهجَّرين تبادلوا التقنيات، فأصبح التطريز والثوب رمزَين للمقاومة في وجه المحو الثقافي. وعلى وجه الخصوص، استُخدم التطريز خلال الانتفاضة الأولى لتطريز الأعلام الفلسطينية على الكوفية والثوب. وبالنسبة للشتات الفلسطيني، يربط التطريز الأجيال عبر جغرافيات متباعدة، عبر ممارسةٍ لا ترتبط بكسب العيش وحده، بل بالمقاومة والهوية الجماعية."
     },
     "Kawkab's Certificate": {
@@ -106,6 +110,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Reem and Shahinda": {
       "label": "ريم وشاهندة",
+      "caption": "صورة لشاهندة مقلد (إلى اليمين) وريم سعد، ابنة وداد متري، التُقطت أثناء تصوير فيلم «أربع نساء من مصر»، مصر، 1995.\n\nإلى جانب كونها معلّمةً ملهِمة، شجّعت وداد متري (1927–2007)، التي كانت هي نفسها ناشطةً بارزة، طالباتها على الانخراط في الحركات السياسية والاجتماعية. ومن بين هؤلاء الطالبات كانت شاهندة مقلد، التي صارت لاحقاً أيقونةً لحركة حقوق الفلاحين في مصر. وعلى مرّ السنين، صارت شاهندة صديقةً مقرَّبة لابنة وداد، ريم سعد.",
       "text": "«أربع نساء من مصر» (1997) فيلمٌ وثائقي من إخراج تهاني راشد، يتتبّع حياة أربع نساء مصريات بارزات انخرطن في الحركة النسائية في عهد عبد الناصر (1952–1970) وما تلاه. وعلى الرغم من تقاربهنّ في الانخراط في النشاط النسائي والمسعى الأوسع المناهض للاستعمار، فقد اختلفن اختلافاً ملحوظاً في مواقفهنّ الأيديولوجية، إذ كان لكلٍّ منهنّ توجّه فريد إزاء الاشتراكية والنسوية والإسلام السياسي والعلمانية.\n\nومن صميم تفاعل هؤلاء النساء مع الحركات السياسية موقعهنّ الطبقي وقُربهنّ من الامتياز. ففي مطلع الفيلم، تتأمّل أمينة رشيد تجربةً هاجمتها فيها طفلةٌ صغيرة بالحجارة لأن جدّ رشيد، رئيس وزراء مصر إسماعيل صدقي، كان قد وقّع معاهدةً مع البريطانيين: «البيت الكبير، والجيران الفقراء. هذه المسرحية السياسية كانت بالنسبة لي صدمةً وإيقاظاً. في بيتنا الكبير كنّا نتحدّث الفرنسية، ولا نتحدّث العربية إلا مع الخدم. الحقيقة المُرّة لكوننا الطبقة الحاكمة. خارج البوابة، خائنة»."
     },
     "Reem's Grandmother": {
@@ -130,10 +135,12 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "The Nubian Exodus": {
       "label": "النزوح النوبي",
+      "caption": "كولاج من تغطية الأهرام للنزوح النوبي، 1964.",
       "text": "السدّ العالي بأسوان مشروع هندسي شُيِّد عام 1970 على الحدود بين مصر والسودان. يوفّر السدّ الكهرباء المائية، وضبط الريّ، والحماية من الفيضانات والجفاف للمزارعين على ضفاف النيل. وعند اكتماله شكّل بحيرةً ضخمة عُرفت ببحيرة ناصر.\n\nومع أن المشروع حقّق أهدافه الأولى، فإن الفيضان أجبر على النزوح عدداً كبيراً من النوبيّين — لا يقلّ عن 90,000 نسمة — من أراضيهم الزراعية التاريخية ومواقعهم الثقافية. وأُرسل كثيرٌ من النوبيّين إلى مستوطناتٍ قرب كوم أمبو، فيما انتقل كثيرون آخرون إلى القاهرة والإسكندرية بحثاً عن العمل. ولم يكتفِ بناء هذه السدود بتشريد النوبيّين تشريداً مباشراً، بل أغرق التربة الخصبة التي كان المزارعون النوبيّون يستخدمونها تاريخياً."
     },
     "The Palestinian Exodus": {
       "label": "النزوح الفلسطيني",
+      "caption": "النزوح الفلسطيني من الضفة الغربية عبر نهر الأردن، 1967. من أرشيف صور الأونروا.",
       "text": "النكبة، أو «الكارثة»، تشير إلى التهجير العنيف للفلسطينيين من ديارهم على يد القوات الإسرائيلية بين عامَي 1947 و1949. وقد جرت النكبة قبل صدور قرار الجمعية العامة للأمم المتحدة رقم 181 وبعده، وهو القرار الذي قضى بتقسيم فلسطين إلى دولتين، عربية ويهودية.\n\nوقبل التنفيذ المقترح لحلّ الدولتين، نفّذت القوات الإسرائيلية «خطة دالت»، فبدأت حملةً واسعة من الإرهاب والعنف ضد الفلسطينيين. وفي 9 أبريل 1948 قتلت القوات الصهيونية أكثر من مئة فلسطيني فيما عُرف لاحقاً بمذبحة دير ياسين.\n\nوبنهاية حرب 1948، كانت إسرائيل قد سيطرت على 78% من الأرض. ورافق الحربَ تشريدٌ جماعي للسكان الفلسطينيين: إذ هُجِّر نحو نصف الفلسطينيين، أي ما بين 750,000 و900,000 نسمة، من ديارهم، في أساسٍ لأزمة لاجئين لا تزال قائمة حتى اليوم."
     },
     "Wedad Metri's Family Photo": {
@@ -188,6 +195,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Biography of Wedad Mitri": {
       "label": "Biography of Wedad Mitri",
+      "caption": "Wedad Mitri (1927–2007), pionieristica sindacalista, attivista sociale ed educatrice, nacque al Cairo, in Egitto. A 23 anni, Wedad si unì al movimento comunista. Nel 1951, Wedad, giovane studentessa di filosofia, fu la prima a essere eletta nell'Unione Studentesca di un'università egiziana.\n\nL'attivismo e la carriera di insegnante di Wedad si intrecciarono. Come educatrice, dedicò particolare attenzione al giornalismo scolastico, dando spazio alle studentesse per affrontare temi sociali e politici urgenti come la Rivoluzione algerina (anni Cinquanta–Sessanta). Durante il suo internamento politico nel 1959, organizzò corsi di alfabetizzazione per donne condannate all'ergastolo.\n\nMeticolosa documentarista, Wedad teneva registri dettagliati dei suoi viaggi come attivista, oltre che dei viaggi con il marito Saad Louka e i due figli. Membro di diversi gruppi femminili, Wedad non si descriveva come un'attivista per i diritti delle donne, ma piuttosto come qualcuna che «dava un esempio pratico di cosa significhi». (Wedad, primi anni 2000)",
       "text": "La Rivoluzione algerina (1954–1962), caratterizzata da un netto rifiuto degli obiettivi «civilizzatori» della Francia nelle sue colonie, da una politica radicale di matrice leninista-maoista e da ambizioni di decolonizzazione e autodeterminazione, rappresentò un'espressione fondamentale della solidarietà tra le nazioni arabe e gli altri Paesi del Sud globale, nata da una disillusione e frustrazione collettive nei confronti delle istituzioni e delle gerarchie occidentali.\n\nL'identità di Nasser come campione del panarabismo si manifestò nel suo aperto sostegno al FLN, al quale fornì appoggio ideologico, materiale e logistico. In particolare, utilizzò la «Voce degli Arabi», la ben nominata stazione radio egiziana, per diffondere una retorica antianglo-americana e propanarabista, esortando i cittadini di tutta la regione a ricentrare l'identità araba come strumento di resistenza all'imposizione imperiale."
     },
     "Divorce Agreement": {
@@ -196,6 +204,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Embroidered Palestinian Dress": {
       "label": "Embroidered Palestinian Dress",
+      "caption": "Un abito ornato con motivi di ricamo palestinese.",
       "text": "Il tatreez è una forma di ricamo tradizionale palestinese, costituito dalle cuciture colorate che si trovano sui tessuti palestinesi. Praticato per secoli, le tracce del suo uso risalgono al 1283 d.C. Il tatreez può rappresentare di tutto, dall'ambiente naturale ai motivi geometrici e agli oggetti comuni. Gli stili, i motivi e i simboli che spiccano sul thobe palestinese, l'abito femminile, esprimono i legami personali, le credenze religiose o le relazioni di chi lo indossa con diverse aree della Palestina.\n\nDopo la Nakba, l'accesso ai materiali necessari a questi tessuti divenne estremamente difficile. Sebbene parte della varietà regionale sia andata perduta, mentre le persone sfollate condividevano le tecniche, il tatreez e il thobe sono diventati simboli di resistenza all'oblio culturale. In particolare, durante la prima intifada, il tatreez fu usato per ricamare le bandiere palestinesi sulla keffiyeh e sul thobe. Per la diaspora palestinese, il ricamo collega le generazioni attraverso geografie distanti, con una pratica legata non solo al sostentamento, ma anche alla resistenza e all'identità collettiva."
     },
     "Gam3aya": {
@@ -208,7 +217,8 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Hind Rustum Advertisement": {
       "label": "Hind Rustum Advertisement",
-      "text": "Al-Kawakib è una rivista artistica egiziana nota per la sua copertura del cinema egiziano. Fondata nel 1932 come settimanale dai fratelli libanesi Emil e Shokry Zidan e pubblicata dalla casa editrice Dar al-Hilal, Al-Kawakib divenne mensile dal 1949 al 1954. Da allora la rivista, ancora in pubblicazione, è stata settimanale. Riccamente illustrata e considerata una rivista «di celebrità» per il suo focus sulle stelle del cinema, Al-Kawakib offre una ricca documentazione per la storia della cinematografia egiziana."
+      "caption": "Pubblicità di Hind Rustum nella rivista Al-Kawakib, 1952.",
+      "text": "«Al-Kawakib è una rivista artistica egiziana nota per la sua copertura del cinema egiziano. Fondata nel 1932 come settimanale dai fratelli libanesi Emil e Shokry Zidan e pubblicata dalla casa editrice Dar al-Hilal, Al-Kawakib divenne mensile dal 1949 al 1954. Da allora la rivista, ancora in pubblicazione, è stata settimanale. Riccamente illustrata e considerata una rivista “di celebrità” per il suo focus sulle stelle del cinema, Al-Kawakib offre una ricca documentazione per la storia della cinematografia egiziana.» (AUC Rare Books and Special Collections)"
     },
     "Hind Rustum Poster": {
       "label": "Hind Rustum Poster",
@@ -216,6 +226,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Im Ibrahim's Embroidery": {
       "label": "Im Ibrahim's Embroidery",
+      "caption": "Ruqaya El-Santarisy «Im Ibrahim» (n. 1927) è nota per il suo ricamo fine e dettagliato. Attraverso la sua bottega di Amman, Im Ibrahim ha custodito gli stili tradizionali del ricamo palestinese. Le sue nuore sono diventate sue allieve, alle quali ha affidato i motivi di ricamo a lei più cari. Crescendo a Giaffa, Im Ibrahim si recava il venerdì a Gerusalemme con la famiglia. Ricorda come osservasse i diversi motivi di ricamo sugli abiti delle donne a Gerusalemme. Più tardi avrebbe riprodotto quei motivi nelle proprie opere.",
       "text": "Il tatreez è una forma di ricamo tradizionale palestinese, costituito dalle cuciture colorate che si trovano sui tessuti palestinesi. Praticato per secoli, le tracce del suo uso risalgono al 1283 d.C. Il tatreez può rappresentare di tutto, dall'ambiente naturale ai motivi geometrici e agli oggetti comuni. Gli stili, i motivi e i simboli che spiccano sul thobe palestinese, l'abito femminile, esprimono i legami personali, le credenze religiose o le relazioni di chi lo indossa con diverse aree della Palestina.\n\nDopo la Nakba, l'accesso ai materiali necessari a questi tessuti divenne estremamente difficile. Sebbene parte della varietà regionale sia andata perduta, mentre le persone sfollate condividevano le tecniche, il tatreez e il thobe sono diventati simboli di resistenza all'oblio culturale. In particolare, durante la prima intifada, il tatreez fu usato per ricamare le bandiere palestinesi sulla keffiyeh e sul thobe. Per la diaspora palestinese, il ricamo collega le generazioni attraverso geografie distanti, con una pratica legata non solo al sostentamento, ma anche alla resistenza e all'identità collettiva."
     },
     "Kawkab's Certificate": {
@@ -272,6 +283,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Reem and Shahinda": {
       "label": "Reem and Shahinda",
+      "caption": "Una foto di Shahinda Mekled (a destra) e Reem Saad, figlia di Wedad Mitri, scattata durante le riprese del documentario «Quattro donne d'Egitto», Egitto, 1995.\n\nOltre a essere un'insegnante ispiratrice, Wedad Mitri (1927–2007), ella stessa una nota attivista, incoraggiava le sue allieve a impegnarsi nei movimenti politici e sociali. Tra queste vi era Shahinda Mekled, che sarebbe poi diventata un'icona del movimento per i diritti dei contadini in Egitto. Nel corso degli anni, Shahinda divenne una stretta amica della figlia di Wedad, Reem Saad.",
       "text": "«Quattro donne d'Egitto» (1997) è un documentario diretto da Tahani Rached che segue la vita di quattro importanti donne egiziane impegnate nel movimento femminile durante e dopo l'epoca di Nasser (1952–1970). Le donne, simili nel coinvolgimento in attività femminili e nelle più ampie istanze anticoloniali, differivano notevolmente nelle loro posizioni ideologiche: ognuna aveva un orientamento unico verso socialismo, femminismo, islamismo e laicismo.\n\nCentrale nei loro rapporti con i movimenti politici è la posizione di classe e la prossimità al privilegio. All'inizio del film, Amina Rachid riflette su un episodio in cui una bambina la attaccò con sassi perché il nonno di Rachid, il primo ministro egiziano Ismail Sidqi, aveva firmato un trattato con i britannici: «La grande casa, i vicini poveri. Quel dramma politico fu per me uno shock e un risveglio. Nella nostra grande casa parlavamo francese, e l'arabo solo con la servitù. La verità amara di essere la classe dominante. Fuori dal cancello, una traditrice.»"
     },
     "Reem's Grandmother": {
@@ -296,10 +308,12 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "The Nubian Exodus": {
       "label": "The Nubian Exodus",
+      "caption": "Un collage della copertura di Al-Ahram dell'esodo nubiano, 1964.",
       "text": "La diga di Assuan è un'opera ingegneristica costruita nel 1970 al confine tra Egitto e Sudan. La diga fornisce energia idroelettrica, regolazione dell'irrigazione e sicurezza contro inondazioni e siccità ai contadini lungo le rive del Nilo. Al suo completamento formò un grande bacino, divenuto noto come Lago Nasser.\n\nSe il progetto raggiunse i suoi obiettivi iniziali, l'allagamento causò lo sfollamento forzato di una popolazione consistente di nubiani — almeno 90.000 persone — dalle loro terre coltivate storiche e dai loro luoghi culturali. Mentre molti nubiani furono inviati in insediamenti vicino a Kom Ombo, molti altri si recarono al Cairo e ad Alessandria in cerca di lavoro. La costruzione di queste dighe non solo sfollò direttamente i nubiani, ma allagò anche terreni un tempo fertili usati storicamente dai contadini nubiani."
     },
     "The Palestinian Exodus": {
       "label": "The Palestinian Exodus",
+      "caption": "Esodo palestinese dalla Cisgiordania attraverso il fiume Giordano, 1967. Dall'archivio fotografico dell'UNRWA.",
       "text": "Al-Nakba, ovvero «la catastrofe», designa la violenta espulsione dei palestinesi dalle loro case da parte delle forze israeliane tra il 1947 e il 1949. La Nakba avvenne prima e dopo l'approvazione della Risoluzione 181 dell'Assemblea generale dell'ONU, che stabiliva la divisione della Palestina in due Stati, uno arabo e uno ebraico.\n\nPrima dell'attuazione proposta della soluzione a due Stati, le forze israeliane misero in atto il Piano Dalet, dando inizio a una vasta campagna di terrore e violenza contro i palestinesi. Il 9 aprile 1948 le forze sioniste uccisero più di 100 palestinesi in quello che sarebbe poi stato noto come il massacro di Deir Yassin.\n\nAlla fine della guerra del 1948, Israele aveva preso il controllo del 78% del territorio. La guerra fu accompagnata dallo sfollamento di massa della popolazione palestinese: circa la metà di tutti i palestinesi, tra 750.000 e 900.000 persone, fu cacciata dalle proprie case, gettando le basi di una crisi dei rifugiati che persiste ancora oggi."
     },
     "Wedad Metri's Family Photo": {
@@ -354,6 +368,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Biography of Wedad Mitri": {
       "label": "Biography of Wedad Mitri",
+      "caption": "Wedad Mitri (1927–2007), syndicaliste pionnière, militante sociale et éducatrice, est née au Caire, en Égypte. À 23 ans, Wedad rejoignit le mouvement communiste. En 1951, Wedad, alors jeune étudiante en philosophie, fut la première à être élue au syndicat étudiant d'une université égyptienne.\n\nLe militantisme et la carrière d'enseignante de Wedad étaient indissociables. En tant qu'éducatrice, elle accordait une attention particulière au journalisme scolaire, offrant aux élèves un espace pour s'engager dans les enjeux sociaux et politiques pressants tels que la Révolution algérienne (années 1950–1960). Lors de son internement politique en 1959, elle mit en place des cours d'alphabétisation pour les femmes purgeant des peines à perpétuité.\n\nDocumentariste méticuleuse, Wedad tenait des registres détaillés de ses voyages militants ainsi que de ses voyages avec son mari Saad Louka et leurs deux enfants. Membre de plusieurs groupes de femmes, Wedad ne se décrivait pas comme une militante des droits des femmes, mais plutôt comme quelqu'un qui « donnait un exemple concret de ce dont il s'agit ». (Wedad, début des années 2000)",
       "text": "La Révolution algérienne (1954–1962), caractérisée par son rejet sans détour des objectifs « civilisateurs » de la France dans ses colonies, sa politique radicale d'inspiration léniniste-maoïste et ses ambitions de décolonisation et d'autodétermination, a constitué une expression majeure de la solidarité entre les nations arabes et d'autres pays du Sud global, née d'une désillusion et d'une frustration collectives à l'égard des institutions et des hiérarchies occidentales.\n\nL'identité de Nasser comme champion du panarabisme s'est manifestée dans son soutien sans détour au FLN, auquel il a apporté un appui idéologique, matériel et logistique. Notamment, il a utilisé « La Voix des Arabes », la station de radio égyptienne au nom évocateur, pour diffuser une rhétorique antianglo-américaine et propanarabe, exhortant les citoyens de toute la région à recentrer l'identité arabe comme moyen de résister à l'imposition impériale."
     },
     "Divorce Agreement": {
@@ -362,6 +377,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Embroidered Palestinian Dress": {
       "label": "Embroidered Palestinian Dress",
+      "caption": "Une robe ornée de motifs de broderie palestinienne.",
       "text": "Le tatreez, forme de broderie traditionnelle palestinienne, désigne les coutures colorées que l'on retrouve sur les textiles palestiniens. Pratiqué depuis des siècles, on en trouve des traces dès 1283 ap. J.-C. Le tatreez peut représenter de tout, de l'environnement naturel aux motifs géométriques en passant par les objets du quotidien. Les styles, les motifs et les symboles présents avec ostentation sur le thobe palestinien — la robe féminine — expriment les liens personnels, les croyances religieuses ou les liens de la porteuse avec différentes régions de Palestine.\n\nAprès la Nakba, l'accès aux matériaux nécessaires à ces textiles est devenu extrêmement difficile. Si une partie de la diversité régionale s'est perdue, les personnes déplacées ont partagé leurs techniques, et le tatreez et le thobe sont devenus des symboles de résistance face à l'effacement culturel. Lors de la première intifada, en particulier, le tatreez a servi à broder les drapeaux palestiniens sur les keffieh et les thobes. Pour la diaspora palestinienne, la broderie relie les générations à travers des géographies éparses, par une pratique liée non seulement aux moyens de subsistance, mais aussi à la résistance et à l'identité collective."
     },
     "Gam3aya": {
@@ -374,7 +390,8 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Hind Rustum Advertisement": {
       "label": "Hind Rustum Advertisement",
-      "text": "Al-Kawakib est une revue artistique égyptienne réputée pour sa couverture du cinéma égyptien. Fondée en 1932 comme hebdomadaire par les frères libanais Emil et Shokry Zidan et publiée par la maison d'édition Dar al-Hilal, Al-Kawakib est devenue mensuelle de 1949 à 1954. Depuis, la revue, toujours en publication, est restée hebdomadaire. Très illustrée et considérée comme une revue « de célébrités » pour son intérêt pour les vedettes du cinéma, Al-Kawakib offre une riche documentation sur l'histoire du cinéma égyptien."
+      "caption": "Publicité pour Hind Rustum dans le magazine Al-Kawakib, 1952.",
+      "text": "« Al-Kawakib est une revue artistique égyptienne réputée pour sa couverture du cinéma égyptien. Fondée en 1932 comme hebdomadaire par les frères libanais Emil et Shokry Zidan et publiée par la maison d'édition Dar al-Hilal, Al-Kawakib est devenue mensuelle de 1949 à 1954. Depuis, la revue, toujours en publication, est restée hebdomadaire. Très illustrée et considérée comme une revue ‘de célébrités’ pour son intérêt pour les vedettes du cinéma, Al-Kawakib offre une riche documentation sur l'histoire du cinéma égyptien. » (AUC Rare Books and Special Collections)"
     },
     "Hind Rustum Poster": {
       "label": "Hind Rustum Poster",
@@ -382,6 +399,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Im Ibrahim's Embroidery": {
       "label": "Im Ibrahim's Embroidery",
+      "caption": "Ruqaya El-Santarisy « Im Ibrahim » (née en 1927) est connue pour la finesse et la précision de sa broderie. À travers son atelier à Amman, Im Ibrahim a sauvegardé les styles traditionnels de la broderie palestinienne. Ses belles-filles sont devenues ses apprenties, à qui elle a confié ses motifs de broderie les plus chers. En grandissant à Jaffa, Im Ibrahim se rendait à Jérusalem le vendredi avec sa famille. Elle se souvient comment elle observait les différents motifs de broderie sur les vêtements des femmes à Jérusalem. Plus tard, elle reproduirait ces motifs dans son propre travail.",
       "text": "Le tatreez, forme de broderie traditionnelle palestinienne, désigne les coutures colorées que l'on retrouve sur les textiles palestiniens. Pratiqué depuis des siècles, on en trouve des traces dès 1283 ap. J.-C. Le tatreez peut représenter de tout, de l'environnement naturel aux motifs géométriques en passant par les objets du quotidien. Les styles, les motifs et les symboles présents avec ostentation sur le thobe palestinien — la robe féminine — expriment les liens personnels, les croyances religieuses ou les liens de la porteuse avec différentes régions de Palestine.\n\nAprès la Nakba, l'accès aux matériaux nécessaires à ces textiles est devenu extrêmement difficile. Si une partie de la diversité régionale s'est perdue, les personnes déplacées ont partagé leurs techniques, et le tatreez et le thobe sont devenus des symboles de résistance face à l'effacement culturel. Lors de la première intifada, en particulier, le tatreez a servi à broder les drapeaux palestiniens sur les keffieh et les thobes. Pour la diaspora palestinienne, la broderie relie les générations à travers des géographies éparses, par une pratique liée non seulement aux moyens de subsistance, mais aussi à la résistance et à l'identité collective."
     },
     "Kawkab's Certificate": {
@@ -438,6 +456,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Reem and Shahinda": {
       "label": "Reem and Shahinda",
+      "caption": "Une photo de Shahinda Mekled (à droite) et Reem Saad, fille de Wedad Mitri, prise pendant le tournage du documentaire « Quatre femmes d'Égypte », Égypte, 1995.\n\nEn plus d'être une enseignante inspirante, Wedad Mitri (1927–2007), elle-même militante reconnue, encourageait ses élèves à s'engager dans les mouvements politiques et sociaux. Parmi celles-ci figurait Shahinda Mekled, qui devint plus tard une icône du mouvement pour les droits des paysans en Égypte. Au fil des années, Shahinda devint une amie proche de la fille de Wedad, Reem Saad.",
       "text": "« Quatre femmes d'Égypte » (1997) est un film documentaire réalisé par Tahani Rached qui suit la vie de quatre figures importantes du mouvement des femmes égyptiennes, engagées pendant et après l'ère Nasser (1952–1970). Si les quatre femmes se ressemblaient par leur engagement dans des activités menées par des femmes et des luttes anticoloniales plus larges, elles différaient nettement dans leurs positions idéologiques : chacune avait une orientation propre face au socialisme, au féminisme, à l'islamisme et à la laïcité.\n\nAu cœur de leurs interactions avec les mouvements politiques se trouve la position de classe et la proximité du privilège. Au début du film, Amina Rachid revient sur un épisode où une petite fille l'a attaquée à coups de pierres parce que le grand-père de Rachid, le Premier ministre égyptien Ismail Sidqi, avait signé un traité avec les Britanniques : « La grande maison, les voisins pauvres. Ce drame politique fut pour moi un choc et un éveil. Dans notre grande maison, nous parlions français, et l'arabe seulement avec les domestiques. La vérité amère d'être la classe dominante. Au-delà du portail, une traîtresse. »"
     },
     "Reem's Grandmother": {
@@ -462,10 +481,12 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "The Nubian Exodus": {
       "label": "The Nubian Exodus",
+      "caption": "Un collage de la couverture par Al-Ahram de l'exode nubien, 1964.",
       "text": "Le haut barrage d'Assouan est un projet d'ingénierie construit en 1970 à la frontière entre l'Égypte et le Soudan. Le barrage fournit de l'hydroélectricité, le contrôle de l'irrigation et la protection contre les crues et les sécheresses aux agriculteurs des rives du Nil. À son achèvement, il a formé un grand réservoir, qui sera connu comme le lac Nasser.\n\nSi le projet a atteint ses objectifs initiaux, l'inondation a déplacé de force une population importante de Nubiens — au moins 90 000 — de leurs terres agricoles historiques et de leurs sites culturels. Si beaucoup de Nubiens ont été envoyés dans des établissements près de Kom Ombo, beaucoup d'autres se sont rendus au Caire et à Alexandrie en quête de travail. La construction de ces barrages n'a pas seulement déplacé directement les Nubiens : elle a inondé des terres autrefois fertiles utilisées historiquement par les agriculteurs nubiens."
     },
     "The Palestinian Exodus": {
       "label": "The Palestinian Exodus",
+      "caption": "Exode palestinien de Cisjordanie traversant le Jourdain, 1967. Tiré des archives photographiques de l'UNRWA.",
       "text": "La Nakba, ou « catastrophe », désigne l'expulsion violente des Palestiniens de leurs foyers par les forces israéliennes entre 1947 et 1949. La Nakba s'est produite avant et après l'adoption de la Résolution 181 par l'Assemblée générale des Nations unies, qui prévoyait la division de la Palestine en deux États, l'un arabe et l'autre juif.\n\nAvant la mise en œuvre proposée de la solution à deux États, les forces israéliennes ont mis en place le Plan Daleth, lançant une vaste campagne de terreur et de violence contre les Palestiniens. Le 9 avril 1948, des forces sionistes ont tué plus de 100 Palestiniens dans ce qui sera connu comme le massacre de Deir Yassine.\n\nÀ la fin de la guerre de 1948, Israël avait pris le contrôle de 78 % du territoire. La guerre s'est accompagnée du déplacement massif de la population palestinienne : environ la moitié de tous les Palestiniens — entre 750 000 et 900 000 personnes — ont été expulsés de leurs foyers, posant les bases d'une crise des réfugiés qui persiste aujourd'hui."
     },
     "Wedad Metri's Family Photo": {
@@ -520,6 +541,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Biography of Wedad Mitri": {
       "label": "Biography of Wedad Mitri",
+      "caption": "Wedad Mitri (1927–2007), sindicalista pionera, activista social y educadora, nació en El Cairo, Egipto. A los 23 años, Wedad se unió al movimiento comunista. En 1951, Wedad, entonces una joven estudiante de filosofía, fue la primera elegida para la Unión de Estudiantes de una universidad egipcia.\n\nEl activismo y la carrera docente de Wedad estaban entrelazados. Como educadora, prestó especial atención al periodismo escolar, dando espacio a las alumnas para involucrarse con cuestiones sociales y políticas apremiantes, como la Revolución argelina (1950–1960). Tras su detención política en 1959, organizó clases de alfabetización para mujeres condenadas a cadena perpetua.\n\nDocumentalista meticulosa, Wedad llevaba registros detallados de sus viajes como activista, así como de sus viajes con su esposo Saad Louka y sus dos hijos. Miembro de varios grupos de mujeres, Wedad no se describía a sí misma como activista por los derechos de las mujeres, sino más bien como alguien que «daba un ejemplo práctico de lo que eso significa». (Wedad, principios de la década de 2000)",
       "text": "La Revolución argelina (1954–1962), caracterizada por su rechazo abierto a los objetivos «civilizatorios» de Francia en sus colonias, su política radical de inspiración leninista-maoísta y sus aspiraciones de descolonización y autodeterminación, representó una expresión clave de la solidaridad entre las naciones árabes y otros países del Sur global, surgida de una desilusión y frustración colectivas frente a las instituciones y jerarquías occidentales.\n\nLa identidad de Nasser como adalid del panarabismo se manifestó en su apoyo abierto al FLN, al que brindó apoyo ideológico, así como material y logístico. Notablemente, utilizó «La Voz de los Árabes», la bien llamada estación de radio egipcia, para difundir una retórica antianglo-americana y propanárabe que instaba a la ciudadanía de toda la región a recentrar la identidad árabe como medio para resistir la imposición imperial."
     },
     "Divorce Agreement": {
@@ -528,6 +550,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Embroidered Palestinian Dress": {
       "label": "Embroidered Palestinian Dress",
+      "caption": "Un vestido ornamentado con motivos de bordado palestino.",
       "text": "El tatreez, una forma de bordado tradicional palestino, abarca las puntadas de colores que se encuentran en los textiles palestinos. Practicado durante siglos, las pruebas de su uso se remontan al año 1283 d. C. El tatreez puede representar de todo, desde el entorno natural hasta motivos geométricos y objetos cotidianos. Los estilos, motivos y símbolos que destacan en el thobe palestino —el vestido femenino— expresan los lazos personales, las creencias religiosas o las relaciones de quien lo lleva con distintas zonas de Palestina.\n\nTras la Nakba, el acceso a los materiales necesarios para estos textiles se volvió extremadamente difícil. Si bien se perdió parte de la variedad regional, las personas desplazadas compartieron técnicas, y el tatreez y el thobe se convirtieron en símbolos de resistencia frente al borrado cultural. En particular, durante la Primera Intifada, el tatreez se utilizó para bordar las banderas palestinas en el keffieh y el thobe. Para la diáspora palestina, el bordado conecta generaciones a través de geografías dispersas, mediante una práctica vinculada no solo al sustento, sino también a la resistencia y a la identidad colectiva."
     },
     "Gam3aya": {
@@ -540,7 +563,8 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Hind Rustum Advertisement": {
       "label": "Hind Rustum Advertisement",
-      "text": "Al-Kawakib es una revista artística egipcia conocida por su cobertura del cine egipcio. Fundada en 1932 como semanal por los hermanos libaneses Emil y Shokry Zidan y publicada por la editorial Dar al-Hilal, Al-Kawakib pasó a ser mensual de 1949 a 1954. Desde entonces la revista, todavía en circulación, ha sido semanal. Profusamente ilustrada y considerada una revista «de famosos» por su atención a las estrellas del cine, Al-Kawakib ofrece una rica documentación para la historia del cine egipcio."
+      "caption": "Anuncio de Hind Rustum en la revista Al-Kawakib, 1952.",
+      "text": "«Al-Kawakib es una revista artística egipcia conocida por su cobertura del cine egipcio. Fundada en 1932 como semanal por los hermanos libaneses Emil y Shokry Zidan y publicada por la editorial Dar al-Hilal, Al-Kawakib pasó a ser mensual de 1949 a 1954. Desde entonces la revista, todavía en circulación, ha sido semanal. Profusamente ilustrada y considerada una revista “de famosos” por su atención a las estrellas del cine, Al-Kawakib ofrece una rica documentación para la historia del cine egipcio.» (AUC Rare Books and Special Collections)"
     },
     "Hind Rustum Poster": {
       "label": "Hind Rustum Poster",
@@ -548,6 +572,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Im Ibrahim's Embroidery": {
       "label": "Im Ibrahim's Embroidery",
+      "caption": "Ruqaya El-Santarisy «Im Ibrahim» (n. 1927) es conocida por su bordado fino y minucioso. A través de su taller en Amán, Im Ibrahim ha resguardado los estilos tradicionales del bordado palestino. Sus nueras se convirtieron en sus aprendices, a quienes confió sus apreciados patrones de bordado. Al criarse en Jaffa, Im Ibrahim visitaba Jerusalén los viernes con su familia. Recuerda cómo solía observar los distintos patrones de bordado en la ropa de las mujeres en Jerusalén. Más tarde, copiaría esos patrones en sus propias obras.",
       "text": "El tatreez, una forma de bordado tradicional palestino, abarca las puntadas de colores que se encuentran en los textiles palestinos. Practicado durante siglos, las pruebas de su uso se remontan al año 1283 d. C. El tatreez puede representar de todo, desde el entorno natural hasta motivos geométricos y objetos cotidianos. Los estilos, motivos y símbolos que destacan en el thobe palestino —el vestido femenino— expresan los lazos personales, las creencias religiosas o las relaciones de quien lo lleva con distintas zonas de Palestina.\n\nTras la Nakba, el acceso a los materiales necesarios para estos textiles se volvió extremadamente difícil. Si bien se perdió parte de la variedad regional, las personas desplazadas compartieron técnicas, y el tatreez y el thobe se convirtieron en símbolos de resistencia frente al borrado cultural. En particular, durante la Primera Intifada, el tatreez se utilizó para bordar las banderas palestinas en el keffieh y el thobe. Para la diáspora palestina, el bordado conecta generaciones a través de geografías dispersas, mediante una práctica vinculada no solo al sustento, sino también a la resistencia y a la identidad colectiva."
     },
     "Kawkab's Certificate": {
@@ -604,6 +629,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Reem and Shahinda": {
       "label": "Reem and Shahinda",
+      "caption": "Una fotografía de Shahinda Mekled (a la derecha) y Reem Saad, hija de Wedad Mitri, tomada durante el rodaje del documental «Cuatro mujeres de Egipto», Egipto, 1995.\n\nAdemás de ser una maestra inspiradora, Wedad Mitri (1927–2007), ella misma activista destacada, animaba a sus alumnas a comprometerse con los movimientos políticos y sociales. Entre estas alumnas se encontraba Shahinda Mekled, que más tarde se convertiría en un icono del movimiento por los derechos de los campesinos en Egipto. Con los años, Shahinda se hizo amiga íntima de la hija de Wedad, Reem Saad.",
       "text": "«Cuatro mujeres de Egipto» (1997) es un documental dirigido por Tahani Rached que sigue la vida de cuatro mujeres egipcias destacadas que participaron en el movimiento de mujeres durante y después de la era de Nasser (1952–1970). Las mujeres, parecidas en su implicación en actividades impulsadas por mujeres y en luchas anticoloniales más amplias, diferían notablemente en sus posiciones ideológicas: cada una tenía una orientación propia hacia el socialismo, el feminismo, el islamismo y el laicismo.\n\nCentral a la interacción de las mujeres con los movimientos políticos es la posición de clase y la cercanía al privilegio. Al inicio de la película, Amina Rachid recuerda un episodio en que una niña la atacó con piedras porque el abuelo de Rachid, el primer ministro egipcio Ismail Sidqi, había firmado un tratado con los británicos: «La casa grande, los vecinos pobres. Aquel drama político fue para mí un sobresalto y un despertar. En nuestra casa grande hablábamos francés, y árabe solo con la servidumbre. La amarga verdad de pertenecer a la clase dominante. Fuera del portón, una traidora.»"
     },
     "Reem's Grandmother": {
@@ -628,10 +654,12 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "The Nubian Exodus": {
       "label": "The Nubian Exodus",
+      "caption": "Un collage de la cobertura de Al-Ahram sobre el éxodo nubio, 1964.",
       "text": "La gran presa de Asuán es una obra de ingeniería construida en 1970 en la frontera entre Egipto y Sudán. La presa proporciona energía hidroeléctrica, control de riego y protección frente a crecidas y sequías a las y los agricultores de las riberas del Nilo. Al concluirse, formó un gran embalse que pasaría a llamarse lago Nasser.\n\nSi bien el proyecto cumplió sus objetivos iniciales, la inundación desplazó por la fuerza a una población importante de nubias y nubios —al menos 90 000— de sus tierras agrícolas históricas y de sus lugares culturales. Aunque a muchos nubios se los envió a asentamientos cerca de Kom Ombo, muchos otros se trasladaron a El Cairo y Alejandría en busca de trabajo. La construcción de estas presas no solo desplazó directamente a las y los nubios, sino que inundó suelos antes fértiles, históricamente utilizados por las y los agricultores nubios."
     },
     "The Palestinian Exodus": {
       "label": "The Palestinian Exodus",
+      "caption": "Éxodo palestino desde Cisjordania cruzando el río Jordán, 1967. Del archivo fotográfico de la UNRWA.",
       "text": "La Nakba, o «catástrofe», designa la expulsión violenta de los palestinos de sus hogares por las fuerzas israelíes entre 1947 y 1949. La Nakba ocurrió antes y después de la aprobación de la Resolución 181 por la Asamblea General de la ONU, que disponía la división de Palestina en dos Estados, uno árabe y otro judío.\n\nAntes de la implementación propuesta de la solución de los dos Estados, las fuerzas israelíes pusieron en marcha el Plan Dalet, iniciando una amplia campaña de terror y violencia contra los palestinos. El 9 de abril de 1948, fuerzas sionistas mataron a más de 100 palestinos en lo que se conocería como la masacre de Deir Yassin.\n\nAl finalizar la guerra de 1948, Israel se había apoderado del 78 % del territorio. La guerra estuvo acompañada del desplazamiento masivo de la población palestina: aproximadamente la mitad de las y los palestinos —entre 750 000 y 900 000 personas— fueron expulsadas de sus hogares, sentando las bases de una crisis de personas refugiadas que persiste hasta hoy."
     },
     "Wedad Metri's Family Photo": {
@@ -686,6 +714,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Biography of Wedad Mitri": {
       "label": "Biography of Wedad Mitri",
+      "caption": "Wedad Mitri (1927–2007), bahnbrechende Gewerkschafterin, soziale Aktivistin und Pädagogin, wurde in Kairo, Ägypten, geboren. Mit 23 Jahren schloss sich Wedad der kommunistischen Bewegung an. 1951 wurde Wedad, damals eine junge Philosophiestudentin, als erste in den Studentenrat einer ägyptischen Universität gewählt.\n\nWedads Aktivismus und ihre Lehrtätigkeit waren miteinander verflochten. Als Pädagogin widmete sie dem Schuljournalismus besondere Aufmerksamkeit und gab Schülerinnen Raum, sich mit drängenden sozialen und politischen Themen wie der Algerischen Revolution (1950er–1960er Jahre) auseinanderzusetzen. Während ihrer politischen Inhaftierung 1959 richtete sie Alphabetisierungskurse für Frauen ein, die lebenslange Haftstrafen verbüßten.\n\nAls akribische Dokumentaristin führte Wedad detaillierte Aufzeichnungen über ihre Reisen als Aktivistin sowie über Reisen mit ihrem Ehemann Saad Louka und den beiden Kindern. Als Mitglied mehrerer Frauengruppen beschrieb sich Wedad nicht als Aktivistin für Frauenrechte, sondern vielmehr als jemand, der „ein praktisches Beispiel dafür gab, worum es dabei geht“. (Wedad, frühe 2000er Jahre)",
       "text": "Die Algerische Revolution (1954–1962), gekennzeichnet durch ihre unverhohlene Ablehnung der „zivilisatorischen“ Ziele Frankreichs in seinen Kolonien, ihre radikale leninistisch-maoistische Politik und ihre Bestrebungen nach Entkolonialisierung und Selbstbestimmung, war ein Schlüsselausdruck der Solidarität zwischen arabischen Nationen und anderen Ländern des globalen Südens, die aus kollektiver Enttäuschung und Frustration über westliche Institutionen und Hierarchien erwuchs.\n\nNassers Identität als Vorkämpfer des Panarabismus zeigte sich in seiner offenen Unterstützung der FLN, der er ideologische sowie materielle und logistische Hilfe gewährte. Bemerkenswerterweise nutzte er „Die Stimme der Araber“, den treffend benannten ägyptischen Radiosender, um eine antianglo-amerikanische, propanarabische Rhetorik zu verbreiten, die Bürgerinnen und Bürger der ganzen Region drängte, die arabische Identität als Mittel des Widerstands gegen die imperiale Auferlegung erneut in den Mittelpunkt zu stellen."
     },
     "Divorce Agreement": {
@@ -694,6 +723,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Embroidered Palestinian Dress": {
       "label": "Embroidered Palestinian Dress",
+      "caption": "Ein Kleid, verziert mit palästinensischen Stickmustern.",
       "text": "Tatreez, eine Form traditioneller palästinensischer Stickerei, umfasst die farbenfrohen Stiche auf palästinensischen Textilien. Seit Jahrhunderten praktiziert, lassen sich Belege bis ins Jahr 1283 n. Chr. zurückverfolgen. Tatreez kann alles abbilden, von der Naturlandschaft bis hin zu geometrischen Mustern und alltäglichen Gegenständen. Die Stile, Muster und Symbole, die auf dem palästinensischen Thobe — dem Frauenkleid — hervortreten, drücken die persönlichen Bindungen, die religiösen Überzeugungen oder die Verbindungen der Trägerin zu verschiedenen Regionen Palästinas aus.\n\nNach der Nakba wurde der Zugang zu den für diese Textilien nötigen Materialien äußerst schwierig. Während ein Teil der regionalen Vielfalt verloren ging, teilten Vertriebene ihre Techniken, und Tatreez und Thobe wurden zu Symbolen des Widerstands gegen kulturelle Auslöschung. Insbesondere während der Ersten Intifada wurde Tatreez verwendet, um die palästinensischen Flaggen auf Keffiye und Thobe zu sticken. Für die palästinensische Diaspora verbindet die Stickerei Generationen über getrennte Geographien hinweg, durch eine Praxis, die nicht nur an den Lebensunterhalt geknüpft ist, sondern an Widerstand und kollektive Identität."
     },
     "Gam3aya": {
@@ -706,7 +736,8 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Hind Rustum Advertisement": {
       "label": "Hind Rustum Advertisement",
-      "text": "Al-Kawakib ist eine ägyptische Kunstzeitschrift, die für ihre Berichterstattung über das ägyptische Kino bekannt ist. 1932 als Wochenzeitschrift von den libanesischen Brüdern Emil und Shokry Zidan gegründet und vom Verlagshaus Dar al-Hilal herausgegeben, erschien Al-Kawakib von 1949 bis 1954 monatlich. Seitdem ist die Zeitschrift, die noch immer erscheint, wieder eine Wochenzeitschrift. Reich bebildert und aufgrund ihres Fokus auf Filmstars als „Promi“-Zeitschrift verstanden, bietet Al-Kawakib eine umfangreiche Dokumentation zur Geschichte des ägyptischen Kinos."
+      "caption": "Anzeige für Hind Rustum in der Zeitschrift Al-Kawakib, 1952.",
+      "text": "„Al-Kawakib ist eine ägyptische Kunstzeitschrift, die für ihre Berichterstattung über das ägyptische Kino bekannt ist. 1932 als Wochenzeitschrift von den libanesischen Brüdern Emil und Shokry Zidan gegründet und vom Verlagshaus Dar al-Hilal herausgegeben, erschien Al-Kawakib von 1949 bis 1954 monatlich. Seitdem ist die Zeitschrift, die noch immer erscheint, wieder eine Wochenzeitschrift. Reich bebildert und aufgrund ihres Fokus auf Filmstars als ‚Promi‘-Zeitschrift verstanden, bietet Al-Kawakib eine umfangreiche Dokumentation zur Geschichte des ägyptischen Kinos.“ (AUC Rare Books and Special Collections)"
     },
     "Hind Rustum Poster": {
       "label": "Hind Rustum Poster",
@@ -714,6 +745,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Im Ibrahim's Embroidery": {
       "label": "Im Ibrahim's Embroidery",
+      "caption": "Ruqaya El-Santarisy „Im Ibrahim“ (geb. 1927) ist für ihre feine und detailreiche Stickerei bekannt. Durch ihre Werkstatt in Amman bewahrt Im Ibrahim die traditionellen Stile palästinensischer Stickerei. Ihre Schwiegertöchter wurden zu ihren Auszubildenden, denen sie ihre wertvollen Stickmuster anvertraute. Während sie in Jaffa aufwuchs, besuchte Im Ibrahim freitags mit ihrer Familie Jerusalem. Sie erinnert sich, wie sie die unterschiedlichen Stickmuster auf den Kleidern der Frauen in Jerusalem beobachtete. Später übertrug sie diese Muster in ihre eigene Arbeit.",
       "text": "Tatreez, eine Form traditioneller palästinensischer Stickerei, umfasst die farbenfrohen Stiche auf palästinensischen Textilien. Seit Jahrhunderten praktiziert, lassen sich Belege bis ins Jahr 1283 n. Chr. zurückverfolgen. Tatreez kann alles abbilden, von der Naturlandschaft bis hin zu geometrischen Mustern und alltäglichen Gegenständen. Die Stile, Muster und Symbole, die auf dem palästinensischen Thobe — dem Frauenkleid — hervortreten, drücken die persönlichen Bindungen, die religiösen Überzeugungen oder die Verbindungen der Trägerin zu verschiedenen Regionen Palästinas aus.\n\nNach der Nakba wurde der Zugang zu den für diese Textilien nötigen Materialien äußerst schwierig. Während ein Teil der regionalen Vielfalt verloren ging, teilten Vertriebene ihre Techniken, und Tatreez und Thobe wurden zu Symbolen des Widerstands gegen kulturelle Auslöschung. Insbesondere während der Ersten Intifada wurde Tatreez verwendet, um die palästinensischen Flaggen auf Keffiye und Thobe zu sticken. Für die palästinensische Diaspora verbindet die Stickerei Generationen über getrennte Geographien hinweg, durch eine Praxis, die nicht nur an den Lebensunterhalt geknüpft ist, sondern an Widerstand und kollektive Identität."
     },
     "Kawkab's Certificate": {
@@ -770,6 +802,7 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "Reem and Shahinda": {
       "label": "Reem and Shahinda",
+      "caption": "Ein Foto von Shahinda Mekled (rechts) und Reem Saad, der Tochter von Wedad Mitri, aufgenommen während der Dreharbeiten zum Dokumentarfilm „Vier Frauen aus Ägypten“, Ägypten, 1995.\n\nWedad Mitri (1927–2007) war nicht nur eine inspirierende Lehrerin, sondern selbst eine prominente Aktivistin und ermutigte ihre Schülerinnen, sich politisch und sozial zu engagieren. Zu diesen Schülerinnen gehörte Shahinda Mekled, die später zu einer Ikone der Bauernrechtsbewegung in Ägypten werden sollte. Im Laufe der Jahre wurde Shahinda eine enge Freundin von Wedads Tochter Reem Saad.",
       "text": "„Vier Frauen aus Ägypten“ (1997) ist ein Dokumentarfilm unter der Regie von Tahani Rached, der das Leben von vier prominenten ägyptischen Frauen verfolgt, die in der Frauenbewegung während und nach der Nasser-Ära (1952–1970) aktiv waren. Die Frauen, ähnlich in ihrem Engagement für frauenbewegte Aktivitäten und breitere antikoloniale Bestrebungen, unterschieden sich deutlich in ihren ideologischen Positionen — jede besaß eine eigene Ausrichtung gegenüber Sozialismus, Feminismus, Islamismus und Säkularismus.\n\nZentral für die Begegnung der Frauen mit politischen Bewegungen sind Klassenposition und Nähe zum Privileg. Früh im Film erinnert sich Amina Rachid an eine Erfahrung, in der ein kleines Mädchen sie mit Steinen angriff, weil Rachids Großvater, der ägyptische Premierminister Ismail Sidqi, einen Vertrag mit den Briten unterschrieben hatte: „Das große Haus, die armen Nachbarn. Dieses politische Drama war für mich ein Schock und ein Erwachen. In unserem großen Haus sprachen wir Französisch, und Arabisch nur mit der Dienerschaft. Die bittere Wahrheit, der herrschenden Klasse anzugehören. Außerhalb des Tores: eine Verräterin.“"
     },
     "Reem's Grandmother": {
@@ -794,10 +827,12 @@ var STORYMAP_CANVAS_NODE_I18N = {
     },
     "The Nubian Exodus": {
       "label": "The Nubian Exodus",
+      "caption": "Eine Collage aus der Berichterstattung von Al-Ahram über den nubischen Exodus, 1964.",
       "text": "Der Assuan-Hochdamm ist ein 1970 an der Grenze zwischen Ägypten und dem Sudan errichtetes Ingenieurprojekt. Der Damm liefert den Bauern an den Ufern des Nils Wasserkraft, Bewässerungskontrolle und Schutz vor Hochwasser und Dürre. Bei seiner Fertigstellung bildete er einen großen Stausee, der unter dem Namen Nasser-See bekannt wurde.\n\nWährend das Projekt seine ursprünglichen Ziele erreichte, vertrieb die Überflutung gewaltsam eine bedeutende Bevölkerung von Nubierinnen und Nubiern — mindestens 90.000 — von ihrem historischen Ackerland und ihren kulturellen Stätten. Während viele Nubier in Siedlungen bei Kom Ombo geschickt wurden, zogen viele weitere auf der Suche nach Arbeit nach Kairo und Alexandria. Der Bau dieser Dämme vertrieb nicht nur die Nubier direkt, sondern überflutete auch zuvor fruchtbare Böden, die historisch von nubischen Bauern bewirtschaftet wurden."
     },
     "The Palestinian Exodus": {
       "label": "The Palestinian Exodus",
+      "caption": "Palästinensischer Exodus aus dem Westjordanland über den Jordan, 1967. Aus dem Fotoarchiv der UNRWA.",
       "text": "Al-Nakba, oder „die Katastrophe“, bezeichnet die gewaltsame Vertreibung der Palästinenserinnen und Palästinenser aus ihren Häusern durch israelische Streitkräfte zwischen 1947 und 1949. Die Nakba ereignete sich vor und nach der Verabschiedung der Resolution 181 durch die Generalversammlung der Vereinten Nationen, die die Teilung Palästinas in zwei Staaten — einen arabischen und einen jüdischen — vorsah.\n\nVor der vorgeschlagenen Umsetzung der Zweistaatenlösung setzten israelische Streitkräfte den Plan Dalet in Gang und begannen eine umfassende Kampagne von Terror und Gewalt gegen die Palästinenser. Am 9. April 1948 töteten zionistische Kräfte mehr als 100 Palästinenser in dem, was später als das Massaker von Deir Yassin bekannt werden sollte.\n\nAm Ende des Krieges von 1948 hatte Israel 78 % des Landes unter seine Kontrolle gebracht. Der Krieg war von einer massenhaften Vertreibung der palästinensischen Bevölkerung begleitet: Etwa die Hälfte aller Palästinenserinnen und Palästinenser — zwischen 750.000 und 900.000 Menschen — wurde aus ihren Häusern vertrieben und legte den Grundstein für eine Flüchtlingskrise, die bis heute fortbesteht."
     },
     "Wedad Metri's Family Photo": {

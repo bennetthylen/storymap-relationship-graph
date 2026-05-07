@@ -128,6 +128,7 @@
   const modalTitle = document.getElementById("archiveModalTitle");
   const modalDate = document.getElementById("archiveModalDate");
   const modalBody = document.getElementById("archiveModalBody");
+  const modalCaption = document.getElementById("archiveModalCaption");
   const modalBadge = document.getElementById("archiveModalBadge");
 
   const hubIntroEl = document.getElementById("archiveHubIntro");
@@ -187,6 +188,17 @@
     if (lang === "en" || typeof STORYMAP_CANVAS_NODE_I18N === "undefined") return base;
     const pack = STORYMAP_CANVAS_NODE_I18N[lang]?.[labelKey(node)];
     if (pack && pack.text) return pack.text;
+    return base;
+  }
+
+  /** Photo caption (rendered in regular black ink above the blue context body). */
+  function getDisplayCaption(node) {
+    if (!node) return "";
+    const lang = getLang();
+    const base = String(node.caption || "");
+    if (lang === "en" || typeof STORYMAP_CANVAS_NODE_I18N === "undefined") return base;
+    const pack = STORYMAP_CANVAS_NODE_I18N[lang]?.[labelKey(node)];
+    if (pack && pack.caption) return pack.caption;
     return base;
   }
 
@@ -856,6 +868,22 @@
       modalDate.hidden = !dateStr;
       modalDate.textContent = dateStr;
     }
+    const captionText = getDisplayCaption(node);
+    if (modalCaption) {
+      modalCaption.innerHTML = "";
+      const captionParas = splitParagraphs(captionText);
+      if (captionParas.length) {
+        modalCaption.hidden = false;
+        modalCaption.setAttribute("dir", getLang() === "ar" ? "rtl" : "ltr");
+        captionParas.forEach((para) => {
+          const p = document.createElement("p");
+          p.textContent = para;
+          modalCaption.appendChild(p);
+        });
+      } else {
+        modalCaption.hidden = true;
+      }
+    }
     if (modalBody) {
       modalBody.textContent = bodyText;
       modalBody.setAttribute("dir", getLang() === "ar" ? "rtl" : "ltr");
@@ -872,6 +900,8 @@
     const hasNext = modalIndex < modalList.length - 1;
     if (modalPrev) modalPrev.disabled = !hasPrev;
     if (modalNext) modalNext.disabled = !hasNext;
+    // Reset scroll to top on every node switch / open so users don't land mid-text.
+    if (inner) inner.scrollTop = 0;
   }
 
   function closeModal() {
